@@ -5,6 +5,7 @@ extends Control
 const SETTINGS_OVERLAY := preload("res://Scenes/Game/Component/Overlays/SettingsOverlay.tscn")
 const GAMEOVER_OVERLAY := preload("res://Scenes/Game/Component/Overlays/GameOverOverlay.tscn")
 const SCORE_POPUP := preload("res://Scenes/Game/Component/HUD/ScorePopup.tscn")
+const LINE_CLEAR_PARTICLES := preload("res://Scenes/Game/Component/Grid/LineClearParticles.tscn")
 
 const THEME_PATH := "res://Resources/Data/default_theme.tres"
 
@@ -194,6 +195,12 @@ func _resolve_clears(_origin: Vector2i) -> void:
 	# Base clear sting fires here; the "combo" SFX fires later in sync with the popup.
 	AudioManager.play_sfx("clear")
 	_camera_shake(combo)
+
+	# Spawn particle explosion for each cleared cell
+	for cell in cells:
+		var particles = LINE_CLEAR_PARTICLES.instantiate()
+		particles.global_position = grid.cell_center_to_global(Vector2(cell))
+		add_child(particles)
 
 	# Cascade first: spinning blocks fly off before any score readout.
 	await grid.clear_cells(cells)

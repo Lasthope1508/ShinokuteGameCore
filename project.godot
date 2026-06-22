@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Block Puzzle Template"
 run/main_scene="res://Scenes/Main/Main.tscn"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="uid://g2078vu7r2lm"
 
 [audio]
@@ -21,6 +21,7 @@ buses/default_bus_layout="uid://bj27b0a1dw70h"
 
 [autoload]
 
+McpInteractionServer="*res://Scripts/mcp_interaction_server.gd"
 SaveManager="*res://Resources/Globals/SaveManager.gd"
 GameState="*res://Resources/Globals/GameState.gd"
 AudioManager="*res://Resources/Globals/AudioManager.gd"

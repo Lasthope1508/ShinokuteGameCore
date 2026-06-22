@@ -17,7 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.078, 0.094, 0.153, 1)
+color = Color(0.08, 0.06, 0.05, 1)
 
 [node name="Center" type="CenterContainer" parent="." unique_id=926817208]
 layout_mode = 1
@@ -36,15 +36,16 @@ theme_override_constants/separation = 40
 
 [node name="Title" type="Label" parent="Center/VBox" unique_id=354330859]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.83, 0.69, 0.22, 1)
 theme_override_font_sizes/font_size = 80
-text = "BLOCK PUZZLE"
+text = "WOOD PUZZLE"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Center/VBox" unique_id=173465581]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.9, 1)
+theme_override_colors/font_color = Color(0.72, 0.62, 0.44, 1)
 theme_override_font_sizes/font_size = 35
-text = "Template"
+text = "Luxury Edition"
 horizontal_alignment = 1
 
 [node name="Space" type="Control" parent="Center/VBox" unique_id=1250167459]
