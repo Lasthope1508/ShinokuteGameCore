@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Puzzle Reskin & Asset Blueprint Dashboard</title>
+    <meta name="description" content="A premium interactive reskin dashboard, guidelines, checklists, and VFX/SFX previews.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0c0a09;
+            --bg-surface: #1c1917;
+            --bg-surface-elevated: #292524;
+            --primary: #d4af37;
+            --primary-hover: #f3e5ab;
+            --text-main: #f5f5f4;
+            --text-muted: #a8a29e;
+            --border: #44403c;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            min-height: 60vh;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-hover);
+            background-color: var(--bg-surface);
+        }
+
+        .tab-btn.active {
+            color: var(--bg-base);
+            background-color: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Tab Content Panes */
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card styles */
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .card-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Grid layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Sprite Item Checklist Card */
+        .sprite-card {
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sprite-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .sprite-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .sprite-title {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--primary-hover);
+        }
+
+        .sprite-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0b0909;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            min-height: 100px;
+        }
+
+        .sprite-preview img {
+            max-width: 100%;
+            height: auto;
+            max-height: 90px;
+            object-fit: contain;
+        }
+
+        .checkbox-container {
+            display: block;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            user-select: none;
+            color: var(--text-main);
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 2px;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: var(--bg-surface);
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            border-color: var(--primary);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid var(--bg-base);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .meta-list {
+            list-style: none;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 0.75rem;
+        }
+
+        .meta-list li {
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .meta-list span.val {
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            word-break: break-all;
+            text-align: right;
+        }
+
+        /* VFX Interactive Canvas */
+        .vfx-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .vfx-control-panel {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .vfx-btn {
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vfx-btn:hover {
+            border-color: var(--primary);
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+
+        .vfx-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
+            color: var(--primary);
+        }
+
+        .canvas-wrapper {
+            flex: 1.5;
+            min-width: 320px;
+            background-color: #050404;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        canvas {
+            background-color: #0b0909;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            cursor: crosshair;
+        }
+
+        .canvas-instruction {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* SFX Synthesizer Sound Board */
+        .soundboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .sound-card {
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .sound-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .sound-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+
+        .sound-name {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--primary-hover);
+        }
+
+        .sound-descr {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            min-height: 40px;
+        }
+
+        .sound-controls {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .play-btn {
+            flex: 1;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .play-btn:hover {
+            border-color: var(--primary);
+            background-color: rgba(212, 175, 55, 0.08);
+            color: var(--primary-hover);
+        }
+
+        .play-btn.r2-btn {
+            border-color: var(--accent-green);
+        }
+        
+        .play-btn.r2-btn:hover {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+        }
+
+        /* Layout blueprints tab */
+        .layout-blueprint {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .mockup-phone {
+            width: 320px;
+            height: 568px;
+            background-color: #0f0d0c;
+            border: 8px solid #292524;
+            border-radius: 36px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+        }
+
+        .mockup-screen {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(135deg, #181411 0%, #0e0b09 100%);
+        }
+
+        .mockup-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 24px;
+            color: var(--primary);
+            margin-top: 4rem;
+            font-family: var(--font-mono);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .mockup-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+        }
+
+        .mockup-btn {
+            background-color: #552616;
+            color: var(--text-main);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .mockup-board {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 2px;
+            background-color: #2b211a;
+            padding: 4px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 2px solid #5a4234;
+        }
+
+        .mockup-cell {
+            aspect-ratio: 1;
+            background-color: rgba(26, 17, 10, 0.8);
+            border-radius: 2px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .mockup-cell.filled {
+            background-color: #b83e23;
+            border: 1px solid var(--primary);
+        }
+        
+        .mockup-cell.filled-gold {
+            background-color: #d4af37;
+            border: 1px solid #fff;
+        }
+
+        .mockup-trays {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 3rem;
+        }
+
+        .mockup-tray-slot {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(20, 15, 10, 0.6);
+            border: 2px solid rgba(139, 101, 8, 0.4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mockup-piece {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+        }
+
+        .mockup-piece-block {
+            width: 10px;
+            height: 10px;
+            background-color: #8b5a2b;
+            border: 1px solid var(--primary);
+        }
+
+        .specs-sidebar {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .spec-item {
+            border-left: 4px solid var(--primary);
+            background-color: var(--bg-surface-elevated);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .spec-item h4 {
+            font-family: var(--font-mono);
+            color: var(--primary-hover);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Progress indicator header */
+        .progress-bar-container {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .progress-bar-title {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--primary-hover);
+        }
+
+        .progress-track {
+            flex-grow: 1;
+            max-width: 500px;
+            height: 14px;
+            background-color: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37 0%, #22c55e 100%);
+            width: 0%;
+            border-radius: 20px;
+            transition: width 0.5s ease-out;
+        }
+
+        .progress-text {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <h1 id="main-header-title">Wood & Gold Asset Blueprint</h1>
+            <p>Quy chuẩn thiết kế đồ họa, âm thanh & hiệu ứng game xếp gạch Block Puzzle</p>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Checklist Progress Bar -->
+        <div class="progress-bar-container">
+            <div class="progress-bar-title">Tiến độ hoàn thành reskin:</div>
+            <div class="progress-track">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div id="progress-text" class="progress-text">0%</div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('overview')">Tổng Quan</button>
+            <button class="tab-btn" onclick="switchTab('sprites')">Skins & Sprites</button>
+            <button class="tab-btn" onclick="switchTab('vfx')">Hiệu Ứng VFX</button>
+            <button class="tab-btn" onclick="switchTab('sfx')">Âm Thanh SFX</button>
+            <button class="tab-btn" onclick="switchTab('ui-blueprints')">Bản Vẽ UI</button>
+            <button class="tab-btn" onclick="switchTab('upload-tab')">Upload & Preview</button>
+        </div>
+
+        <!-- TAB 1: OVERVIEW -->
+        <div id="overview" class="tab-pane active">
+            <div class="card">
+                <div class="card-title">Giới Thiệu Dự Án Reskin</div>
+                <p style="margin-bottom: 1rem;">Đây là bảng quy chuẩn và danh sách kiểm tra (checklist) phục vụ cho quá trình thiết kế lại dự án game **Block Puzzle (Woodoku style)** sang chủ đề **Luxury Wood & Gold** (Gỗ & Vàng cao cấp).</p>
+                <p>Toàn bộ skin gỗ sang trọng, các tệp âm thanh gõ gỗ chân thực (synthesized wood hits) và hiệu ứng hạt nổ vàng óng khi xóa hàng đều đã được thiết lập thành công. Dashboard này đóng vai trò làm tài liệu tham khảo kỹ thuật và quy chuẩn chất lượng để đảm bảo tính nhất quán của sản phẩm.</p>
+            </div>
+            
+            <div class="grid-3">
+                <div class="card" style="margin-bottom: 0;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-family: var(--font-mono);">Chỉ Số Hình Ảnh</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Tất cả hình ảnh phải tuân thủ chuẩn bo góc mềm mại, độ chi tiết vân gỗ nổi bật và viền highlight kim loại phản chiếu ánh sáng.</p>
+                    <ul style="list-style: inside circle; font-size: 0.9rem; color: var(--text-main);">
+                        <li>Bo góc block: 16px</li>
+                        <li>Độ phân giải: 72 DPI</li>
+                        <li>Màu sắc: Warm Wood & Gold</li>
+                    </ul>
+                </div>
+                <div class="card" style="margin-bottom: 0;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-family: var(--font-mono);">Quy Chuẩn VFX</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Hiệu ứng hạt xóa hàng (line clear) sử dụng vật lý rơi tự do, bùng nổ theo hướng tỏa tròn.</p>
+                    <ul style="list-style: inside circle; font-size: 0.9rem; color: var(--text-main);">
+                        <li>Hạt nổ: 24 hạt mỗi ô</li>
+                        <li>Thời gian biến mất: 0.6 giây</li>
+                        <li>Lực hút trọng lực: Y=200</li>
+                    </ul>
+                </div>
+                <div class="card" style="margin-bottom: 0;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-family: var(--font-mono);">Quy Chuẩn Âm Thanh</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Tần số âm thanh ấm của nhạc cụ gỗ acoustic gõ, độ ngân ngắn để không bị chồng lấn âm thanh.</p>
+                    <ul style="list-style: inside circle; font-size: 0.9rem; color: var(--text-main);">
+                        <li>Pick & Place: click gỗ khô</li>
+                        <li>Clear: hợp âm mộc ngũ cung</li>
+                        <li>Tốc độ lấy mẫu: 44.1 kHz, 16-bit</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SPRITES (SKINS) -->
+        <div id="sprites" class="tab-pane">
+            <div class="grid-3">
+                
+                <!-- Logo -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Game Logo</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-logo" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview">
+                        <img src="https://6893f1e40b.image-hosting.uk/images/logo_wood_gold.png" alt="Wood & Gold Logo">
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Logo hiển thị tại Main Menu của trò chơi.</p>
+                    <ul class="meta-list">
+                        <li>Đường dẫn R2: <span class="val"><a href="https://6893f1e40b.image-hosting.uk/images/logo_wood_gold.png" target="_blank" style="color:var(--primary);">logo_wood_gold.png</a></span></li>
+                        <li>Gốc: <span class="val">Text "BLOCK PUZZLE" màu xanh</span></li>
+                        <li>Kích thước: <span class="val">512 x 160 px</span></li>
+                        <li>Độ phân giải: <span class="val">72 DPI</span></li>
+                        <li>Mô tả mới: <span class="val">Text vàng đồng nổi, khắc sâu</span></li>
+                    </ul>
+                </div>
+
+                <!-- Block Tile -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Block Tile (Khối gạch)</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-block" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview">
+                        <img src="https://6893f1e40b.image-hosting.uk/images/block_wood_gold.png" alt="Wood & Gold Block" style="width:64px;height:64px;">
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Phần tử gạch đơn lẻ cấu thành khối hình và xếp trên bảng lưới.</p>
+                    <ul class="meta-list">
+                        <li>Đường dẫn R2: <span class="val"><a href="https://6893f1e40b.image-hosting.uk/images/block_wood_gold.png" target="_blank" style="color:var(--primary);">block_wood_gold.png</a></span></li>
+                        <li>Gốc: <span class="val">Khối 3D màu xanh dương có viền</span></li>
+                        <li>Kích thước: <span class="val">128 x 128 px</span></li>
+                        <li>Độ phân giải: <span class="val">72 DPI</span></li>
+                        <li>Mô tả mới: <span class="val">Vân gỗ nhám mịn, viền nổi 3D vàng</span></li>
+                    </ul>
+                </div>
+
+                <!-- Empty Cell -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Empty Cell (Ô trống)</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-cell" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview">
+                        <img src="https://6893f1e40b.image-hosting.uk/images/cell_empty_wood.png" alt="Empty Cell" style="width:64px;height:64px;">
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Mẫu hiển thị các ô lưới trống trên bảng 9x9.</p>
+                    <ul class="meta-list">
+                        <li>Đường dẫn R2: <span class="val"><a href="https://6893f1e40b.image-hosting.uk/images/cell_empty_wood.png" target="_blank" style="color:var(--primary);">cell_empty_wood.png</a></span></li>
+                        <li>Gốc: <span class="val">Khối xám bo viền tròn mảnh</span></li>
+                        <li>Kích thước: <span class="val">128 x 128 px</span></li>
+                        <li>Độ phân giải: <span class="val">72 DPI</span></li>
+                        <li>Mô tả mới: <span class="val">Hốc lõm gỗ tối màu, viền bóng nghiêng</span></li>
+                    </ul>
+                </div>
+
+                <!-- Piece Slot -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Piece Slot (Khay chứa)</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-slot" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview">
+                        <img src="https://6893f1e40b.image-hosting.uk/images/piece_slot_wood_gold.png" alt="Piece Slot" style="width:64px;height:64px;">
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Khay chứa 3 khối gạch xuất hiện ngẫu nhiên ở cuối màn hình.</p>
+                    <ul class="meta-list">
+                        <li>Đường dẫn R2: <span class="val"><a href="https://6893f1e40b.image-hosting.uk/images/piece_slot_wood_gold.png" target="_blank" style="color:var(--primary);">piece_slot_wood_gold.png</a></span></li>
+                        <li>Gốc: <span class="val">Khay xám nền trắng đục mờ</span></li>
+                        <li>Kích thước: <span class="val">128 x 128 px</span></li>
+                        <li>Độ phân giải: <span class="val">72 DPI</span></li>
+                        <li>Mô tả mới: <span class="val">Khay gỗ bo tròn viền vàng đồng sang</span></li>
+                    </ul>
+                </div>
+
+                <!-- Quadrant Dark -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Quadrant Dark (Phân khu tối)</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-qdark" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview" style="color: var(--text-muted);">
+                        [ Sử dụng Quadrant Color Tint trong Theme ]
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Mẫu nền phân vùng 3x3 sẫm màu đan xen của lưới 9x9.</p>
+                    <ul class="meta-list">
+                        <li>Cấu hình: <span class="val">Resources/Data/default_theme.tres</span></li>
+                        <li>Gốc: <span class="val">Color(0.85, 0.85, 0.95, 1)</span></li>
+                        <li>Kích thước: <span class="val">128 x 128 px</span></li>
+                        <li>Tông mới: <span class="val">Nâu sẫm ấm (0.75, 0.65, 0.55, 1)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Quadrant Light -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Quadrant Light (Phân khu sáng)</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-qlight" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview" style="color: var(--text-muted);">
+                        [ Sử dụng Quadrant Color Tint trong Theme ]
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Mẫu nền phân vùng 3x3 sáng màu đan xen của lưới 9x9.</p>
+                    <ul class="meta-list">
+                        <li>Cấu hình: <span class="val">Resources/Data/default_theme.tres</span></li>
+                        <li>Gốc: <span class="val">Color(1, 1, 1, 1)</span></li>
+                        <li>Kích thước: <span class="val">128 x 128 px</span></li>
+                        <li>Tông mới: <span class="val">Vàng mộc nhạt (0.90, 0.85, 0.80, 1)</span></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 3: VFX (VISUAL EFFECTS) -->
+        <div id="vfx" class="tab-pane">
+            <div class="vfx-container">
+                <div class="vfx-control-panel">
+                    <div class="card" style="margin-bottom: 0;">
+                        <h3 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-mono);">Trình Giả Lập Hiệu Ứng VFX</h3>
+                        <p style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">Lựa chọn kiểu hiệu ứng dưới đây để xem giả lập cơ chế phát tán và bùng nổ các hạt sáng/mảnh vỡ trực tiếp trên màn mô phỏng.</p>
+                        
+                        <button id="vfx-btn-wood" class="vfx-btn active" onclick="selectVFX('wood')">
+                            <span>Luxury Wood Splinters (Gỗ & Vàng)</span>
+                            <span style="font-size: 0.8rem; color: var(--accent-green);">Đang tích hợp</span>
+                        </button>
+                        
+                        <button id="vfx-btn-neon" class="vfx-btn" onclick="selectVFX('neon')">
+                            <span>Neon Cyberpunk Sparks (Năng lượng)</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Sẵn sàng chuyển đổi</span>
+                        </button>
+                        
+                        <div style="border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.9rem;">
+                            <strong style="color: var(--primary);">Mô tả kỹ thuật:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;" id="vfx-description">
+                                Khi một hàng gạch được xếp kín, các ô lưới tương ứng sẽ bùng nổ hàng loạt hạt bụi gỗ màu nâu sẫm đan xen cùng tia sáng vàng óng rực rỡ, hạt chịu ảnh hưởng của lực hấp dẫn rơi xuống dưới và nhạt dần theo thời gian.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="canvas-wrapper">
+                    <canvas id="vfx-canvas" width="400" height="400"></canvas>
+                    <div class="canvas-instruction">Nhấp chuột lên bảng đen phía trên để kích hoạt bùng nổ thử nghiệm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: SFX (SOUND BOARD) -->
+        <div id="sfx" class="tab-pane">
+            <div class="card">
+                <div class="card-title">Bảng Nghe Thử Âm Thanh (Web Audio & R2 Player)</div>
+                <p style="margin-bottom: 1.5rem;">Bạn có thể lựa chọn nghe thử tiếng gõ gỗ được tổng hợp trực tiếp bằng trình duyệt (Synth), hoặc tiếng tệp âm thanh gốc chất lượng cao đã tải lên máy chủ Cloudflare R2:</p>
+                
+                <div class="soundboard-grid">
+                    
+                    <!-- Pick -->
+                    <div class="sound-card">
+                        <span class="sound-icon">🪵</span>
+                        <div class="sound-name">sfx_pick.wav</div>
+                        <div class="sound-descr">Click nhấc gạch (tần số 600Hz, tắt nhanh)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('pick')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_pick_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Drop -->
+                    <div class="sound-card">
+                        <span class="sound-icon">🔨</span>
+                        <div class="sound-name">sfx_drop.wav</div>
+                        <div class="sound-descr">Gõ đặt gạch (tần số 220Hz, vang vừa)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('drop')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_drop_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="sound-card">
+                        <span class="sound-icon">🔘</span>
+                        <div class="sound-name">sfx_button.wav</div>
+                        <div class="sound-descr">Click menu (tần số 800Hz, gõ gỗ nhẹ)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('button')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_button_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Clear -->
+                    <div class="sound-card">
+                        <span class="sound-icon">✨</span>
+                        <div class="sound-name">sfx_clear.wav</div>
+                        <div class="sound-descr">Xóa hàng (Hợp âm marimba 4 nốt ngũ cung)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('clear')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_clear_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Combo -->
+                    <div class="sound-card">
+                        <span class="sound-icon">🔮</span>
+                        <div class="sound-name">sfx_combo.wav</div>
+                        <div class="sound-descr">Chime combo (Chuông pha lê ngân vang tăng dần)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('combo')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_combo_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Populate -->
+                    <div class="sound-card">
+                        <span class="sound-icon">🔄</span>
+                        <div class="sound-name">sfx_populateSlot.wav</div>
+                        <div class="sound-descr">Refill gạch (3 tiếng gõ lách cách liên tiếp)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('populate')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_populateSlot_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Invalid -->
+                    <div class="sound-card">
+                        <span class="sound-icon">❌</span>
+                        <div class="sound-name">sfx_invalid.wav</div>
+                        <div class="sound-descr">Lỗi đặt (2 tiếng gõ gỗ đục trầm đè nhau)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('invalid')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_invalid_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                    <!-- Fail -->
+                    <div class="sound-card">
+                        <span class="sound-icon">⚠️</span>
+                        <div class="sound-name">sfx_fail.wav</div>
+                        <div class="sound-descr">Thất bại (Tần số gõ trượt dốc xuống từ 180Hz)</div>
+                        <div class="sound-controls">
+                            <button class="play-btn" onclick="playSynth('fail')">🔊 Synth</button>
+                            <button class="play-btn r2-btn" onclick="playR2Audio('sfx_fail_wood.wav')">⚡ R2 WAV</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: UI BLUEPRINTS -->
+        <div id="ui-blueprints" class="tab-pane">
+            <div class="layout-blueprint">
+                
+                <!-- Main Menu Mockup -->
+                <div class="mockup-phone">
+                    <div class="mockup-screen">
+                        <div class="mockup-title">WOOD PUZZLE</div>
+                        <div class="mockup-subtitle">Luxury Edition</div>
+                        <div class="mockup-btn" onclick="playSynth('button')">Play</div>
+                        <div class="mockup-btn" onclick="playSynth('button')">Settings</div>
+                        <div style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: var(--primary); font-size: 12px; font-family: var(--font-mono);">
+                            Best Score: 734
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Board Mockup -->
+                <div class="mockup-phone">
+                    <div class="mockup-screen" style="padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--primary); font-family: var(--font-mono); font-size: 16px; margin-bottom: 1rem;">
+                            <span>🏆 734</span>
+                            <span style="font-size: 20px;">802</span>
+                            <span>☰</span>
+                        </div>
+                        
+                        <!-- Progress line -->
+                        <div style="width: 100%; height: 8px; background-color: #222; border-radius: 4px; overflow: hidden; margin-bottom: 2rem;">
+                            <div style="width: 80%; height: 100%; background-color: var(--accent-green);"></div>
+                        </div>
+
+                        <!-- 9x9 Board mockup -->
+                        <div class="mockup-board">
+                            <!-- Row 1 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 2 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell filled"></div><div class="mockup-cell filled"></div>
+                            <div class="mockup-cell filled"></div><div class="mockup-cell filled"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 3 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell filled"></div><div class="mockup-cell filled"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 4 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 5 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 6 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 7 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 8 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <!-- Row 9 -->
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                            <div class="mockup-cell"></div><div class="mockup-cell"></div><div class="mockup-cell"></div>
+                        </div>
+
+                        <!-- Trays -->
+                        <div class="mockup-trays">
+                            <div class="mockup-tray-slot">
+                                <div class="mockup-piece">
+                                    <div class="mockup-piece-block"></div><div class="mockup-piece-block"></div><div style="width:10px;height:10px;"></div>
+                                    <div class="mockup-piece-block"></div><div style="width:10px;height:10px;"></div><div style="width:10px;height:10px;"></div>
+                                    <div style="width:10px;height:10px;"></div><div style="width:10px;height:10px;"></div><div style="width:10px;height:10px;"></div>
+                                </div>
+                            </div>
+                            <div class="mockup-gray mockup-tray-slot" style="opacity: 0.3;"></div>
+                            <div class="mockup-tray-slot">
+                                <div class="mockup-piece" style="grid-template-columns: repeat(2,1fr);">
+                                    <div class="mockup-piece-block" style="background-color: #d4af37;"></div><div class="mockup-piece-block" style="background-color: #d4af37;"></div>
+                                    <div class="mockup-piece-block" style="background-color: #d4af37;"></div><div class="mockup-piece-block" style="background-color: #d4af37;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Specs Sidebar -->
+                <div class="specs-sidebar">
+                    <div class="card" style="margin-bottom: 0;">
+                        <h3 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-mono);">Quy Chuẩn Kỹ Thuật UI</h3>
+                        
+                        <div class="spec-item">
+                            <h4>Bố Cục (Layout)</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">
+                                - Thiết kế tương thích hoàn hảo màn hình dọc tỷ lệ 9:16 (720x1280).<br>
+                                - Tránh đặt các phần tử tương tác sát mép dưới để chống bấm nhầm phím ảo hệ điều hành di động.
+                            </p>
+                        </div>
+                        
+                        <div class="spec-item">
+                            <h4>Font Chữ (Typography)</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">
+                                - Tiêu đề chính: Serif hoài cổ thanh lịch (như Alegreya-ExtraBold, Georgia).<br>
+                                - Phần hiển thị điểm số và chữ số: Monospace hoặc Sans-serif dễ đọc nhanh.
+                            </p>
+                        </div>
+
+                        <div class="spec-item">
+                            <h4>Nút bấm (Buttons Theme)</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">
+                                - Trạng thái bình thường: Nền nâu hạt dẻ ấm viền vàng nổi 3D.<br>
+                                - Trạng thái Hover: Độ sáng tăng 15%, bóng đổ sâu hơn.<br>
+                                - Trạng thái Pressed: Viền thụt sâu, đổi màu viền sang vàng sẫm.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 6: UPLOAD & PREVIEW -->
+        <div id="upload-tab" class="tab-pane">
+            <div class="card">
+                <div class="card-title">Tải Lên & Xem Trước Tài Nguyên (R2 & Firebase Storage)</div>
+                <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
+                    Hệ thống này cho phép bạn tải trực tiếp các tệp hình ảnh (.png, .jpg, .svg, .webp) và âm thanh (.wav, .mp3, .ogg) lên cả Cloudflare R2 CDN và Firebase Cloud Storage. 
+                    Khi tải lên thành công, bạn sẽ nhận được đường link phân phối CDN và xem trực tiếp (preview) tệp hình ảnh/phát thử âm thanh ngay lập tức.
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
+                    <!-- Drop Area / File Picker -->
+                    <div id="drop-area" style="border: 2px dashed var(--primary); border-radius: 12px; padding: 3rem 2rem; text-align: center; background-color: var(--bg-surface-elevated); cursor: pointer; transition: all 0.3s ease;">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">📤</span>
+                        <p style="font-weight: 600; font-size: 1.2rem; margin-bottom: 0.5rem;">Kéo thả tệp vào đây hoặc click để chọn</p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Hỗ trợ PNG, JPG, WEBP, SVG, WAV, MP3 (Tối đa 10MB)</p>
+                        <input type="file" id="file-input" style="display: none;" accept="image/*,audio/*">
+                    </div>
+                    
+                    <!-- File Metadata & Settings -->
+                    <div id="file-info-container" style="display: none; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-family: var(--font-mono); font-size: 1.1rem;">Thông Tin Tệp Đang Chọn</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.95rem; margin-bottom: 1.5rem;">
+                            <div>Tên tệp: <span id="file-name" style="font-weight: 600; color: var(--primary-hover);"></span></div>
+                            <div>Kích thước: <span id="file-size" style="font-weight: 600;"></span></div>
+                            <div>Định dạng: <span id="file-type" style="font-weight: 600; font-family: var(--font-mono);"></span></div>
+                            <div>
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    Nơi lưu trữ:
+                                    <select id="storage-target" style="background-color: var(--bg-base); color: var(--text-main); border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.5rem; outline: none; font-family: var(--font-mono);">
+                                        <option value="both">Cả hai (R2 & Firebase)</option>
+                                        <option value="r2">Chỉ Cloudflare R2</option>
+                                        <option value="firebase">Chỉ Firebase Storage</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <button id="upload-btn" style="background-color: var(--primary); color: var(--bg-base); border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-family: var(--font-mono); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%;">
+                            Bắt Đầu Tải Lên
+                        </button>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div id="upload-progress-container" style="display: none; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; text-align: center;">
+                        <div style="margin-bottom: 1rem; font-weight: 600;" id="upload-status-text">Đang tải lên...</div>
+                        <div style="width: 100%; height: 10px; background-color: var(--bg-base); border-radius: 5px; overflow: hidden; margin-bottom: 0.5rem;">
+                            <div id="upload-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--accent-green) 100%); transition: width 0.2s ease;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Result & Previews -->
+                    <div id="upload-result-container" style="display: none; background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; flex-direction: column; gap: 1.5rem;">
+                        <h3 style="color: var(--accent-green); font-family: var(--font-mono); font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            <span>✅</span> Tải Lên Thành Công!
+                        </h3>
+                        
+                        <!-- Links -->
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+                            <div id="r2-link-row" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; background-color: var(--bg-base); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+                                <span style="font-weight: 600; color: var(--primary);">Cloudflare R2 URL:</span>
+                                <input type="text" id="r2-url-input" readonly style="flex-grow: 1; background: none; border: none; color: var(--text-main); font-family: var(--font-mono); outline: none;">
+                                <button onclick="copyToClipboard('r2-url-input')" style="background-color: var(--bg-surface-elevated); color: var(--primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.75rem; cursor: pointer; font-family: var(--font-mono);">Copy</button>
+                            </div>
+                            <div id="fb-link-row" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; background-color: var(--bg-base); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+                                <span style="font-weight: 600; color: #ffca28;">Firebase Storage URL:</span>
+                                <input type="text" id="fb-url-input" readonly style="flex-grow: 1; background: none; border: none; color: var(--text-main); font-family: var(--font-mono); outline: none;">
+                                <button onclick="copyToClipboard('fb-url-input')" style="background-color: var(--bg-surface-elevated); color: #ffca28; border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.75rem; cursor: pointer; font-family: var(--font-mono);">Copy</button>
+                            </div>
+                        </div>
+
+                        <!-- Live Preview Frame -->
+                        <div style="border: 1px dashed var(--border); border-radius: 8px; padding: 1.5rem; background-color: var(--bg-base); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
+                            <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase;">Xem Trước Trực Tiếp (Live Preview)</span>
+                            
+                            <!-- Image Preview Element -->
+                            <img id="preview-image" style="max-width: 100%; max-height: 350px; border-radius: 6px; display: none; object-fit: contain; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                            
+                            <!-- Audio Preview Element -->
+                            <div id="preview-audio-container" style="display: none; width: 100%; max-width: 450px; text-align: center; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 10px; border: 1px solid var(--border);">
+                                <div id="preview-audio-name" style="font-weight: 600; font-family: var(--font-mono); margin-bottom: 1rem; color: var(--primary-hover);">sound.wav</div>
+                                <audio id="preview-audio-player" controls style="width: 100%;"></audio>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Web Audio Synthesis & VFX Canvas Control Script -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Hide all tab panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+            
+            // Deactivate all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected pane and activate corresponding button
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find button based on onclick attribute or text content
+            const clickedBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+            
+            // Start VFX loop if tab is VFX
+            if (tabId === 'vfx') {
+                initVFXCanvas();
+            } else {
+                stopVFXLoop();
+            }
+        }
+
+        // Checklist logic & persistence
+        const totalTasks = 6;
+        function updateProgress() {
+            let checkedCount = 0;
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(chk => {
+                if (chk.checked) {
+                    checkedCount++;
+                }
+                // Save state
+                localStorage.setItem(chk.id, chk.checked ? 'true' : 'false');
+            });
+            
+            const percentage = Math.round((checkedCount / totalTasks) * 100);
+            const fill = document.getElementById('progress-fill');
+            const text = document.getElementById('progress-text');
+            
+            fill.style.width = percentage + '%';
+            text.textContent = percentage + '%';
+            
+            if (percentage === 100) {
+                text.style.color = 'var(--accent-green)';
+            } else {
+                text.style.color = 'var(--primary)';
+            }
+        }
+
+        // Load persisted checklist
+        function loadChecklist() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(chk => {
+                const val = localStorage.getItem(chk.id);
+                if (val !== null) {
+                    chk.checked = val === 'true';
+                }
+            });
+            updateProgress();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChecklist();
+        });
+
+        // ------------------ PLAY R2 AUDIO DIRECTLY ------------------
+        const R2_AUDIO_BASE = "https://6893f1e40b.image-hosting.uk/audio";
+        let activeAudio = null;
+
+        function playR2Audio(filename) {
+            try {
+                if (activeAudio) {
+                    activeAudio.pause();
+                }
+                const url = `${R2_AUDIO_BASE}/${filename}`;
+                activeAudio = new Audio(url);
+                activeAudio.volume = 0.6;
+                activeAudio.play();
+                console.log(`Playing R2 Audio: ${url}`);
+            } catch (err) {
+                console.error("Failed to play R2 audio: ", err);
+            }
+        }
+
+        // ------------------ WEB AUDIO SFX SYNTHESIS ------------------
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSynth(type) {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                
+                // Master Volume
+                const masterGain = ctx.createGain();
+                masterGain.gain.setValueAtTime(0.5, now);
+                masterGain.connect(ctx.destination);
+
+                if (type === 'pick') {
+                    // Quick high wood block knock
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(600, now);
+                    
+                    // Click Transient
+                    const click = ctx.createOscillator();
+                    const clickGain = ctx.createGain();
+                    click.type = 'sine';
+                    click.frequency.setValueAtTime(3000, now);
+                    clickGain.gain.setValueAtTime(0.15, now);
+                    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.005);
+                    
+                    gain.gain.setValueAtTime(0.6, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    
+                    osc.connect(gain);
+                    click.connect(clickGain);
+                    gain.connect(masterGain);
+                    clickGain.connect(masterGain);
+                    
+                    osc.start(now);
+                    click.start(now);
+                    osc.stop(now + 0.1);
+                    click.stop(now + 0.05);
+
+                } else if (type === 'drop') {
+                    // Deeper acoustic wood block knock
+                    const osc1 = ctx.createOscillator();
+                    const osc2 = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(220, now);
+                    // Slight pitch bend down
+                    osc1.frequency.exponentialRampToValueAtTime(160, now + 0.15);
+                    
+                    // Overtone
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(220 * 1.6, now);
+                    osc2.frequency.exponentialRampToValueAtTime(160 * 1.6, now + 0.15);
+                    
+                    gain.gain.setValueAtTime(0.8, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                    
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    gain.connect(masterGain);
+                    
+                    osc1.start(now);
+                    osc2.start(now);
+                    osc1.stop(now + 0.25);
+                    osc2.stop(now + 0.25);
+
+                } else if (type === 'button') {
+                    // Crisp light woodblock
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    gain.gain.setValueAtTime(0.5, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    
+                    osc.connect(gain);
+                    gain.connect(masterGain);
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+
+                } else if (type === 'clear') {
+                    // Wood marimba arpeggio chord (pentatonic)
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                    notes.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                        
+                        gain.gain.setValueAtTime(0, now);
+                        gain.gain.linearRampToValueAtTime(0.4, now + idx * 0.05 + 0.005);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.35);
+                        
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        
+                        osc.start(now + idx * 0.05);
+                        osc.stop(now + idx * 0.05 + 0.4);
+                    });
+
+                } else if (type === 'combo') {
+                    // Upward sliding crystal chime sound
+                    const freqs = [1000, 1300, 1600, 2000];
+                    freqs.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        // Slide frequency up slightly
+                        osc.frequency.setValueAtTime(freq, now);
+                        osc.frequency.linearRampToValueAtTime(freq * 1.15, now + 0.4);
+                        
+                        gain.gain.setValueAtTime(0.3, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                        
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now);
+                        osc.stop(now + 0.5);
+                    });
+
+                } else if (type === 'populate') {
+                    // Rhythmic wood block clicks (3 knocks)
+                    const delays = [0.0, 0.08, 0.16];
+                    const freqs = [500, 550, 600];
+                    delays.forEach((delay, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freqs[idx], now + delay);
+                        gain.gain.setValueAtTime(0.5, now + delay);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.06);
+                        
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now + delay);
+                        osc.stop(now + delay + 0.08);
+                    });
+
+                } else if (type === 'invalid') {
+                    // Quick dry low double knock
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.setValueAtTime(120, now + 0.06);
+                    
+                    gain.gain.setValueAtTime(0.6, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    
+                    osc.connect(gain);
+                    gain.connect(masterGain);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+
+                } else if (type === 'fail') {
+                    // Melancholic slide down
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(60, now + 0.4);
+                    
+                    gain.gain.setValueAtTime(0.7, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    
+                    osc.connect(gain);
+                    gain.connect(masterGain);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+                }
+            } catch (err) {
+                console.error("Audio synthesis failed: ", err);
+            }
+        }
+
+        // ------------------ VFX INTERACTIVE SIMULATION ------------------
+        let canvas = null;
+        let ctxCanvas = null;
+        let particles = [];
+        let vfxType = 'wood'; // 'wood' or 'neon'
+        let animationId = null;
+
+        function selectVFX(type) {
+            vfxType = type;
+            document.getElementById('vfx-btn-wood').classList.remove('active');
+            document.getElementById('vfx-btn-neon').classList.remove('active');
+            
+            const desc = document.getElementById('vfx-description');
+            if (type === 'wood') {
+                document.getElementById('vfx-btn-wood').classList.add('active');
+                desc.textContent = "Khi một hàng gạch được xếp kín, các ô lưới tương ứng sẽ bùng nổ hàng loạt hạt bụi gỗ màu nâu sẫm đan xen cùng tia sáng vàng óng rực rỡ, hạt chịu ảnh hưởng của lực hấp dẫn rơi xuống dưới và nhạt dần theo thời gian.";
+            } else {
+                document.getElementById('vfx-btn-neon').classList.add('active');
+                desc.textContent = "Hiệu ứng nổ hạt phong cách Cyberpunk: Một luồng sóng xung kích nổ sáng rực rỡ dạng neon (xanh/hồng) tỏa tròn ra từ tâm, đi kèm các tia sét giật nhanh tắt dần cực kỳ kích thích thị giác.";
+            }
+            triggerClearDemo();
+        }
+
+        function initVFXCanvas() {
+            canvas = document.getElementById('vfx-canvas');
+            if (!canvas) return;
+            ctxCanvas = canvas.getContext('2d');
+            
+            // Remove previous event listener if any
+            canvas.removeEventListener('mousedown', handleCanvasClick);
+            canvas.addEventListener('mousedown', handleCanvasClick);
+            
+            startVFXLoop();
+            triggerClearDemo();
+        }
+
+        function handleCanvasClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            spawnParticles(x, y);
+            
+            // Play corresponding sound
+            if (vfxType === 'wood') {
+                playSynth('drop');
+            } else {
+                playSynth('combo');
+            }
+        }
+
+        function triggerClearDemo() {
+            if (!canvas) return;
+            // Spawn a horizontal line clear demo
+            const y = canvas.height / 2;
+            const step = canvas.width / 5;
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    spawnParticles(step * i + step/2, y);
+                }, i * 60);
+            }
+        }
+
+        function spawnParticles(x, y) {
+            const count = vfxType === 'wood' ? 24 : 35;
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 1.5 + Math.random() * 3.5;
+                
+                // Color selection
+                let color;
+                if (vfxType === 'wood') {
+                    // Warm gold to dark brown
+                    const r = Math.random();
+                    if (r < 0.4) {
+                        color = `rgba(212, 175, 55, ${0.5 + Math.random() * 0.5})`; // Gold
+                    } else if (r < 0.7) {
+                        color = `rgba(139, 69, 19, ${0.6 + Math.random() * 0.4})`; // Brown
+                    } else {
+                        color = `rgba(80, 40, 10, ${0.6 + Math.random() * 0.4})`; // Dark brown
+                    }
+                } else {
+                    // Cyan and purple cyber colors
+                    color = Math.random() < 0.5 ? `rgba(6, 182, 212, ${0.6 + Math.random() * 0.4})` : `rgba(236, 72, 153, ${0.6 + Math.random() * 0.4})`;
+                }
+
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - (vfxType === 'wood' ? 1.0 : 0.0), // wood explodes slightly upwards
+                    size: vfxType === 'wood' ? (1 + Math.random() * 4) : (1.5 + Math.random() * 3.5),
+                    color: color,
+                    alpha: 1.0,
+                    decay: 0.02 + Math.random() * 0.03,
+                    gravity: vfxType === 'wood' ? 0.12 : 0.05
+                });
+            }
+        }
+
+        function startVFXLoop() {
+            if (animationId) cancelAnimationFrame(animationId);
+            
+            function loop() {
+                // Clear screen with trail effect
+                ctxCanvas.fillStyle = 'rgba(11, 9, 9, 0.3)';
+                ctxCanvas.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw decorative grid
+                ctxCanvas.strokeStyle = 'rgba(68, 64, 60, 0.15)';
+                ctxCanvas.lineWidth = 1;
+                const gridSpacing = 40;
+                for (let x = 0; x < canvas.width; x += gridSpacing) {
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(x, 0);
+                    ctxCanvas.lineTo(x, canvas.height);
+                    ctxCanvas.stroke();
+                }
+                for (let y = 0; y < canvas.height; y += gridSpacing) {
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(0, y);
+                    ctxCanvas.lineTo(canvas.width, y);
+                    ctxCanvas.stroke();
+                }
+                
+                // Update and draw particles
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity; // apply gravity
+                    
+                    // Slow down slightly (friction)
+                    p.vx *= 0.98;
+                    p.vy *= 0.98;
+                    
+                    p.alpha -= p.decay;
+                    
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+                    
+                    // Draw particle
+                    ctxCanvas.save();
+                    ctxCanvas.globalAlpha = p.alpha;
+                    ctxCanvas.fillStyle = p.color;
+                    ctxCanvas.beginPath();
+                    if (vfxType === 'wood') {
+                        // Rectangular wood splinters
+                        ctxCanvas.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size * 1.5);
+                    } else {
+                        // Glowing circles
+                        ctxCanvas.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctxCanvas.shadowBlur = 8;
+                        ctxCanvas.shadowColor = p.color;
+                        ctxCanvas.fill();
+                    }
+                    ctxCanvas.fill();
+                    ctxCanvas.restore();
+                }
+                
+                animationId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        function stopVFXLoop() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        // ------------------ UPLOAD & PREVIEW LOGIC ------------------
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const fileInfoContainer = document.getElementById('file-info-container');
+        const fileNameEl = document.getElementById('file-name');
+        const fileSizeEl = document.getElementById('file-size');
+        const fileTypeEl = document.getElementById('file-type');
+        const uploadBtn = document.getElementById('upload-btn');
+        const storageTarget = document.getElementById('storage-target');
+        const progressContainer = document.getElementById('upload-progress-container');
+        const progressBar = document.getElementById('upload-progress-bar');
+        const statusText = document.getElementById('upload-status-text');
+        const resultContainer = document.getElementById('upload-result-container');
+        const r2UrlInput = document.getElementById('r2-url-input');
+        const fbUrlInput = document.getElementById('fb-url-input');
+        const previewImage = document.getElementById('preview-image');
+        const previewAudioContainer = document.getElementById('preview-audio-container');
+        const previewAudioName = document.getElementById('preview-audio-name');
+        const previewAudioPlayer = document.getElementById('preview-audio-player');
+        const r2LinkRow = document.getElementById('r2-link-row');
+        const fbLinkRow = document.getElementById('fb-link-row');
+
+        let selectedFile = null;
+
+        // Prevent defaults on drag/drop
+        if (dropArea) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // Highlight drop area
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.style.borderColor = 'var(--primary-hover)', false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.style.borderColor = 'var(--primary)', false);
+            });
+
+            // Handle drop
+            dropArea.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0]);
+                }
+            });
+
+            // Handle click to select
+            dropArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+        }
+
+        function handleFileSelect(file) {
+            selectedFile = file;
+            fileNameEl.textContent = file.name;
+            fileSizeEl.textContent = formatBytes(file.size);
+            fileTypeEl.textContent = file.type || 'Unknown';
+
+            // Show file info and hide previous results
+            fileInfoContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            progressContainer.style.display = 'none';
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        if (uploadBtn) {
+            uploadBtn.addEventListener('click', () => {
+                if (!selectedFile) return;
+
+                const target = storageTarget.value;
+                const filename = selectedFile.name;
+                const mimeType = selectedFile.type;
+
+                // Setup UI
+                fileInfoContainer.style.display = 'none';
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '0%';
+                statusText.textContent = 'Đang tải tệp lên máy chủ...';
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', `/api/upload?name=${encodeURIComponent(filename)}&target=${target}`, true);
+                xhr.setRequestHeader('Content-Type', mimeType);
+
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percentage = Math.round((e.loaded / e.total) * 100);
+                        progressBar.style.width = percentage + '%';
+                        statusText.textContent = `Đang tải tệp lên máy chủ... (${percentage}%)`;
+                    }
+                });
+
+                xhr.onload = () => {
+                    progressContainer.style.display = 'none';
+                    if (xhr.status === 200) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                showUploadResult(response, selectedFile);
+                            } else {
+                                alert('Lỗi: ' + response.error);
+                                fileInfoContainer.style.display = 'block';
+                            }
+                        } catch (err) {
+                            alert('Lỗi phân tích kết quả phản hồi từ máy chủ.');
+                            fileInfoContainer.style.display = 'block';
+                        }
+                    } else {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            alert('Lỗi tải lên: ' + (response.error || xhr.statusText));
+                        } catch (e) {
+                            alert('Lỗi tải lên: ' + xhr.statusText);
+                        }
+                        fileInfoContainer.style.display = 'block';
+                    }
+                };
+
+                xhr.onerror = () => {
+                    progressContainer.style.display = 'none';
+                    alert('Kết nối máy chủ thất bại. Hãy chắc chắn rằng upload_server.py đang chạy.');
+                    fileInfoContainer.style.display = 'block';
+                };
+
+                xhr.send(selectedFile);
+            });
+        }
+
+        function showUploadResult(res, file) {
+            resultContainer.style.display = 'flex';
+            
+            // Handle R2 Row
+            if (res.r2Url) {
+                r2LinkRow.style.display = 'flex';
+                r2UrlInput.value = res.r2Url;
+            } else {
+                r2LinkRow.style.display = 'none';
+            }
+
+            // Handle FB Row
+            if (res.firebaseUrl) {
+                fbLinkRow.style.display = 'flex';
+                fbUrlInput.value = res.firebaseUrl;
+            } else {
+                fbLinkRow.style.display = 'none';
+            }
+
+            // Setup preview
+            const previewUrl = res.r2Url || res.firebaseUrl;
+            if (file.type.startsWith('image/')) {
+                previewImage.src = previewUrl;
+                previewImage.style.display = 'block';
+                previewAudioContainer.style.display = 'none';
+            } else if (file.type.startsWith('audio/')) {
+                previewAudioName.textContent = file.name;
+                previewAudioPlayer.src = previewUrl;
+                previewAudioContainer.style.display = 'block';
+                previewImage.style.display = 'none';
+            } else {
+                previewImage.style.display = 'none';
+                previewAudioContainer.style.display = 'none';
+            }
+        }
+
+        function copyToClipboard(inputId) {
+            const copyText = document.getElementById(inputId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value)
+                .then(() => {
+                    const btn = copyText.nextElementSibling;
+                    const origText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.backgroundColor = 'var(--accent-green)';
+                    btn.style.color = 'var(--bg-base)';
+                    setTimeout(() => {
+                        btn.textContent = origText;
+                        btn.style.backgroundColor = 'var(--bg-surface-elevated)';
+                        btn.style.color = inputId.includes('fb') ? '#ffca28' : 'var(--primary)';
+                    }, 1500);
+                });
+        }
+    </script>
+</body>
+</html>

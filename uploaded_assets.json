@@ -1,0 +1,18 @@
+{
+    "block": "https://6893f1e40b.image-hosting.uk/images/block_wood_gold.png",
+    "cell_empty": "https://6893f1e40b.image-hosting.uk/images/cell_empty_wood.png",
+    "piece_slot": "https://6893f1e40b.image-hosting.uk/images/piece_slot_wood_gold.png",
+    "logo": "https://6893f1e40b.image-hosting.uk/images/logo_wood_gold.png",
+    "sfx_pick": "https://6893f1e40b.image-hosting.uk/audio/sfx_pick_wood.wav",
+    "sfx_drop": "https://6893f1e40b.image-hosting.uk/audio/sfx_drop_wood.wav",
+    "sfx_button": "https://6893f1e40b.image-hosting.uk/audio/sfx_button_wood.wav",
+    "sfx_clear": "https://6893f1e40b.image-hosting.uk/audio/sfx_clear_wood.wav",
+    "sfx_combo": "https://6893f1e40b.image-hosting.uk/audio/sfx_combo_wood.wav",
+    "sfx_populateSlot": "https://6893f1e40b.image-hosting.uk/audio/sfx_populateSlot_wood.wav",
+    "sfx_invalid": "https://6893f1e40b.image-hosting.uk/audio/sfx_invalid_wood.wav",
+    "sfx_fail": "https://6893f1e40b.image-hosting.uk/audio/sfx_fail_wood.wav",
+    "sfx_gameover": "https://6893f1e40b.image-hosting.uk/audio/sfx_gameover_wood.wav",
+    "sfx_popup": "https://6893f1e40b.image-hosting.uk/audio/sfx_popup_wood.wav",
+    "sfx_timeout": "https://6893f1e40b.image-hosting.uk/audio/sfx_timeout_wood.wav",
+    "sfx_levelup": "https://6893f1e40b.image-hosting.uk/audio/sfx_levelup_wood.wav"
+}
