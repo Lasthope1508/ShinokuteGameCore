@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://b9t9t9t9t9t9t"]
+
+[ext_resource type="Script" path="res://Scenes/Game/Component/PieceTray/PieceTray.gd" id="1_tray"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Component/PieceTray/PieceSlot.tscn" id="2_slot"]
+
+[node name="PieceTray" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 220)
+mouse_filter = 1
+script = ExtResource("1_tray")
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
+
+[node name="HBox" type="HBoxContainer" parent="."]
+mouse_filter = 1
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="PieceSlot1" parent="HBox" instance=ExtResource("2_slot")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PieceSlot2" parent="HBox" instance=ExtResource("2_slot")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PieceSlot3" parent="HBox" instance=ExtResource("2_slot")]
+layout_mode = 2
+size_flags_horizontal = 4

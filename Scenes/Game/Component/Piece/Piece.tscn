@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7p7p7p7p7p7p"]
+
+[ext_resource type="Script" path="res://Scenes/Game/Component/Piece/Piece.gd" id="1_piece"]
+
+[node name="Piece" type="Control"]
+custom_minimum_size = Vector2(108, 108)
+mouse_filter = 2
+script = ExtResource("1_piece")

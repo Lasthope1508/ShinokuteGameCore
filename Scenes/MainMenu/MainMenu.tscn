@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://b17menu"]
+
+[ext_resource type="Script" uid="uid://cw3upoul2wi8a" path="res://Scenes/MainMenu/MainMenu.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control" unique_id=415264341]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1326272125]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.078, 0.094, 0.153, 1)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=926817208]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -273.5
+offset_top = 233.0
+offset_right = 273.5
+offset_bottom = 657.0
+grow_horizontal = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center" unique_id=410331142]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Title" type="Label" parent="Center/VBox" unique_id=354330859]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "BLOCK PUZZLE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Center/VBox" unique_id=173465581]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 35
+text = "Template"
+horizontal_alignment = 1
+
+[node name="Space" type="Control" parent="Center/VBox" unique_id=1250167459]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="Center/VBox" unique_id=147100007]
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="Center/VBox" unique_id=452097032]
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Settings"
+
+[node name="Space2" type="Control" parent="Center/VBox" unique_id=1652487085]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="BestLabel" type="Label" parent="Center/VBox" unique_id=1922920150]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.5, 1)
+theme_override_font_sizes/font_size = 40
+text = "Best: 0"
+horizontal_alignment = 1
+
+[node name="VersionLabel" type="Label" parent="." unique_id=1691576545]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -44.0
+offset_right = 320.0
+offset_bottom = -12.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.74, 0.85, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "Block Puzzle Template v1.0.0"
+vertical_alignment = 1

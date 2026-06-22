@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://b12s12s12s12s"]
+
+[ext_resource type="Script" uid="uid://cjqm5hqopeqo3" path="res://Scenes/Game/Component/Overlays/SettingsOverlay.gd" id="1_settings_s"]
+[ext_resource type="Texture2D" uid="uid://dqest0gxyyqcu" path="res://Assets/Icons/cross.png" id="2_close"]
+
+[node name="SettingsOverlay" type="CanvasLayer" unique_id=72136396]
+layer = 50
+script = ExtResource("1_settings_s")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=1138814946]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 0.6666667)
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=573281317]
+custom_minimum_size = Vector2(480, 420)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -210.0
+offset_right = 240.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Panel" unique_id=1645378081]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin" unique_id=121970219]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox" unique_id=2096950285]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="Panel/Margin/VBox" unique_id=515105052]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MusicLabel" type="Label" parent="Panel/Margin/VBox/MusicRow" unique_id=213270727]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="Panel/Margin/VBox/MusicRow" unique_id=1088873371]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 0.7
+
+[node name="SfxRow" type="HBoxContainer" parent="Panel/Margin/VBox" unique_id=1193873873]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SfxLabel" type="Label" parent="Panel/Margin/VBox/SfxRow" unique_id=314334724]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "SFX"
+
+[node name="SfxSlider" type="HSlider" parent="Panel/Margin/VBox/SfxRow" unique_id=310851235]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="RestartButton" type="Button" parent="Panel/Margin/VBox" unique_id=1408333134]
+layout_mode = 2
+text = "Restart Game"
+
+[node name="MainMenuButton" type="Button" parent="Panel/Margin/VBox" unique_id=1408333135]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="CloseButton" type="TextureButton" parent="Panel" unique_id=1719703267]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture_normal = ExtResource("2_close")

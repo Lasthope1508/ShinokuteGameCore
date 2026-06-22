@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://b11h11h11h11h"]
+
+[ext_resource type="Script" uid="uid://dfwfefu7ia84b" path="res://Scenes/Game/Component/HUD/HUD.gd" id="1_hud"]
+[ext_resource type="Texture2D" uid="uid://o6cti15xm2b1" path="res://Assets/Icons/menuList.png" id="2_settings"]
+[ext_resource type="Texture2D" uid="uid://bb6ljpjfwyctf" path="res://Assets/Icons/trophy.png" id="3_trophy"]
+
+[node name="HUD" type="Control" unique_id=1308174045]
+custom_minimum_size = Vector2(720, 140)
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_hud")
+
+[node name="ScoreBox" type="VBoxContainer" parent="." unique_id=1085960527]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.0
+offset_top = -82.0
+offset_right = 201.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="ScoreBox" unique_id=1436421301]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 70
+text = "0"
+horizontal_alignment = 1
+
+[node name="Left" type="HBoxContainer" parent="." unique_id=1423278774]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -56.0
+offset_right = 256.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="TrophyIcon" type="TextureRect" parent="Left" unique_id=772162431]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("3_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BestLabel" type="Label" parent="Left" unique_id=1159082379]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 44
+text = "0"
+
+[node name="Right" type="HBoxContainer" parent="." unique_id=920326047]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -44.0
+offset_right = -16.0
+offset_bottom = 44.0
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 2
+
+[node name="SettingsButton" type="TextureButton" parent="Right" unique_id=1747840964]
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("2_settings")
+ignore_texture_size = true
+stretch_mode = 5

@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://b18game"]
+
+[ext_resource type="Script" uid="uid://b0dg2ddxu54q5" path="res://Scenes/Game/Game.gd" id="1_game"]
+[ext_resource type="PackedScene" uid="uid://b11h11h11h11h" path="res://Scenes/Game/Component/HUD/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" uid="uid://b5g5g5g5g5g5g" path="res://Scenes/Game/Component/Grid/Grid.tscn" id="3_grid"]
+[ext_resource type="PackedScene" uid="uid://cauauauauauat" path="res://Scenes/Game/Component/PieceTray/PieceTray.tscn" id="4_tray"]
+[ext_resource type="PackedScene" uid="uid://b22progress" path="res://Scenes/Game/Component/HUD/ScoreProgressBar.tscn" id="5_progress"]
+
+[node name="Game" type="Control" unique_id=339731659]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_game")
+shake_base_strength = 12.0
+shake_base_duration = 0.39999999999999997
+
+[node name="Background" type="ColorRect" parent="." unique_id=2099674945]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.27366474, 0.31059062, 0.44750774, 1)
+
+[node name="Layout" type="VBoxContainer" parent="." unique_id=103735579]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="HUD" parent="Layout" unique_id=1759249270 instance=ExtResource("2_hud")]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+
+[node name="ProgressFrame" type="MarginContainer" parent="Layout" unique_id=1545611777]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
+
+[node name="ScoreProgressBar" parent="Layout/ProgressFrame" unique_id=148779168 instance=ExtResource("5_progress")]
+layout_mode = 2
+
+[node name="GridFrame" type="MarginContainer" parent="Layout" unique_id=183142445]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 8
+
+[node name="AspectRatio" type="AspectRatioContainer" parent="Layout/GridFrame" unique_id=1338792584]
+layout_mode = 2
+
+[node name="Grid" parent="Layout/GridFrame/AspectRatio" unique_id=168324580 instance=ExtResource("3_grid")]
+layout_mode = 2
+
+[node name="Tray" parent="Layout" unique_id=1533346769 instance=ExtResource("4_tray")]
+layout_mode = 2
+
+[node name="DragLayer" type="Control" parent="." unique_id=1102016256]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5g5g5g5g5g5g"]
+
+[ext_resource type="Script" path="res://Scenes/Game/Component/Grid/Grid.gd" id="1_grid"]
+
+[node name="Grid" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_grid")
+cell_size = 64
+
+[node name="QuadrantsLayer" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CellsLayer" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PopupsLayer" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

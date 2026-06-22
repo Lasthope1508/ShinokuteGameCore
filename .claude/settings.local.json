@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv \"piece_slot.png.png\" \"piece_slot.png\")",
+      "Bash(rm -f \"piece_slot.png.png.import\")",
+      "Read(//c/c/Users/fabio/Documents/Godot Project/BlockPuzzleTemplate/Assets/**)"
+    ]
+  }
+}

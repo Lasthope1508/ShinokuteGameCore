@@ -1,0 +1,71 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Block Puzzle Template"
+run/main_scene="res://Scenes/Main/Main.tscn"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+config/icon="uid://g2078vu7r2lm"
+
+[audio]
+
+buses/default_bus_layout="uid://bj27b0a1dw70h"
+
+[autoload]
+
+SaveManager="*res://Resources/Globals/SaveManager.gd"
+GameState="*res://Resources/Globals/GameState.gd"
+AudioManager="*res://Resources/Globals/AudioManager.gd"
+SceneRouter="*res://Resources/Globals/SceneRouter.gd"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/window_width_override=480
+window/size/window_height_override=854
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[file_customization]
+
+folder_colors={
+"res://Assets/": "orange",
+"res://Audio/": "purple",
+"res://Resources/": "pink",
+"res://Scenes/": "green",
+"res://Scripts/": "yellow"
+}
+
+[gui]
+
+theme/custom="res://Resources/Theme/main_theme.tres"
+theme/custom_font="res://Assets/Fonts/Alegreya-ExtraBold.ttf"
+
+[input]
+
+ui_drag={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
+}
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

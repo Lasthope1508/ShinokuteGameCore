@@ -1,0 +1,16 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store
+
+# Zip / backups
+BlockPuzzleTemplate.zip
+
+# Addons / MCP files that are not part of the game source
+blender_mcp_addon.py
+mcp_interaction_server.gd
+

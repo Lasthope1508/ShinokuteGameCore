@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PieceShape" format=3 uid="uid://b15c3"]
+
+[ext_resource type="Script" uid="uid://h8lywmn263qy" path="res://Resources/Classes/PieceShape.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1)])
+display_name = "Corner 3"
+weight = 1.4

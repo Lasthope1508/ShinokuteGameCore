@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://b10p10p10p10p"]
+
+[ext_resource type="Script" uid="uid://mtut4cl0e7x1" path="res://Scenes/Game/Component/HUD/ScorePopup.gd" id="1_pop"]
+
+[node name="ScorePopup" type="Label" unique_id=1026327764]
+custom_minimum_size = Vector2(220, 90)
+theme_override_colors/font_color = Color(1, 0.95, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.05, 0.05, 1)
+theme_override_constants/outline_size = 25
+theme_override_font_sizes/font_size = 70
+text = "+0"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_pop")
