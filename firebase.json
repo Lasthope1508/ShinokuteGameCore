@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "reskin_dashboard",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "upload_server.py"
+    ]
+  }
+}
