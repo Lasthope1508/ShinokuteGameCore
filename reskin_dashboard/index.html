@@ -649,6 +649,7 @@
         <!-- Navigation Tabs -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('overview')">Tổng Quan</button>
+            <button class="tab-btn" onclick="switchTab('comparison')">Đối Chiếu Asset</button>
             <button class="tab-btn" onclick="switchTab('sprites')">Skins & Sprites</button>
             <button class="tab-btn" onclick="switchTab('vfx')">Hiệu Ứng VFX</button>
             <button class="tab-btn" onclick="switchTab('sfx')">Âm Thanh SFX</button>
@@ -692,6 +693,231 @@
                         <li>Tốc độ lấy mẫu: 44.1 kHz, 16-bit</li>
                     </ul>
                 </div>
+            </div>
+        </div>
+
+        <!-- TAB 1.5: COMPARISON MATRIX -->
+        <div id="comparison" class="tab-pane">
+            <div class="card">
+                <div class="card-title">Bản Đối Chiếu Asset Gốc và Mới (Luxury Wood & Gold Edition)</div>
+                <p style="margin-bottom: 2rem; color: var(--text-muted); font-size: 1.05rem;">
+                    Bảng so sánh chi tiết dưới đây chỉ rõ các tài nguyên thiết kế của mã nguồn gốc (Neon/Gem/Default style) 
+                    đối chiếu trực tiếp với các tài nguyên mới đã được làm lại theo chủ đề Gỗ & Vàng cao cấp (Luxury Wood & Gold). 
+                    Điều này giúp bạn có cái nhìn tổng quan toàn bộ những thay đổi giúp trò chơi lột xác hoàn toàn.
+                </p>
+
+                <!-- SECTION 1: VISUAL ASSETS (SKINS) -->
+                <h3 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; font-size: 1.3rem;">
+                    🎨 So Sánh Đồ Họa & Skins
+                </h3>
+
+                <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+                    <!-- Comparison Row: Logo -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🖼️ LOGO GỐC (Original)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/original/images/logo.png" alt="Original Logo" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Chữ "BLOCK PUZZLE" phẳng 2D màu xanh lam cơ bản.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">✨ LOGO MỚI (Wood & Gold)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/images/logo_wood_gold.png" alt="Wood & Gold Logo" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Chữ "WOOD PUZZLE - Luxury Edition" dạng gỗ gụ nổi 3D, khắc nổi viền vàng.</p>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Row: Block Tile -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🟦 KHỐI GẠCH GỐC (Original Tile)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/original/images/block.png" alt="Original Block" style="width: 80px; height: 80px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Khối gạch 3D bóng nhựa phẳng, màu xanh dương viền xanh đậm đơn điệu.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🪵 KHỐI GẠCH MỚI (Wood & Gold Tile)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/images/block_wood_gold.png" alt="Wood & Gold Block" style="width: 80px; height: 80px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Chất liệu vân gỗ óc chó mịn màng với viền 3D vát cạnh vàng kim nổi bật.</p>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Row: Empty Cell -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🔲 Ô TRỐNG GỐC (Original Cell)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/original/images/cell_empty.png" alt="Original Empty Cell" style="width: 80px; height: 80px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Ô lưới rỗng dạng khung phẳng màu xám nhạt đơn giản.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📥 Ô TRỐNG MỚI (Wood & Gold Cell)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/images/cell_empty_wood.png" alt="Wood Empty Cell" style="width: 80px; height: 80px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Hốc khoét sâu dạng lõm chìm trên bề mặt khay gỗ tối, tạo hiệu ứng 3D sâu.</p>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Row: Piece Slot -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📥 KHAY CHỨA GỐC (Original Slot)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/original/images/piece_slot.png" alt="Original Slot" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Chỉ là hình chữ nhật rỗng màu xám mờ không có chi tiết.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📦 KHAY CHỨA MỚI (Wood & Gold Slot)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://6893f1e40b.image-hosting.uk/images/piece_slot_wood_gold.png" alt="Wood Slot" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Khung bo góc bo viền vàng tinh tế, nền vân gỗ Mahogany sang trọng đồng điệu.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: AUDIO ASSETS (SFX) -->
+                <h3 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; font-size: 1.3rem; margin-top: 4rem;">
+                    🎵 So Sánh Hiệu Ứng Âm Thanh (SFX)
+                </h3>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- SFX Comparison Row: Pick -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_pick.wav (Chọn gạch)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_pick.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_pick_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Drop -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_drop.wav (Đặt gạch)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_drop.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_drop_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Button -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_button.wav (Nút bấm)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_button.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_button_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Clear -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_clear.wav (Xóa hàng)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_clear.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_clear_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Combo -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_combo.wav (Combo chimes)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_combo.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_combo_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Refill -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_populateSlot.wav (Refill)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_populateSlot.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_populateSlot_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Invalid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_invalid.wav (Lỗi kéo)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_invalid.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_invalid_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+
+                    <!-- SFX Comparison Row: Fail -->
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_fail.wav (Game Over)</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_fail.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_fail_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: VFX ASSETS -->
+                <h3 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; font-size: 1.3rem; margin-top: 4rem;">
+                    💥 So Sánh Hiệu Ứng Bùng Nổ (VFX)
+                </h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <div>
+                        <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">❌ VFX GỐC (Original)</h4>
+                        <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 2rem; text-align: center; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
+                            KHÔNG CÓ HIỆU ỨNG (No VFX)<br>
+                            Khi hàng/cột gạch xếp đầy, các ô gạch lập tức biến mất thô cứng mà không có bất kỳ hiệu ứng hạt hay phát sáng nào.
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🔥 VFX MỚI (Wood & Gold Splinters)</h4>
+                        <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 2rem; text-align: center; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: var(--primary-hover); line-height: 1.6;">
+                            HIỆU ỨNG HẠT BÙNG NỔ (Wood & Gold Particles)<br>
+                            Bổ sung scene hạt LineClearParticles.tscn sử dụng CPUParticles2D. Khi hàng biến mất, phát nổ 24 hạt gỗ Mahogany và dăm vàng óng ánh cho mỗi ô, rơi tự nhiên dưới trọng lực.
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
