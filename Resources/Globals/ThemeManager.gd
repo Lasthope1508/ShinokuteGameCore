@@ -157,13 +157,13 @@ func get_random_piece_color_for_score(score: int) -> Color:
 	var theme = get_active_theme()
 	if theme and not theme.piece_colors.is_empty():
 		var pool_size = 1
-		if score < 300:
+		if score < 250:
 			pool_size = 1
-		elif score < 800:
+		elif score < 600:
 			pool_size = 2
-		elif score < 1500:
+		elif score < 1200:
 			pool_size = 4
-		elif score < 3000:
+		elif score < 2000:
 			pool_size = 6
 		else:
 			pool_size = theme.piece_colors.size()
