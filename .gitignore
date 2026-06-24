@@ -14,3 +14,30 @@ BlockPuzzleTemplate.zip
 blender_mcp_addon.py
 mcp_interaction_server.gd
 
+# Temporary/Cache folders
+Export/
+scratch/
+chrome_profile_bloxchain/
+debug/
+photoroom-cdp-background-removal/
+reskin_dashboard/assets/
+reskin_dashboard/game/
+.firebase/
+.agents/
+node_modules/
+**/node_modules/
+
+
+# Build logs & docs
+*.txt
+*.json
+!project.godot
+!firebase.json
+!firestore.indexes.json
+!uploaded_assets.json
+!reskin_dashboard/original_urls.json
+icon.png
+icon.png.import
+
+
+

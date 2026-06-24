@@ -27,6 +27,22 @@
             --font-mono: 'Space Grotesk', sans-serif;
         }
 
+        body.fruit-theme {
+            --bg-base: #080f08;
+            --bg-surface: #122414;
+            --bg-surface-elevated: #1a331c;
+            --primary: #ef4444;
+            --primary-hover: #fca5a5;
+            --border: #2e5c32;
+            --accent-green: #4ade80;
+            --shadow: rgba(0, 0, 0, 0.6);
+        }
+
+        body.fruit-theme header {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -629,9 +645,11 @@
 <body>
 
     <header>
-        <div class="header-container">
-            <h1 id="main-header-title">Wood & Gold Asset Blueprint</h1>
-            <p>Quy chuẩn thiết kế đồ họa, âm thanh & hiệu ứng game xếp gạch Block Puzzle</p>
+        <div class="header-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+            <div style="text-align: left;">
+                <h1 id="main-header-title">Fruit Puzzle Asset Blueprint</h1>
+                <p id="main-header-subtitle">Quy chuẩn thiết kế đồ họa, âm thanh & hiệu ứng game xếp gạch Block Puzzle (Fruit Edition)</p>
+            </div>
         </div>
     </header>
 
@@ -649,6 +667,7 @@
         <!-- Navigation Tabs -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('overview')">Tổng Quan</button>
+            <button class="tab-btn" onclick="switchTab('play-game')">🎮 Chơi Thử HTML5</button>
             <button class="tab-btn" onclick="switchTab('comparison')">Đối Chiếu Asset</button>
             <button class="tab-btn" onclick="switchTab('sprites')">Skins & Sprites</button>
             <button class="tab-btn" onclick="switchTab('vfx')">Hiệu Ứng VFX</button>
@@ -696,6 +715,31 @@
             </div>
         </div>
 
+        <!-- TAB: PLAY GAME -->
+        <div id="play-game" class="tab-pane">
+            <div class="card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; min-height: 700px;">
+                <div class="card-title" style="margin-bottom: 0.5rem; text-align: center;">🎮 Chơi Thử Bản HTML5 (iOS & Mobile Compatible)</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem; max-width: 600px;">
+                    Trải nghiệm trực tiếp bản build Web chạy trực tiếp trên trình duyệt di động (iOS/Safari, Android/Chrome) và PC. Bản build sử dụng công nghệ WebAssembly đơn luồng để tối ưu hóa hiệu năng và độ tương thích hoàn hảo cho iOS.
+                </p>
+                
+                <!-- Direct Play Link for Mobile/iOS -->
+                <div style="margin-bottom: 1.5rem; display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; width: 100%;">
+                    <a href="game/index.html?theme=fruit_theme" target="_blank" class="vfx-btn" style="padding: 0.8rem 1.5rem; font-size: 0.95rem; text-decoration: none; border-radius: 8px; font-weight: bold; background: #ef4444; color: #fff; box-shadow: 0 4px 15px rgba(239,68,68,0.3); display: inline-flex; align-items: center; gap: 0.5rem;">
+                        🍓 Chơi Fruit Theme (Toàn Màn Hình)
+                    </a>
+                </div>
+                
+                <div style="width: 100%; max-width: 380px; aspect-ratio: 9/16; border: 2px solid var(--primary); border-radius: 16px; overflow: hidden; background-color: #0b0909; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative;">
+                    <iframe src="game/index.html?theme=fruit_theme" style="width: 100%; height: 100%; border: none;" allow="autoplay; gamepad" id="game-iframe"></iframe>
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button class="vfx-btn active" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;" onclick="reloadGameIframe()">🔄 Khởi Động Lại</button>
+                    <a href="game/index.html" id="game-open-new-window" target="_blank" class="vfx-btn" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: auto;">🌐 Mở Cửa Sổ Mới</a>
+                </div>
+            </div>
+        </div>
+
         <!-- TAB 1.5: COMPARISON MATRIX -->
         <div id="comparison" class="tab-pane">
             <div class="card">
@@ -713,7 +757,7 @@
 
                 <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
                     <!-- Comparison Row: Logo -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
                         <div>
                             <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🖼️ LOGO GỐC (Original)</h4>
                             <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
@@ -722,65 +766,125 @@
                             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Chữ "BLOCK PUZZLE" phẳng 2D màu xanh lam cơ bản.</p>
                         </div>
                         <div>
-                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">✨ LOGO MỚI (Wood & Gold)</h4>
-                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
-                                <img src="https://6893f1e40b.image-hosting.uk/images/logo_wood_gold.png" alt="Wood & Gold Logo" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            <h4 style="color: #d4af37; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">✨ WOOD & GOLD</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #d4af37; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/luxury_wood_gold/logo.png" alt="Wood & Gold Logo" style="max-width: 100%; max-height: 120px; object-fit: contain;">
                             </div>
-                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Chữ "WOOD PUZZLE - Luxury Edition" dạng gỗ gụ nổi 3D, khắc nổi viền vàng.</p>
+                            <p style="font-size: 0.85rem; color: #f3e5ab; margin-top: 1rem; text-align: center;">Chữ "WOOD PUZZLE" dạng gỗ gụ nổi 3D, khắc nổi viền vàng sang trọng.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef4444; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🍓 FRUIT THEME</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #ef4444; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/fruit_theme/logo.webp" alt="Fruit Theme Logo" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: #fca5a5; margin-top: 1rem; text-align: center;">Chữ "FRUIT PUZZLE" 3D sống động ngập tràn các loại quả tươi mát.</p>
                         </div>
                     </div>
 
                     <!-- Comparison Row: Block Tile -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
                         <div>
-                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🟦 KHỐI GẠCH GỐC (Original Tile)</h4>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🟦 KHỐI GẠCH GỐC</h4>
                             <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://6893f1e40b.image-hosting.uk/original/images/block.png" alt="Original Block" style="width: 80px; height: 80px; object-fit: contain;">
                             </div>
                             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Khối gạch 3D bóng nhựa phẳng, màu xanh dương viền xanh đậm đơn điệu.</p>
                         </div>
                         <div>
-                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🪵 KHỐI GẠCH MỚI (Wood & Gold Tile)</h4>
-                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
-                                <img src="https://6893f1e40b.image-hosting.uk/images/block_wood_gold.png" alt="Wood & Gold Block" style="width: 80px; height: 80px; object-fit: contain;">
+                            <h4 style="color: #d4af37; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🪵 WOOD & GOLD</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #d4af37; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/luxury_wood_gold/block.png" alt="Wood Block" style="width: 80px; height: 80px; object-fit: contain;">
                             </div>
-                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Chất liệu vân gỗ óc chó mịn màng với viền 3D vát cạnh vàng kim nổi bật.</p>
+                            <p style="font-size: 0.85rem; color: #f3e5ab; margin-top: 1rem; text-align: center;">Chất liệu vân gỗ óc chó mịn màng với viền 3D vát cạnh vàng kim nổi bật.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef4444; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🍒 FRUIT THEME (8 Quả)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #ef4444; border-radius: 8px; padding: 0.5rem; text-align: center; min-height: 150px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem; align-items: center; justify-content: center;">
+                                <img src="assets/fruit_theme/blocks/block_0.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_1.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_2.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_3.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_4.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_5.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_6.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                                <img src="assets/fruit_theme/blocks/block_7.png" style="width: 32px; height: 32px; object-fit: contain; margin: auto;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: #fca5a5; margin-top: 1rem; text-align: center;">8 loại quả mọng nước (Blueberry, Apple, Watermelon, Grapes, Strawberry, Pineapple, Kiwi, Banana).</p>
                         </div>
                     </div>
 
                     <!-- Comparison Row: Empty Cell -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
                         <div>
-                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🔲 Ô TRỐNG GỐC (Original Cell)</h4>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🔲 Ô TRỐNG GỐC</h4>
                             <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://6893f1e40b.image-hosting.uk/original/images/cell_empty.png" alt="Original Empty Cell" style="width: 80px; height: 80px; object-fit: contain;">
                             </div>
                             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Ô lưới rỗng dạng khung phẳng màu xám nhạt đơn giản.</p>
                         </div>
                         <div>
-                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📥 Ô TRỐNG MỚI (Wood & Gold Cell)</h4>
-                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
-                                <img src="https://6893f1e40b.image-hosting.uk/images/cell_empty_wood.png" alt="Wood Empty Cell" style="width: 80px; height: 80px; object-fit: contain;">
+                            <h4 style="color: #d4af37; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📥 WOOD & GOLD</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #d4af37; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/luxury_wood_gold/cell_empty.png" alt="Wood Empty Cell" style="width: 80px; height: 80px; object-fit: contain;">
                             </div>
-                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Hốc khoét sâu dạng lõm chìm trên bề mặt khay gỗ tối, tạo hiệu ứng 3D sâu.</p>
+                            <p style="font-size: 0.85rem; color: #f3e5ab; margin-top: 1rem; text-align: center;">Hốc khoét sâu dạng lõm chìm trên bề mặt khay gỗ tối, tạo hiệu ứng 3D sâu.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef4444; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🌿 FRUIT CELL</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #ef4444; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/fruit_theme/cell_empty.png" alt="Fruit Empty Cell" style="width: 80px; height: 80px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: #fca5a5; margin-top: 1rem; text-align: center;">Ô rỗng thiết kế nền xanh rêu bóng, viền mảnh mềm mại tự nhiên.</p>
                         </div>
                     </div>
 
                     <!-- Comparison Row: Piece Slot -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
                         <div>
-                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📥 KHAY CHỨA GỐC (Original Slot)</h4>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📥 KHAY CHỨA GỐC</h4>
                             <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://6893f1e40b.image-hosting.uk/original/images/piece_slot.png" alt="Original Slot" style="max-width: 100%; max-height: 120px; object-fit: contain;">
                             </div>
                             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Chỉ là hình chữ nhật rỗng màu xám mờ không có chi tiết.</p>
                         </div>
                         <div>
-                            <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📦 KHAY CHỨA MỚI (Wood & Gold Slot)</h4>
-                            <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
-                                <img src="https://6893f1e40b.image-hosting.uk/images/piece_slot_wood_gold.png" alt="Wood Slot" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            <h4 style="color: #d4af37; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">📦 WOOD & GOLD</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #d4af37; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/luxury_wood_gold/piece_slot.png" alt="Wood Slot" style="max-width: 100%; max-height: 120px; object-fit: contain;">
                             </div>
-                            <p style="font-size: 0.85rem; color: var(--primary-hover); margin-top: 1rem; text-align: center;">Khung bo góc bo viền vàng tinh tế, nền vân gỗ Mahogany sang trọng đồng điệu.</p>
+                            <p style="font-size: 0.85rem; color: #f3e5ab; margin-top: 1rem; text-align: center;">Khung bo góc bo viền vàng tinh tế, nền vân gỗ Mahogany sang trọng đồng điệu.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef4444; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🍉 FRUIT SLOT</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #ef4444; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/fruit_theme/piece_slot.png" alt="Fruit Slot" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: #fca5a5; margin-top: 1rem; text-align: center;">Khay chứa viền xanh tươi bo tròn, nền cỏ tối giữ nổi bật trái cây kéo thả.</p>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Row: Playboard -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                        <div>
+                            <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">⬜ BÀN CHƠI GỐC (Playboard)</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <div style="width: 80px; height: 80px; background-color: #ffffff; border: 1px solid #ccc; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #333; font-size: 0.8rem; font-weight: bold;">White Board</div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Bàn chơi màu trắng trơn, không có kết cấu hoặc họa tiết.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #d4af37; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🪵 WOOD & GOLD</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #d4af37; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <div style="font-size: 0.85rem; color: #f3e5ab; text-align: center; font-style: italic;">(Sử dụng các ô Quadrants gỗ Mahogany)</div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: #f3e5ab; margin-top: 1rem; text-align: center;">Kế thừa trực tiếp các ô Quadrants gỗ Mahogany tối màu sang trọng.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef4444; font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🪵 THỚT GỖ FRUIT</h4>
+                            <div style="background-color: #0b0909; border: 1px dashed #ef4444; border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <img src="assets/fruit_theme/playboard.png" alt="Fruit Playboard" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <p style="font-size: 0.85rem; color: #fca5a5; margin-top: 1rem; text-align: center;">Thớt gỗ sồi nâu (Walnut Cutting Board) ấm áp, làm nền hoàn hảo cho trái cây.</p>
                         </div>
                     </div>
                 </div>
@@ -792,106 +896,138 @@
 
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                     <!-- SFX Comparison Row: Pick -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_pick.wav (Chọn gạch)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_pick.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_pick.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_pick_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_pick.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_pick.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Drop -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_drop.wav (Đặt gạch)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_drop.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_drop.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_drop_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_drop.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_drop.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Button -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_button.wav (Nút bấm)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_button.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_button.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_button_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_button.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_button.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Clear -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_clear.wav (Xóa hàng)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_clear.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_clear.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_clear_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_clear.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_clear.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Combo -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_combo.wav (Combo chimes)</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_combo.wav (Combo)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_combo.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_combo.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_combo_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_combo.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_combo.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Refill -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_populateSlot.wav (Refill)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_populateSlot.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_populateSlot.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_populateSlot_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_populateSlot.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_pick.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Invalid -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_invalid.wav (Lỗi kéo)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_invalid.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_invalid.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_invalid_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_invalid.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_invalid.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
 
                     <!-- SFX Comparison Row: Fail -->
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 1.5rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                         <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_fail.wav (Game Over)</div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 80px;">Gốc (Synth):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_fail.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Synth:</span>
+                            <audio src="https://6893f1e40b.image-hosting.uk/original/audio/sfx_fail.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 0.8rem; color: var(--primary); width: 80px;">Mới (Wood):</span>
-                            <audio src="https://6893f1e40b.image-hosting.uk/audio/sfx_fail_wood.wav" controls style="height: 32px; width: 100%; max-width: 220px;"></audio>
+                            <span style="font-size: 0.8rem; color: #d4af37; width: 60px;">Wood:</span>
+                            <audio src="assets/luxury_wood_gold/audio/sfx_fail.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.8rem; color: #ef4444; width: 60px;">Fruit:</span>
+                            <audio src="assets/fruit_theme/audio/sfx_fail.wav" controls style="height: 32px; width: 100%; max-width: 180px;"></audio>
                         </div>
                     </div>
                 </div>
@@ -902,18 +1038,24 @@
                 </h3>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
-                    <div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
                         <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">❌ VFX GỐC (Original)</h4>
-                        <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 2rem; text-align: center; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
-                            KHÔNG CÓ HIỆU ỨNG (No VFX)<br>
-                            Khi hàng/cột gạch xếp đầy, các ô gạch lập tức biến mất thô cứng mà không có bất kỳ hiệu ứng hạt hay phát sáng nào.
+                        <div style="background-color: #0b0909; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; width: 100%; max-width: 300px; display: flex; flex-direction: column; align-items: center;">
+                            <img src="https://6893f1e40b.image-hosting.uk/original/images/vfx_original.gif" alt="Original VFX" style="width: 100%; aspect-ratio: 1; object-fit: contain; background: #0b0909;">
+                            <div style="padding: 1rem; font-size: 0.85rem; color: var(--text-muted); text-align: center; border-top: 1px solid var(--border); width: 100%; box-sizing: border-box; line-height: 1.5;">
+                                <strong>KHÔNG CÓ HIỆU ỨNG (No VFX)</strong><br>
+                                Khi hàng/cột gạch xếp đầy, các ô gạch lập tức biến mất thô cứng mà không có bất kỳ hiệu ứng hạt hay phát sáng nào.
+                            </div>
                         </div>
                     </div>
-                    <div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
                         <h4 style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🔥 VFX MỚI (Wood & Gold Splinters)</h4>
-                        <div style="background-color: #0b0909; border: 1px dashed var(--primary); border-radius: 8px; padding: 2rem; text-align: center; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: var(--primary-hover); line-height: 1.6;">
-                            HIỆU ỨNG HẠT BÙNG NỔ (Wood & Gold Particles)<br>
-                            Bổ sung scene hạt LineClearParticles.tscn sử dụng CPUParticles2D. Khi hàng biến mất, phát nổ 24 hạt gỗ Mahogany và dăm vàng óng ánh cho mỗi ô, rơi tự nhiên dưới trọng lực.
+                        <div style="background-color: #0b0909; border: 1px solid var(--primary); border-radius: 8px; overflow: hidden; width: 100%; max-width: 300px; display: flex; flex-direction: column; align-items: center;">
+                            <img src="https://6893f1e40b.image-hosting.uk/images/vfx_new.gif" alt="New VFX" style="width: 100%; aspect-ratio: 1; object-fit: contain; background: #0b0909;">
+                            <div style="padding: 1rem; font-size: 0.85rem; color: var(--primary-hover); text-align: center; border-top: 1px solid var(--primary); width: 100%; box-sizing: border-box; line-height: 1.5;">
+                                <strong>HIỆU ỨNG HẠT BÙNG NỔ</strong><br>
+                                Bổ sung scene hạt `LineClearParticles.tscn` sử dụng `CPUParticles2D`. Phát nổ dăm gỗ Mahogany và dăm vàng óng ánh cho mỗi ô, rơi tự nhiên dưới trọng lực.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -935,7 +1077,7 @@
                         </label>
                     </div>
                     <div class="sprite-preview">
-                        <img src="https://6893f1e40b.image-hosting.uk/images/logo_wood_gold.png" alt="Wood & Gold Logo">
+                        <img id="sprite-logo-img" src="assets/luxury_wood_gold/logo.png" alt="Wood & Gold Logo">
                     </div>
                     <p style="font-size: 0.9rem; margin-bottom: 1rem;">Logo hiển thị tại Main Menu của trò chơi.</p>
                     <ul class="meta-list">
@@ -956,8 +1098,8 @@
                             <span class="checkmark"></span>
                         </label>
                     </div>
-                    <div class="sprite-preview">
-                        <img src="https://6893f1e40b.image-hosting.uk/images/block_wood_gold.png" alt="Wood & Gold Block" style="width:64px;height:64px;">
+                    <div class="sprite-preview" id="sprite-block-container">
+                        <img id="sprite-block-img" src="assets/luxury_wood_gold/block.png" alt="Wood & Gold Block" style="width:64px;height:64px;">
                     </div>
                     <p style="font-size: 0.9rem; margin-bottom: 1rem;">Phần tử gạch đơn lẻ cấu thành khối hình và xếp trên bảng lưới.</p>
                     <ul class="meta-list">
@@ -979,7 +1121,7 @@
                         </label>
                     </div>
                     <div class="sprite-preview">
-                        <img src="https://6893f1e40b.image-hosting.uk/images/cell_empty_wood.png" alt="Empty Cell" style="width:64px;height:64px;">
+                        <img id="sprite-cell-img" src="assets/luxury_wood_gold/cell_empty.png" alt="Empty Cell" style="width:64px;height:64px;">
                     </div>
                     <p style="font-size: 0.9rem; margin-bottom: 1rem;">Mẫu hiển thị các ô lưới trống trên bảng 9x9.</p>
                     <ul class="meta-list">
@@ -1001,7 +1143,7 @@
                         </label>
                     </div>
                     <div class="sprite-preview">
-                        <img src="https://6893f1e40b.image-hosting.uk/images/piece_slot_wood_gold.png" alt="Piece Slot" style="width:64px;height:64px;">
+                        <img id="sprite-slot-img" src="assets/luxury_wood_gold/piece_slot.png" alt="Piece Slot" style="width:64px;height:64px;">
                     </div>
                     <p style="font-size: 0.9rem; margin-bottom: 1rem;">Khay chứa 3 khối gạch xuất hiện ngẫu nhiên ở cuối màn hình.</p>
                     <ul class="meta-list">
@@ -1010,6 +1152,26 @@
                         <li>Kích thước: <span class="val">128 x 128 px</span></li>
                         <li>Độ phân giải: <span class="val">72 DPI</span></li>
                         <li>Mô tả mới: <span class="val">Khay gỗ bo tròn viền vàng đồng sang</span></li>
+                    </ul>
+                </div>
+
+                <!-- Game Background -->
+                <div class="sprite-card">
+                    <div class="sprite-header">
+                        <div class="sprite-title">Game Background (Hình nền)</div>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="chk-bg" class="task-checkbox" checked onchange="updateProgress()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="sprite-preview" style="background-color: #0b0909; display: flex; align-items: center; justify-content: center; height: 100px; border-radius: 8px;">
+                        <img id="sprite-bg-img" src="" alt="Background" style="max-height: 80px; max-width: 100%; object-fit: contain; display: none;">
+                        <span id="sprite-bg-placeholder" style="font-size: 0.8rem; color: var(--text-muted);">[ Sử dụng màu nền động ]</span>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Hình nền tạo chiều sâu cho playground và màn hình chào.</p>
+                    <ul class="meta-list">
+                        <li id="bg-meta-path">Cấu hình: <span class="val">Màu nền động</span></li>
+                        <li id="bg-meta-desc">Mô tả: <span class="val">Màu tối trơn, không hoa văn để không gây rối cho chữ.</span></li>
                     </ul>
                 </div>
 
@@ -1068,12 +1230,17 @@
                         
                         <button id="vfx-btn-wood" class="vfx-btn active" onclick="selectVFX('wood')">
                             <span>Luxury Wood Splinters (Gỗ & Vàng)</span>
-                            <span style="font-size: 0.8rem; color: var(--accent-green);">Đang tích hợp</span>
+                            <span style="font-size: 0.8rem; color: var(--accent-green);">Active</span>
+                        </button>
+                        
+                        <button id="vfx-btn-fruit" class="vfx-btn" onclick="selectVFX('fruit')">
+                            <span>Juicy Fruit Splashes (Nước ép quả)</span>
+                            <span style="font-size: 0.8rem; color: var(--accent-green);">Active</span>
                         </button>
                         
                         <button id="vfx-btn-neon" class="vfx-btn" onclick="selectVFX('neon')">
                             <span>Neon Cyberpunk Sparks (Năng lượng)</span>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">Sẵn sàng chuyển đổi</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Sẵn sàng</span>
                         </button>
                         
                         <div style="border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.9rem;">
@@ -1437,7 +1604,7 @@
         }
 
         // Checklist logic & persistence
-        const totalTasks = 6;
+        const totalTasks = 7;
         function updateProgress() {
             let checkedCount = 0;
             const checkboxes = document.querySelectorAll('.task-checkbox');
@@ -1480,8 +1647,7 @@
             loadChecklist();
         });
 
-        // ------------------ PLAY R2 AUDIO DIRECTLY ------------------
-        const R2_AUDIO_BASE = "https://6893f1e40b.image-hosting.uk/audio";
+        // ------------------ PLAY THEME WAV AUDIO ------------------
         let activeAudio = null;
 
         function playR2Audio(filename) {
@@ -1489,13 +1655,29 @@
                 if (activeAudio) {
                     activeAudio.pause();
                 }
-                const url = `${R2_AUDIO_BASE}/${filename}`;
+                
+                // Map filename dynamically to active theme
+                const currentTheme = localStorage.getItem('dashboard_theme') || 'luxury_wood_gold';
+                let url = "";
+                if (currentTheme === 'fruit_theme') {
+                    // Extract sfx key (e.g. sfx_pick from sfx_pick_wood.wav)
+                    const key = filename.replace("_wood", "").replace(".wav", "");
+                    if (key === 'sfx_populateSlot') {
+                        url = `assets/fruit_theme/audio/sfx_pick.wav`; // fallback
+                    } else {
+                        url = `assets/fruit_theme/audio/${key}.wav`;
+                    }
+                } else {
+                    const key = filename.replace("_wood", "").replace(".wav", "");
+                    url = `assets/luxury_wood_gold/audio/${key}.wav`;
+                }
+                
                 activeAudio = new Audio(url);
                 activeAudio.volume = 0.6;
                 activeAudio.play();
-                console.log(`Playing R2 Audio: ${url}`);
+                console.log(`Playing theme audio: ${url}`);
             } catch (err) {
-                console.error("Failed to play R2 audio: ", err);
+                console.error("Failed to play theme audio: ", err);
             }
         }
 
@@ -1516,173 +1698,294 @@
             try {
                 const ctx = getAudioContext();
                 const now = ctx.currentTime;
+                const currentTheme = localStorage.getItem('dashboard_theme') || 'luxury_wood_gold';
                 
                 // Master Volume
                 const masterGain = ctx.createGain();
                 masterGain.gain.setValueAtTime(0.5, now);
                 masterGain.connect(ctx.destination);
 
-                if (type === 'pick') {
-                    // Quick high wood block knock
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(600, now);
-                    
-                    // Click Transient
-                    const click = ctx.createOscillator();
-                    const clickGain = ctx.createGain();
-                    click.type = 'sine';
-                    click.frequency.setValueAtTime(3000, now);
-                    clickGain.gain.setValueAtTime(0.15, now);
-                    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.005);
-                    
-                    gain.gain.setValueAtTime(0.6, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-                    
-                    osc.connect(gain);
-                    click.connect(clickGain);
-                    gain.connect(masterGain);
-                    clickGain.connect(masterGain);
-                    
-                    osc.start(now);
-                    click.start(now);
-                    osc.stop(now + 0.1);
-                    click.stop(now + 0.05);
-
-                } else if (type === 'drop') {
-                    // Deeper acoustic wood block knock
-                    const osc1 = ctx.createOscillator();
-                    const osc2 = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    
-                    osc1.type = 'sine';
-                    osc1.frequency.setValueAtTime(220, now);
-                    // Slight pitch bend down
-                    osc1.frequency.exponentialRampToValueAtTime(160, now + 0.15);
-                    
-                    // Overtone
-                    osc2.type = 'triangle';
-                    osc2.frequency.setValueAtTime(220 * 1.6, now);
-                    osc2.frequency.exponentialRampToValueAtTime(160 * 1.6, now + 0.15);
-                    
-                    gain.gain.setValueAtTime(0.8, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-                    
-                    osc1.connect(gain);
-                    osc2.connect(gain);
-                    gain.connect(masterGain);
-                    
-                    osc1.start(now);
-                    osc2.start(now);
-                    osc1.stop(now + 0.25);
-                    osc2.stop(now + 0.25);
-
-                } else if (type === 'button') {
-                    // Crisp light woodblock
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(800, now);
-                    gain.gain.setValueAtTime(0.5, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    
-                    osc.connect(gain);
-                    gain.connect(masterGain);
-                    osc.start(now);
-                    osc.stop(now + 0.06);
-
-                } else if (type === 'clear') {
-                    // Wood marimba arpeggio chord (pentatonic)
-                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-                    notes.forEach((freq, idx) => {
+                if (currentTheme === 'fruit_theme') {
+                    // Juicy Fruit Pop Synthesis
+                    if (type === 'pick') {
+                        // Rapid bubble pop: sine sweep up + short duration
                         const osc = ctx.createOscillator();
                         const gain = ctx.createGain();
-                        
                         osc.type = 'sine';
-                        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                        osc.frequency.setValueAtTime(300, now);
+                        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.04);
+                        gain.gain.setValueAtTime(0.4, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now);
+                        osc.stop(now + 0.05);
+                    } else if (type === 'drop') {
+                        // Juicy squish/splat: low thud + short bubbly overtone
+                        const osc1 = ctx.createOscillator();
+                        const osc2 = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc1.type = 'sine';
+                        osc1.frequency.setValueAtTime(150, now);
+                        osc1.frequency.linearRampToValueAtTime(80, now + 0.1);
+                        osc2.type = 'triangle';
+                        osc2.frequency.setValueAtTime(350, now);
+                        osc2.frequency.linearRampToValueAtTime(100, now + 0.1);
+                        gain.gain.setValueAtTime(0.6, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                        osc1.connect(gain);
+                        osc2.connect(gain);
+                        gain.connect(masterGain);
+                        osc1.start(now);
+                        osc2.start(now);
+                        osc1.stop(now + 0.15);
+                        osc2.stop(now + 0.15);
+                    } else if (type === 'button') {
+                        // Sweet light beep/pop
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(700, now);
+                        gain.gain.setValueAtTime(0.3, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now);
+                        osc.stop(now + 0.05);
+                    } else if (type === 'clear') {
+                        // Rapid bubbly upward sequence
+                        const notes = [400, 600, 900, 1300];
+                        notes.forEach((freq, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+                            osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + idx * 0.04 + 0.03);
+                            gain.gain.setValueAtTime(0.2, now + idx * 0.04);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.04 + 0.05);
+                            osc.connect(gain);
+                            gain.connect(masterGain);
+                            osc.start(now + idx * 0.04);
+                            osc.stop(now + idx * 0.04 + 0.06);
+                        });
+                    } else if (type === 'combo') {
+                        // Bubbling cascade up and down
+                        const notes = [500, 700, 1000, 1400, 1200, 1600];
+                        notes.forEach((freq, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.03);
+                            gain.gain.setValueAtTime(0.15, now + idx * 0.03);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.03 + 0.04);
+                            osc.connect(gain);
+                            gain.connect(masterGain);
+                            osc.start(now + idx * 0.03);
+                            osc.stop(now + idx * 0.03 + 0.05);
+                        });
+                    } else if (type === 'populate') {
+                        // Pop, pop, pop
+                        [440, 520, 660].forEach((freq, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                            gain.gain.setValueAtTime(0.3, now + idx * 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.04);
+                            osc.connect(gain);
+                            gain.connect(masterGain);
+                            osc.start(now + idx * 0.05);
+                            osc.stop(now + idx * 0.05 + 0.05);
+                        });
+                    } else if (type === 'invalid') {
+                        // Bubbly wet disappointment
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(150, now);
+                        osc.frequency.linearRampToValueAtTime(80, now + 0.1);
+                        gain.gain.setValueAtTime(0.4, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now);
+                        osc.stop(now + 0.12);
+                    } else if (type === 'fail') {
+                        // Sad sliding bubble pop downward
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(300, now);
+                        osc.frequency.exponentialRampToValueAtTime(80, now + 0.3);
+                        gain.gain.setValueAtTime(0.4, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now);
+                        osc.stop(now + 0.4);
+                    }
+                } else {
+                    // Wood SFX Synthesis
+                    if (type === 'pick') {
+                        // Quick high wood block knock
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(600, now);
                         
-                        gain.gain.setValueAtTime(0, now);
-                        gain.gain.linearRampToValueAtTime(0.4, now + idx * 0.05 + 0.005);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.35);
+                        // Click Transient
+                        const click = ctx.createOscillator();
+                        const clickGain = ctx.createGain();
+                        click.type = 'sine';
+                        click.frequency.setValueAtTime(3000, now);
+                        clickGain.gain.setValueAtTime(0.15, now);
+                        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.005);
+                        
+                        gain.gain.setValueAtTime(0.6, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                        
+                        osc.connect(gain);
+                        click.connect(clickGain);
+                        gain.connect(masterGain);
+                        clickGain.connect(masterGain);
+                        
+                        osc.start(now);
+                        click.start(now);
+                        osc.stop(now + 0.1);
+                        click.stop(now + 0.05);
+
+                    } else if (type === 'drop') {
+                        // Deeper acoustic wood block knock
+                        const osc1 = ctx.createOscillator();
+                        const osc2 = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        
+                        osc1.type = 'sine';
+                        osc1.frequency.setValueAtTime(220, now);
+                        // Slight pitch bend down
+                        osc1.frequency.exponentialRampToValueAtTime(160, now + 0.15);
+                        
+                        // Overtone
+                        osc2.type = 'triangle';
+                        osc2.frequency.setValueAtTime(220 * 1.6, now);
+                        osc2.frequency.exponentialRampToValueAtTime(160 * 1.6, now + 0.15);
+                        
+                        gain.gain.setValueAtTime(0.8, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                        
+                        osc1.connect(gain);
+                        osc2.connect(gain);
+                        gain.connect(masterGain);
+                        
+                        osc1.start(now);
+                        osc2.start(now);
+                        osc1.stop(now + 0.25);
+                        osc2.stop(now + 0.25);
+
+                    } else if (type === 'button') {
+                        // Crisp light woodblock
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(800, now);
+                        gain.gain.setValueAtTime(0.5, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
                         
                         osc.connect(gain);
                         gain.connect(masterGain);
-                        
-                        osc.start(now + idx * 0.05);
-                        osc.stop(now + idx * 0.05 + 0.4);
-                    });
+                        osc.start(now);
+                        osc.stop(now + 0.06);
 
-                } else if (type === 'combo') {
-                    // Upward sliding crystal chime sound
-                    const freqs = [1000, 1300, 1600, 2000];
-                    freqs.forEach((freq, idx) => {
+                    } else if (type === 'clear') {
+                        // Wood marimba arpeggio chord (pentatonic)
+                        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                        notes.forEach((freq, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                            
+                            gain.gain.setValueAtTime(0, now);
+                            gain.gain.linearRampToValueAtTime(0.4, now + idx * 0.05 + 0.005);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.35);
+                            
+                            osc.connect(gain);
+                            gain.connect(masterGain);
+                            
+                            osc.start(now + idx * 0.05);
+                            osc.stop(now + idx * 0.05 + 0.4);
+                        });
+
+                    } else if (type === 'combo') {
+                        // Upward sliding crystal chime sound
+                        const freqs = [1000, 1300, 1600, 2000];
+                        freqs.forEach((freq, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now);
+                            osc.frequency.linearRampToValueAtTime(freq * 1.15, now + 0.4);
+                            
+                            gain.gain.setValueAtTime(0.3, now);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                            
+                            osc.connect(gain);
+                            gain.connect(masterGain);
+                            osc.start(now);
+                            osc.stop(now + 0.5);
+                        });
+
+                    } else if (type === 'populate') {
+                        // Rhythmic wood block clicks (3 knocks)
+                        const delays = [0.0, 0.08, 0.16];
+                        const freqs = [500, 550, 600];
+                        delays.forEach((delay, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freqs[idx], now + delay);
+                            gain.gain.setValueAtTime(0.5, now + delay);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.06);
+                            
+                            osc.connect(gain);
+                            gain.connect(masterGain);
+                            osc.start(now + delay);
+                            osc.stop(now + delay + 0.08);
+                        });
+
+                    } else if (type === 'invalid') {
+                        // Quick dry low double knock
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(150, now);
+                        osc.frequency.setValueAtTime(120, now + 0.06);
+                        
+                        gain.gain.setValueAtTime(0.6, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                        
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start(now);
+                        osc.stop(now + 0.15);
+
+                    } else if (type === 'fail') {
+                        // Melancholic slide down
                         const osc = ctx.createOscillator();
                         const gain = ctx.createGain();
                         osc.type = 'sine';
-                        // Slide frequency up slightly
-                        osc.frequency.setValueAtTime(freq, now);
-                        osc.frequency.linearRampToValueAtTime(freq * 1.15, now + 0.4);
+                        osc.frequency.setValueAtTime(180, now);
+                        osc.frequency.exponentialRampToValueAtTime(60, now + 0.4);
                         
-                        gain.gain.setValueAtTime(0.3, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                        gain.gain.setValueAtTime(0.7, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
                         
                         osc.connect(gain);
                         gain.connect(masterGain);
                         osc.start(now);
                         osc.stop(now + 0.5);
-                    });
-
-                } else if (type === 'populate') {
-                    // Rhythmic wood block clicks (3 knocks)
-                    const delays = [0.0, 0.08, 0.16];
-                    const freqs = [500, 550, 600];
-                    delays.forEach((delay, idx) => {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(freqs[idx], now + delay);
-                        gain.gain.setValueAtTime(0.5, now + delay);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.06);
-                        
-                        osc.connect(gain);
-                        gain.connect(masterGain);
-                        osc.start(now + delay);
-                        osc.stop(now + delay + 0.08);
-                    });
-
-                } else if (type === 'invalid') {
-                    // Quick dry low double knock
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(150, now);
-                    osc.frequency.setValueAtTime(120, now + 0.06);
-                    
-                    gain.gain.setValueAtTime(0.6, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-                    
-                    osc.connect(gain);
-                    gain.connect(masterGain);
-                    osc.start(now);
-                    osc.stop(now + 0.15);
-
-                } else if (type === 'fail') {
-                    // Melancholic slide down
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(180, now);
-                    osc.frequency.exponentialRampToValueAtTime(60, now + 0.4);
-                    
-                    gain.gain.setValueAtTime(0.7, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-                    
-                    osc.connect(gain);
-                    gain.connect(masterGain);
-                    osc.start(now);
-                    osc.stop(now + 0.5);
+                    }
                 }
             } catch (err) {
                 console.error("Audio synthesis failed: ", err);
@@ -1693,18 +1996,23 @@
         let canvas = null;
         let ctxCanvas = null;
         let particles = [];
+        let slashes = [];
         let vfxType = 'wood'; // 'wood' or 'neon'
         let animationId = null;
 
         function selectVFX(type) {
             vfxType = type;
             document.getElementById('vfx-btn-wood').classList.remove('active');
+            document.getElementById('vfx-btn-fruit').classList.remove('active');
             document.getElementById('vfx-btn-neon').classList.remove('active');
             
             const desc = document.getElementById('vfx-description');
             if (type === 'wood') {
                 document.getElementById('vfx-btn-wood').classList.add('active');
                 desc.textContent = "Khi một hàng gạch được xếp kín, các ô lưới tương ứng sẽ bùng nổ hàng loạt hạt bụi gỗ màu nâu sẫm đan xen cùng tia sáng vàng óng rực rỡ, hạt chịu ảnh hưởng của lực hấp dẫn rơi xuống dưới và nhạt dần theo thời gian.";
+            } else if (type === 'fruit') {
+                document.getElementById('vfx-btn-fruit').classList.add('active');
+                desc.textContent = "Hiệu ứng chém kiếm & nước ép: Khi xóa hàng, một luồng ánh sáng trắng sáng rực viền cam/vàng bùng lên xẹt ngang cực nhanh như nhát chém kiếm sắc bén (Ninja Fruit style), kết hợp tung ra một ít giọt nước ép đầy màu sắc tươi sáng.";
             } else {
                 document.getElementById('vfx-btn-neon').classList.add('active');
                 desc.textContent = "Hiệu ứng nổ hạt phong cách Cyberpunk: Một luồng sóng xung kích nổ sáng rực rỡ dạng neon (xanh/hồng) tỏa tròn ra từ tâm, đi kèm các tia sét giật nhanh tắt dần cực kỳ kích thích thị giác.";
@@ -1729,11 +2037,29 @@
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            spawnParticles(x, y);
+            
+            const count = vfxType === 'fruit' ? 12 : (vfxType === 'wood' ? 24 : 35);
+            spawnParticles(x, y, count);
             
             // Play corresponding sound
             if (vfxType === 'wood') {
                 playSynth('drop');
+            } else if (vfxType === 'fruit') {
+                playSynth('clear'); // play sword slash SFX
+                // Add a diagonal slash centered on click
+                const len = 50;
+                const angle = Math.random() * Math.PI * 2;
+                const dx = Math.cos(angle) * len;
+                const dy = Math.sin(angle) * len;
+                slashes.push({
+                    x1: x - dx,
+                    y1: y - dy,
+                    x2: x + dx,
+                    y2: y + dy,
+                    color: 'rgba(245, 158, 11, 0.95)',
+                    width: 12,
+                    life: 1.0
+                });
             } else {
                 playSynth('combo');
             }
@@ -1744,18 +2070,42 @@
             // Spawn a horizontal line clear demo
             const y = canvas.height / 2;
             const step = canvas.width / 5;
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    spawnParticles(step * i + step/2, y);
-                }, i * 60);
+            
+            if (vfxType === 'fruit') {
+                // Play sword slash SFX
+                playSynth('clear');
+                // Spawn horizontal slash
+                slashes.push({
+                    x1: 15,
+                    y1: y,
+                    x2: canvas.width - 15,
+                    y2: y,
+                    color: 'rgba(245, 158, 11, 0.95)',
+                    width: 16,
+                    life: 1.0
+                });
+                
+                // Spawn fewer particles (cleaner)
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        spawnParticles(step * i + step/2, y, 3);
+                    }, i * 35);
+                }
+            } else {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        spawnParticles(step * i + step/2, y, vfxType === 'wood' ? 5 : 7);
+                    }, i * 60);
+                }
             }
         }
 
-        function spawnParticles(x, y) {
-            const count = vfxType === 'wood' ? 24 : 35;
-            for (let i = 0; i < count; i++) {
+        function spawnParticles(x, y, count) {
+            const defaultCount = vfxType === 'wood' ? 24 : (vfxType === 'fruit' ? 30 : 35);
+            const actualCount = count !== undefined ? count : defaultCount;
+            for (let i = 0; i < actualCount; i++) {
                 const angle = Math.random() * Math.PI * 2;
-                const speed = 1.5 + Math.random() * 3.5;
+                const speed = 1.5 + Math.random() * 4.0;
                 
                 // Color selection
                 let color;
@@ -1769,6 +2119,17 @@
                     } else {
                         color = `rgba(80, 40, 10, ${0.6 + Math.random() * 0.4})`; // Dark brown
                     }
+                } else if (vfxType === 'fruit') {
+                    // Vibrant fruit colors (Strawberry-red, Melon-green, Pineapple-yellow, Blueberry-blue)
+                    const colors = [
+                        `rgba(239, 68, 68, ${0.6 + Math.random() * 0.4})`, // Strawberry Red
+                        `rgba(34, 197, 94, ${0.6 + Math.random() * 0.4})`,  // Lime/Melon Green
+                        `rgba(245, 158, 11, ${0.6 + Math.random() * 0.4})`, // Orange
+                        `rgba(59, 130, 246, ${0.6 + Math.random() * 0.4})`, // Blueberry Blue
+                        `rgba(234, 179, 8, ${0.6 + Math.random() * 0.4})`,  // Banana Yellow
+                        `rgba(236, 72, 153, ${0.6 + Math.random() * 0.4})`  // Pink
+                    ];
+                    color = colors[Math.floor(Math.random() * colors.length)];
                 } else {
                     // Cyan and purple cyber colors
                     color = Math.random() < 0.5 ? `rgba(6, 182, 212, ${0.6 + Math.random() * 0.4})` : `rgba(236, 72, 153, ${0.6 + Math.random() * 0.4})`;
@@ -1778,12 +2139,12 @@
                     x: x,
                     y: y,
                     vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed - (vfxType === 'wood' ? 1.0 : 0.0), // wood explodes slightly upwards
-                    size: vfxType === 'wood' ? (1 + Math.random() * 4) : (1.5 + Math.random() * 3.5),
+                    vy: Math.sin(angle) * speed - (vfxType === 'wood' || vfxType === 'fruit' ? 1.2 : 0.0), // wood/fruit explodes slightly upwards
+                    size: vfxType === 'wood' ? (1 + Math.random() * 4) : (vfxType === 'fruit' ? (2 + Math.random() * 3.5) : (1.5 + Math.random() * 3.5)),
                     color: color,
                     alpha: 1.0,
-                    decay: 0.02 + Math.random() * 0.03,
-                    gravity: vfxType === 'wood' ? 0.12 : 0.05
+                    decay: vfxType === 'fruit' ? (0.015 + Math.random() * 0.025) : (0.02 + Math.random() * 0.03),
+                    gravity: vfxType === 'wood' || vfxType === 'fruit' ? 0.14 : 0.05
                 });
             }
         }
@@ -1839,14 +2200,55 @@
                     if (vfxType === 'wood') {
                         // Rectangular wood splinters
                         ctxCanvas.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size * 1.5);
+                    } else if (vfxType === 'fruit') {
+                        // Bubbly round juicy droplet particles
+                        ctxCanvas.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctxCanvas.shadowBlur = 5;
+                        ctxCanvas.shadowColor = p.color;
                     } else {
                         // Glowing circles
                         ctxCanvas.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                         ctxCanvas.shadowBlur = 8;
                         ctxCanvas.shadowColor = p.color;
-                        ctxCanvas.fill();
                     }
                     ctxCanvas.fill();
+                    ctxCanvas.restore();
+                }
+                
+                // Update and draw slashes (for sword cuts)
+                for (let i = slashes.length - 1; i >= 0; i--) {
+                    const s = slashes[i];
+                    s.life -= 0.06;
+                    if (s.life <= 0) {
+                        slashes.splice(i, 1);
+                        continue;
+                    }
+                    
+                    ctxCanvas.save();
+                    
+                    // 1. Thick Outer Glow Line
+                    ctxCanvas.strokeStyle = s.color;
+                    ctxCanvas.globalAlpha = s.life * 0.75;
+                    ctxCanvas.lineWidth = s.width * s.life;
+                    ctxCanvas.lineCap = 'round';
+                    ctxCanvas.shadowBlur = 10;
+                    ctxCanvas.shadowColor = s.color;
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(s.x1, s.y1);
+                    ctxCanvas.lineTo(s.x2, s.y2);
+                    ctxCanvas.stroke();
+                    
+                    // 2. Thin White Core Line
+                    ctxCanvas.strokeStyle = '#ffffff';
+                    ctxCanvas.globalAlpha = s.life;
+                    ctxCanvas.lineWidth = (s.width * 0.3) * s.life;
+                    ctxCanvas.lineCap = 'round';
+                    ctxCanvas.shadowBlur = 0;
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(s.x1, s.y1);
+                    ctxCanvas.lineTo(s.x2, s.y2);
+                    ctxCanvas.stroke();
+                    
                     ctxCanvas.restore();
                 }
                 
@@ -2066,6 +2468,70 @@
                     }, 1500);
                 });
         }
+         // --- DYNAMIC THEME SUPPORT ---
+        function changeGameTheme(themeName) {
+            const iframe = document.getElementById('game-iframe');
+            if (iframe) {
+                iframe.src = `game/index.html?theme=fruit_theme`;
+            }
+            
+            // Update open in new window link
+            const openLink = document.getElementById('game-open-new-window');
+            if (openLink) {
+                openLink.href = `game/index.html?theme=fruit_theme`;
+            }
+        }
+
+        function setDashboardTheme(themeName) {
+            localStorage.setItem('dashboard_theme', 'fruit_theme');
+            document.body.classList.add('fruit-theme');
+            document.getElementById('main-header-title').textContent = 'Fruit Puzzle Asset Blueprint';
+            document.getElementById('main-header-subtitle').textContent = 'Quy chuẩn thiết kế đồ họa, âm thanh & hiệu ứng game xếp gạch Block Puzzle (Fruit Edition)';
+            selectVFX('fruit');
+            
+            // Sync with game iframe theme
+            changeGameTheme('fruit_theme');
+            
+            // Update Skins & Sprites tab preview images dynamically
+            const logoImg = document.getElementById('sprite-logo-img');
+            const cellImg = document.getElementById('sprite-cell-img');
+            const slotImg = document.getElementById('sprite-slot-img');
+            const bgImg = document.getElementById('sprite-bg-img');
+            const bgPlaceholder = document.getElementById('sprite-bg-placeholder');
+            const bgMetaPath = document.getElementById('bg-meta-path');
+            const bgMetaDesc = document.getElementById('bg-meta-desc');
+            const blockContainer = document.getElementById('sprite-block-container');
+            
+            if (logoImg) logoImg.src = 'assets/fruit_theme/logo.webp';
+            if (cellImg) cellImg.src = 'assets/fruit_theme/cell_empty.png';
+            if (slotImg) slotImg.src = 'assets/fruit_theme/piece_slot.png';
+            
+            if (bgImg && bgPlaceholder) {
+                bgImg.src = 'assets/fruit_theme/background.webp';
+                bgImg.style.display = 'block';
+                bgPlaceholder.style.display = 'none';
+            }
+            if (bgMetaPath) {
+                bgMetaPath.innerHTML = 'Đường dẫn R2: <span class="val"><a href="assets/fruit_theme/background.webp" target="_blank" style="color:var(--primary);">background.webp</a></span>';
+            }
+            if (bgMetaDesc) {
+                bgMetaDesc.innerHTML = 'Mô tả: <span class="val">Không gian vũ trụ sao ở trên, bề mặt mặt trăng xám ở dưới, ở giữa chuyển sắc trơn mượt để đảm bảo tương phản cho chữ và playground.</span>';
+            }
+            
+            if (blockContainer) {
+                let html = '<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; width: 100%;">';
+                for (let i = 0; i < 8; i++) {
+                    html += `<img src="assets/fruit_theme/blocks/block_${i}.png" alt="Fruit Block ${i}" style="width: 48px; height: 48px; object-fit: contain; margin: auto;" title="Fruit Block ${i}">`;
+                }
+                html += '</div>';
+                blockContainer.innerHTML = html;
+            }
+        }
+
+        // Initialize dashboard theme on DOM content load
+        window.addEventListener('DOMContentLoaded', () => {
+            setDashboardTheme('fruit_theme');
+        });
     </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Zagara Game Lab
+Copyright (c) 2026 Shinoku Studio
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,34 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-================================================================================
-
-ADDITIONAL TERMS — TEMPLATE-SPECIFIC USAGE
-
-This MIT License covers the source code, scenes, scripts, shaders and project
-configuration files of the "Block Puzzle Template". The following clarifies
-how the MIT permissions apply to a *template* sold as a development asset:
-
-  * YOU MAY use this template to build commercial or free games, modify any
-    part of it, ship the resulting game on any platform (desktop, mobile,
-    web, console) without royalties or attribution.
-
-  * YOU MAY publish modified copies of the template internally within your
-    studio, share it with collaborators on a project, and version-control
-    it however you like.
-
-  * YOU MAY NOT, however, repackage and resell this project itself as a
-    template, asset pack, starter kit, or any equivalent product offered to
-    third parties for them to build their own games on top of. One purchase
-    grants you the right to use the template across all of your own
-    projects — not to redistribute the template as your own.
-
-The fonts shipped under "Assets/Fonts/" (Alegreya by Juan Pablo del Peral)
-are released under the SIL Open Font License, version 1.1 — see "OFL.txt"
-in the project root for the full text. The font may be embedded in your
-exported games freely, including for commercial use.
-
-Any other third-party assets the buyer drops into the project (icons,
-audio, textures) are governed by their own licenses; the buyer is
-responsible for verifying and respecting them.

@@ -272,9 +272,7 @@ func _build_single_block_shape() -> PieceShape:
 
 
 func _random_color() -> Color:
-	if theme_config and theme_config.piece_colors.size() > 0:
-		return theme_config.piece_colors.pick_random()
-	return Color.from_hsv(randf(), 0.7, 0.95)
+	return ThemeManager.get_random_piece_color()
 
 
 func _on_slot_piece_picked(_slot: PieceSlot, piece: Piece) -> void:

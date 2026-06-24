@@ -1,4 +1,11 @@
 {
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": "reskin_dashboard",
     "ignore": [
@@ -6,6 +13,23 @@
       "**/.*",
       "**/node_modules/**",
       "upload_server.py"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(pck|wasm|js|html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/location",
+        "function": "getlocation"
+      }
     ]
   }
 }

@@ -32,6 +32,33 @@ func _ready() -> void:
 	_build_grid()
 	resized.connect(_layout_grid)
 	call_deferred("_layout_grid")
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+	_update_theme()
+
+
+func _update_theme() -> void:
+	theme_config = ThemeManager.get_active_theme()
+	
+	var playboard = get_node_or_null("Playboard")
+	if playboard:
+		if theme_config and theme_config.playboard_texture != null:
+			playboard.texture = theme_config.playboard_texture
+			playboard.visible = true
+		else:
+			playboard.visible = false
+
+	if _quadrants.size() > 0:
+		for qy in QUADRANT_SIZE:
+			for qx in QUADRANT_SIZE:
+				var q: Quadrant = _quadrants[qy][qx]
+				var is_light: bool = (qx + qy) % 2 == 0
+				if theme_config:
+					q.modulate = theme_config.quadrant_light_tint if is_light else theme_config.quadrant_dark_tint
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	_update_theme()
+
 
 
 # --- Public API -----------------------------------------------------------
@@ -135,14 +162,13 @@ func clear_cells(cells: Array[Vector2i]) -> void:
 
 
 # Renders the translucent ghost of the dragged piece. Invalid → no preview.
-func project_preview(shape: PieceShape, origin: Vector2i) -> void:
+func project_preview(shape: PieceShape, origin: Vector2i, piece_color: Color) -> void:
 	clear_preview()
 	if not can_place(shape, origin):
 		return
-	var color := theme_config.preview_valid_tint if theme_config else Color(1, 1, 1, 0.45)
 	for offset in shape.cells:
 		var p: Vector2i = origin + offset
-		_cells[p.y][p.x].show_preview(color)
+		_cells[p.y][p.x].show_preview(piece_color)
 	# Hint at lines/quadrants this placement would clear.
 	_highlight_potential_clears(shape, origin)
 
@@ -236,7 +262,14 @@ func reset() -> void:
 			c.clear_clear_hint()
 
 
+func get_cell_color(cell: Vector2i) -> Color:
+	if _in_bounds(cell):
+		return (_cells[cell.y][cell.x] as Cell).occupied_color
+	return Color.WHITE
+
+
 # --- Internal helpers -----------------------------------------------------
+
 
 func _build_grid() -> void:
 	_cells.clear()
@@ -295,6 +328,23 @@ func _layout_grid() -> void:
 		floor((size.x - grid_px) * 0.5),
 		floor((size.y - grid_px) * 0.5),
 	)
+
+	var playboard = get_node_or_null("Playboard")
+	if playboard:
+		playboard.anchor_left = 0.0
+		playboard.anchor_top = 0.0
+		playboard.anchor_right = 0.0
+		playboard.anchor_bottom = 0.0
+		playboard.offset_left = 0.0
+		playboard.offset_top = 0.0
+		playboard.offset_right = 0.0
+		playboard.offset_bottom = 0.0
+		
+		var scale_factor: float = theme_config.playboard_scale if (theme_config and theme_config.playboard_texture != null) else 1.0
+		var pb_size: float = grid_px * scale_factor
+		var offset: float = (pb_size - grid_px) * 0.5
+		playboard.position = _grid_origin - Vector2(offset, offset)
+		playboard.size = Vector2(pb_size, pb_size)
 
 	for qy in QUADRANT_SIZE:
 		for qx in QUADRANT_SIZE:

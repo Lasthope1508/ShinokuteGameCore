@@ -132,3 +132,70 @@ func _save() -> void:
 	var err := _config.save(SAVE_PATH)
 	if err != OK:
 		push_warning("SaveManager: failed to write save file (err %d)" % err)
+
+
+func get_setting(key: String, default_value: Variant = null) -> Variant:
+	return _config.get_value("settings", key, default_value)
+
+
+func set_setting(key: String, value: Variant) -> void:
+	_config.set_value("settings", key, value)
+	_save()
+
+
+const SECTION_PROFILE := "profile"
+const SECTION_GEOLOCATION := "geolocation"
+
+func get_username() -> String:
+	return _config.get_value(SECTION_PROFILE, "username", "")
+
+func set_username(value: String) -> void:
+	_config.set_value(SECTION_PROFILE, "username", value.strip_edges())
+	_save()
+
+func get_device_uuid() -> String:
+	var uuid = _config.get_value(SECTION_PROFILE, "device_uuid", "")
+	if uuid == "":
+		uuid = ""
+		for i in 16:
+			uuid += "%02x" % (randi() % 256)
+		_config.set_value(SECTION_PROFILE, "device_uuid", uuid)
+		_save()
+	return uuid
+
+func get_country_code() -> String:
+	return _config.get_value(SECTION_GEOLOCATION, "country_code", "")
+
+func set_country_code(value: String) -> void:
+	_config.set_value(SECTION_GEOLOCATION, "country_code", value)
+	_save()
+
+func get_country_name() -> String:
+	return _config.get_value(SECTION_GEOLOCATION, "country_name", "")
+
+func set_country_name(value: String) -> void:
+	_config.set_value(SECTION_GEOLOCATION, "country_name", value)
+	_save()
+
+func get_continent_code() -> String:
+	return _config.get_value(SECTION_GEOLOCATION, "continent_code", "")
+
+func set_continent_code(value: String) -> void:
+	_config.set_value(SECTION_GEOLOCATION, "continent_code", value)
+	_save()
+
+func get_last_submitted_score() -> int:
+	return int(_config.get_value(SECTION_PROGRESS, "last_submitted_score", 0))
+
+func set_last_submitted_score(value: int) -> void:
+	_config.set_value(SECTION_PROGRESS, "last_submitted_score", value)
+	_save()
+
+func is_country_changed_manually() -> bool:
+	return bool(_config.get_value(SECTION_GEOLOCATION, "country_changed_manually", false))
+
+func set_country_changed_manually(value: bool) -> void:
+	_config.set_value(SECTION_GEOLOCATION, "country_changed_manually", value)
+	_save()
+
+

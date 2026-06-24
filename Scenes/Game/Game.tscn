@@ -25,6 +25,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.09, 0.07, 0.05, 1)
 
+[node name="BackgroundTexture" type="TextureRect" parent="." unique_id=123456788]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Layout" type="VBoxContainer" parent="." unique_id=103735579]
 layout_mode = 0
 anchor_right = 1.0

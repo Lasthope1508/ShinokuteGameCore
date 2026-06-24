@@ -12,9 +12,30 @@ var _enabled: bool = true
 var _state_tween: Tween
 
 
+@onready var background: NinePatchRect = $Aspect/Background
+
+
 func _ready() -> void:
 	# Re-center the piece on responsive layout changes.
 	resized.connect(_on_slot_resized)
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+	_update_theme()
+
+
+func _update_theme() -> void:
+	var active_theme = ThemeManager.get_active_theme()
+	if active_theme:
+		if active_theme.piece_slot_texture != null:
+			background.texture = active_theme.piece_slot_texture
+		else:
+			background.texture = load("res://Assets/Sprites/piece_slot.png")
+	else:
+		background.texture = load("res://Assets/Sprites/piece_slot.png")
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	_update_theme()
+
 
 
 func _on_slot_resized() -> void:

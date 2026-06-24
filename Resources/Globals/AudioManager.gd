@@ -10,27 +10,10 @@ const BUS_MASTER := "Master"
 const BUS_MUSIC := "Music"
 const BUS_SFX := "SFX"
 
-# SFX name → path. Missing files are silently skipped.
-const SFX_LIBRARY := {
-	"pick": "res://Audio/SFX/sfx_pick.wav",
-	"drop": "res://Audio/SFX/sfx_drop.wav",
-	"invalid": "res://Audio/SFX/sfx_invalid.wav",
-	"clear": "res://Audio/SFX/sfx_clear.wav",
-	"combo": "res://Audio/SFX/sfx_combo.wav",
-	"button": "res://Audio/SFX/sfx_button.wav",
-	"populate_slot": "res://Audio/SFX/sfx_populateSlot.wav",
-	"popup": "res://Audio/SFX/sfx_popup.wav",
-	"levelup": "res://Audio/SFX/sfx_levelup.wav",
-	"gameover": "res://Audio/SFX/sfx_gameover.wav",
-	"timeout": "res://Audio/SFX/sfx_timeout.wav",
-	"fail": "res://Audio/SFX/sfx_fail.wav",
-}
-
 const MUSIC_PATH := "res://Audio/Music/music_loop.ogg"
 
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _music_player: AudioStreamPlayer
-var _sfx_cache: Dictionary = {}
 
 
 func _ready() -> void:
@@ -47,10 +30,17 @@ func _ready() -> void:
 	apply_saved_volumes()
 	play_music()
 
+	if has_node("/root/ThemeManager"):
+		get_node("/root/ThemeManager").theme_changed.connect(_on_theme_changed)
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	pass
+
 
 # Plays a SFX by name; no-ops if missing. `pitch_variation` (0..1) randomizes
-# pitch_scale within ±variation around 1.0 for subtle variety on repeats.
-func play_sfx(sfx_name: String, pitch_variation: float = 0.0) -> void:
+# pitch_scale within ±variation around custom_pitch.
+func play_sfx(sfx_name: String, pitch_variation: float = 0.0, custom_pitch: float = 1.0) -> void:
 	var stream := _get_sfx(sfx_name)
 	if stream == null:
 		return
@@ -60,9 +50,9 @@ func play_sfx(sfx_name: String, pitch_variation: float = 0.0) -> void:
 	player.stream = stream
 	if pitch_variation > 0.0:
 		var v: float = clamp(pitch_variation, 0.0, 0.95)
-		player.pitch_scale = 1.0 + randf_range(-v, v)
+		player.pitch_scale = custom_pitch + randf_range(-v, v)
 	else:
-		player.pitch_scale = 1.0
+		player.pitch_scale = custom_pitch
 	player.play()
 
 
@@ -108,17 +98,10 @@ func _set_bus_volume(bus_name: String, linear_value: float) -> void:
 
 
 func _get_sfx(sfx_name: String) -> AudioStream:
-	if _sfx_cache.has(sfx_name):
-		return _sfx_cache[sfx_name]
-	if not SFX_LIBRARY.has(sfx_name):
-		return null
-	var path: String = SFX_LIBRARY[sfx_name]
-	if not ResourceLoader.exists(path):
-		_sfx_cache[sfx_name] = null
-		return null
-	var stream := load(path) as AudioStream
-	_sfx_cache[sfx_name] = stream
-	return stream
+	var theme_manager = get_node_or_null("/root/ThemeManager")
+	if theme_manager:
+		return theme_manager.get_sfx(sfx_name)
+	return null
 
 
 func _get_free_sfx_player() -> AudioStreamPlayer:

@@ -1,0 +1,135 @@
+[gd_scene load_steps=2 format=3 uid="uid://leaderboardoverlay"]
+
+[ext_resource type="Script" path="res://Scenes/Game/Component/Overlays/LeaderboardOverlay.gd" id="1_leaderboard"]
+
+[node name="LeaderboardOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_leaderboard")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(480, 720)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -360.0
+offset_right = 240.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Header" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = "HeaderMedium"
+text = "LEADERBOARD"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel/Margin/VBox/Header"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "X"
+
+[node name="StatusLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.74, 0.85, 1)
+text = "Detecting region..."
+horizontal_alignment = 1
+
+[node name="Tabs" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="WorldTab" type="Button" parent="Panel/Margin/VBox/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "World"
+
+[node name="ContinentTab" type="Button" parent="Panel/Margin/VBox/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Continent"
+
+[node name="CountryTab" type="Button" parent="Panel/Margin/VBox/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Country"
+
+[node name="RankingScroll" type="ScrollContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="List" type="VBoxContainer" parent="Panel/Margin/VBox/RankingScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="LoadingLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MyHighestRow" type="PanelContainer" parent="Panel/Margin/VBox" unique_id=1900000000]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Panel/Margin/VBox/MyHighestRow"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="Panel/Margin/VBox/MyHighestRow/Margin"]
+layout_mode = 2
+
+[node name="RankLabel" type="Label" parent="Panel/Margin/VBox/MyHighestRow/Margin/HBox"]
+layout_mode = 2
+theme_type_variation = "HeaderSmall"
+text = "My Best:"
+
+[node name="NameLabel" type="Label" parent="Panel/Margin/VBox/MyHighestRow/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player"
+clip_text = true
+
+[node name="ScoreLabel" type="Label" parent="Panel/Margin/VBox/MyHighestRow/Margin/HBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(90, 0)
+text = "0"
+horizontal_alignment = 2
+

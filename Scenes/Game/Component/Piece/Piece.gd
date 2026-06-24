@@ -33,6 +33,16 @@ var _origin_position: Vector2 = Vector2.ZERO
 var _last_mouse_global: Vector2 = Vector2.ZERO  # keeps lift smoothing aware of cursor moves
 
 
+func _ready() -> void:
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	for child in get_children():
+		if child is Block:
+			child.set_color(color)
+
+
 # Builds the visual blocks and tints them. Idle block size doubles as the
 # hit-test cell size.
 func setup(p_shape: PieceShape, p_color: Color) -> void:

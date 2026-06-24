@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Block Puzzle Template"
+config/name="BloxChain"
 run/main_scene="res://Scenes/Main/Main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="uid://g2078vu7r2lm"
+config/icon="res://icon.png"
 
 [audio]
 
@@ -23,9 +23,11 @@ buses/default_bus_layout="uid://bj27b0a1dw70h"
 
 McpInteractionServer="*res://Scripts/mcp_interaction_server.gd"
 SaveManager="*res://Resources/Globals/SaveManager.gd"
+ThemeManager="*res://Resources/Globals/ThemeManager.gd"
 GameState="*res://Resources/Globals/GameState.gd"
 AudioManager="*res://Resources/Globals/AudioManager.gd"
 SceneRouter="*res://Resources/Globals/SceneRouter.gd"
+LeaderboardManager="*res://Scripts/LeaderboardManager.gd"
 
 [display]
 

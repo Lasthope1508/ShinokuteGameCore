@@ -9,13 +9,14 @@ uniform float pulse_intensity : hint_range(0.0, 1.0) = 0.65;
 
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
-	// 0..1 sine wave.
-	float pulse = sin(TIME * pulse_speed) * 0.5 + 0.5;
-	// How strongly to push the pixel toward white this frame.
-	float mix_amount = pulse * pulse_strength * pulse_intensity;
-	// Apply Godot's default modulate (COLOR) before mixing toward white,
-	// then keep the texture's alpha so transparent pixels stay invisible.
-	vec3 base = tex.rgb * COLOR.rgb;
-	vec3 final_rgb = mix(base, vec3(1.0), mix_amount * tex.a);
-	COLOR = vec4(final_rgb, tex.a * COLOR.a);
+	vec4 base_color = tex * COLOR;
+	
+	if (pulse_strength > 0.01) {
+		float pulse = sin(TIME * pulse_speed) * 0.5 + 0.5;
+		float mix_amount = pulse * pulse_strength * pulse_intensity;
+		vec3 final_rgb = mix(base_color.rgb, vec3(1.0), mix_amount * tex.a);
+		COLOR = vec4(final_rgb, base_color.a);
+	} else {
+		COLOR = base_color;
+	}
 }

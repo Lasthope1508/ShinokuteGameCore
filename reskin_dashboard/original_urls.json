@@ -1,0 +1,14 @@
+{
+    "Assets/Sprites/block.png": "https://6893f1e40b.image-hosting.uk/original/images/block.png",
+    "Assets/Sprites/cell_empty.png": "https://6893f1e40b.image-hosting.uk/original/images/cell_empty.png",
+    "Assets/Sprites/logo.png": "https://6893f1e40b.image-hosting.uk/original/images/logo.png",
+    "Assets/Sprites/piece_slot.png": "https://6893f1e40b.image-hosting.uk/original/images/piece_slot.png",
+    "Audio/SFX/sfx_pick.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_pick.wav",
+    "Audio/SFX/sfx_drop.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_drop.wav",
+    "Audio/SFX/sfx_button.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_button.wav",
+    "Audio/SFX/sfx_clear.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_clear.wav",
+    "Audio/SFX/sfx_combo.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_combo.wav",
+    "Audio/SFX/sfx_populateSlot.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_populateSlot.wav",
+    "Audio/SFX/sfx_invalid.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_invalid.wav",
+    "Audio/SFX/sfx_fail.wav": "https://6893f1e40b.image-hosting.uk/original/audio/sfx_fail.wav"
+}

@@ -27,11 +27,59 @@ func _ready() -> void:
 	_block_material.set_shader_parameter("pulse_strength", 0.0)
 	block.material = _block_material
 
+	# Listen to theme changes
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+	_update_theme()
+
+
+func _update_theme() -> void:
+	var active_theme = ThemeManager.get_active_theme()
+	if active_theme:
+		if active_theme.cell_empty_texture != null:
+			background.texture = active_theme.cell_empty_texture
+		else:
+			background.texture = load("res://Assets/Sprites/cell_empty.png")
+		background.modulate = active_theme.cell_empty_tint
+	else:
+		background.texture = load("res://Assets/Sprites/cell_empty.png")
+		background.modulate = Color(0.2, 0.15, 0.1, 0.5)
+	
+	if occupied:
+		_update_texture_for_color(block, occupied_color)
+		if ThemeManager.get_active_skin() == "fruits" and active_theme:
+			block.modulate = block.modulate * active_theme.placed_block_modulate
+		else:
+			block.modulate = block.modulate * Color(1.0, 1.0, 1.0, 1.0)
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	_update_theme()
+
+
+func _update_texture_for_color(rect: TextureRect, color: Color) -> void:
+	var color_index: int = ThemeManager.find_color_index(color)
+
+	if ThemeManager.get_active_skin() == "fruits" and color_index != -1:
+		var tex = ThemeManager.get_block_texture(color_index)
+		if tex != null:
+			rect.texture = tex
+			rect.modulate = Color.WHITE
+			return
+			
+	# Fallback/Brick skin uses the classic flat block modulated by its color
+	rect.texture = load("res://Assets/Sprites/block.png")
+	rect.modulate = color
+
 
 func fill(color: Color) -> void:
 	occupied = true
 	occupied_color = color
-	block.modulate = color
+	_update_texture_for_color(block, color)
+	var active_theme = ThemeManager.get_active_theme()
+	if active_theme:
+		block.modulate = block.modulate * active_theme.placed_block_modulate
+	else:
+		block.modulate = block.modulate * Color(0.92, 0.92, 0.92, 1.0)
 	block.visible = true
 	block.scale = Vector2.ONE
 
@@ -78,8 +126,12 @@ func clear_with_animation(delay: float = 0.0) -> Tween:
 
 # Shows a translucent ghost of the dragged piece on this cell.
 func show_preview(color: Color) -> void:
-	preview.modulate = color
+	_update_texture_for_color(preview, color)
+	var active_theme = ThemeManager.get_active_theme()
+	var alpha = active_theme.preview_valid_tint.a if active_theme else 0.45
+	preview.modulate.a = alpha
 	preview.visible = true
+
 
 
 func clear_preview() -> void:

@@ -20,6 +20,7 @@ var best_score: int = 0
 var ad_rewards_used: int = 0
 var assists_used: int = 0
 var is_game_over: bool = false
+var current_streak: int = 0
 
 
 func _ready() -> void:
@@ -32,8 +33,18 @@ func reset_run() -> void:
 	ad_rewards_used = 0
 	assists_used = 0
 	is_game_over = false
+	current_streak = 0
 	score_changed.emit(current_score, 0)
 	game_reset.emit()
+
+
+func increment_streak() -> int:
+	current_streak += 1
+	return current_streak
+
+
+func reset_streak() -> void:
+	current_streak = 0
 
 
 # Adds the placement bonus and returns the credited delta.
@@ -84,3 +95,19 @@ func _add_score(delta: int) -> void:
 		best_score = current_score
 		SaveManager.set_best_score(best_score)
 		best_changed.emit(best_score)
+
+
+# Cumulative score required to clear `level`. L0=0, L1=100, L2=250, L3=450, …
+# Analytical level targets follow: 25 * level^2 + 75 * level
+func get_target_for_level(level: int) -> int:
+	return 25 * level * level + 75 * level
+
+
+# Highest level whose target is ≤ score.
+func get_level_for_score(score: int) -> int:
+	if score <= 0:
+		return 0
+	# Quadratic formula solver for 25*L^2 + 75*L - S = 0
+	# L = (-75 + sqrt(5625 + 100 * score)) / 50
+	return int((-75.0 + sqrt(5625.0 + 100.0 * score)) / 50.0)
+

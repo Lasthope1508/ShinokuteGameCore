@@ -3,6 +3,7 @@
 extends Control
 
 const SETTINGS_OVERLAY := preload("res://Scenes/Game/Component/Overlays/SettingsOverlay.tscn")
+const LEADERBOARD_OVERLAY := preload("res://Scenes/Game/Component/Overlays/LeaderboardOverlay.tscn")
 const GAMEOVER_OVERLAY := preload("res://Scenes/Game/Component/Overlays/GameOverOverlay.tscn")
 const SCORE_POPUP := preload("res://Scenes/Game/Component/HUD/ScorePopup.tscn")
 const LINE_CLEAR_PARTICLES := preload("res://Scenes/Game/Component/Grid/LineClearParticles.tscn")
@@ -10,6 +11,7 @@ const LINE_CLEAR_PARTICLES := preload("res://Scenes/Game/Component/Grid/LineClea
 const THEME_PATH := "res://Resources/Data/default_theme.tres"
 
 @onready var background: ColorRect = $Background
+@onready var background_texture_rect: TextureRect = $BackgroundTexture
 @onready var hud: HUD = $Layout/HUD
 @onready var progress_bar_widget: ScoreProgressBar = $Layout/ProgressFrame/ScoreProgressBar
 @onready var grid: Grid = $Layout/GridFrame/AspectRatio/Grid
@@ -18,6 +20,10 @@ const THEME_PATH := "res://Resources/Data/default_theme.tres"
 
 var _theme_config: ThemeConfig
 var _active_piece: Piece
+var _background_texture_new: TextureRect
+var _fade_tween: Tween
+var _current_bg_index: int = -1
+var _shuffled_bg_indices: Array[int] = []
 
 # --- Camera shake -------------------------------------------------------
 # Strength scales with combo (clamped at shake_max_combo). 0 disables it.
@@ -47,14 +53,32 @@ var _tutorial_ghost: Piece
 
 
 func _ready() -> void:
-	_theme_config = load(THEME_PATH) as ThemeConfig
-	grid.theme_config = _theme_config
-	tray.theme_config = _theme_config
+	# Create BackgroundTextureNew dynamically for cross-fade transitions
+	_background_texture_new = TextureRect.new()
+	_background_texture_new.name = "BackgroundTextureNew"
+	_background_texture_new.anchor_right = 1.0
+	_background_texture_new.anchor_bottom = 1.0
+	_background_texture_new.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_background_texture_new.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_background_texture_new.visible = false
+	_background_texture_new.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var bg_idx = background_texture_rect.get_index()
+	add_child(_background_texture_new)
+	move_child(_background_texture_new, bg_idx + 1)
+
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+	GameState.score_changed.connect(_on_score_changed)
+	GameState.game_reset.connect(_on_game_reset)
+	resized.connect(_update_background_layout)
+	_update_theme()
 
 	GameState.reset_run()
 	tray.setup(grid, drag_layer)
 
+
 	hud.settings_requested.connect(_on_settings_requested)
+	hud.leaderboard_requested.connect(_on_leaderboard_requested)
 	tray.piece_picked.connect(_on_piece_picked)
 	GameState.game_over.connect(_on_game_over)
 	progress_bar_widget.level_up_triggered.connect(_on_level_up_triggered)
@@ -67,6 +91,134 @@ func _ready() -> void:
 	else:
 		tray.refill()
 		tray.update_availability()
+
+
+func _update_theme() -> void:
+	_theme_config = ThemeManager.get_active_theme()
+	grid.theme_config = _theme_config
+	tray.theme_config = _theme_config
+	
+	if _theme_config:
+		# Dark dynamic background color derived from active theme colors
+		var bg_color = _theme_config.quadrant_dark_tint
+		bg_color.a = 1.0
+		bg_color = bg_color.darkened(0.85)
+		background.color = bg_color
+
+		_update_background(GameState.current_score, true)
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	_update_theme()
+
+
+func _on_score_changed(new_score: int, _delta: int) -> void:
+	_update_background(new_score)
+
+
+func _update_background_layout() -> void:
+	if not is_inside_tree():
+		return
+	_scale_texture_rect_to_bottom(background_texture_rect)
+	_scale_texture_rect_to_bottom(_background_texture_new)
+
+
+func _scale_texture_rect_to_bottom(tex_rect: TextureRect) -> void:
+	if not tex_rect or not tex_rect.texture:
+		return
+		
+	tex_rect.anchor_left = 0
+	tex_rect.anchor_top = 0
+	tex_rect.anchor_right = 0
+	tex_rect.anchor_bottom = 0
+	
+	tex_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tex_rect.stretch_mode = TextureRect.STRETCH_SCALE
+	
+	var parent_size = size
+	var texture_size = tex_rect.texture.get_size()
+	if texture_size.x == 0 or texture_size.y == 0:
+		return
+		
+	var aspect_parent = parent_size.x / parent_size.y
+	var aspect_tex = texture_size.x / texture_size.y
+	
+	if aspect_parent > aspect_tex:
+		var scale_factor = parent_size.x / texture_size.x
+		var new_width = parent_size.x
+		var new_height = texture_size.y * scale_factor
+		tex_rect.size = Vector2(new_width, new_height)
+		tex_rect.position = Vector2(0, parent_size.y - new_height)
+	else:
+		var scale_factor = parent_size.y / texture_size.y
+		var new_width = texture_size.x * scale_factor
+		var new_height = parent_size.y
+		tex_rect.size = Vector2(new_width, new_height)
+		tex_rect.position = Vector2((parent_size.x - new_width) / 2.0, 0)
+
+
+func _update_background(score: int, force_immediate: bool = false) -> void:
+	if not _theme_config:
+		return
+		
+	var target_bg = _theme_config.background_texture
+	var target_index = 0
+	
+	if not _theme_config.milestone_backgrounds.is_empty():
+		var level = GameState.get_level_for_score(score)
+		if _shuffled_bg_indices.is_empty():
+			_initialize_shuffled_backgrounds()
+			
+		if not _shuffled_bg_indices.is_empty():
+			var shuffled_pos = level % _shuffled_bg_indices.size()
+			target_index = _shuffled_bg_indices[shuffled_pos]
+			if _theme_config.milestone_backgrounds[target_index] != null:
+				target_bg = _theme_config.milestone_backgrounds[target_index]
+			
+	if target_index == _current_bg_index and not force_immediate:
+		return
+		
+	_current_bg_index = target_index
+	
+	if force_immediate or not is_inside_tree() or _background_texture_new == null:
+		if target_bg:
+			background_texture_rect.texture = target_bg
+			background_texture_rect.visible = true
+			background_texture_rect.modulate.a = 1.0
+		else:
+			background_texture_rect.texture = null
+			background_texture_rect.visible = false
+		_update_background_layout()
+		return
+		
+	# Cross-fade transition
+	if _fade_tween and _fade_tween.is_valid():
+		_fade_tween.kill()
+		
+	if target_bg:
+		_background_texture_new.texture = target_bg
+		_background_texture_new.modulate.a = 0.0
+		_background_texture_new.visible = true
+		_update_background_layout()
+		
+		_fade_tween = create_tween()
+		_fade_tween.tween_property(_background_texture_new, "modulate:a", 1.0, 0.6)
+		_fade_tween.tween_callback(func():
+			background_texture_rect.texture = target_bg
+			background_texture_rect.visible = true
+			_background_texture_new.visible = false
+			_update_background_layout()
+		)
+	else:
+		_fade_tween = create_tween()
+		_fade_tween.tween_property(background_texture_rect, "modulate:a", 0.0, 0.6)
+		_fade_tween.tween_callback(func():
+			background_texture_rect.texture = null
+			background_texture_rect.visible = false
+			background_texture_rect.modulate.a = 1.0
+			_update_background_layout()
+		)
+
 
 
 # --- Drag-and-drop pipeline ----------------------------------------------
@@ -109,7 +261,7 @@ func _on_drag_moved(_piece: Piece, hovered_cell: Vector2i) -> void:
 	if hovered_cell.x < 0:
 		grid.clear_preview()
 		return
-	grid.project_preview(_active_piece.shape, hovered_cell)
+	grid.project_preview(_piece.shape, hovered_cell, _piece.color)
 
 
 func _on_drop_requested(piece: Piece, target_origin: Vector2i) -> void:
@@ -180,6 +332,11 @@ func _on_drop_requested(piece: Piece, target_origin: Vector2i) -> void:
 		await _run_game_over_sequence(refilled)
 
 
+func _get_streak_pitch(streak_val: int) -> float:
+	return ThemeManager.get_streak_pitch(streak_val)
+
+
+
 # Detects and animates row / column / quadrant clears from the last placement.
 # Sequence: SFX → cascade → optional "COMBO xN" popup → match popup.
 func _resolve_clears(_origin: Vector2i) -> void:
@@ -189,17 +346,51 @@ func _resolve_clears(_origin: Vector2i) -> void:
 	var cols: Array[int] = clears["cols"]
 	var quadrants: Array[Vector2i] = clears["quadrants"]
 	if cells.is_empty():
+		GameState.reset_streak()
 		return
 
 	var combo: int = GameState.compute_combo(rows.size(), cols.size(), quadrants.size())
+	
+	# Increment streak and calculate pitch scale using pentatonic steps
+	var streak: int = GameState.increment_streak()
+	var pitch: float = _get_streak_pitch(streak)
+	print("[AUDIO LOG] Clear Streak: ", streak, " | Pitch Scale: ", pitch)
+	
 	# Base clear sting fires here; the "combo" SFX fires later in sync with the popup.
-	AudioManager.play_sfx("clear")
+	AudioManager.play_sfx("clear", 0.0, pitch)
 	_camera_shake(combo)
+
+	# Spawn sword slash VFX
+	var slash_color = _theme_config.accent_color if _theme_config else Color(1.0, 0.78, 0.05)
+	
+	for y in rows:
+		var p_start = grid._grid_origin + Vector2(0, (y + 0.5) * grid.cell_size)
+		var p_end = grid._grid_origin + Vector2(Grid.SIZE * grid.cell_size, (y + 0.5) * grid.cell_size)
+		_spawn_slash(p_start, p_end, slash_color)
+		
+	for x in cols:
+		var p_start = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, 0)
+		var p_end = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, Grid.SIZE * grid.cell_size)
+		_spawn_slash(p_start, p_end, slash_color)
+		
+	for q in quadrants:
+		# Top-left to bottom-right diagonal
+		var p_start1 = grid._grid_origin + Vector2(q.x * 3 * grid.cell_size, q.y * 3 * grid.cell_size)
+		var p_end1 = grid._grid_origin + Vector2((q.x * 3 + 3) * grid.cell_size, (q.y * 3 + 3) * grid.cell_size)
+		_spawn_slash(p_start1, p_end1, slash_color)
+		
+		# Top-right to bottom-left diagonal
+		var p_start2 = grid._grid_origin + Vector2((q.x * 3 + 3) * grid.cell_size, q.y * 3 * grid.cell_size)
+		var p_end2 = grid._grid_origin + Vector2(q.x * 3 * grid.cell_size, (q.y * 3 + 3) * grid.cell_size)
+		_spawn_slash(p_start2, p_end2, slash_color)
 
 	# Spawn particle explosion for each cleared cell
 	for cell in cells:
 		var particles = LINE_CLEAR_PARTICLES.instantiate()
 		particles.global_position = grid.cell_center_to_global(Vector2(cell))
+		var cell_color = grid.get_cell_color(cell)
+		if particles.has_method("set_particle_color"):
+			particles.set_particle_color(cell_color)
 		add_child(particles)
 
 	# Cascade first: spinning blocks fly off before any score readout.
@@ -209,9 +400,59 @@ func _resolve_clears(_origin: Vector2i) -> void:
 	if combo >= 2:
 		await _spawn_combo_popup(combo)
 
+	# Consecutive clear streak label appears letter-by-letter.
+	if streak >= 2:
+		await _spawn_streak_popup(streak)
+
 	var clear_value: int = GameState.award_clears(cells.size(), combo)
 	var magnitude: float = clamp(0.4 + 0.15 * (rows.size() + cols.size() + quadrants.size() * 2), 0.4, 1.0)
 	_spawn_match_popup(clear_value, magnitude)
+
+
+func _spawn_slash(p_start: Vector2, p_end: Vector2, color: Color) -> void:
+	# Glow line (thick, colored)
+	var glow_line := Line2D.new()
+	glow_line.points = PackedVector2Array([p_start, p_end])
+	glow_line.width = 18.0
+	glow_line.default_color = color
+	glow_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	glow_line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	glow_line.antialiased = true
+	grid.cells_layer.add_child(glow_line)
+	
+	# Core line (thin, white)
+	var core_line := Line2D.new()
+	core_line.points = PackedVector2Array([p_start, p_end])
+	core_line.width = 4.0
+	core_line.default_color = Color.WHITE
+	core_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	core_line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	core_line.antialiased = true
+	grid.cells_layer.add_child(core_line)
+	
+	# Tween to animate width and opacity
+	var tween := create_tween().set_parallel(true)
+	
+	# Fade width to 0
+	tween.tween_property(glow_line, "width", 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(core_line, "width", 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+	# Fade color (alpha)
+	var glow_target_color := color
+	glow_target_color.a = 0.0
+	var core_target_color := Color.WHITE
+	core_target_color.a = 0.0
+	
+	tween.tween_property(glow_line, "default_color", glow_target_color, 0.2)
+	tween.tween_property(core_line, "default_color", core_target_color, 0.2)
+	
+	# Free when done
+	tween.finished.connect(func():
+		if is_instance_valid(glow_line):
+			glow_line.queue_free()
+		if is_instance_valid(core_line):
+			core_line.queue_free()
+	)
 
 
 # --- Score popups ---------------------------------------------------------
@@ -250,8 +491,32 @@ func _spawn_combo_popup(combo: int) -> void:
 	await get_tree().process_frame
 	if not is_instance_valid(popup):
 		return
-	AudioManager.play_sfx("combo")
+		
+	# Get pitch multiplier from SSOT
+	var combo_config = ThemeManager.get_combo_config(combo)
+	var combo_multiplier = combo_config["sfx_pitch"] if combo_config else 1.0
+	
+	# Harmonize with current streak pitch
+	var streak_pitch = _get_streak_pitch(GameState.current_streak)
+	var final_pitch = min(3.0, streak_pitch * combo_multiplier)
+	print("[AUDIO LOG] Combo: ", combo, " | Multiplier: ", combo_multiplier, " | Final Pitch: ", final_pitch)
+	
+	AudioManager.play_sfx("combo", 0.0, final_pitch)
+	
 	await popup.play_combo(combo)
+
+
+# "STREAK xN" popup at screen center, awaited so the clear phase pauses on it.
+func _spawn_streak_popup(streak: int) -> void:
+	var popup: ScorePopup = SCORE_POPUP.instantiate()
+	add_child(popup)
+	await get_tree().process_frame
+	if not is_instance_valid(popup):
+		return
+		
+	var pitch = _get_streak_pitch(streak)
+	AudioManager.play_sfx("popup", 0.0, pitch)
+	await popup.play_streak(streak)
 
 
 # Match popup spawned at screen center with an elastic bump. Lives on Game
@@ -300,6 +565,12 @@ func _on_settings_requested() -> void:
 	overlay.main_menu_requested.connect(_on_main_menu_requested.bind(overlay))
 	add_child(overlay)
 	overlay.open()
+
+
+func _on_leaderboard_requested() -> void:
+	var overlay := LEADERBOARD_OVERLAY.instantiate()
+	add_child(overlay)
+
 
 
 func _on_restart_requested(overlay: Node) -> void:
@@ -392,6 +663,7 @@ func _save_game_state() -> void:
 		"grid": grid.snapshot_grid_state(),
 		"slots": tray.snapshot_state(),
 		"assists_used": GameState.assists_used,
+		"shuffled_bg_indices": _shuffled_bg_indices,
 	})
 
 
@@ -403,12 +675,34 @@ func _load_saved_game() -> void:
 	GameState.current_score = saved_score
 	GameState.score_changed.emit(saved_score, 0)
 	GameState.assists_used = int(data.get("assists_used", 0))
+	
+	# Load or initialize shuffled background sequence
+	_shuffled_bg_indices.clear()
+	var saved_indices = data.get("shuffled_bg_indices", [])
+	if saved_indices is Array and not saved_indices.is_empty():
+		for idx in saved_indices:
+			_shuffled_bg_indices.append(int(idx))
+	else:
+		_initialize_shuffled_backgrounds()
+		
 	grid.restore_grid_state(data.get("grid", []))
 	tray.restore_state(data.get("slots", []))
 	if tray.is_fully_empty():
 		tray.refill()
 	tray.update_availability()
 	progress_bar_widget.refresh_from_state()
+
+
+func _on_game_reset() -> void:
+	_initialize_shuffled_backgrounds()
+
+
+func _initialize_shuffled_backgrounds() -> void:
+	_shuffled_bg_indices.clear()
+	if _theme_config and not _theme_config.milestone_backgrounds.is_empty():
+		for i in range(_theme_config.milestone_backgrounds.size()):
+			_shuffled_bg_indices.append(i)
+		_shuffled_bg_indices.shuffle()
 
 	# Saved run already in a dead-end → roll straight into game-over.
 	if not tray.has_any_enabled():
@@ -428,8 +722,12 @@ func _on_level_up_triggered() -> void:
 func _camera_shake(combo: int) -> void:
 	if shake_base_strength <= 0.0 or shake_base_duration <= 0.0:
 		return
-	var clamped_combo: int = clamp(combo, 1, shake_max_combo)
-	_shake_strength = shake_base_strength * float(clamped_combo)
+	
+	# Fetch shake intensity from SSOT
+	var combo_config = ThemeManager.get_combo_config(combo)
+	var intensity: float = combo_config["shake_intensity"] if combo_config else float(combo)
+	
+	_shake_strength = shake_base_strength * intensity
 	_shake_total = shake_base_duration
 	_shake_remaining = _shake_total
 	# Cache the canvas transform so we offset relative to it (preserves any
@@ -510,7 +808,7 @@ func _start_tutorial_step_1() -> void:
 	_tutorial_expected_origin = Vector2i(4, 3)
 
 	# Pre-fill rows 3 and 4 except the central column.
-	var fill_color: Color = _theme_config.piece_colors[3] if _theme_config else Color(0.231, 0.510, 0.965)
+	var fill_color: Color = ThemeManager.get_block_color(3)
 	for x in range(Grid.SIZE):
 		if x == 4:
 			continue
@@ -522,7 +820,7 @@ func _start_tutorial_step_1() -> void:
 	shape.cells = [Vector2i(0, 0), Vector2i(0, 1)]
 	shape.display_name = "tutorial_domino_v"
 	shape.weight = 0.0
-	var piece_color: Color = _theme_config.piece_colors[0] if _theme_config else Color(0.486, 0.227, 0.929)
+	var piece_color: Color = ThemeManager.get_block_color(0)
 	tray.populate_slot_manual(1, shape, piece_color)
 
 	# Wait for the spawn bump to settle, then animate the cursor hint loop.
@@ -536,7 +834,7 @@ func _start_tutorial_step_2() -> void:
 	_tutorial_step = 2
 	_tutorial_expected_origin = Vector2i(4, 4)
 
-	var fill_color: Color = _theme_config.piece_colors[5] if _theme_config else Color(0.925, 0.282, 0.6)
+	var fill_color: Color = ThemeManager.get_block_color(5)
 	for y in range(3, 6):
 		for x in range(3, 6):
 			if x == 4 and y == 4:
@@ -548,7 +846,7 @@ func _start_tutorial_step_2() -> void:
 	shape.cells = [Vector2i(0, 0)]
 	shape.display_name = "tutorial_mono"
 	shape.weight = 0.0
-	var piece_color: Color = _theme_config.piece_colors[1] if _theme_config else Color(0.937, 0.267, 0.267)
+	var piece_color: Color = ThemeManager.get_block_color(1)
 	tray.populate_slot_manual(1, shape, piece_color)
 
 	await get_tree().create_timer(0.55).timeout

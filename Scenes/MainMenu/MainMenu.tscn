@@ -19,20 +19,37 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.08, 0.06, 0.05, 1)
 
+[node name="BackgroundTexture" type="TextureRect" parent="." unique_id=123456789]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Center" type="CenterContainer" parent="." unique_id=926817208]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = -273.5
-offset_top = 233.0
+offset_top = -320.0
 offset_right = 273.5
-offset_bottom = 657.0
+offset_bottom = 320.0
 grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="Center" unique_id=410331142]
 layout_mode = 2
 theme_override_constants/separation = 40
+
+[node name="Logo" type="TextureRect" parent="Center/VBox" unique_id=234567890]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Title" type="Label" parent="Center/VBox" unique_id=354330859]
 layout_mode = 2
@@ -64,6 +81,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Settings"
 
+[node name="LeaderboardButton" type="Button" parent="Center/VBox" unique_id=987654321]
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Leaderboard"
+
 [node name="Space2" type="Control" parent="Center/VBox" unique_id=1652487085]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
@@ -88,5 +111,5 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(0.7, 0.74, 0.85, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 30
-text = "Block Puzzle Template v1.0.0"
+text = "BloxChain v1.0.0"
 vertical_alignment = 1

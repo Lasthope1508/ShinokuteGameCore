@@ -1,44 +1,8 @@
-# Block Puzzle Template
+# BloxChain
 
-A clean, fully-commented **Godot 4.6** template for a block-puzzle game in
-the Woodoku / sudoku-puzzle style:
+BloxChain is a premium block puzzle game built with Godot Engine, featuring high-quality themes, leaderboards, and audio visual effects.
 
-* 9×9 grid divided into nine alternating 3×3 quadrants.
-* Bottom tray with three slots that get refilled with random tetromino-like
-  pieces (data-driven via `Resource` files).
-* Drag-and-drop placement with translucent preview, clear-line hints and a
-  pulsing shader highlight on the blocks that would be removed by a match.
-* Two-stage scoring (placement → cascade → combo readout) with a dynamic
-  combo multiplier.
-* Score progress bar with milestone-driven level-ups (target → fill →
-  drain → next target).
-* On-boarding **tutorial** triggered on the first launch (two scripted
-  placements, animated cursor + ghost piece, persisted completion flag).
-* Animated row / column / quadrant clears with bump-elastic block removal.
-* **Camera shake** that scales with the combo magnitude and triggers also
-  on score-progress milestones, fully tunable from Inspector.
-* Settings overlay (audio sliders, Restart Game, Main Menu).
-* Game-over overlay with 10 s countdown, **Restart** and an **ADReward**
-  stub (limited to 2 uses per game-over screen).
-* Full session save: score, grid layout, slot pieces — resume the run after
-  a refresh, app close, or trip back to the main menu.
-* Project-wide `Theme.tres` so the buyer can recolor the whole UI from one
-  resource (panels, buttons, labels, outlines, shadows).
-* Fade scene transitions and **bump-elastic** overlays.
-* Targeting Web (HTML5) but works on Desktop and Mobile too — viewport is
-  responsive.
-
-The template is intentionally minimal in code but **deeply Inspector-driven**:
-almost every visual is exposed as a `Resource`, a `theme_override`, or an
-`@export` so the buyer can re-skin the game without touching `.gd` files.
-
----
-
-## Requirements
-
-* Godot **4.6** (or later 4.x).
-* GL Compatibility renderer (set in `project.godot`) for the broadest
-  hardware support, including HTML5 export.
+Developed and published by **Shinoku Studio**.
 
 ---
 

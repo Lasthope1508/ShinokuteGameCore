@@ -1,77 +1,117 @@
-## Loads PieceShape .tres files and provides weighted random picking.
-## Loads from PIECE_PATHS first (required for HTML5, where DirAccess.open()
-## on a res:// directory returns null), then falls back to a DirAccess scan
-## on editor/desktop. When adding a new piece, append its path to PIECE_PATHS
-## or it will be missing on web builds.
+## Single Source of Truth (SSOT) registry for all piece shapes in the game.
+## Provides weighted random picking.
 class_name PieceLibrary extends RefCounted
 
-const DEFAULT_PIECES_DIR := "res://Resources/Data/Pieces/"
-
-# Explicit registry — must contain every shipped piece.
-const PIECE_PATHS: Array[String] = [
-	"res://Resources/Data/Pieces/mono.tres",
-	"res://Resources/Data/Pieces/domino_h.tres",
-	"res://Resources/Data/Pieces/domino_v.tres",
-	"res://Resources/Data/Pieces/tri_h.tres",
-	"res://Resources/Data/Pieces/tri_v.tres",
-	"res://Resources/Data/Pieces/corner_3.tres",
-	"res://Resources/Data/Pieces/l_shape.tres",
-	"res://Resources/Data/Pieces/j_shape.tres",
-	"res://Resources/Data/Pieces/t_shape.tres",
-	"res://Resources/Data/Pieces/i_shape_h.tres",
-	"res://Resources/Data/Pieces/i_shape_v.tres",
-	"res://Resources/Data/Pieces/s_shape.tres",
-	"res://Resources/Data/Pieces/square_2.tres",
-	"res://Resources/Data/Pieces/square_3.tres",
+const SHAPES_REGISTRY: Array[Dictionary] = [
+	{
+		"name": "mono",
+		"display_name": "Mono",
+		"cells": [Vector2i(0, 0)],
+		"weight": 0.4
+	},
+	{
+		"name": "domino_h",
+		"display_name": "Domino H",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0)],
+		"weight": 1.5
+	},
+	{
+		"name": "domino_v",
+		"display_name": "Domino V",
+		"cells": [Vector2i(0, 0), Vector2i(0, 1)],
+		"weight": 1.5
+	},
+	{
+		"name": "tri_h",
+		"display_name": "Tri H",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)],
+		"weight": 1.5
+	},
+	{
+		"name": "tri_v",
+		"display_name": "Tri V",
+		"cells": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2)],
+		"weight": 1.5
+	},
+	{
+		"name": "corner_3",
+		"display_name": "Corner 3",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1)],
+		"weight": 1.4
+	},
+	{
+		"name": "l_shape",
+		"display_name": "L",
+		"cells": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, 2)],
+		"weight": 1.0
+	},
+	{
+		"name": "j_shape",
+		"display_name": "J",
+		"cells": [Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(0, 2)],
+		"weight": 1.0
+	},
+	{
+		"name": "t_shape",
+		"display_name": "T",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(1, 1)],
+		"weight": 1.0
+	},
+	{
+		"name": "i_shape_h",
+		"display_name": "I-4 H",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)],
+		"weight": 0.8
+	},
+	{
+		"name": "i_shape_v",
+		"display_name": "I-4 V",
+		"cells": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3)],
+		"weight": 0.8
+	},
+	{
+		"name": "s_shape",
+		"display_name": "S",
+		"cells": [Vector2i(1, 0), Vector2i(2, 0), Vector2i(0, 1), Vector2i(1, 1)],
+		"weight": 0.9
+	},
+	{
+		"name": "square_2",
+		"display_name": "Square 2",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)],
+		"weight": 1.2
+	},
+	{
+		"name": "square_3",
+		"display_name": "Square 3",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
+		"weight": 0.5
+	}
 ]
 
 var _shapes: Array[PieceShape] = []
 var _total_weight: float = 0.0
 
 
-func _init(pieces_dir: String = DEFAULT_PIECES_DIR) -> void:
+func _init(_pieces_dir: String = "") -> void:
 	_shapes.clear()
 	_total_weight = 0.0
-	_load_from_paths(PIECE_PATHS)
-	if _shapes.is_empty():
-		_load_from_dir(pieces_dir)
+	
+	for data in SHAPES_REGISTRY:
+		var shape := PieceShape.new()
+		var cells_typed: Array[Vector2i] = []
+		for cell in data.cells:
+			cells_typed.append(cell)
+		shape.cells = cells_typed
+		shape.display_name = data.display_name
+		shape.weight = data.weight
+		_register_shape(shape)
 
 
-func _load_from_paths(paths: Array) -> void:
-	for path in paths:
-		if not ResourceLoader.exists(path):
-			continue
-		var res := load(path)
-		_register_shape(res)
-
-
-func _load_from_dir(pieces_dir: String) -> void:
-	var dir := DirAccess.open(pieces_dir)
-	if dir == null:
-		push_warning("PieceLibrary: cannot open dir %s" % pieces_dir)
-		return
-	dir.list_dir_begin()
-	var fname := dir.get_next()
-	while fname != "":
-		if not dir.current_is_dir() and (fname.ends_with(".tres") or fname.ends_with(".res")):
-			var path := pieces_dir.path_join(fname)
-			var res := load(path)
-			_register_shape(res)
-		fname = dir.get_next()
-	dir.list_dir_end()
-
-
-func _register_shape(res: Resource) -> void:
-	if res is PieceShape and (res as PieceShape).cells.size() > 0:
-		_shapes.append(res)
-		_total_weight += max(0.0, (res as PieceShape).weight)
-
-
-# Backward-compatible alias from before the explicit registry was added.
-func load_from_dir(pieces_dir: String) -> void:
-	_shapes.clear()
-	_total_weight = 0.0
-	_load_from_dir(pieces_dir)
+func _register_shape(shape: PieceShape) -> void:
+	if shape and shape.cells.size() > 0:
+		_shapes.append(shape)
+		_total_weight += max(0.0, shape.weight)
 
 
 func get_all() -> Array[PieceShape]:

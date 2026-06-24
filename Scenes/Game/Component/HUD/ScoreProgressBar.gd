@@ -23,16 +23,41 @@ func _ready() -> void:
 	progress_bar.value = float(GameState.current_score)
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.game_reset.connect(_on_game_reset)
+	
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+	_update_theme_styles()
 
 
-# Cumulative score required to clear `level`. L0=0, L1=100, L2=250, L3=450, …
-func _target_for(level: int) -> int:
-	return 25 * level * level + 75 * level
+func _update_theme_styles() -> void:
+	var active_theme = ThemeManager.get_active_theme()
+	if active_theme:
+		target_label.add_theme_color_override("font_color", active_theme.text_color)
+		target_label.add_theme_color_override("font_outline_color", active_theme.accent_color.darkened(0.8))
+		target_label.add_theme_constant_override("outline_size", 8)
+		
+		var bg_sb = progress_bar.get_theme_stylebox("background").duplicate() as StyleBoxFlat
+		if bg_sb:
+			var base_bg = active_theme.panel_bg_color
+			bg_sb.bg_color = base_bg.darkened(0.3)
+			bg_sb.border_color = active_theme.panel_border_color
+			progress_bar.add_theme_stylebox_override("background", bg_sb)
+			
+		var fill_sb = progress_bar.get_theme_stylebox("fill").duplicate() as StyleBoxFlat
+		if fill_sb:
+			fill_sb.bg_color = active_theme.accent_color
+			fill_sb.border_color = active_theme.accent_color.darkened(0.5)
+			fill_sb.shadow_color = active_theme.accent_color
+			fill_sb.shadow_color.a = 0.45
+			progress_bar.add_theme_stylebox_override("fill", fill_sb)
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	_update_theme_styles()
 
 
 func _refresh_targets() -> void:
-	_prev_target = _target_for(_current_level)
-	_next_target = _target_for(_current_level + 1)
+	_prev_target = GameState.get_target_for_level(_current_level)
+	_next_target = GameState.get_target_for_level(_current_level + 1)
 	progress_bar.min_value = float(_prev_target)
 	progress_bar.max_value = float(_next_target)
 	target_label.text = str(_next_target)
@@ -109,20 +134,11 @@ func _on_game_reset() -> void:
 	progress_bar.value = 0.0
 
 
-# Highest level whose target is ≤ score. Used at load time to place the bar
-# in the right tier without re-running animations.
-func _level_for_score(score: int) -> int:
-	var lvl: int = 0
-	while _target_for(lvl + 1) <= score:
-		lvl += 1
-	return lvl
-
-
 # Snaps the bar to the current score without animation (post-load).
 func refresh_from_state() -> void:
 	_processing = false
 	if _value_tween and _value_tween.is_valid():
 		_value_tween.kill()
-	_current_level = _level_for_score(GameState.current_score)
+	_current_level = GameState.get_level_for_score(GameState.current_score)
 	_refresh_targets()
 	progress_bar.value = float(GameState.current_score)
