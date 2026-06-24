@@ -16,7 +16,6 @@ class_name ThemeConfig extends Resource
 @export var background_texture: Texture2D = preload("res://Assets/Sprites/greeting_bg.png")
 @export var milestone_backgrounds: Array[Texture2D] = []
 @export var background_score_step: int = 500
-@export var playboard_texture: Texture2D = preload("res://Assets/Sprites/playboard.png")
 @export var playboard_scale: float = 1.0
 @export var show_background_in_game: bool = false
 

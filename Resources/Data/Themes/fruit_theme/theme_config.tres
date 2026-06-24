@@ -18,7 +18,6 @@
 [ext_resource type="AudioStream" path="res://Audio/Themes/fruit_theme/sfx_combo.wav" id="16"]
 [ext_resource type="AudioStream" path="res://Audio/Themes/fruit_theme/sfx_invalid.wav" id="17"]
 [ext_resource type="AudioStream" path="res://Audio/Themes/fruit_theme/sfx_fail.wav" id="18"]
-[ext_resource type="Texture2D" path="res://Assets/Themes/fruit_theme/playboard.png" id="19"]
 [ext_resource type="Texture2D" path="res://Assets/Sprites/particle_circle.png" id="20"]
 [ext_resource type="Font" path="res://Assets/Fonts/Poppins-Bold.ttf" id="21"]
 [ext_resource type="Texture2D" path="res://Assets/Sprites/greeting_bg.png" id="22"]

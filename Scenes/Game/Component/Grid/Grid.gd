@@ -41,11 +41,8 @@ func _update_theme() -> void:
 	
 	var playboard = get_node_or_null("Playboard")
 	if playboard:
-		if theme_config and theme_config.playboard_texture != null:
-			playboard.texture = theme_config.playboard_texture
-			playboard.visible = true
-		else:
-			playboard.visible = false
+		playboard.texture = preload("res://Assets/Sprites/playboard.png")
+		playboard.visible = true
 
 	if _quadrants.size() > 0:
 		for qy in QUADRANT_SIZE:
@@ -340,7 +337,7 @@ func _layout_grid() -> void:
 		playboard.offset_right = 0.0
 		playboard.offset_bottom = 0.0
 		
-		var scale_factor: float = theme_config.playboard_scale if (theme_config and theme_config.playboard_texture != null) else 1.0
+		var scale_factor: float = theme_config.playboard_scale if theme_config else 1.0
 		var pb_size: float = grid_px * scale_factor
 		var offset: float = (pb_size - grid_px) * 0.5
 		playboard.position = _grid_origin - Vector2(offset, offset)
