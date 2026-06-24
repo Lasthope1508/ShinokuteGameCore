@@ -95,6 +95,30 @@ class UploadDashboardHandler(SimpleHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
+    def do_GET(self):
+        if self.path.startswith('/api/logs'):
+            logs_path = os.path.join(DIRECTORY, "upgrade_logs.json")
+            logs = []
+            if os.path.exists(logs_path):
+                with open(logs_path, "r", encoding="utf-8") as f:
+                    try:
+                        logs = json.load(f)
+                    except Exception:
+                        logs = []
+            self.send_json_response(logs)
+        elif self.path.startswith('/api/task-state'):
+            state_path = os.path.join(DIRECTORY, "task_state.json")
+            state = {}
+            if os.path.exists(state_path):
+                with open(state_path, "r", encoding="utf-8") as f:
+                    try:
+                        state = json.load(f)
+                    except Exception:
+                        state = {}
+            self.send_json_response(state)
+        else:
+            super().do_GET()
+
     def do_POST(self):
         if self.path.startswith('/api/upload'):
             # Parse query params or headers
@@ -160,6 +184,79 @@ class UploadDashboardHandler(SimpleHTTPRequestHandler):
                 
             except Exception as e:
                 self.send_error_response(f"General Upload Failure: {str(e)}")
+        elif self.path.startswith('/api/logs/clear'):
+            logs_path = os.path.join(DIRECTORY, "upgrade_logs.json")
+            try:
+                with open(logs_path, "w", encoding="utf-8") as f:
+                    json.dump([], f, indent=2, ensure_ascii=False)
+                self.send_json_response({"success": True, "message": "Logs cleared"})
+            except Exception as e:
+                self.send_error_response(f"Failed to clear logs: {str(e)}")
+        elif self.path.startswith('/api/logs'):
+            content_length = int(self.headers.get('Content-Length', 0))
+            try:
+                body = self.rfile.read(content_length)
+                new_log = json.loads(body.decode('utf-8'))
+                
+                logs_path = os.path.join(DIRECTORY, "upgrade_logs.json")
+                logs = []
+                if os.path.exists(logs_path):
+                    with open(logs_path, "r", encoding="utf-8") as f:
+                        try:
+                            logs = json.load(f)
+                        except Exception:
+                            logs = []
+                
+                if isinstance(new_log, dict):
+                    new_id = max([l.get("id", 0) for l in logs] + [0]) + 1
+                    new_log["id"] = new_id
+                    if "timestamp" not in new_log or not new_log["timestamp"]:
+                        import datetime
+                        new_log["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+                    logs.insert(0, new_log)
+                    
+                    with open(logs_path, "w", encoding="utf-8") as f:
+                        json.dump(logs, f, indent=2, ensure_ascii=False)
+                        
+                    self.send_json_response({"success": True, "log": new_log})
+                else:
+                    self.send_error_response("Invalid log payload")
+            except Exception as e:
+                self.send_error_response(f"Failed to save log: {str(e)}")
+        elif self.path.startswith('/api/task-state'):
+            content_length = int(self.headers.get('Content-Length', 0))
+            try:
+                body = self.rfile.read(content_length)
+                payload = json.loads(body.decode('utf-8'))
+                
+                task_id = payload.get("task")
+                status = payload.get("status")
+                
+                if not task_id or not status:
+                    self.send_error_response("Missing task or status in payload")
+                    return
+                
+                state_path = os.path.join(DIRECTORY, "task_state.json")
+                state = {}
+                if os.path.exists(state_path):
+                    with open(state_path, "r", encoding="utf-8") as f:
+                        try:
+                            state = json.load(f)
+                        except Exception:
+                            state = {}
+                
+                import datetime
+                state[task_id] = {
+                    "status": status,
+                    "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+                }
+                
+                with open(state_path, "w", encoding="utf-8") as f:
+                    json.dump(state, f, indent=2, ensure_ascii=False)
+                    
+                self.send_json_response({"success": True, "state": state})
+            except Exception as e:
+                self.send_error_response(f"Failed to update task state: {str(e)}")
         else:
             self.send_error(404, "Not Found")
 

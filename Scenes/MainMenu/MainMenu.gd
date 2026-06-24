@@ -9,7 +9,7 @@ const USERNAME_PROMPT_OVERLAY := preload("res://Scenes/Game/Component/Overlays/U
 
 # Branding shown in the bottom-left corner of the menu.
 @export var project_name: String = "BloxChain"
-@export var version: String = "1.0.7"
+@export var version: String = "1.0.8"
 
 @onready var play_button: Button = $Center/VBox/PlayButton
 @onready var settings_button: Button = $Center/VBox/SettingsButton
