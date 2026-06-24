@@ -22,6 +22,7 @@ buses/default_bus_layout="uid://bj27b0a1dw70h"
 [autoload]
 
 McpInteractionServer="*res://Scripts/mcp_interaction_server.gd"
+AdManager="*res://Resources/Globals/AdManager.gd"
 SaveManager="*res://Resources/Globals/SaveManager.gd"
 ThemeManager="*res://Resources/Globals/ThemeManager.gd"
 GameState="*res://Resources/Globals/GameState.gd"
