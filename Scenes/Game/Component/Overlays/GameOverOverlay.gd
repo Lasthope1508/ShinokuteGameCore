@@ -97,17 +97,26 @@ func _on_restart_pressed() -> void:
 
 func _on_ad_pressed() -> void:
 	AudioManager.play_sfx("button")
-	# TODO: integrate AdMob / equivalent here. Simulated with a short delay so
-	# the integration point is obvious.
 	ad_button.disabled = true
 	if not GameState.consume_ad_reward():
 		ad_button.disabled = false
 		return
-	await get_tree().create_timer(0.5).timeout
+	
 	countdown.stop()
-	ad_reward_granted.emit()
-	await close()
+	# Call global AdManager to show the rewarded video
+	AdManager.show_rewarded_video(self, "_on_ad_completed")
+
+
+func _on_ad_completed(success: bool) -> void:
+	if success:
+		ad_reward_granted.emit()
+		await close()
+	else:
+		# If the ad failed or was cancelled, resume the countdown
+		if _seconds_left > 0:
+			countdown.start(1.0)
 	ad_button.disabled = false
+
 
 
 func _request_restart() -> void:
