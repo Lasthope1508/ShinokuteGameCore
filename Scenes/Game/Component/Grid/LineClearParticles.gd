@@ -10,6 +10,11 @@ func _ready() -> void:
 		initial_velocity_max = active_theme.particles_initial_velocity_max
 		scale_amount_min = active_theme.particles_scale_min
 		scale_amount_max = active_theme.particles_scale_max
+		lifetime = active_theme.particles_lifetime
+		one_shot = true
+		explosiveness = active_theme.particles_explosiveness
+		damping_min = active_theme.particles_linear_damp_min
+		damping_max = active_theme.particles_linear_damp_max
 		
 		if active_theme.particles_texture != null:
 			texture = active_theme.particles_texture
