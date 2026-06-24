@@ -145,9 +145,22 @@ func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
 	_update_theme()
 
 
+const START_OPTION_OVERLAY := preload("res://Scenes/Game/Component/Overlays/StartOptionOverlay.tscn")
+
+
 func _on_play_pressed() -> void:
 	AudioManager.play_sfx("button")
-	SceneRouter.change_scene(GAME_SCENE_PATH)
+	if not SaveManager.is_tutorial_completed() or SaveManager.has_saved_game():
+		SceneRouter.change_scene(GAME_SCENE_PATH)
+		return
+		
+	var overlay = START_OPTION_OVERLAY.instantiate()
+	add_child(overlay)
+	overlay.mode_selected.connect(func(mode: String):
+		GameState.start_mode = mode
+		SceneRouter.change_scene(GAME_SCENE_PATH)
+	)
+	overlay.open()
 
 
 func _on_settings_pressed() -> void:

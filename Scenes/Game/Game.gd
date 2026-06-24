@@ -89,6 +89,8 @@ func _ready() -> void:
 	elif SaveManager.has_saved_game():
 		_load_saved_game()
 	else:
+		if GameState.start_mode == "chaos":
+			grid.generate_random_start_blocks(10)
 		tray.refill()
 		tray.update_availability()
 
@@ -646,6 +648,8 @@ func _restart_run() -> void:
 	SaveManager.clear_saved_game()
 	GameState.reset_run()
 	grid.reset()
+	if GameState.start_mode == "chaos":
+		grid.generate_random_start_blocks(10)
 	tray.refill()
 	tray.update_availability()
 
