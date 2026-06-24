@@ -35,10 +35,10 @@ var shared_milestone_backgrounds: Array[Texture2D] = []
 signal theme_changed(new_theme_name: String, theme_config: ThemeConfig)
 
 func _ready() -> void:
+	shared_background_texture = preload("res://Assets/Sprites/greeting_bg.png")
 	# Load shared SSOT background assets from fruit theme configuration
 	var fruit_config = load("res://Resources/Data/Themes/fruit_theme/theme_config.tres")
 	if fruit_config:
-		shared_background_texture = fruit_config.get("background_texture")
 		shared_milestone_backgrounds = fruit_config.get("milestone_backgrounds")
 
 	active_skin = SaveManager.get_setting(SKIN_SAVE_KEY, "brick")
