@@ -1042,6 +1042,136 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Comparison Grid Styles to replace inline styles for mobile responsiveness */
+        .comparison-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            background-color: var(--bg-surface-elevated);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-audio-row {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr;
+            gap: 1rem;
+            align-items: center;
+            background-color: var(--bg-surface-elevated);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 1024px) {
+            .workspace-container {
+                flex-direction: column;
+            }
+            
+            .portal-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 1.5rem;
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                gap: 2rem;
+                align-items: start;
+            }
+            
+            .portal-content {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header.portal-header {
+                flex-direction: column;
+                gap: 0.8rem;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+
+            .portal-logo-text {
+                font-size: 1.1rem;
+            }
+
+            .portal-sidebar {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+                padding: 1rem;
+            }
+
+            .inner-tabs-container {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 0.5rem;
+                margin-bottom: 1.5rem;
+                width: 100%;
+                scrollbar-width: thin;
+            }
+
+            .inner-tab-btn {
+                flex-shrink: 0;
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .comparison-grid-3 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .comparison-audio-row {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+                padding: 1rem;
+            }
+            
+            .comparison-audio-row audio {
+                max-width: 100% !important;
+            }
+            
+            /* Responsive canvas styling */
+            #vfx-canvas {
+                max-width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+            
+            .canvas-wrapper {
+                min-width: 100%;
+                padding: 0.5rem;
+            }
+            
+            .vfx-container {
+                flex-direction: column;
+            }
+
+            .flowchart-wrapper {
+                padding: 0.75rem;
+            }
+            
+            /* Drop area responsiveness */
+            #drop-area {
+                padding: 1.5rem 1rem !important;
+            }
+            
+            /* Grid 3 fallback */
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Task dispatcher grid */
+            .task-dispatcher-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1533,7 +1663,7 @@
 
                         <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
                             <!-- Logo -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <div class="comparison-grid-3">
                                 <div>
                                     <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🖼️ LOGO GỐC</h4>
                                     <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
@@ -1558,7 +1688,7 @@
                             </div>
 
                             <!-- Block Tile -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; background-color: var(--bg-surface-elevated); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <div class="comparison-grid-3">
                                 <div>
                                     <h4 style="color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1rem; text-align: center;">🟦 KHỐI GẠCH GỐC</h4>
                                     <div style="background-color: #0b0909; border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
@@ -1596,7 +1726,7 @@
                         </h3>
 
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
-                            <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                            <div class="comparison-audio-row">
                                 <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_pick.wav (Chọn gạch)</div>
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                                     <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Original:</span>
@@ -1612,7 +1742,7 @@
                                 </div>
                             </div>
 
-                            <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 1rem; align-items: center; background-color: var(--bg-surface-elevated); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                            <div class="comparison-audio-row">
                                 <div style="font-family: var(--font-mono); font-weight: 600; color: var(--primary-hover); font-size: 0.95rem;">sfx_drop.wav (Đặt gạch)</div>
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                                     <span style="font-size: 0.8rem; color: var(--text-muted); width: 60px;">Original:</span>
@@ -1736,12 +1866,64 @@
                                 <button id="vfx-btn-neon" class="vfx-btn" onclick="selectVFX('neon')">
                                     <span>Neon Cyberpunk Sparks (Năng lượng)</span>
                                 </button>
+
+                                <button id="vfx-btn-gold" class="vfx-btn" onclick="selectVFX('gold')">
+                                    <span>Gold Rain (Vàng mưa rơi)</span>
+                                </button>
+
+                                <button id="vfx-btn-soul" class="vfx-btn" onclick="selectVFX('soul')">
+                                    <span>Soul Fire (Lửa linh hồn ma quái)</span>
+                                </button>
+
+                                <button id="vfx-btn-candy" class="vfx-btn" onclick="selectVFX('candy')">
+                                    <span>Sweet Candy Crush (Kẹo ngọt ngọt ngào)</span>
+                                </button>
+
+                                <button id="vfx-btn-ice" class="vfx-btn" onclick="selectVFX('ice')">
+                                    <span>Frost Crystal (Pha lê Băng giá)</span>
+                                </button>
+
+                                <button id="vfx-btn-lava" class="vfx-btn" onclick="selectVFX('lava')">
+                                    <span>Volcanic Magma Lava (Lửa Dung nham)</span>
+                                </button>
+                                
+                                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: bold; font-family: var(--font-mono);">
+                                        🎨 CHỌN TEXTURE HẠT (CC0):
+                                    </label>
+                                    <select id="vfx-texture-select" onchange="changeVFXTexture(this.value)" style="width: 100%; padding: 0.75rem; background: var(--bg-card-dark); border: 1px solid var(--border); color: var(--text-main); border-radius: 6px; font-size: 0.9rem; font-family: var(--font-sans); font-weight: bold; cursor: pointer; transition: all 0.2s ease;">
+                                        <option value="default" style="background-color: #18181b; color: #f4f4f5;">-- Dùng mặc định của Theme --</option>
+                                    </select>
+                                </div>
                                 
                                 <div style="border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.9rem;">
                                     <strong style="color: var(--primary);">Mô tả kỹ thuật:</strong>
                                     <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;" id="vfx-description">
                                         Hiệu ứng chém kiếm & nước ép: Khi xóa hàng, một luồng ánh sáng trắng sáng rực viền cam/vàng bùng lên xẹt ngang cực nhanh như nhát chém kiếm sắc bén (Ninja Fruit style), kết hợp tung ra một ít giọt nước ép đầy màu sắc tươi sáng.
                                     </p>
+                                </div>
+                            </div>
+
+                            <div class="card" style="margin-top: 1rem; border-color: rgba(212, 175, 55, 0.3);">
+                                <h4 style="color: var(--primary); margin-bottom: 0.75rem; font-family: var(--font-mono); font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span>🧪 GIẢ LẬP KÍCH HOẠT XÓA (CLEAR)</span>
+                                </h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
+                                    Mô phỏng chân thực các tình huống xóa hàng, cột và khối trong game để kiểm tra hiệu ứng hạt & nhát chém trên từng theme:
+                                </p>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                                    <button class="play-btn" onclick="triggerSimulatedClear('row')" style="padding: 0.6rem; font-size: 0.8rem; font-weight: bold;">
+                                        ↔️ Ăn Hàng Ngang
+                                    </button>
+                                    <button class="play-btn" onclick="triggerSimulatedClear('col')" style="padding: 0.6rem; font-size: 0.8rem; font-weight: bold;">
+                                        ↕️ Ăn Cột Dọc
+                                    </button>
+                                    <button class="play-btn" onclick="triggerSimulatedClear('block3x3')" style="padding: 0.6rem; font-size: 0.8rem; font-weight: bold;">
+                                        🔲 Ăn Khối 3x3
+                                    </button>
+                                    <button class="play-btn" onclick="triggerSimulatedClear('block9x9')" style="padding: 0.6rem; font-size: 0.8rem; background: linear-gradient(135deg, var(--primary) 0%, #d4b537 100%); color: #000; border: none; font-weight: bold;">
+                                        💥 Ăn Khối 9x9
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2436,13 +2618,271 @@
         }
 
         // ------------------ VFX PARTICLE ENGINE ------------------
-        let canvas = null, ctxCanvas = null, particles = [], slashes = [], animationId = null, vfxType = 'fruit';
+        let canvas = null, ctxCanvas = null, particles = [], slashes = [], simulatedCells = [], animationId = null, vfxType = 'fruit', currentVFXLoadId = 0;
+
+        // Load Kenney particle textures for web simulator
+        const vfxImages = {
+            'wood': new Image(),
+            'fruit': new Image(),
+            'neon': new Image(),
+            'gold': new Image(),
+            'soul': new Image(),
+            'candy': new Image(),
+            'ice': new Image(),
+            'lava': new Image()
+        };
+        vfxImages['wood'].src = 'assets/vfx/circle_02.png';
+        vfxImages['fruit'].src = 'assets/vfx/circle_02.png';
+        vfxImages['neon'].src = 'assets/vfx/magic_02.png';
+        vfxImages['gold'].src = 'assets/vfx/star_01.png';
+        vfxImages['soul'].src = 'assets/vfx/flame_05.png';
+        vfxImages['candy'].src = 'assets/vfx/star_02.png';
+        vfxImages['ice'].src = 'assets/vfx/spark_04.png';
+        vfxImages['lava'].src = 'assets/vfx/flame_01.png';
+
+        const tintCanvas = document.createElement('canvas');
+        const tintCtx = tintCanvas.getContext('2d');
+
+        // All available Kenney Particle Pack textures for user selection
+        const availableTextures = [
+            { value: 'circle_01.png', label: 'Circle (Soft Glow)' },
+            { value: 'circle_02.png', label: 'Circle (Sharp Core)' },
+            { value: 'circle_03.png', label: 'Circle (Thin Border)' },
+            { value: 'circle_04.png', label: 'Circle (Center Dot)' },
+            { value: 'circle_05.png', label: 'Circle (Thick Ring)' },
+            { value: 'flare_01.png', label: 'Flare (Glow Star)' },
+            { value: 'light_01.png', label: 'Light (Focus Spot)' },
+            { value: 'light_02.png', label: 'Light (Ambient Spot)' },
+            { value: 'light_03.png', label: 'Light (Spark Star)' },
+            { value: 'magic_01.png', label: 'Magic (Double Ring)' },
+            { value: 'magic_02.png', label: 'Magic (Sparkle Cluster)' },
+            { value: 'magic_03.png', label: 'Magic (Seal/Runic)' },
+            { value: 'magic_04.png', label: 'Magic (Ancient Runes)' },
+            { value: 'magic_05.png', label: 'Magic (Floating Orbs)' },
+            { value: 'flame_01.png', label: 'Flame (Classic Fire)' },
+            { value: 'flame_02.png', label: 'Flame (Puffy Smoke)' },
+            { value: 'flame_03.png', label: 'Flame (Torch Light)' },
+            { value: 'flame_04.png', label: 'Flame (Wide Fire)' },
+            { value: 'flame_05.png', label: 'Flame (Ghostly Spirit)' },
+            { value: 'flame_06.png', label: 'Flame (Sparks Spray)' },
+            { value: 'slash_01.png', label: 'Slash (Double Blade)' },
+            { value: 'slash_02.png', label: 'Slash (Wide Wave)' },
+            { value: 'slash_03.png', label: 'Slash (Curved Wind)' },
+            { value: 'slash_04.png', label: 'Slash (Half Moon)' },
+            { value: 'smoke_01.png', label: 'Smoke (Thick Puff)' },
+            { value: 'smoke_04.png', label: 'Smoke (Ring/Donut)' },
+            { value: 'spark_01.png', label: 'Spark (Multi-Point)' },
+            { value: 'spark_02.png', label: 'Spark (Starburst Burst)' },
+            { value: 'spark_03.png', label: 'Spark (Pixel Tiny)' },
+            { value: 'spark_04.png', label: 'Spark (Cross Flare)' },
+            { value: 'spark_05.png', label: 'Spark (Diagonal Cross)' },
+            { value: 'star_01.png', label: 'Star (4-Point Diamond)' },
+            { value: 'star_02.png', label: 'Star (5-Point Classic)' },
+            { value: 'star_03.png', label: 'Star (8-Point Sparkle)' },
+            { value: 'star_04.png', label: 'Star (Glowing Diamond)' },
+            { value: 'twirl_01.png', label: 'Twirl (Spiral Nebula)' },
+            { value: 'twirl_02.png', label: 'Twirl (Whirlpool)' },
+            { value: 'twirl_03.png', label: 'Twirl (Vortex Cyclone)' }
+        ];
+
+        let customVFXImage = null;
+        let customVFXTextureName = 'default';
+
+        function changeVFXTexture(val) {
+            customVFXTextureName = val;
+            if (val === 'default') {
+                customVFXImage = null;
+            } else {
+                customVFXImage = new Image();
+                customVFXImage.src = 'assets/vfx/' + val;
+            }
+            triggerClearDemo();
+        }
+
+        function populateVFXTextureDropdown() {
+            const select = document.getElementById('vfx-texture-select');
+            if (!select) return;
+            // Clear existing options except first
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            availableTextures.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.value;
+                opt.textContent = t.label;
+                opt.style.backgroundColor = '#18181b';
+                opt.style.color = '#f4f4f5';
+                select.appendChild(opt);
+            });
+        }
+
+        const fallbackConfigs = {
+            'brick_theme': {
+                theme_name: "brick_theme",
+                particles_amount: 15,
+                particles_spread: 180.0,
+                particles_gravity: {"x": 0.0, "y": 300.0},
+                particles_initial_velocity_min: 80.0,
+                particles_initial_velocity_max: 200.0,
+                particles_scale_min: 2.0,
+                particles_scale_max: 5.0,
+                particles_lifetime: 0.6,
+                particles_use_cell_color: false,
+                piece_colors: ['rgba(139, 69, 19, 0.9)', 'rgba(160, 82, 45, 0.9)', 'rgba(205, 133, 63, 0.9)'],
+                accent_color: 'rgba(212, 175, 55, 0.9)',
+                sword_slash_glow_width: 18.0,
+                sword_slash_core_width: 4.0,
+                sword_slash_fade_duration: 0.22
+            },
+            'wood_theme': {
+                theme_name: "brick_theme",
+                particles_amount: 15,
+                particles_spread: 180.0,
+                particles_gravity: {"x": 0.0, "y": 300.0},
+                particles_initial_velocity_min: 80.0,
+                particles_initial_velocity_max: 200.0,
+                particles_scale_min: 2.0,
+                particles_scale_max: 5.0,
+                particles_lifetime: 0.6,
+                particles_use_cell_color: false,
+                piece_colors: ['rgba(139, 69, 19, 0.9)', 'rgba(160, 82, 45, 0.9)', 'rgba(205, 133, 63, 0.9)'],
+                accent_color: 'rgba(212, 175, 55, 0.9)',
+                sword_slash_glow_width: 18.0,
+                sword_slash_core_width: 4.0,
+                sword_slash_fade_duration: 0.22
+            },
+            'fruit_theme': {
+                theme_name: "fruit_theme",
+                particles_amount: 20,
+                particles_spread: 360.0,
+                particles_gravity: {"x": 0.0, "y": 250.0},
+                particles_initial_velocity_min: 100.0,
+                particles_initial_velocity_max: 220.0,
+                particles_scale_min: 2.0,
+                particles_scale_max: 5.0,
+                particles_lifetime: 0.65,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(239, 68, 68, 0.85)', 'rgba(34, 197, 94, 0.85)', 'rgba(234, 179, 8, 0.85)', 'rgba(249, 115, 22, 0.85)'],
+                accent_color: 'rgba(234, 179, 8, 0.9)',
+                sword_slash_glow_width: 18.0,
+                sword_slash_core_width: 4.0,
+                sword_slash_fade_duration: 0.22
+            },
+            'neon_theme': {
+                theme_name: "neon_theme",
+                particles_amount: 20,
+                particles_spread: 360.0,
+                particles_gravity: {"x": 0.0, "y": 0.0},
+                particles_initial_velocity_min: 60.0,
+                particles_initial_velocity_max: 180.0,
+                particles_scale_min: 0.04,
+                particles_scale_max: 0.12,
+                particles_lifetime: 0.8,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(6, 182, 212, 0.9)', 'rgba(236, 72, 153, 0.9)', 'rgba(168, 85, 247, 0.9)'],
+                accent_color: 'rgba(0, 245, 211, 0.9)',
+                sword_slash_glow_width: 16.0,
+                sword_slash_core_width: 3.0,
+                sword_slash_fade_duration: 0.25
+            },
+            'gold_theme': {
+                theme_name: "gold_theme",
+                particles_amount: 25,
+                particles_spread: 360.0,
+                particles_gravity: {"x": 0.0, "y": 150.0},
+                particles_initial_velocity_min: 90.0,
+                particles_initial_velocity_max: 210.0,
+                particles_scale_min: 0.05,
+                particles_scale_max: 0.13,
+                particles_lifetime: 0.85,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(212, 175, 55, 0.9)', 'rgba(255, 215, 0, 0.9)', 'rgba(240, 230, 140, 0.9)'],
+                accent_color: 'rgba(255, 215, 0, 0.9)',
+                sword_slash_glow_width: 18.0,
+                sword_slash_core_width: 4.0,
+                sword_slash_fade_duration: 0.22
+            },
+            'soul_theme': {
+                theme_name: "soul_theme",
+                particles_amount: 20,
+                particles_spread: 120.0,
+                particles_gravity: {"x": 0.0, "y": -80.0},
+                particles_initial_velocity_min: 60.0,
+                particles_initial_velocity_max: 140.0,
+                particles_scale_min: 0.04,
+                particles_scale_max: 0.12,
+                particles_lifetime: 0.75,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(99, 102, 241, 0.9)', 'rgba(168, 85, 247, 0.9)', 'rgba(59, 130, 246, 0.9)'],
+                accent_color: 'rgba(129, 140, 248, 0.9)',
+                sword_slash_glow_width: 16.0,
+                sword_slash_core_width: 3.0,
+                sword_slash_fade_duration: 0.25
+            },
+            'candy_theme': {
+                theme_name: "candy_theme",
+                particles_amount: 25,
+                particles_spread: 360.0,
+                particles_gravity: {"x": 0.0, "y": 80.0},
+                particles_initial_velocity_min: 80.0,
+                particles_initial_velocity_max: 200.0,
+                particles_scale_min: 0.05,
+                particles_scale_max: 0.12,
+                particles_lifetime: 0.7,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(244, 114, 182, 0.9)', 'rgba(253, 224, 71, 0.9)', 'rgba(34, 211, 238, 0.9)'],
+                accent_color: 'rgba(244, 114, 182, 0.9)',
+                sword_slash_glow_width: 18.0,
+                sword_slash_core_width: 4.0,
+                sword_slash_fade_duration: 0.22
+            },
+            'ice_theme': {
+                theme_name: "ice_theme",
+                particles_amount: 20,
+                particles_spread: 360.0,
+                particles_gravity: {"x": 0.0, "y": 0.0},
+                particles_initial_velocity_min: 50.0,
+                particles_initial_velocity_max: 160.0,
+                particles_scale_min: 0.04,
+                particles_scale_max: 0.10,
+                particles_lifetime: 0.9,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(147, 197, 253, 0.9)', 'rgba(255, 255, 255, 0.9)', 'rgba(38, 166, 206, 0.9)'],
+                accent_color: 'rgba(147, 197, 253, 0.9)',
+                sword_slash_glow_width: 15.0,
+                sword_slash_core_width: 3.0,
+                sword_slash_fade_duration: 0.30
+            },
+            'lava_theme': {
+                theme_name: "lava_theme",
+                particles_amount: 30,
+                particles_spread: 360.0,
+                particles_gravity: {"x": 0.0, "y": -60.0},
+                particles_initial_velocity_min: 70.0,
+                particles_initial_velocity_max: 180.0,
+                particles_scale_min: 0.06,
+                particles_scale_max: 0.14,
+                particles_lifetime: 0.8,
+                particles_use_cell_color: true,
+                piece_colors: ['rgba(239, 68, 68, 0.9)', 'rgba(249, 115, 22, 0.9)', 'rgba(75, 85, 99, 0.9)'],
+                accent_color: 'rgba(249, 115, 22, 0.9)',
+                sword_slash_glow_width: 20.0,
+                sword_slash_core_width: 5.0,
+                sword_slash_fade_duration: 0.25
+            }
+        };
 
         let activeVFXConfig = null;
         async function fetchVFXConfig(type) {
             let themeName = 'brick_theme';
             if (type === 'fruit') themeName = 'fruit_theme';
             else if (type === 'neon') themeName = 'neon_theme';
+            else if (type === 'gold') themeName = 'gold_theme';
+            else if (type === 'soul') themeName = 'soul_theme';
+            else if (type === 'candy') themeName = 'candy_theme';
+            else if (type === 'ice') themeName = 'ice_theme';
+            else if (type === 'lava') themeName = 'lava_theme';
+            else if (type === 'wood') themeName = 'wood_theme';
             
             try {
                 const response = await fetch(`/api/theme-config?theme=${themeName}`);
@@ -2450,18 +2890,36 @@
                     activeVFXConfig = await response.json();
                     console.log(`Loaded VFX config for ${type}:`, activeVFXConfig);
                 } else {
-                    console.error("Failed to load VFX config");
+                    console.warn(`Failed to fetch from API, falling back to static config for ${themeName}`);
+                    activeVFXConfig = fallbackConfigs[themeName] || fallbackConfigs['brick_theme'];
                 }
             } catch (e) {
-                console.error("Error fetching VFX config:", e);
+                console.warn(`Error fetching config, falling back to static config for ${themeName}:`, e);
+                activeVFXConfig = fallbackConfigs[themeName] || fallbackConfigs['brick_theme'];
             }
         }
 
         async function selectVFX(type) {
             vfxType = type;
+            
+            // Instantly cancel pending timers and clear all simulated elements
+            const loadId = ++currentVFXLoadId;
+            simulatedCells = [];
+            particles = [];
+            slashes = [];
+            if (window.clearSimTimeout) {
+                clearTimeout(window.clearSimTimeout);
+                window.clearSimTimeout = null;
+            }
+            
             document.getElementById('vfx-btn-wood').classList.remove('active');
             document.getElementById('vfx-btn-fruit').classList.remove('active');
             document.getElementById('vfx-btn-neon').classList.remove('active');
+            document.getElementById('vfx-btn-gold').classList.remove('active');
+            document.getElementById('vfx-btn-soul').classList.remove('active');
+            document.getElementById('vfx-btn-candy').classList.remove('active');
+            document.getElementById('vfx-btn-ice').classList.remove('active');
+            document.getElementById('vfx-btn-lava').classList.remove('active');
             
             const desc = document.getElementById('vfx-description');
             if (type === 'wood') {
@@ -2470,12 +2928,31 @@
             } else if (type === 'fruit') {
                 document.getElementById('vfx-btn-fruit').classList.add('active');
                 desc.textContent = "Hiệu ứng chém kiếm & nước ép: Vết chém chớp sáng kết hợp bắn ra các tia nước trái cây đầy màu sắc.";
-            } else {
+            } else if (type === 'neon') {
                 document.getElementById('vfx-btn-neon').classList.add('active');
                 desc.textContent = "Hiệu ứng nổ hạt Cyberpunk: Các luồng sóng xung kích nổ sáng dạng neon tròn, nhạt dần.";
+            } else if (type === 'gold') {
+                document.getElementById('vfx-btn-gold').classList.add('active');
+                desc.textContent = "Hiệu ứng mưa rơi vàng óng lấp lánh: Các lá vàng nổ bùng hình parabol rồi rơi chậm như hoa giấy hoàng gia.";
+            } else if (type === 'soul') {
+                document.getElementById('vfx-btn-soul').classList.add('active');
+                desc.textContent = "Hiệu ứng lửa ma quái linh hồn: Các đốm lửa huyền ảo màu xanh tím bốc ngược lên trên dưới tác động trọng lực âm.";
+            } else if (type === 'candy') {
+                document.getElementById('vfx-btn-candy').classList.add('active');
+                desc.textContent = "Hiệu ứng kẹo ngọt ngọt ngào: Các viên kẹo sắc màu bùng nổ, bay nhẹ nhàng lên rồi rơi chậm dưới trọng lực rất nhẹ.";
+            } else if (type === 'ice') {
+                document.getElementById('vfx-btn-ice').classList.add('active');
+                desc.textContent = "Hiệu ứng pha lê băng giá: Các tinh thể băng màu xanh lam nhạt chớp sáng lấp lánh rồi dừng chậm dần trong không gian (lực cản cao, không trọng lực).";
+            } else if (type === 'lava') {
+                document.getElementById('vfx-btn-lava').classList.add('active');
+                desc.textContent = "Hiệu ứng lửa dung nham núi lửa: Các tàn tro đỏ lửa bùng lên mạnh mẽ, bay cuộn ngược lên trên dưới tác động của trọng lực âm.";
             }
             
             await fetchVFXConfig(type);
+            
+            // Abort if another load has started since we fetched
+            if (loadId !== currentVFXLoadId) return;
+            
             triggerClearDemo();
         }
 
@@ -2483,26 +2960,78 @@
             canvas = document.getElementById('vfx-canvas');
             if (!canvas) return;
             ctxCanvas = canvas.getContext('2d');
-            canvas.removeEventListener('mousedown', handleCanvasClick);
-            canvas.addEventListener('mousedown', handleCanvasClick);
+            canvas.removeEventListener('pointerdown', handleCanvasClick);
+            canvas.addEventListener('pointerdown', handleCanvasClick);
+            populateVFXTextureDropdown();
             startVFXLoop();
+            
+            const loadId = ++currentVFXLoadId;
             await fetchVFXConfig(vfxType);
+            if (loadId !== currentVFXLoadId) return;
+            
             triggerClearDemo();
         }
 
         function handleCanvasClick(e) {
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            spawnParticles(x, y, 20);
-            playSynth('drop');
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            
+            const gridPadding = 20;
+            const boardSize = 360;
+            const cellSize = boardSize / 9;
+            
+            const col = Math.floor((x - gridPadding) / cellSize);
+            const row = Math.floor((y - gridPadding) / cellSize);
+            
+            if (col >= 0 && col < 9 && row >= 0 && row < 9) {
+                // Clicked inside board! Spawn a block and explode it immediately.
+                const cx = gridPadding + (col + 0.5) * cellSize;
+                const cy = gridPadding + (row + 0.5) * cellSize;
+                
+                let colors = ['rgba(239, 68, 68, 0.8)'];
+                const cfg = activeVFXConfig || {};
+                if (cfg.piece_colors && cfg.piece_colors.length > 0) {
+                    colors = cfg.piece_colors;
+                } else if (vfxType === 'wood') {
+                    colors = ['rgba(139, 69, 19, 0.9)', 'rgba(160, 82, 45, 0.9)', 'rgba(205, 133, 63, 0.9)'];
+                } else if (vfxType === 'neon') {
+                    colors = ['rgba(6, 182, 212, 0.9)', 'rgba(236, 72, 153, 0.9)', 'rgba(168, 85, 247, 0.9)'];
+                } else if (vfxType === 'gold') {
+                    colors = ['rgba(212, 175, 55, 0.9)', 'rgba(255, 215, 0, 0.9)', 'rgba(240, 230, 140, 0.9)'];
+                } else if (vfxType === 'soul') {
+                    colors = ['rgba(99, 102, 241, 0.9)', 'rgba(168, 85, 247, 0.9)', 'rgba(59, 130, 246, 0.9)'];
+                } else if (vfxType === 'candy') {
+                    colors = ['rgba(244, 114, 182, 0.9)', 'rgba(253, 224, 71, 0.9)', 'rgba(34, 211, 238, 0.9)'];
+                } else if (vfxType === 'ice') {
+                    colors = ['rgba(147, 197, 253, 0.9)', 'rgba(255, 255, 255, 0.9)', 'rgba(38, 166, 206, 0.9)'];
+                } else if (vfxType === 'lava') {
+                    colors = ['rgba(239, 68, 68, 0.9)', 'rgba(249, 115, 22, 0.9)', 'rgba(75, 85, 99, 0.9)'];
+                }
+                const cellColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                simulatedCells.push({
+                    col: col,
+                    row: row,
+                    color: cellColor,
+                    opacity: 1.0,
+                    scale: 1.0,
+                    state: 'fading'
+                });
+                
+                spawnParticlesForCell(cx, cy, 12, cellColor);
+                playSynth('drop');
+            } else {
+                // Clicked outside board: just standard particle burst
+                spawnParticles(x, y, 20);
+                playSynth('drop');
+            }
         }
 
         function triggerClearDemo() {
-            if (!canvas) return;
-            const y = canvas.height / 2;
-            spawnParticles(canvas.width / 2, y, 15);
-            playSynth('clear');
+            triggerSimulatedClear('row');
         }
 
         function spawnParticles(x, y, count) {
@@ -2557,16 +3086,434 @@
                     color,
                     alpha: 1.0,
                     decay: baseDecay * (0.8 + Math.random() * 0.4),
-                    gravity: gravY
+                    gravity: gravY,
+                    type: vfxType
                 });
+            }
+        }
+
+        function spawnParticlesForCell(x, y, count, cellColor) {
+            const cfg = activeVFXConfig || {};
+            const particleCount = count || 12;
+            
+            let gravY = 0.1;
+            if (cfg.particles_gravity) {
+                const gy = typeof cfg.particles_gravity === 'object' ? cfg.particles_gravity.y : 200;
+                gravY = gy / 2000.0;
+            }
+            
+            const lifetime = cfg.particles_lifetime || 0.6;
+            const baseDecay = 1.0 / (lifetime * 60.0);
+            
+            const velMin = cfg.particles_initial_velocity_min !== undefined ? cfg.particles_initial_velocity_min : 100.0;
+            const velMax = cfg.particles_initial_velocity_max !== undefined ? cfg.particles_initial_velocity_max : 220.0;
+            const canvasVelMin = velMin / 60.0;
+            const canvasVelMax = velMax / 60.0;
+            
+            let scaleMin = cfg.particles_scale_min !== undefined ? cfg.particles_scale_min : 2.0;
+            let scaleMax = cfg.particles_scale_max !== undefined ? cfg.particles_scale_max : 6.0;
+            if (scaleMax < 1.0) {
+                scaleMin *= 50.0;
+                scaleMax *= 50.0;
+            }
+            
+            const spreadDeg = cfg.particles_spread !== undefined ? cfg.particles_spread : 360.0;
+            const spreadRad = spreadDeg * Math.PI / 180.0;
+
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = (canvasVelMin + Math.random() * (canvasVelMax - canvasVelMin)) * 0.75;
+                
+                let color = cellColor;
+                
+                if (!cfg.particles_use_cell_color) {
+                    if (vfxType === 'wood') {
+                        color = Math.random() < 0.5 ? 'rgba(212, 175, 55, 0.8)' : 'rgba(139, 69, 19, 0.8)';
+                    } else if (vfxType === 'neon') {
+                        color = Math.random() < 0.5 ? 'rgba(6, 182, 212, 0.8)' : 'rgba(236, 72, 153, 0.8)';
+                    } else if (cfg.particles_gradient) {
+                        color = cfg.accent_color || 'rgba(239, 68, 68, 0.8)';
+                    }
+                }
+                
+                particles.push({
+                    x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    size: scaleMin + Math.random() * (scaleMax - scaleMin),
+                    color,
+                    alpha: 1.0,
+                    decay: baseDecay * (0.8 + Math.random() * 0.4),
+                    gravity: gravY,
+                    type: vfxType
+                });
+            }
+        }
+
+        function triggerSimulatedClear(type) {
+            if (!canvas) return;
+            
+            if (window.clearSimTimeout) {
+                clearTimeout(window.clearSimTimeout);
+            }
+            
+            simulatedCells = [];
+            particles = [];
+            slashes = [];
+            
+            const cfg = activeVFXConfig || {};
+            
+            let colors = ['rgba(239, 68, 68, 0.8)'];
+            if (cfg.piece_colors && cfg.piece_colors.length > 0) {
+                colors = cfg.piece_colors;
+            } else if (vfxType === 'wood') {
+                colors = ['rgba(139, 69, 19, 0.9)', 'rgba(160, 82, 45, 0.9)', 'rgba(205, 133, 63, 0.9)'];
+            } else if (vfxType === 'neon') {
+                colors = ['rgba(6, 182, 212, 0.9)', 'rgba(236, 72, 153, 0.9)', 'rgba(168, 85, 247, 0.9)'];
+            } else if (vfxType === 'gold') {
+                colors = ['rgba(212, 175, 55, 0.9)', 'rgba(255, 215, 0, 0.9)', 'rgba(240, 230, 140, 0.9)'];
+            } else if (vfxType === 'soul') {
+                colors = ['rgba(99, 102, 241, 0.9)', 'rgba(168, 85, 247, 0.9)', 'rgba(59, 130, 246, 0.9)'];
+            } else if (vfxType === 'candy') {
+                colors = ['rgba(244, 114, 182, 0.9)', 'rgba(253, 224, 71, 0.9)', 'rgba(34, 211, 238, 0.9)'];
+            } else if (vfxType === 'ice') {
+                colors = ['rgba(147, 197, 253, 0.9)', 'rgba(255, 255, 255, 0.9)', 'rgba(38, 166, 206, 0.9)'];
+            } else if (vfxType === 'lava') {
+                colors = ['rgba(239, 68, 68, 0.9)', 'rgba(249, 115, 22, 0.9)', 'rgba(75, 85, 99, 0.9)'];
+            }
+            
+            const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+            
+            let cellsToClear = [];
+            if (type === 'row') {
+                const rowIdx = 4;
+                for (let col = 0; col < 9; col++) {
+                    cellsToClear.push({ col, row: rowIdx, color: getRandomColor() });
+                }
+            } else if (type === 'col') {
+                const colIdx = 4;
+                for (let row = 0; row < 9; row++) {
+                    cellsToClear.push({ col: colIdx, row, color: getRandomColor() });
+                }
+            } else if (type === 'block3x3') {
+                for (let r = 3; r <= 5; r++) {
+                    for (let c = 3; c <= 5; c++) {
+                        cellsToClear.push({ col: c, row: r, color: getRandomColor() });
+                    }
+                }
+            } else if (type === 'block9x9') {
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        cellsToClear.push({ col: c, row: r, color: getRandomColor() });
+                    }
+                }
+            }
+            
+            simulatedCells = cellsToClear.map(cell => ({
+                col: cell.col,
+                row: cell.row,
+                color: cell.color,
+                opacity: 1.0,
+                scale: 1.0,
+                state: 'solid'
+            }));
+            
+            playSynth('drop');
+            
+            window.clearSimTimeout = setTimeout(() => {
+                playSynth('clear');
+                
+                const slashColor = cfg.accent_color || 'rgba(212, 175, 55, 0.9)';
+                const glowWidth = cfg.sword_slash_glow_width || 18.0;
+                const coreWidth = cfg.sword_slash_core_width || 4.0;
+                const fadeDur = cfg.sword_slash_fade_duration || 0.22;
+                
+                const gridPadding = 20;
+                const boardSize = 360;
+                const cellSize = boardSize / 9;
+                
+                const spawnSlashLine = (x1, y1, x2, y2) => {
+                    slashes.push({
+                        x1, y1, x2, y2,
+                        color: slashColor,
+                        glowWidth,
+                        coreWidth,
+                        duration: fadeDur,
+                        life: 1.0
+                    });
+                };
+                
+                if (type === 'row') {
+                    const rowIdx = 4;
+                    const y = gridPadding + (rowIdx + 0.5) * cellSize;
+                    spawnSlashLine(gridPadding, y, gridPadding + boardSize, y);
+                } else if (type === 'col') {
+                    const colIdx = 4;
+                    const x = gridPadding + (colIdx + 0.5) * cellSize;
+                    spawnSlashLine(x, gridPadding, x, gridPadding + boardSize);
+                } else if (type === 'block3x3') {
+                    const xStart = gridPadding + 3 * cellSize;
+                    const xEnd = gridPadding + 6 * cellSize;
+                    const yStart = gridPadding + 3 * cellSize;
+                    const yEnd = gridPadding + 6 * cellSize;
+                    spawnSlashLine(xStart, yStart, xEnd, yEnd);
+                    spawnSlashLine(xEnd, yStart, xStart, yEnd);
+                } else if (type === 'block9x9') {
+                    const y1 = gridPadding + 1.5 * cellSize;
+                    const y4 = gridPadding + 4.5 * cellSize;
+                    const y7 = gridPadding + 7.5 * cellSize;
+                    const x1 = gridPadding + 1.5 * cellSize;
+                    const x4 = gridPadding + 4.5 * cellSize;
+                    const x7 = gridPadding + 7.5 * cellSize;
+                    
+                    spawnSlashLine(gridPadding, y1, gridPadding + boardSize, y1);
+                    spawnSlashLine(gridPadding, y4, gridPadding + boardSize, y4);
+                    spawnSlashLine(gridPadding, y7, gridPadding + boardSize, y7);
+                    
+                    spawnSlashLine(x1, gridPadding, x1, gridPadding + boardSize);
+                    spawnSlashLine(x4, gridPadding, x4, gridPadding + boardSize);
+                    spawnSlashLine(x7, gridPadding, x7, gridPadding + boardSize);
+                    
+                    spawnSlashLine(gridPadding, gridPadding, gridPadding + boardSize, gridPadding + boardSize);
+                    spawnSlashLine(gridPadding + boardSize, gridPadding, gridPadding, gridPadding + boardSize);
+                }
+                
+                simulatedCells.forEach(cell => {
+                    cell.state = 'fading';
+                    const cx = gridPadding + (cell.col + 0.5) * cellSize;
+                    const cy = gridPadding + (cell.row + 0.5) * cellSize;
+                    const pCount = type === 'block9x9' ? 5 : 12;
+                    spawnParticlesForCell(cx, cy, pCount, cell.color);
+                });
+            }, 300);
+        }
+
+        function drawThemeBlock(ctx, cx, cy, size, baseColor, type) {
+            const x = cx - size / 2;
+            const y = cy - size / 2;
+            
+            ctx.beginPath();
+            const radius = 5;
+            if (ctx.roundRect) {
+                ctx.roundRect(x, y, size, size, radius);
+            } else {
+                ctx.rect(x, y, size, size);
+            }
+            
+            if (type === 'wood') {
+                const grad = ctx.createLinearGradient(x, y, x, y + size);
+                grad.addColorStop(0, '#8e4a23');
+                grad.addColorStop(1, '#5c2d12');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                
+                ctx.strokeStyle = '#3d1d0a';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x + 2, y + 2, size - 4, size - 4);
+            } else if (type === 'neon') {
+                ctx.fillStyle = 'rgba(10, 8, 20, 0.85)';
+                ctx.fill();
+                
+                ctx.strokeStyle = baseColor;
+                ctx.lineWidth = 2;
+                ctx.save();
+                ctx.shadowColor = baseColor;
+                ctx.shadowBlur = 6;
+                ctx.stroke();
+                ctx.restore();
+                
+                ctx.fillStyle = baseColor;
+                ctx.beginPath();
+                ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (type === 'gold') {
+                const grad = ctx.createLinearGradient(x, y, x + size, y + size);
+                grad.addColorStop(0, '#ffe57f');
+                grad.addColorStop(0.5, '#ffd54f');
+                grad.addColorStop(1, '#ffb300');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                
+                ctx.strokeStyle = '#ffe082';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                ctx.strokeRect(x + 2, y + 2, size - 4, size - 4);
+            } else if (type === 'soul') {
+                const grad = ctx.createLinearGradient(x, y, x, y + size);
+                grad.addColorStop(0, '#4f46e5');
+                grad.addColorStop(1, '#312e81');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                
+                ctx.strokeStyle = '#818cf8';
+                ctx.lineWidth = 1.5;
+                ctx.save();
+                ctx.shadowColor = '#818cf8';
+                ctx.shadowBlur = 5;
+                ctx.stroke();
+                ctx.restore();
+            } else if (type === 'candy') {
+                const grad = ctx.createLinearGradient(x, y, x + size, y + size);
+                grad.addColorStop(0, '#f472b6');
+                grad.addColorStop(1, '#db2777');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                
+                ctx.strokeStyle = '#fbcfe8';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+                ctx.beginPath();
+                ctx.ellipse ? ctx.ellipse(cx - 3, cy - 3, 5, 2, Math.PI / 4, 0, Math.PI * 2) : ctx.arc(cx - 3, cy - 3, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (type === 'ice') {
+                const grad = ctx.createLinearGradient(x, y, x + size, y + size);
+                grad.addColorStop(0, '#e0f2fe');
+                grad.addColorStop(0.5, '#7dd3fc');
+                grad.addColorStop(1, '#0284c7');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+                ctx.lineWidth = 0.8;
+                ctx.beginPath();
+                ctx.moveTo(x + 2, y + 2);
+                ctx.lineTo(x + size - 2, y + size - 2);
+                ctx.moveTo(x + size - 2, y + 2);
+                ctx.lineTo(x + 2, y + size - 2);
+                ctx.stroke();
+            } else if (type === 'lava') {
+                ctx.fillStyle = '#1e1b1b';
+                ctx.fill();
+                
+                ctx.strokeStyle = '#b91c1c';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                const grad = ctx.createRadialGradient(cx, cy, 1, cx, cy, size / 2.1);
+                grad.addColorStop(0, '#f97316');
+                grad.addColorStop(0.7, '#ef4444');
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, size / 2.2, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillStyle = baseColor;
+                ctx.fill();
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
             }
         }
 
         function startVFXLoop() {
             if (animationId) cancelAnimationFrame(animationId);
             function loop() {
-                ctxCanvas.fillStyle = 'rgba(11, 9, 9, 0.2)';
+                ctxCanvas.fillStyle = 'rgba(11, 9, 9, 0.22)';
                 ctxCanvas.fillRect(0, 0, canvas.width, canvas.height);
+                
+                const gridPadding = 20;
+                const boardSize = 360;
+                const cellSize = boardSize / 9;
+                
+                ctxCanvas.fillStyle = 'rgba(16, 14, 14, 0.45)';
+                ctxCanvas.fillRect(gridPadding, gridPadding, boardSize, boardSize);
+                
+                ctxCanvas.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+                ctxCanvas.lineWidth = 1;
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        ctxCanvas.strokeRect(gridPadding + c * cellSize, gridPadding + r * cellSize, cellSize, cellSize);
+                    }
+                }
+                
+                ctxCanvas.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctxCanvas.lineWidth = 2.5;
+                for (let i = 0; i <= 9; i += 3) {
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(gridPadding + i * cellSize, gridPadding);
+                    ctxCanvas.lineTo(gridPadding + i * cellSize, gridPadding + boardSize);
+                    ctxCanvas.stroke();
+                    
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(gridPadding, gridPadding + i * cellSize);
+                    ctxCanvas.lineTo(gridPadding + boardSize, gridPadding + i * cellSize);
+                    ctxCanvas.stroke();
+                }
+                
+                for (let i = simulatedCells.length - 1; i >= 0; i--) {
+                    const cell = simulatedCells[i];
+                    
+                    if (cell.state === 'fading') {
+                        cell.opacity -= 0.08;
+                        cell.scale -= 0.08;
+                        if (cell.opacity <= 0 || cell.scale <= 0) {
+                            simulatedCells.splice(i, 1);
+                            continue;
+                        }
+                    }
+                    
+                    ctxCanvas.save();
+                    ctxCanvas.globalAlpha = cell.opacity;
+                    
+                    const size = cellSize * cell.scale;
+                    const cx = gridPadding + (cell.col + 0.5) * cellSize;
+                    const cy = gridPadding + (cell.row + 0.5) * cellSize;
+                    
+                    drawThemeBlock(ctxCanvas, cx, cy, size - 3, cell.color, vfxType);
+                    
+                    ctxCanvas.restore();
+                }
+                
+                for (let i = slashes.length - 1; i >= 0; i--) {
+                    const s = slashes[i];
+                    s.life -= 1.0 / (60.0 * s.duration);
+                    if (s.life <= 0) {
+                        slashes.splice(i, 1);
+                        continue;
+                    }
+                    
+                    ctxCanvas.save();
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(s.x1, s.y1);
+                    ctxCanvas.lineTo(s.x2, s.y2);
+                    ctxCanvas.strokeStyle = s.color;
+                    ctxCanvas.lineWidth = s.glowWidth * s.life;
+                    ctxCanvas.globalAlpha = s.life;
+                    ctxCanvas.lineCap = 'round';
+                    
+                    if (vfxType === 'neon' || vfxType === 'soul' || vfxType === 'candy' || vfxType === 'ice' || vfxType === 'lava') {
+                        ctxCanvas.shadowColor = s.color;
+                        ctxCanvas.shadowBlur = 15;
+                    }
+                    
+                    ctxCanvas.stroke();
+                    ctxCanvas.restore();
+                    
+                    ctxCanvas.save();
+                    ctxCanvas.beginPath();
+                    ctxCanvas.moveTo(s.x1, s.y1);
+                    ctxCanvas.lineTo(s.x2, s.y2);
+                    ctxCanvas.strokeStyle = 'white';
+                    ctxCanvas.lineWidth = s.coreWidth * s.life;
+                    ctxCanvas.globalAlpha = s.life;
+                    ctxCanvas.lineCap = 'round';
+                    ctxCanvas.stroke();
+                    ctxCanvas.restore();
+                }
                 
                 for (let i = particles.length - 1; i >= 0; i--) {
                     const p = particles[i];
@@ -2577,11 +3524,44 @@
                         particles.splice(i, 1);
                         continue;
                     }
-                    ctxCanvas.globalAlpha = p.alpha;
-                    ctxCanvas.fillStyle = p.color;
-                    ctxCanvas.beginPath();
-                    ctxCanvas.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                    ctxCanvas.fill();
+                    
+                    let img = null;
+                    if (customVFXImage && customVFXImage.complete && customVFXImage.naturalWidth > 0) {
+                        img = customVFXImage;
+                    } else {
+                        img = vfxImages[p.type];
+                    }
+                    
+                    if (img && img.complete && img.naturalWidth > 0) {
+                        const size = p.size * 5;
+                        tintCanvas.width = size;
+                        tintCanvas.height = size;
+                        tintCtx.clearRect(0, 0, size, size);
+                        tintCtx.drawImage(img, 0, 0, size, size);
+                        
+                        tintCtx.globalCompositeOperation = 'source-in';
+                        tintCtx.fillStyle = p.color;
+                        tintCtx.fillRect(0, 0, size, size);
+                        
+                        ctxCanvas.save();
+                        ctxCanvas.globalAlpha = p.alpha;
+                        
+                        if (vfxType === 'neon' || vfxType === 'gold' || vfxType === 'soul' || vfxType === 'candy' || vfxType === 'ice' || vfxType === 'lava') {
+                            ctxCanvas.shadowColor = p.color;
+                            ctxCanvas.shadowBlur = 6;
+                        }
+                        
+                        ctxCanvas.drawImage(tintCanvas, p.x - size / 2, p.y - size / 2, size, size);
+                        ctxCanvas.restore();
+                    } else {
+                        ctxCanvas.save();
+                        ctxCanvas.globalAlpha = p.alpha;
+                        ctxCanvas.fillStyle = p.color;
+                        ctxCanvas.beginPath();
+                        ctxCanvas.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                        ctxCanvas.fill();
+                        ctxCanvas.restore();
+                    }
                 }
                 animationId = requestAnimationFrame(loop);
             }

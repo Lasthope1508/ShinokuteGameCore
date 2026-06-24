@@ -14,7 +14,7 @@ signal drop_requested(piece: Piece, target_origin: Vector2i)
 @export var idle_block_size: int = 36   # size while sitting in a slot
 @export var drag_block_size: int = 64   # size while being dragged
 # Visual lift applied during drag so the piece sits above the finger.
-@export var drag_lift: float = -96.0
+@export var drag_lift: float = -120.0
 @export var lift_duration: float = 0.18
 # Higher = piece catches up to the cursor faster during the lift.
 @export var lift_follow_rate: float = 18.0
@@ -134,7 +134,12 @@ func _begin_drag(global_pos: Vector2) -> void:
 	# Switch to drag-time block size and recompute offset. The piece stays
 	# visually at the slot via a smaller starting scale, then tweens up.
 	_apply_block_size(drag_block_size)
-	_drag_offset = (size * 0.5) - Vector2(0.0, drag_lift)
+	
+	var active_theme = ThemeManager.get_active_theme()
+	var lift_offset = drag_lift
+	if active_theme and "drag_lift_offset" in active_theme:
+		lift_offset = active_theme.drag_lift_offset
+	_drag_offset = (size * 0.5) - Vector2(0.0, lift_offset)
 
 	var start_scale: float = float(idle_block_size) / float(drag_block_size)
 

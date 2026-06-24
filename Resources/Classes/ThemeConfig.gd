@@ -26,6 +26,10 @@ class_name ThemeConfig extends Resource
 @export var preview_valid_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
 @export var preview_clear_highlight: Color = Color(1.0, 1.0, 1.0, 1.0)
 
+# Layout & Sensitivity Overrides (SSOT)
+@export var drag_lift_offset: float = -120.0
+@export var tray_bottom_margin: float = 60.0
+
 # Theme sound streams
 @export var sfx_pick: AudioStream
 @export var sfx_drop: AudioStream

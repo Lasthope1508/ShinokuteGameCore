@@ -25,6 +25,21 @@ func _ready() -> void:
 	_library = PieceLibrary.new()
 	for s in _slots:
 		s.piece_picked.connect(_on_slot_piece_picked)
+		
+	ThemeManager.theme_changed.connect(_on_theme_changed)
+	_update_layout_padding()
+
+
+func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
+	_update_layout_padding()
+
+
+func _update_layout_padding() -> void:
+	var active_theme = ThemeManager.get_active_theme()
+	var bottom_margin = 60.0
+	if active_theme and "tray_bottom_margin" in active_theme:
+		bottom_margin = active_theme.tray_bottom_margin
+	add_theme_constant_override("margin_bottom", bottom_margin)
 
 
 # Wires dependencies; must be called before refill() / fill_with_single_blocks().

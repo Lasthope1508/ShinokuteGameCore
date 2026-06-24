@@ -159,19 +159,22 @@ func _update_background(score: int, force_immediate: bool = false) -> void:
 	if not _theme_config:
 		return
 		
-	var target_bg = ThemeManager.shared_background_texture
-	var target_index = 0
+	var target_bg: Texture2D = null
+	var target_index: int = -1
 	
-	if not ThemeManager.shared_milestone_backgrounds.is_empty():
-		var level = GameState.get_level_for_score(score)
-		if _shuffled_bg_indices.is_empty():
-			_initialize_shuffled_backgrounds()
-			
-		if not _shuffled_bg_indices.is_empty():
-			var shuffled_pos = level % _shuffled_bg_indices.size()
-			target_index = _shuffled_bg_indices[shuffled_pos]
-			if ThemeManager.shared_milestone_backgrounds[target_index] != null:
-				target_bg = ThemeManager.shared_milestone_backgrounds[target_index]
+	if _theme_config.show_background_in_game:
+		target_bg = ThemeManager.shared_background_texture
+		target_index = 0
+		if not ThemeManager.shared_milestone_backgrounds.is_empty():
+			var level = GameState.get_level_for_score(score)
+			if _shuffled_bg_indices.is_empty():
+				_initialize_shuffled_backgrounds()
+				
+			if not _shuffled_bg_indices.is_empty():
+				var shuffled_pos = level % _shuffled_bg_indices.size()
+				target_index = _shuffled_bg_indices[shuffled_pos]
+				if ThemeManager.shared_milestone_backgrounds[target_index] != null:
+					target_bg = ThemeManager.shared_milestone_backgrounds[target_index]
 			
 	if target_index == _current_bg_index and not force_immediate:
 		return
@@ -698,6 +701,7 @@ func _load_saved_game() -> void:
 
 
 func _on_game_reset() -> void:
+	_current_bg_index = -1
 	_initialize_shuffled_backgrounds()
 
 

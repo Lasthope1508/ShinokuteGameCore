@@ -6,6 +6,12 @@ const DEFAULT_THEME := "brick_theme"
 const THEME_PATHS = {
 	"fruit_theme": "res://Resources/Data/Themes/fruit_theme/theme_config.tres",
 	"brick_theme": "res://Resources/Data/Themes/brick_theme/theme_config.tres",
+	"neon_theme": "res://Resources/Data/Themes/neon_theme/theme_config.tres",
+	"gold_theme": "res://Resources/Data/Themes/gold_theme/theme_config.tres",
+	"soul_theme": "res://Resources/Data/Themes/soul_theme/theme_config.tres",
+	"candy_theme": "res://Resources/Data/Themes/candy_theme/theme_config.tres",
+	"ice_theme": "res://Resources/Data/Themes/ice_theme/theme_config.tres",
+	"lava_theme": "res://Resources/Data/Themes/lava_theme/theme_config.tres",
 }
 
 const SKIN_SAVE_KEY := "active_skin"
