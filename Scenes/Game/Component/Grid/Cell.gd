@@ -46,10 +46,8 @@ func _update_theme() -> void:
 	
 	if occupied:
 		_update_texture_for_color(block, occupied_color)
-		if ThemeManager.get_active_skin() == "fruits" and active_theme:
+		if active_theme:
 			block.modulate = block.modulate * active_theme.placed_block_modulate
-		else:
-			block.modulate = block.modulate * Color(1.0, 1.0, 1.0, 1.0)
 
 
 func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
@@ -58,13 +56,12 @@ func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
 
 func _update_texture_for_color(rect: TextureRect, color: Color) -> void:
 	var color_index: int = ThemeManager.find_color_index(color)
+	var tex = ThemeManager.get_block_texture(color_index) if color_index != -1 else null
 
-	if ThemeManager.get_active_skin() == "fruits" and color_index != -1:
-		var tex = ThemeManager.get_block_texture(color_index)
-		if tex != null:
-			rect.texture = tex
-			rect.modulate = Color.WHITE
-			return
+	if tex != null:
+		rect.texture = tex
+		rect.modulate = Color.WHITE
+		return
 			
 	# Fallback/Brick skin uses the classic flat block modulated by its color
 	rect.texture = load("res://Assets/Sprites/block.png")

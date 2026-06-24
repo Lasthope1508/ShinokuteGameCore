@@ -1,26 +1,15 @@
 extends Node
 
 const SAVE_KEY := "active_theme"
-const DEFAULT_THEME := "fruit_theme"
+const DEFAULT_THEME := "brick_theme"
 
 const THEME_PATHS = {
 	"fruit_theme": "res://Resources/Data/Themes/fruit_theme/theme_config.tres",
+	"brick_theme": "res://Resources/Data/Themes/brick_theme/theme_config.tres",
 }
 
 const SKIN_SAVE_KEY := "active_skin"
 var active_skin: String = "brick"
-
-# Curated vibrant "Cyber-Candy" palette based on player taste research
-const BRICK_COLORS: Array[Color] = [
-	Color("#FF2E93"), # Neon Crimson (Dragon Fruit)
-	Color("#FF6B00"), # Sunset Orange (Tangerine)
-	Color("#FFE600"), # Solar Yellow (Lemon Zest)
-	Color("#76FF03"), # Electric Lime (Kiwi)
-	Color("#00F5D4"), # Emerald Mint (Teal)
-	Color("#00B8FF"), # Vivid Sky (Aqua Blue)
-	Color("#8B00FF"), # Ultra Violet (Grape)
-	Color("#E040FB"), # Neon Orchid (Pink)
-]
 
 const GENERAL_SFX_MAP: Dictionary = {
 	"pick": preload("res://Audio/SFX/sfx_pick.wav"),
@@ -43,8 +32,10 @@ var active_theme: ThemeConfig
 signal theme_changed(new_theme_name: String, theme_config: ThemeConfig)
 
 func _ready() -> void:
-	active_theme_name = SaveManager.get_setting(SAVE_KEY, DEFAULT_THEME)
 	active_skin = SaveManager.get_setting(SKIN_SAVE_KEY, "brick")
+	active_theme_name = SaveManager.get_setting(SAVE_KEY, DEFAULT_THEME)
+	
+	var target_theme = "fruit_theme" if active_skin == "fruits" else "brick_theme"
 	if OS.has_feature("web"):
 		var search = JavaScriptBridge.eval("window.location.search")
 		if search and search is String and not search.is_empty():
@@ -54,9 +45,11 @@ func _ready() -> void:
 				if parts.size() == 2 and parts[0] == "theme":
 					var web_theme = parts[1].strip_edges()
 					if THEME_PATHS.has(web_theme):
-						active_theme_name = web_theme
+						target_theme = web_theme
+						active_skin = "fruits" if web_theme == "fruit_theme" else "brick"
+						SaveManager.set_setting(SKIN_SAVE_KEY, active_skin)
 						break
-	load_theme(active_theme_name)
+	load_theme(target_theme)
 
 var _is_loading: bool = false
 
@@ -125,18 +118,12 @@ func get_active_theme() -> ThemeConfig:
 	return active_theme
 
 func find_color_index(color: Color) -> int:
-	if active_skin == "brick":
-		for i in range(BRICK_COLORS.size()):
-			var c = BRICK_COLORS[i]
+	var theme = get_active_theme()
+	if theme:
+		for i in range(theme.piece_colors.size()):
+			var c = theme.piece_colors[i]
 			if abs(c.r - color.r) < 0.02 and abs(c.g - color.g) < 0.02 and abs(c.b - color.b) < 0.02:
 				return i
-	else:
-		var theme = get_active_theme()
-		if theme:
-			for i in range(theme.piece_colors.size()):
-				var c = theme.piece_colors[i]
-				if abs(c.r - color.r) < 0.02 and abs(c.g - color.g) < 0.02 and abs(c.b - color.b) < 0.02:
-					return i
 	return -1
 
 func get_block_texture(color_index: int) -> Texture2D:
@@ -146,18 +133,12 @@ func get_block_texture(color_index: int) -> Texture2D:
 	return null
 
 func get_block_color(color_index: int) -> Color:
-	if active_skin == "brick":
-		if BRICK_COLORS.size() > color_index:
-			return BRICK_COLORS[color_index]
-		return Color.WHITE
 	var theme = get_active_theme()
 	if theme and theme.piece_colors.size() > color_index:
 		return theme.piece_colors[color_index]
 	return Color.WHITE
 
 func get_random_piece_color() -> Color:
-	if active_skin == "brick":
-		return BRICK_COLORS.pick_random()
 	var theme = get_active_theme()
 	if theme and not theme.piece_colors.is_empty():
 		return theme.piece_colors.pick_random()
@@ -175,7 +156,8 @@ func set_active_skin(skin_name: String) -> void:
 	if skin_name == "brick" or skin_name == "fruits":
 		active_skin = skin_name
 		SaveManager.set_setting(SKIN_SAVE_KEY, active_skin)
-		theme_changed.emit(active_theme_name, active_theme)
+		var target_theme = "fruit_theme" if skin_name == "fruits" else "brick_theme"
+		load_theme(target_theme)
 
 
 # Single Source of Truth (SSOT) for Combo & Streak VFX and Pitch Scaling

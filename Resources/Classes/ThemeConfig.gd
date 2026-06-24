@@ -12,8 +12,8 @@ class_name ThemeConfig extends Resource
 @export var default_block_texture: Texture2D
 @export var cell_empty_texture: Texture2D
 @export var piece_slot_texture: Texture2D
-@export var logo_texture: Texture2D
-@export var background_texture: Texture2D
+@export var logo_texture: Texture2D = preload("res://Assets/Sprites/bloxchain_logo.png")
+@export var background_texture: Texture2D = preload("res://Assets/Sprites/greeting_bg.png")
 @export var milestone_backgrounds: Array[Texture2D] = []
 @export var background_score_step: int = 500
 @export var playboard_texture: Texture2D
@@ -80,4 +80,4 @@ class_name ThemeConfig extends Resource
 @export var panel_bg_color: Color = Color(0.18, 0.14, 0.1, 1)
 @export var panel_border_color: Color = Color(0.45, 0.35, 0.25, 1)
 
-@export var custom_font: Font
+@export var custom_font: Font = preload("res://Assets/Fonts/Poppins-Bold.ttf")

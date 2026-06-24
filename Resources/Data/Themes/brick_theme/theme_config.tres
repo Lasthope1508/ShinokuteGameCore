@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ThemeConfig" load_steps=2 format=3 uid="uid://bricktheme"]
+
+[ext_resource type="Script" path="res://Resources/Classes/ThemeConfig.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+theme_name = "brick_theme"
+theme_title = "BLOXCHAIN"
+theme_subtitle = "Classic Edition"
+theme_title_color = Color(1, 1, 1, 1)
+theme_subtitle_color = Color(1, 1, 1, 1)
+piece_colors = Array[Color]([Color(1, 0.18, 0.58, 1), Color(1, 0.42, 0, 1), Color(1, 0.9, 0, 1), Color(0.46, 1, 0.01, 1), Color(0, 0.96, 0.83, 1), Color(0, 0.72, 1, 1), Color(0.55, 0, 1, 1), Color(0.88, 0.25, 0.98, 1)])
+quadrant_dark_tint = Color(1, 1, 1, 0)
+quadrant_light_tint = Color(1, 1, 1, 0)
+cell_empty_tint = Color(1, 1, 1, 1)
+placed_block_modulate = Color(1, 1, 1, 1)
+preview_valid_tint = Color(1, 1, 1, 0.45)
+preview_clear_highlight = Color(1, 0.95, 0.4, 0.55)
+text_color = Color(1, 1, 1, 1)
+accent_color = Color(0.96, 0.62, 0.04, 1)
+alert_color = Color(0.94, 0.27, 0.27, 1)
+button_normal_bg = Color(0.29, 0.14, 0.56, 1)
+button_hover_bg = Color(0.88, 0.25, 0.98, 1)
+button_pressed_bg = Color(0.15, 0.08, 0.3, 1)
+button_border_color = Color(0, 0.96, 0.83, 1)
+panel_bg_color = Color(0.08, 0.06, 0.15, 0.95)
+panel_border_color = Color(0.88, 0.25, 0.98, 1)

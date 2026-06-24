@@ -7,13 +7,12 @@ class_name Block extends Control
 
 func set_color(color: Color) -> void:
 	var color_index: int = ThemeManager.find_color_index(color)
+	var tex = ThemeManager.get_block_texture(color_index) if color_index != -1 else null
 
-	if ThemeManager.get_active_skin() == "fruits" and color_index != -1:
-		var tex = ThemeManager.get_block_texture(color_index)
-		if tex != null:
-			sprite.texture = tex
-			sprite.modulate = Color.WHITE
-			return
+	if tex != null:
+		sprite.texture = tex
+		sprite.modulate = Color.WHITE
+		return
 	
 	# Fallback/Brick skin uses the classic flat block modulated by its color
 	sprite.texture = load("res://Assets/Sprites/block.png")
