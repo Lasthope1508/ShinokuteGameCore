@@ -145,8 +145,11 @@ func _init_web_ads() -> void:
 		
 		# Auto-detect platform
 		var has_crazy = JavaScriptBridge.eval("typeof CrazyGames !== 'undefined'")
+		var has_monetize = JavaScriptBridge.eval("typeof sdk !== 'undefined' || typeof SDK_OPTIONS !== 'undefined'")
 		if has_crazy:
 			web_platform = WebPlatform.CRAZYGAMES
+		elif has_monetize:
+			web_platform = WebPlatform.GAMEMONETIZE
 		else:
 			web_platform = WebPlatform.GAMEDISTRIBUTION
 		print("[AdManager] Auto-detected web platform: ", WebPlatform.keys()[web_platform])
