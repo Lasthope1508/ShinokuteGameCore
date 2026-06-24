@@ -66,10 +66,10 @@ alignment = 1
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Classic Start (Lưới Trống)"
+text = "Classic Start (Empty Grid)"
 
 [node name="ChaosButton" type="Button" parent="Panel/Margin/VBox/Buttons"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Chaos Start (Rải 10 Khối)"
+text = "Chaos Start (10 Random Blocks)"
