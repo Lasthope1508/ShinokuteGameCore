@@ -1193,7 +1193,7 @@
                         </g>
                         <g id="label-commit-tag">
                             <rect x="55" y="130" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
-                            <text x="145" y="146" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Commit &amp; Tag v1.0.8</text>
+                            <text x="145" y="146" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Commit &amp; Tag v1.0.9</text>
                         </g>
                         <g id="label-ads-sdk">
                             <rect x="310" y="105" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
@@ -1294,7 +1294,7 @@
                         </div>
                         <div class="dispatcher-btn-group">
                             <button id="btn-run-source" class="btn-dispatch" onclick="runAgentTask('coding-source')">Bàn giao Source</button>
-                            <button id="btn-run-tag" class="btn-dispatch" onclick="runAgentTask('coding-tag')">Commit & Tag v1.0.8</button>
+                            <button id="btn-run-tag" class="btn-dispatch" onclick="runAgentTask('coding-tag')">Commit & Tag v1.0.9</button>
                         </div>
                     </div>
 
@@ -2914,7 +2914,7 @@
             } else if (taskId === 'coding-tag') {
                 agent = 'Coding Agent';
                 task = 'Commit & Tag Release';
-                details = 'Đã tạo tag release v1.0.8 và push thành công lên Single Git Repository.';
+                details = 'Đã tạo tag release v1.0.9 và push thành công lên Single Git Repository.';
             } else if (taskId === 'ads-integrate') {
                 agent = 'Ads Agent';
                 task = 'Tích hợp Ads SDK';
@@ -2925,7 +2925,7 @@
                 details = 'Đã chạy phân tích tĩnh (linting), phát hiện 0 lỗi nghiêm trọng và hoàn thành kiểm định chất lượng.';
             } else if (taskId === 'android-publish') {
                 agent = 'Android Pub Agent';
-                task = 'Publish Android v1.0.8';
+                task = 'Publish Android v1.0.9';
                 details = 'Chạy Godot Headless export AAB và upload tự động lên Play Console (Internal Testing).';
             } else if (taskId === 'web-deploy') {
                 agent = 'Web Pub Agent';
