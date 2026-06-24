@@ -9,7 +9,7 @@ const USERNAME_PROMPT_OVERLAY := preload("res://Scenes/Game/Component/Overlays/U
 
 # Branding shown in the bottom-left corner of the menu.
 @export var project_name: String = "BloxChain"
-@export var version: String = "1.0.9"
+@export var version: String = ""
 
 @onready var play_button: Button = $Center/VBox/PlayButton
 @onready var settings_button: Button = $Center/VBox/SettingsButton
@@ -25,7 +25,11 @@ const USERNAME_PROMPT_OVERLAY := preload("res://Scenes/Game/Component/Overlays/U
 
 func _ready() -> void:
 	best_label.text = "Best Score:\n %d" % GameState.best_score
-	version_label.text = "%s v%s" % [project_name, version]
+	
+	var display_version = version
+	if display_version == "":
+		display_version = ProjectSettings.get_setting("application/config/version", "1.0.0")
+	version_label.text = "%s v%s" % [project_name, display_version]
 	play_button.pressed.connect(_on_play_pressed)
 	settings_button.pressed.connect(_on_settings_pressed)
 	leaderboard_button.pressed.connect(_on_leaderboard_pressed)
