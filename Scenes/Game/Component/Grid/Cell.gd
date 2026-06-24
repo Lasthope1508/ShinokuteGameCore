@@ -34,15 +34,8 @@ func _ready() -> void:
 
 func _update_theme() -> void:
 	var active_theme = ThemeManager.get_active_theme()
-	if active_theme:
-		if active_theme.cell_empty_texture != null:
-			background.texture = active_theme.cell_empty_texture
-		else:
-			background.texture = load("res://Assets/Sprites/cell_empty.png")
-		background.modulate = active_theme.cell_empty_tint
-	else:
-		background.texture = load("res://Assets/Sprites/cell_empty.png")
-		background.modulate = Color(0.2, 0.15, 0.1, 0.5)
+	background.texture = preload("res://Assets/Sprites/cell_empty.png")
+	background.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	
 	if occupied:
 		_update_texture_for_color(block, occupied_color)
@@ -124,9 +117,7 @@ func clear_with_animation(delay: float = 0.0) -> Tween:
 # Shows a translucent ghost of the dragged piece on this cell.
 func show_preview(color: Color) -> void:
 	_update_texture_for_color(preview, color)
-	var active_theme = ThemeManager.get_active_theme()
-	var alpha = active_theme.preview_valid_tint.a if active_theme else 0.45
-	preview.modulate.a = alpha
+	preview.modulate = Color(0.5, 0.9, 0.5, 0.6)
 	preview.visible = true
 
 

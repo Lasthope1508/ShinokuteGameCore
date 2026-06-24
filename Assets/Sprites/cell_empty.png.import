@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3dxqmo8lj3ei"
-path="res://.godot/imported/cell_empty.png-8b0bd144e9ab1a83141a0da3040ee383.ctex"
+uid="uid://dfx27p2jqaonp"
+path="res://.godot/imported/cell_empty.png-0dd36c1bff9492cbcade2b68e75f1867.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://Assets/Sprites/cell_empty.png"
-dest_files=["res://.godot/imported/cell_empty.png-8b0bd144e9ab1a83141a0da3040ee383.ctex"]
+dest_files=["res://.godot/imported/cell_empty.png-0dd36c1bff9492cbcade2b68e75f1867.ctex"]
 
 [params]
 

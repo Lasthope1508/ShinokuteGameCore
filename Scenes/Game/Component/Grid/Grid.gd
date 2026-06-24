@@ -48,9 +48,7 @@ func _update_theme() -> void:
 		for qy in QUADRANT_SIZE:
 			for qx in QUADRANT_SIZE:
 				var q: Quadrant = _quadrants[qy][qx]
-				var is_light: bool = (qx + qy) % 2 == 0
-				if theme_config:
-					q.modulate = theme_config.quadrant_light_tint if is_light else theme_config.quadrant_dark_tint
+				q.modulate = Color(1, 1, 1, 0)
 
 
 func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
@@ -283,10 +281,8 @@ func _build_grid() -> void:
 			q.size = q.custom_minimum_size
 			# Add to tree first so @onready (background) resolves.
 			quadrants_layer.add_child(q)
-			# Per-quadrant checkerboard tint + texture swap.
+			q.modulate = Color(1, 1, 1, 0)
 			var is_light: bool = (qx + qy) % 2 == 0
-			if theme_config:
-				q.modulate = theme_config.quadrant_light_tint if is_light else theme_config.quadrant_dark_tint
 			if is_light:
 				q.background.texture = preload("res://Assets/Sprites/quadrant_bg_light.png")
 			else:
@@ -380,7 +376,7 @@ func _highlight_potential_clears(shape: PieceShape, origin: Vector2i) -> void:
 		var p: Vector2i = origin + offset
 		hypothetical[p.y][p.x] = true
 
-	var color := theme_config.preview_clear_highlight if theme_config else Color(1, 0.95, 0.4, 0.55)
+	var color := Color(1, 0.8, 0.2, 0.7)
 
 	for y in SIZE:
 		var full := true

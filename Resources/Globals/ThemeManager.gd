@@ -29,9 +29,18 @@ const GENERAL_SFX_MAP: Dictionary = {
 var active_theme_name: String = DEFAULT_THEME
 var active_theme: ThemeConfig
 
+var shared_background_texture: Texture2D
+var shared_milestone_backgrounds: Array[Texture2D] = []
+
 signal theme_changed(new_theme_name: String, theme_config: ThemeConfig)
 
 func _ready() -> void:
+	# Load shared SSOT background assets from fruit theme configuration
+	var fruit_config = load("res://Resources/Data/Themes/fruit_theme/theme_config.tres")
+	if fruit_config:
+		shared_background_texture = fruit_config.get("background_texture")
+		shared_milestone_backgrounds = fruit_config.get("milestone_backgrounds")
+
 	active_skin = SaveManager.get_setting(SKIN_SAVE_KEY, "brick")
 	active_theme_name = SaveManager.get_setting(SAVE_KEY, DEFAULT_THEME)
 	

@@ -10,14 +10,21 @@ class_name ThemeConfig extends Resource
 @export var theme_subtitle_color: Color = Color(1.0, 1.0, 1.0, 1.0)
 @export var block_textures: Array[Texture2D] = []
 @export var default_block_texture: Texture2D
-@export var cell_empty_texture: Texture2D
 @export var piece_slot_texture: Texture2D
 @export var logo_texture: Texture2D = preload("res://Assets/Sprites/bloxchain_logo.png")
-@export var background_texture: Texture2D = preload("res://Assets/Sprites/greeting_bg.png")
+@export var playboard_scale: float = 1.0
+
+# Shared / SSOT properties loaded from Fruit Theme but declared to avoid resource errors
+@export var cell_empty_texture: Texture2D
+@export var background_texture: Texture2D
 @export var milestone_backgrounds: Array[Texture2D] = []
 @export var background_score_step: int = 500
-@export var playboard_scale: float = 1.0
 @export var show_background_in_game: bool = false
+@export var quadrant_dark_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
+@export var quadrant_light_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
+@export var cell_empty_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
+@export var preview_valid_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
+@export var preview_clear_highlight: Color = Color(1.0, 1.0, 1.0, 1.0)
 
 # Theme sound streams
 @export var sfx_pick: AudioStream
@@ -40,20 +47,8 @@ class_name ThemeConfig extends Resource
 	Color("#eab308"), # yellow
 ]
 
-# Tints for dark/light quadrant backgrounds (alternated per 3x3 block).
-@export var quadrant_dark_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
-@export var quadrant_light_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
-
-@export var cell_empty_tint: Color = Color(1.0, 1.0, 1.0, 0.10)
-
 # Modulate multiplier applied to blocks after they are placed on the grid
 @export var placed_block_modulate: Color = Color(1.0, 1.0, 1.0, 1.0)
-
-# Overlay shown for the projected piece preview while dragging.
-@export var preview_valid_tint: Color = Color(1.0, 1.0, 1.0, 0.45)
-
-# Highlight for rows / columns / quadrants that would be cleared by a placement.
-@export var preview_clear_highlight: Color = Color(1.0, 0.95, 0.4, 0.55)
 
 # Particle visual settings (VFX)
 @export var particles_use_cell_color: bool = false

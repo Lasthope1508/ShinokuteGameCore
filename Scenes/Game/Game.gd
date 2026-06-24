@@ -99,11 +99,7 @@ func _update_theme() -> void:
 	tray.theme_config = _theme_config
 	
 	if _theme_config:
-		# Dark dynamic background color derived from active theme colors
-		var bg_color = _theme_config.quadrant_dark_tint
-		bg_color.a = 1.0
-		bg_color = bg_color.darkened(0.85)
-		background.color = bg_color
+		background.color = Color(0.08, 0.06, 0.15, 1.0)
 
 		_update_background(GameState.current_score, true)
 
@@ -161,10 +157,10 @@ func _update_background(score: int, force_immediate: bool = false) -> void:
 	if not _theme_config:
 		return
 		
-	var target_bg = _theme_config.background_texture if _theme_config.show_background_in_game else null
+	var target_bg = ThemeManager.shared_background_texture
 	var target_index = 0
 	
-	if not _theme_config.milestone_backgrounds.is_empty():
+	if not ThemeManager.shared_milestone_backgrounds.is_empty():
 		var level = GameState.get_level_for_score(score)
 		if _shuffled_bg_indices.is_empty():
 			_initialize_shuffled_backgrounds()
@@ -172,8 +168,8 @@ func _update_background(score: int, force_immediate: bool = false) -> void:
 		if not _shuffled_bg_indices.is_empty():
 			var shuffled_pos = level % _shuffled_bg_indices.size()
 			target_index = _shuffled_bg_indices[shuffled_pos]
-			if _theme_config.milestone_backgrounds[target_index] != null:
-				target_bg = _theme_config.milestone_backgrounds[target_index]
+			if ThemeManager.shared_milestone_backgrounds[target_index] != null:
+				target_bg = ThemeManager.shared_milestone_backgrounds[target_index]
 			
 	if target_index == _current_bg_index and not force_immediate:
 		return
@@ -699,8 +695,8 @@ func _on_game_reset() -> void:
 
 func _initialize_shuffled_backgrounds() -> void:
 	_shuffled_bg_indices.clear()
-	if _theme_config and not _theme_config.milestone_backgrounds.is_empty():
-		for i in range(_theme_config.milestone_backgrounds.size()):
+	if not ThemeManager.shared_milestone_backgrounds.is_empty():
+		for i in range(ThemeManager.shared_milestone_backgrounds.size()):
 			_shuffled_bg_indices.append(i)
 		_shuffled_bg_indices.shuffle()
 

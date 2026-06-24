@@ -90,7 +90,7 @@ func _update_theme() -> void:
 		leaderboard_button.add_theme_color_override("font_hover_color", active_theme.accent_color)
 		
 		# Background image or solid color fallback
-		var bg_tex = active_theme.background_texture
+		var bg_tex = ThemeManager.shared_background_texture
 		if bg_tex:
 			background_texture_rect.texture = bg_tex
 			background_texture_rect.visible = true
@@ -98,11 +98,7 @@ func _update_theme() -> void:
 			background_texture_rect.texture = null
 			background_texture_rect.visible = false
 			
-		# Dark dynamic background color derived from active theme colors
-		var bg_color = active_theme.quadrant_dark_tint
-		bg_color.a = 1.0
-		bg_color = bg_color.darkened(0.85)
-		background_rect.color = bg_color
+		background_rect.color = Color(0.08, 0.06, 0.15, 1.0)
 		
 		_update_background_layout()
 
