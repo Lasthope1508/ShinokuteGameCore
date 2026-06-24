@@ -122,7 +122,7 @@ func play_combo(combo: int) -> void:
 	add_theme_font_size_override("font_size", font_sz)
 	
 	horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	_vertical_offset_ratio = 0.05
+	_vertical_offset_ratio = active_theme.popup_combo_vertical_offset if active_theme else 0.05
 
 	var full_text: String = combo_text
 	text = full_text
@@ -151,16 +151,18 @@ func play_combo(combo: int) -> void:
 			(ps.y - final_size.y) * 0.5 - ps.y * _vertical_offset_ratio,
 		)
 
-	var per_letter: float = 0.05
+	var per_letter: float = active_theme.popup_combo_letter_reveal_delay if active_theme else 0.05
 	for i in range(full_text.length()):
 		text = full_text.substr(0, i + 1)
 		await get_tree().create_timer(per_letter).timeout
 
-	await get_tree().create_timer(0.35).timeout
+	var fade_delay = active_theme.popup_combo_fade_out_delay if active_theme else 0.35
+	var fade_dur = active_theme.popup_combo_fade_out_duration if active_theme else 0.35
+	await get_tree().create_timer(fade_delay).timeout
 	var tw := create_tween()
-	tw.tween_property(self, "modulate:a", 0.0, 0.35)
+	tw.tween_property(self, "modulate:a", 0.0, fade_dur)
 	# Plain timer (see Safari iOS note in play_match).
-	await get_tree().create_timer(0.40).timeout
+	await get_tree().create_timer(fade_dur + 0.05).timeout
 	queue_free()
 
 
@@ -184,7 +186,7 @@ func play_streak(streak: int) -> void:
 	add_theme_font_size_override("font_size", font_sz)
 	
 	horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	_vertical_offset_ratio = -0.10 # Slightly lower than combo to avoid overlapping
+	_vertical_offset_ratio = active_theme.popup_streak_vertical_offset if active_theme else -0.10
 
 	var full_text: String = streak_text
 	text = full_text
@@ -213,15 +215,17 @@ func play_streak(streak: int) -> void:
 			(ps.y - final_size.y) * 0.5 - ps.y * _vertical_offset_ratio,
 		)
 
-	var per_letter: float = 0.05
+	var per_letter: float = active_theme.popup_streak_letter_reveal_delay if active_theme else 0.05
 	for i in range(full_text.length()):
 		text = full_text.substr(0, i + 1)
 		await get_tree().create_timer(per_letter).timeout
 
-	await get_tree().create_timer(0.35).timeout
+	var fade_delay = active_theme.popup_streak_fade_out_delay if active_theme else 0.35
+	var fade_dur = active_theme.popup_streak_fade_out_duration if active_theme else 0.40
+	await get_tree().create_timer(fade_delay).timeout
 	var tw := create_tween()
-	tw.tween_property(self, "modulate:a", 0.0, 0.35)
-	await get_tree().create_timer(0.40).timeout
+	tw.tween_property(self, "modulate:a", 0.0, fade_dur)
+	await get_tree().create_timer(fade_dur + 0.05).timeout
 	queue_free()
 
 

@@ -116,6 +116,84 @@ class UploadDashboardHandler(SimpleHTTPRequestHandler):
                     except Exception:
                         state = {}
             self.send_json_response(state)
+        elif self.path.startswith('/api/theme-config'):
+            parsed_url = urllib.parse.urlparse(self.path)
+            query_params = urllib.parse.parse_qs(parsed_url.query)
+            theme_name = query_params.get('theme', ['brick_theme'])[0]
+            
+            project_root = os.path.dirname(DIRECTORY)
+            theme_file = os.path.join(project_root, "Resources", "Data", "Themes", theme_name, "theme_config.tres")
+            
+            config = {}
+            if os.path.exists(theme_file):
+                with open(theme_file, "r", encoding="utf-8") as f:
+                    in_resource = False
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith("[resource]"):
+                            in_resource = True
+                            continue
+                        if in_resource:
+                            if line.startswith("[") and not line.startswith("[resource"):
+                                break
+                            if "=" in line:
+                                parts = line.split("=", 1)
+                                key = parts[0].strip()
+                                val = parts[1].strip()
+                                
+                                if val.startswith('"') and val.endswith('"'):
+                                    val = val[1:-1]
+                                elif val == "true":
+                                    val = True
+                                elif val == "false":
+                                    val = False
+                                elif val.startswith("Color(") and val.endswith(")"):
+                                    c_parts = val[6:-1].split(",")
+                                    c_floats = [float(x.strip()) for x in c_parts]
+                                    if len(c_floats) == 3:
+                                        c_floats.append(1.0)
+                                    val = f"rgba({int(c_floats[0]*255)}, {int(c_floats[1]*255)}, {int(c_floats[2]*255)}, {c_floats[3]})"
+                                elif val.startswith("Vector2(") and val.endswith(")"):
+                                    v_parts = val[8:-1].split(",")
+                                    val = {"x": float(v_parts[0].strip()), "y": float(v_parts[1].strip())}
+                                elif val.startswith("Array[Color](["):
+                                    arr_content = val[14:-2]
+                                    import re
+                                    colors = []
+                                    for c_match in re.finditer(r"Color\(([^)]+)\)", arr_content):
+                                        c_parts = c_match.group(1).split(",")
+                                        c_floats = [float(x.strip()) for x in c_parts]
+                                        if len(c_floats) == 3:
+                                            c_floats.append(1.0)
+                                        colors.append(f"rgba({int(c_floats[0]*255)}, {int(c_floats[1]*255)}, {int(c_floats[2]*255)}, {c_floats[3]})")
+                                    val = colors
+                                else:
+                                    try:
+                                        if "." in val:
+                                            val = float(val)
+                                        else:
+                                            val = int(val)
+                                    except ValueError:
+                                        pass
+                                config[key] = val
+            else:
+                if theme_name == "neon_theme" or theme_name == "neon":
+                    config = {
+                        "theme_name": "neon_theme",
+                        "particles_amount": 20,
+                        "particles_spread": 360.0,
+                        "particles_gravity": {"x": 0.0, "y": 0.0},
+                        "particles_initial_velocity_min": 60.0,
+                        "particles_initial_velocity_max": 180.0,
+                        "particles_scale_min": 3.0,
+                        "particles_scale_max": 6.0,
+                        "particles_lifetime": 0.8,
+                        "particles_use_cell_color": False,
+                        "piece_colors": ["rgba(6, 182, 212, 0.8)", "rgba(236, 72, 153, 0.8)"]
+                    }
+                else:
+                    config = {"error": "Theme config file not found", "path": theme_file}
+            self.send_json_response(config)
         else:
             super().do_GET()
 

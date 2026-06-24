@@ -408,10 +408,14 @@ func _resolve_clears(_origin: Vector2i) -> void:
 
 
 func _spawn_slash(p_start: Vector2, p_end: Vector2, color: Color) -> void:
+	var glow_w = _theme_config.sword_slash_glow_width if _theme_config else 18.0
+	var core_w = _theme_config.sword_slash_core_width if _theme_config else 4.0
+	var fade_dur = _theme_config.sword_slash_fade_duration if _theme_config else 0.2
+
 	# Glow line (thick, colored)
 	var glow_line := Line2D.new()
 	glow_line.points = PackedVector2Array([p_start, p_end])
-	glow_line.width = 18.0
+	glow_line.width = glow_w
 	glow_line.default_color = color
 	glow_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	glow_line.end_cap_mode = Line2D.LINE_CAP_ROUND
@@ -421,7 +425,7 @@ func _spawn_slash(p_start: Vector2, p_end: Vector2, color: Color) -> void:
 	# Core line (thin, white)
 	var core_line := Line2D.new()
 	core_line.points = PackedVector2Array([p_start, p_end])
-	core_line.width = 4.0
+	core_line.width = core_w
 	core_line.default_color = Color.WHITE
 	core_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	core_line.end_cap_mode = Line2D.LINE_CAP_ROUND
@@ -432,8 +436,8 @@ func _spawn_slash(p_start: Vector2, p_end: Vector2, color: Color) -> void:
 	var tween := create_tween().set_parallel(true)
 	
 	# Fade width to 0
-	tween.tween_property(glow_line, "width", 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(core_line, "width", 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(glow_line, "width", 0.0, fade_dur).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(core_line, "width", 0.0, fade_dur).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	
 	# Fade color (alpha)
 	var glow_target_color := color
@@ -441,8 +445,8 @@ func _spawn_slash(p_start: Vector2, p_end: Vector2, color: Color) -> void:
 	var core_target_color := Color.WHITE
 	core_target_color.a = 0.0
 	
-	tween.tween_property(glow_line, "default_color", glow_target_color, 0.2)
-	tween.tween_property(core_line, "default_color", core_target_color, 0.2)
+	tween.tween_property(glow_line, "default_color", glow_target_color, fade_dur)
+	tween.tween_property(core_line, "default_color", core_target_color, fade_dur)
 	
 	# Free when done
 	tween.finished.connect(func():

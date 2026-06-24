@@ -61,6 +61,25 @@ class_name ThemeConfig extends Resource
 @export var particles_initial_velocity_max: float = 220.0
 @export var particles_scale_min: float = 2.0
 @export var particles_scale_max: float = 6.0
+@export var particles_lifetime: float = 0.6
+@export var particles_explosiveness: float = 1.0
+@export var particles_linear_damp_min: float = 50.0
+@export var particles_linear_damp_max: float = 100.0
+
+@export_group("Sword Slash VFX Override")
+@export var sword_slash_glow_width: float = 18.0
+@export var sword_slash_core_width: float = 4.0
+@export var sword_slash_fade_duration: float = 0.2
+
+@export_group("Popup Timings & Offsets")
+@export var popup_combo_letter_reveal_delay: float = 0.05
+@export var popup_streak_letter_reveal_delay: float = 0.05
+@export var popup_combo_fade_out_delay: float = 0.35
+@export var popup_combo_fade_out_duration: float = 0.35
+@export var popup_streak_fade_out_delay: float = 0.35
+@export var popup_streak_fade_out_duration: float = 0.40
+@export var popup_combo_vertical_offset: float = 0.05
+@export var popup_streak_vertical_offset: float = -0.10
 
 @export_group("UI Colors & Style Overrides")
 @export var text_color: Color = Color(1.0, 1.0, 1.0, 1.0)
