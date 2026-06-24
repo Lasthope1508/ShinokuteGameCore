@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxn5n2gpv6mgu"
-path="res://.godot/imported/playboard.png-229d0f070d43cfa0170e71f666613774.ctex"
+uid="uid://bgkum4ar1ohx7"
+path="res://.godot/imported/playboard.png-5cc84e61dc095656f973e0b9bd52f6f5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Themes/fruit_theme/playboard.png"
-dest_files=["res://.godot/imported/playboard.png-229d0f070d43cfa0170e71f666613774.ctex"]
+source_file="res://Assets/Sprites/playboard.png"
+dest_files=["res://.godot/imported/playboard.png-5cc84e61dc095656f973e0b9bd52f6f5.ctex"]
 
 [params]
 

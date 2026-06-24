@@ -161,7 +161,7 @@ func _update_background(score: int, force_immediate: bool = false) -> void:
 	if not _theme_config:
 		return
 		
-	var target_bg = _theme_config.background_texture
+	var target_bg = _theme_config.background_texture if _theme_config.show_background_in_game else null
 	var target_index = 0
 	
 	if not _theme_config.milestone_backgrounds.is_empty():

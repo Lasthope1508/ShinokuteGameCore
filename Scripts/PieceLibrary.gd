@@ -86,6 +86,30 @@ const SHAPES_REGISTRY: Array[Dictionary] = [
 		"display_name": "Square 3",
 		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
 		"weight": 0.5
+	},
+	{
+		"name": "u_shape",
+		"display_name": "U Shape",
+		"cells": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(2, 1), Vector2i(2, 0)],
+		"weight": 0.8
+	},
+	{
+		"name": "t_shape_large",
+		"display_name": "Large T",
+		"cells": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(1, 1), Vector2i(1, 2)],
+		"weight": 0.7
+	},
+	{
+		"name": "l_shape_3x3",
+		"display_name": "L 3x3",
+		"cells": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
+		"weight": 0.7
+	},
+	{
+		"name": "l_shape_inverted_3x3",
+		"display_name": "L Inverted 3x3",
+		"cells": [Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(1, 2), Vector2i(0, 2)],
+		"weight": 0.7
 	}
 ]
 
