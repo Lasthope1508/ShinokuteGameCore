@@ -25,6 +25,7 @@
             --accent-purple: #a855f7;
             --accent-red: #ef4444;
             --accent-orange: #f97316;
+            --accent-cyan: #06b6d4;
             --shadow: rgba(0, 0, 0, 0.6);
             --font-main: 'Outfit', sans-serif;
             --font-mono: 'Space Grotesk', sans-serif;
@@ -379,6 +380,15 @@
             stroke-width: 3px;
         }
 
+        .flow-node-audit rect {
+            transition: all 0.3s ease;
+        }
+
+        .flow-node-audit.active rect {
+            filter: url(#glow-cyan);
+            stroke-width: 3px;
+        }
+
         .flow-node-android.active rect {
             filter: url(#glow-green);
             stroke-width: 3px;
@@ -399,6 +409,13 @@
             stroke-dasharray: 8, 8;
             animation: dash-flow 1.5s linear infinite;
             filter: drop-shadow(0 0 4px var(--accent-orange));
+        }
+
+        .pulsing-flow-cyan {
+            stroke: var(--accent-cyan) !important;
+            stroke-dasharray: 8, 8;
+            animation: dash-flow 1.5s linear infinite;
+            filter: drop-shadow(0 0 4px var(--accent-cyan));
         }
 
         /* Task Dispatcher cards styling */
@@ -1125,12 +1142,20 @@
                                     <feMergeNode in="SourceGraphic" />
                                 </feMerge>
                             </filter>
+                            <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="6" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
                         </defs>
 
                         <!-- Flow lines (paths) -->
-                        <path id="path-coding-git-left" d="M 260 70 L 260 105 L 350 105 L 350 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
-                        <path id="path-coding-git-right" d="M 260 70 L 260 145 L 350 145 L 350 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
-                        <path id="path-ads-git" d="M 540 70 L 540 120 L 450 120 L 450 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
+                        <path id="path-coding-git-left" d="M 145 70 L 145 110 L 350 110 L 350 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
+                        <path id="path-coding-git-right" d="M 145 70 L 145 145 L 350 145 L 350 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
+                        <path id="path-ads-git" d="M 400 70 L 400 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
+                        <path id="path-audit-git" d="M 655 70 L 655 120 L 450 120 L 450 175" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
                         
                         <path id="path-git-android" d="M 400 240 L 400 280 L 220 280 L 220 330" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
                         <path id="path-git-web" d="M 400 240 L 400 280 L 580 280 L 580 330" fill="none" stroke="#3f3f46" stroke-width="3" stroke-dasharray="8,8" />
@@ -1145,28 +1170,38 @@
                         <!-- Nodes -->
                         <!-- Top Node Left: Coding Agent - Tôi -->
                         <g id="node-coding" class="flow-node">
-                            <rect x="140" y="20" width="240" height="50" rx="8" fill="#1e1b4b" stroke="#a855f7" stroke-width="2" />
-                            <text x="260" y="50" fill="#f4f4f5" font-family="Space Grotesk" font-size="14" text-anchor="middle" font-weight="bold">Coding Agent (Tôi)</text>
+                            <rect x="35" y="20" width="220" height="50" rx="8" fill="#1e1b4b" stroke="#a855f7" stroke-width="2" />
+                            <text x="145" y="50" fill="#f4f4f5" font-family="Space Grotesk" font-size="14" text-anchor="middle" font-weight="bold">Coding Agent (Tôi)</text>
                         </g>
 
-                        <!-- Top Node Right: Ads Agent -->
+                        <!-- Top Node Center: Ads Agent -->
                         <g id="node-ads" class="flow-node-ads">
-                            <rect x="420" y="20" width="240" height="50" rx="8" fill="#431407" stroke="#ea580c" stroke-width="2" />
-                            <text x="540" y="50" fill="#f4f4f5" font-family="Space Grotesk" font-size="14" text-anchor="middle" font-weight="bold">Ads Agent</text>
+                            <rect x="290" y="20" width="220" height="50" rx="8" fill="#431407" stroke="#ea580c" stroke-width="2" />
+                            <text x="400" y="50" fill="#f4f4f5" font-family="Space Grotesk" font-size="14" text-anchor="middle" font-weight="bold">Ads Agent</text>
+                        </g>
+
+                        <!-- Top Node Right: Audit Agent -->
+                        <g id="node-audit" class="flow-node-audit">
+                            <rect x="545" y="20" width="220" height="50" rx="8" fill="#0f766e" stroke="#14b8a6" stroke-width="2" />
+                            <text x="655" y="50" fill="#f4f4f5" font-family="Space Grotesk" font-size="14" text-anchor="middle" font-weight="bold">Audit Agent</text>
                         </g>
 
                         <!-- Outputs Labels -->
                         <g id="label-source-code">
-                            <rect x="150" y="95" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
-                            <text x="240" y="111" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Bàn giao Source Code chuẩn</text>
+                            <rect x="55" y="95" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
+                            <text x="145" y="111" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Bàn giao Source Code chuẩn</text>
                         </g>
                         <g id="label-commit-tag">
-                            <rect x="150" y="130" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
-                            <text x="240" y="146" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Commit &amp; Tag v1.0.8</text>
+                            <rect x="55" y="130" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
+                            <text x="145" y="146" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Commit &amp; Tag v1.0.8</text>
                         </g>
                         <g id="label-ads-sdk">
-                            <rect x="450" y="105" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
-                            <text x="540" y="121" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Tích hợp Ads SDK</text>
+                            <rect x="310" y="105" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
+                            <text x="400" y="121" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Tích hợp Ads SDK</text>
+                        </g>
+                        <g id="label-audit">
+                            <rect x="565" y="105" width="180" height="24" rx="4" fill="#09090b" stroke="#3f3f46" />
+                            <text x="655" y="121" fill="#a1a1aa" font-family="Outfit" font-size="10" text-anchor="middle">Báo cáo kiểm thử &amp; lint</text>
                         </g>
 
                         <!-- Middle Node: Single Git Repository -->
@@ -1278,6 +1313,24 @@
                         </div>
                         <div class="dispatcher-btn-group">
                             <button id="btn-run-ads" class="btn-dispatch" onclick="runAgentTask('ads-integrate')">Tích hợp Ads SDK</button>
+                        </div>
+                    </div>
+
+                    <!-- Audit Card -->
+                    <div class="dispatcher-card">
+                        <h4>
+                            <span>🔍 Kiểm định chất lượng</span>
+                            <span style="font-size: 0.75rem; color: var(--accent-cyan);">Audit Agent</span>
+                        </h4>
+                        <p>Phân tích tĩnh mã nguồn, chạy kiểm thử tự động và rà soát lỗi bảo mật trước khi release.</p>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--text-muted);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Task: Chạy Audit Mã Nguồn</span>
+                                <span id="status-code-audit" style="font-size: 0.7rem; background-color: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; color: var(--text-muted); font-family: var(--font-mono); font-weight: bold;">Idle</span>
+                            </div>
+                        </div>
+                        <div class="dispatcher-btn-group">
+                            <button id="btn-run-audit" class="btn-dispatch" onclick="runAgentTask('code-audit')">Chạy Audit Mã Nguồn</button>
                         </div>
                     </div>
 
@@ -1955,12 +2008,12 @@
                                 </tr>
                                 <tr style="border-bottom: 1px solid var(--border);">
                                     <td style="padding: 0.8rem; font-weight: bold;">Giao việc (PM Dispatcher)</td>
-                                    <td style="padding: 0.8rem; font-family: var(--font-code); color: var(--accent-blue);">#btn-run-source<br>#btn-run-tag<br>#btn-run-android<br>#btn-run-web</td>
+                                    <td style="padding: 0.8rem; font-family: var(--font-code); color: var(--accent-blue);">#btn-run-source<br>#btn-run-tag<br>#btn-run-ads<br>#btn-run-audit<br>#btn-run-android<br>#btn-run-web</td>
                                     <td style="padding: 0.8rem;"><code>&lt;button&gt;</code> - PM ra lệnh giao việc.</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid var(--border);">
                                     <td style="padding: 0.8rem; font-weight: bold;">Trạng thái Tác vụ (Dispatcher Badge)</td>
-                                    <td style="padding: 0.8rem; font-family: var(--font-code); color: var(--accent-blue);">#status-coding-source<br>#status-coding-tag<br>#status-android-publish<br>#status-web-deploy</td>
+                                    <td style="padding: 0.8rem; font-family: var(--font-code); color: var(--accent-blue);">#status-coding-source<br>#status-coding-tag<br>#status-ads-integrate<br>#status-code-audit<br>#status-android-publish<br>#status-web-deploy</td>
                                     <td style="padding: 0.8rem;"><code>&lt;span&gt;</code> - Hiển thị trạng thái thực tế: <code>Idle</code>, <code>Assigned (Running)</code>, <code>Completed</code>.</td>
                                 </tr>
 
@@ -2079,6 +2132,7 @@
                             "coding-source": { "status": "Idle", "updated_at": "" },
                             "coding-tag": { "status": "Idle", "updated_at": "" },
                             "ads-integrate": { "status": "Idle", "updated_at": "" },
+                            "code-audit": { "status": "Idle", "updated_at": "" },
                             "android-publish": { "status": "Idle", "updated_at": "" },
                             "web-deploy": { "status": "Idle", "updated_at": "" }
                         };
@@ -2088,7 +2142,7 @@
         }
 
         function updateTaskBoardUI(state) {
-            const tasksList = ['coding-source', 'coding-tag', 'ads-integrate', 'android-publish', 'web-deploy'];
+            const tasksList = ['coding-source', 'coding-tag', 'ads-integrate', 'code-audit', 'android-publish', 'web-deploy'];
             const buttons = document.querySelectorAll('.btn-dispatch');
             let anyRunning = false;
             let runningTaskId = null;
@@ -2201,6 +2255,7 @@
         function setAgentVisualsActive(taskId) {
             const codingNode = document.getElementById('node-coding');
             const adsNode = document.getElementById('node-ads');
+            const auditNode = document.getElementById('node-audit');
             const gitNode = document.getElementById('node-git');
             const androidNode = document.getElementById('node-android');
             const webNode = document.getElementById('node-web');
@@ -2210,6 +2265,7 @@
             const pathCodingLeft = document.getElementById('path-coding-git-left');
             const pathCodingRight = document.getElementById('path-coding-git-right');
             const pathAdsGit = document.getElementById('path-ads-git');
+            const pathAuditGit = document.getElementById('path-audit-git');
             const pathGitAndroid = document.getElementById('path-git-android');
             const pathGitWeb = document.getElementById('path-git-web');
             const pathAndroidPlay = document.getElementById('path-android-play');
@@ -2227,6 +2283,10 @@
                 adsNode.classList.add('active');
                 gitNode.classList.add('active');
                 pathAdsGit.className.baseVal = 'pulsing-flow-orange';
+            } else if (taskId === 'code-audit') {
+                auditNode.classList.add('active');
+                gitNode.classList.add('active');
+                pathAuditGit.className.baseVal = 'pulsing-flow-cyan';
             } else if (taskId === 'android-publish') {
                 gitNode.classList.add('active');
                 androidNode.classList.add('active');
@@ -2244,13 +2304,14 @@
 
         function resetAgentVisuals() {
             // Remove active classes
-            const nodes = document.querySelectorAll('.flow-node, .flow-node-android, .flow-node-web, .flow-node-git, .flow-node-ads');
+            const nodes = document.querySelectorAll('.flow-node, .flow-node-android, .flow-node-web, .flow-node-git, .flow-node-ads, .flow-node-audit');
             nodes.forEach(node => node.classList.remove('active'));
 
             // Reset paths
             document.getElementById('path-coding-git-left').className.baseVal = '';
             document.getElementById('path-coding-git-right').className.baseVal = '';
             document.getElementById('path-ads-git').className.baseVal = '';
+            document.getElementById('path-audit-git').className.baseVal = '';
             document.getElementById('path-git-android').className.baseVal = '';
             document.getElementById('path-git-web').className.baseVal = '';
             document.getElementById('path-android-play').className.baseVal = '';
@@ -2728,6 +2789,8 @@
 
             const agentColors = {
                 'Coding Agent': { bg: 'var(--accent-purple)', text: '#fff' },
+                'Ads Agent': { bg: 'var(--accent-orange)', text: '#fff' },
+                'Audit Agent': { bg: 'var(--accent-cyan)', text: '#000' },
                 'Android Pub Agent': { bg: 'var(--accent-green)', text: '#000' },
                 'Web Pub Agent': { bg: 'var(--accent-blue)', text: '#fff' },
                 'iOS Pub Agent': { bg: '#94a3b8', text: '#000' },
@@ -2856,6 +2919,10 @@
                 agent = 'Ads Agent';
                 task = 'Tích hợp Ads SDK';
                 details = 'Đã hoàn thành tích hợp và cấu hình AdMob SDK vào dự án BloxChain theo đặc tả.';
+            } else if (taskId === 'code-audit') {
+                agent = 'Audit Agent';
+                task = 'Kiểm định Mã Nguồn';
+                details = 'Đã chạy phân tích tĩnh (linting), phát hiện 0 lỗi nghiêm trọng và hoàn thành kiểm định chất lượng.';
             } else if (taskId === 'android-publish') {
                 agent = 'Android Pub Agent';
                 task = 'Publish Android v1.0.8';

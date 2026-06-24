@@ -133,15 +133,48 @@ func _init_ios_admob() -> void:
 	print("[AdManager] iOS platform detected. Falling back to mock ads (not configured).")
 
 # Web Ads Javascript Bridge Setup
+var _last_scene_name: String = ""
+
 func _init_web_ads() -> void:
-	print("[AdManager] Web platform detected. Initializing JS Bridge for: ", WebPlatform.keys()[web_platform])
+	print("[AdManager] Web platform detected. Initializing JS Bridge.")
 	if OS.has_feature("web"):
 		# Register callback on the global window object to receive events from index.html
 		_web_ad_callback = JavaScriptBridge.create_callback(_on_web_ad_callback)
 		JavaScriptBridge.get_interface("window").onAdEvent = _web_ad_callback
 		print("[AdManager] window.onAdEvent registered.")
+		
+		# Auto-detect platform
+		var has_crazy = JavaScriptBridge.eval("typeof CrazyGames !== 'undefined'")
+		if has_crazy:
+			web_platform = WebPlatform.CRAZYGAMES
+		else:
+			web_platform = WebPlatform.GAMEDISTRIBUTION
+		print("[AdManager] Auto-detected web platform: ", WebPlatform.keys()[web_platform])
+		
+		set_process(true)
 	else:
 		print("[AdManager] JavaScriptBridge not available.")
+
+func _process(_delta: float) -> void:
+	if not OS.has_feature("web") or web_platform != WebPlatform.CRAZYGAMES:
+		set_process(false)
+		return
+		
+	var current_scene = get_tree().current_scene
+	if current_scene:
+		var current_name = current_scene.name
+		if current_name != _last_scene_name:
+			_on_scene_changed(_last_scene_name, current_name)
+			_last_scene_name = current_name
+
+func _on_scene_changed(from_scene: String, to_scene: String) -> void:
+	print("[AdManager] Scene changed from ", from_scene, " to ", to_scene)
+	if to_scene == "Game":
+		JavaScriptBridge.eval("if (typeof CrazyGames !== 'undefined') CrazyGames.SDK.game.gameplayStart();")
+		print("[AdManager] CrazyGames gameplayStart() called automatically.")
+	elif from_scene == "Game":
+		JavaScriptBridge.eval("if (typeof CrazyGames !== 'undefined') CrazyGames.SDK.game.gameplayStop();")
+		print("[AdManager] CrazyGames gameplayStop() called automatically.")
 
 # Fallback/Mock ads for Editor or unsupported platforms
 func _init_mock_ads() -> void:
