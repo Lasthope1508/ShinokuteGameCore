@@ -420,3 +420,53 @@ func _apply_clear_feedback(c: Cell, color: Color) -> void:
 		c.start_pulse()
 	else:
 		c.show_clear_hint(color)
+
+
+# Generates random start blocks (Chaos Start) avoiding instant clears.
+func generate_random_start_blocks(count: int = 10) -> void:
+	var occupied_positions: Array[Vector2i] = []
+	var all_positions: Array[Vector2i] = []
+	for y in range(SIZE):
+		for x in range(SIZE):
+			all_positions.append(Vector2i(x, y))
+	all_positions.shuffle()
+	
+	var spawned = 0
+	for pos in all_positions:
+		if spawned >= count:
+			break
+		if _would_cause_instant_clear(pos, occupied_positions):
+			continue
+		occupied_positions.append(pos)
+		spawned += 1
+		
+	for pos in occupied_positions:
+		var color = ThemeManager.get_random_piece_color_for_score(0)
+		_fill_single(pos.x, pos.y, color)
+
+
+func _would_cause_instant_clear(pos: Vector2i, current_occupied: Array[Vector2i]) -> bool:
+	var row_count = 0
+	for p in current_occupied:
+		if p.y == pos.y:
+			row_count += 1
+	if row_count >= SIZE - 1:
+		return true
+		
+	var col_count = 0
+	for p in current_occupied:
+		if p.x == pos.x:
+			col_count += 1
+	if col_count >= SIZE - 1:
+		return true
+		
+	var qx = pos.x / 3
+	var qy = pos.y / 3
+	var quad_count = 0
+	for p in current_occupied:
+		if p.x / 3 == qx and p.y / 3 == qy:
+			quad_count += 1
+	if quad_count >= 8:
+		return true
+		
+	return false

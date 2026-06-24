@@ -11,6 +11,9 @@ class_name PieceShape extends Resource
 # Random-pick weight used by PieceLibrary. Higher = more frequent.
 @export_range(0.0, 10.0, 0.1) var weight: float = 1.0
 
+# Difficulty tier: 1 = Easy, 2 = Medium, 3 = Hard, 4 = Extreme
+@export var tier: int = 1
+
 
 # Returns the bounding-box size in cells.
 func get_size() -> Vector2i:

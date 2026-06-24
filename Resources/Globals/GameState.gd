@@ -21,6 +21,7 @@ var ad_rewards_used: int = 0
 var assists_used: int = 0
 var is_game_over: bool = false
 var current_streak: int = 0
+var start_mode: String = "classic"
 
 
 func _ready() -> void:

@@ -53,7 +53,8 @@ func refill() -> void:
 		shapes.clear()
 		colors.clear()
 		for i in _slots.size():
-			shapes.append(_library.pick_random())
+			var allowed_tiers = _get_slot_allowed_tiers(i, GameState.current_score)
+			shapes.append(_library.pick_random_from_tiers(allowed_tiers))
 			colors.append(_random_color())
 		if grid == null or _any_shape_playable(shapes, occupancy):
 			break
@@ -109,8 +110,11 @@ func regenerate_empty_slots() -> bool:
 	while true:
 		picked.clear()
 		colors.clear()
-		for _i in empty_slots.size():
-			picked.append(_library.pick_random())
+		for i in empty_slots.size():
+			var slot_node = empty_slots[i]
+			var slot_idx = _slots.find(slot_node)
+			var allowed_tiers = _get_slot_allowed_tiers(slot_idx, GameState.current_score)
+			picked.append(_library.pick_random_from_tiers(allowed_tiers))
 			colors.append(_random_color())
 		# Need >=1 placeable across fixed_shapes + picked.
 		if _shapes_union_has_playable(fixed_shapes, picked, occupancy):
@@ -272,7 +276,33 @@ func _build_single_block_shape() -> PieceShape:
 
 
 func _random_color() -> Color:
-	return ThemeManager.get_random_piece_color()
+	return ThemeManager.get_random_piece_color_for_score(GameState.current_score)
+
+
+# Helper to determine allowed tiers for a given slot index based on current score
+func _get_slot_allowed_tiers(slot_idx: int, score: int) -> Array[int]:
+	if score < 500:
+		# Early game: all slots are Tier 1 (Easy)
+		return [1]
+	elif score < 1200:
+		# Mid game
+		match slot_idx:
+			0: return [1]
+			1: return [1, 2]
+			2: return [2]
+	elif score < 2500:
+		# Late game
+		match slot_idx:
+			0: return [1, 2]
+			1: return [2, 3]
+			2: return [3]
+	else:
+		# End game (2500+ score)
+		match slot_idx:
+			0: return [1, 2]
+			1: return [2, 3]
+			2: return [3, 4]
+	return [1]
 
 
 func _on_slot_piece_picked(_slot: PieceSlot, piece: Piece) -> void:

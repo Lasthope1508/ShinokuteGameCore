@@ -153,6 +153,24 @@ func get_random_piece_color() -> Color:
 		return theme.piece_colors.pick_random()
 	return Color.WHITE
 
+func get_random_piece_color_for_score(score: int) -> Color:
+	var theme = get_active_theme()
+	if theme and not theme.piece_colors.is_empty():
+		var pool_size = 1
+		if score < 300:
+			pool_size = 1
+		elif score < 800:
+			pool_size = 2
+		elif score < 1500:
+			pool_size = 4
+		elif score < 3000:
+			pool_size = 6
+		else:
+			pool_size = theme.piece_colors.size()
+		var active_pool = theme.piece_colors.slice(0, pool_size)
+		return active_pool.pick_random()
+	return Color.WHITE
+
 func get_sfx(sfx_name: String) -> AudioStream:
 	if GENERAL_SFX_MAP.has(sfx_name):
 		return GENERAL_SFX_MAP[sfx_name]
