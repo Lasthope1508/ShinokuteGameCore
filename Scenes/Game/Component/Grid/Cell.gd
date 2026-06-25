@@ -96,7 +96,7 @@ func add_connection(direction: String) -> void:
 
 func _update_connection_shader() -> void:
 	if _block_material:
-		_block_material.set_shader_parameter("is_ice_element", not is_obstacle())
+		_block_material.set_shader_parameter("is_ice_element", false)
 		_block_material.set_shader_parameter("conn_left", conn_left)
 		_block_material.set_shader_parameter("conn_right", conn_right)
 		_block_material.set_shader_parameter("conn_up", conn_up)
