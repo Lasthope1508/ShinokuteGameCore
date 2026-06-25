@@ -195,9 +195,9 @@ func _spawn_magic_sparks() -> void:
 		
 	var effect_color = occupied_color
 	var main_scene = get_tree().current_scene
-	if main_scene and main_scene.has_method("_spawn_group_clear_vfx"):
+	if main_scene and main_scene.has_method("_spawn_cell_pop_vfx"):
 		# Cell's position is local relative to the Grid node, which matches the cells_layer coordinate space.
-		main_scene._spawn_group_clear_vfx(position + size * 0.5, effect_color)
+		main_scene._spawn_cell_pop_vfx(position + size * 0.5, effect_color)
 	else:
 		var center_pos = size * 0.5
 		var sparks := CPUParticles2D.new()

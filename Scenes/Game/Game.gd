@@ -424,7 +424,18 @@ func _resolve_clears(_origin: Vector2i, placed_color: Color = Color.TRANSPARENT)
 		var p_end = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, Grid.SIZE * grid.cell_size)
 		_spawn_slash(p_start, p_end, slash_color)
 
-	# Clear VFX are spawned per-cell during clear_with_animation to align with block pop stagger.
+	# Spawn epic group clear VFX at the midpoint of each row and col in local coordinates
+	for y in rows:
+		var midpoint_cell = Vector2i(4, y)
+		var cell_color = grid.get_cell_color(midpoint_cell)
+		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, cell_color)
+		
+	for x in cols:
+		var midpoint_cell = Vector2i(x, 4)
+		var cell_color = grid.get_cell_color(midpoint_cell)
+		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, cell_color)
 
 	# Cascade first: spinning blocks fly off before any score readout.
 	await grid.clear_cells(cells)
@@ -1042,19 +1053,35 @@ func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
 
 
 func _spawn_lightning_clear_vfx(local_pos: Vector2) -> void:
-	# Instantiate Sparks particles from GDQuest assets
-	var sparks_scene = load("res://to_sort/sparks_particles.tscn")
-	if sparks_scene:
-		var sparks = sparks_scene.instantiate()
-		sparks.position = local_pos
-		sparks.amount = 20
-		sparks.one_shot = true
-		sparks.emitting = true
-		sparks.modulate = Color(1.0, 0.9, 0.2, 1.5) # Intense yellow
-		grid.cells_layer.add_child(sparks)
-		# Automatically free particles after lifetime
-		var timer = get_tree().create_timer(1.2)
-		timer.timeout.connect(sparks.queue_free)
+	# Optimized CPUParticles2D for lightning sparks (bypasses heavy GPUParticles2D shaders)
+	var sparks := CPUParticles2D.new()
+	sparks.texture = preload("res://addons/kenney_particle_pack/spark_05.png")
+	sparks.amount = 14
+	sparks.one_shot = true
+	sparks.explosiveness = 0.9
+	sparks.lifetime = 0.5
+	sparks.spread = 180.0
+	sparks.gravity = Vector2(0, 100)
+	sparks.initial_velocity_min = 80.0
+	sparks.initial_velocity_max = 160.0
+	sparks.scale_amount_min = 0.03
+	sparks.scale_amount_max = 0.07
+	
+	var spark_curve := Curve.new()
+	spark_curve.add_point(Vector2(0.0, 1.0))
+	spark_curve.add_point(Vector2(1.0, 0.0))
+	sparks.scale_amount_curve = spark_curve
+	
+	var spark_gradient := Gradient.new()
+	spark_gradient.set_color(0, Color.WHITE)
+	spark_gradient.set_color(1, Color(1, 1, 1, 0))
+	sparks.color_ramp = spark_gradient
+	
+	sparks.modulate = Color(1.0, 0.9, 0.2, 1.5) # Intense yellow
+	grid.cells_layer.add_child(sparks)
+	sparks.position = local_pos
+	sparks.emitting = true
+	sparks.finished.connect(sparks.queue_free)
 		
 	# Draw procedural zigzag lightning strike
 	var lightning = Line2D.new()
@@ -1307,6 +1334,73 @@ func _spawn_default_clear_vfx(local_pos: Vector2, color: Color) -> void:
 	sparks.initial_velocity_max = 320.0
 	sparks.scale_amount_min = 0.05
 	sparks.scale_amount_max = 0.12
+	
+	var spark_curve := Curve.new()
+	spark_curve.add_point(Vector2(0.0, 1.0))
+	spark_curve.add_point(Vector2(1.0, 0.0))
+	sparks.scale_amount_curve = spark_curve
+	
+	var spark_gradient := Gradient.new()
+	spark_gradient.set_color(0, Color.WHITE)
+	spark_gradient.set_color(1, Color(1, 1, 1, 0))
+	sparks.color_ramp = spark_gradient
+	
+	sparks.modulate = color * 1.3
+	grid.cells_layer.add_child(sparks)
+	sparks.position = local_pos
+	sparks.emitting = true
+	sparks.finished.connect(sparks.queue_free)
+
+
+func _spawn_cell_pop_vfx(local_pos: Vector2, color: Color) -> void:
+	# Extremely optimized, lightweight per-cell popup particles for smooth mobile HTML5
+	var element_type = ThemeManager.get_element_type_for_color(color)
+	var texture_path = "res://addons/kenney_particle_pack/spark_01.png"
+	var particle_amount = 6
+	var particle_gravity = Vector2(0, 150)
+	var particle_velocity = 80.0
+	var scale_min = 0.02
+	var scale_max = 0.05
+	
+	match element_type:
+		ThemeManager.ElementChainType.FIRE:
+			texture_path = "res://addons/kenney_particle_pack/flame_05.png"
+			particle_gravity = Vector2(0, -60)
+			scale_min = 0.03
+			scale_max = 0.07
+		ThemeManager.ElementChainType.LIGHTNING:
+			texture_path = "res://addons/kenney_particle_pack/spark_05.png"
+			particle_velocity = 120.0
+			scale_min = 0.02
+			scale_max = 0.05
+		ThemeManager.ElementChainType.SOUL:
+			texture_path = "res://addons/kenney_particle_pack/star_05.png"
+			particle_gravity = Vector2(0, -40)
+			scale_min = 0.03
+			scale_max = 0.06
+		ThemeManager.ElementChainType.ICE:
+			texture_path = "res://addons/kenney_particle_pack/spark_02.png"
+			particle_gravity = Vector2(0, 100)
+			scale_min = 0.03
+			scale_max = 0.07
+		ThemeManager.ElementChainType.EARTH:
+			texture_path = "res://addons/kenney_particle_pack/dirt_01.png"
+			particle_gravity = Vector2(0, 180)
+			scale_min = 0.03
+			scale_max = 0.07
+			
+	var sparks := CPUParticles2D.new()
+	sparks.texture = load(texture_path)
+	sparks.amount = particle_amount
+	sparks.one_shot = true
+	sparks.explosiveness = 0.9
+	sparks.lifetime = 0.38
+	sparks.spread = 180.0
+	sparks.gravity = particle_gravity
+	sparks.initial_velocity_min = particle_velocity * 0.6
+	sparks.initial_velocity_max = particle_velocity
+	sparks.scale_amount_min = scale_min
+	sparks.scale_amount_max = scale_max
 	
 	var spark_curve := Curve.new()
 	spark_curve.add_point(Vector2(0.0, 1.0))
