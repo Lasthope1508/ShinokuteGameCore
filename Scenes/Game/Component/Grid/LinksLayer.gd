@@ -9,7 +9,7 @@ var _glow_shader: Shader
 var _line_pool: Array[Line2D] = []
 var _active_lines_count: int = 0
 
-var _video_pool: Array[VideoStreamPlayer] = []
+var _video_pool: Array[Control] = []
 var _active_videos_count: int = 0
 const TINT_SHADER := preload("res://Assets/Shaders/video_tint.gdshader")
 
@@ -173,74 +173,42 @@ func _update_links() -> void:
 	_update_video_cores()
 
 
-# Finds the largest square of cells that fits entirely inside the component.
-# Returns a Dictionary with "position" (Vector2i cell coordinate of top-left) and "size" (int S).
-func _find_largest_fit_square(component: Array) -> Dictionary:
-	var cell_set = {}
-	for pos in component:
-		cell_set[pos] = true
-		
-	# Find bounding box to determine max search size
-	var min_x = component[0].x
-	var max_x = component[0].x
-	var min_y = component[0].y
-	var max_y = component[0].y
-	for pos in component:
-		min_x = min(min_x, pos.x)
-		max_x = max(max_x, pos.x)
-		min_y = min(min_y, pos.y)
-		max_y = max(max_y, pos.y)
-		
-	var bbox_width = max_x - min_x + 1
-	var bbox_height = max_y - min_y + 1
-	var max_S = min(bbox_width, bbox_height)
+func _create_video_container_in_pool() -> Control:
+	var container = Control.new()
+	container.name = "VideoMaskContainer"
+	container.clip_children = CanvasItem.CLIP_CHILDREN_ONLY
+	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
-	# Bounding box center
-	var bbox_center = Vector2(min_x + max_x + 1, min_y + max_y + 1) * 0.5
+	var player = VideoStreamPlayer.new()
+	player.autoplay = true
+	player.loop = true
+	player.expand = true
+	player.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	player.volume_db = -80.0
 	
-	for S in range(max_S, 0, -1):
-		var best_pos = Vector2i(-1, -1)
-		var best_dist = INF
-		var best_degree = -1
-		
-		# Search all possible top-left positions in the bounding box
-		for y in range(min_y, max_y - S + 2):
-			for x in range(min_x, max_x - S + 2):
-				var valid = true
-				# Check if the entire S x S square is occupied
-				for dy in range(S):
-					for dx in range(S):
-						if not Vector2i(x + dx, y + dy) in cell_set:
-							valid = false
-							break
-					if not valid:
-						break
-						
-				if valid:
-					# Calculate distance from the center of this S x S square to the bbox center
-					var sq_center = Vector2(x, y) + Vector2(S, S) * 0.5
-					var dist = sq_center.distance_to(bbox_center)
-					
-					# Calculate sum of degrees of the cells in the square as a tie-breaker
-					var degree = 0
-					for dy in range(S):
-						for dx in range(S):
-							var cell = Vector2i(x + dx, y + dy)
-							# Count neighbors in component
-							for offset in [Vector2i(-1,0), Vector2i(1,0), Vector2i(0,-1), Vector2i(0,1)]:
-								if (cell + offset) in cell_set:
-									degree += 1
-									
-					# We want the square closest to the center. If distance is equal, we prefer the one with higher connection degree
-					if dist < best_dist - 0.001 or (abs(dist - best_dist) <= 0.001 and degree > best_degree):
-						best_dist = dist
-						best_degree = degree
-						best_pos = Vector2i(x, y)
-						
-		if best_pos != Vector2i(-1, -1):
-			return {"position": best_pos, "size": S}
-			
-	return {"position": component[0], "size": 1}
+	var mat := ShaderMaterial.new()
+	mat.shader = TINT_SHADER
+	player.material = mat
+	
+	container.add_child(player)
+	container.draw.connect(_on_grid_video_mask_draw.bind(container))
+	
+	add_child(container)
+	_video_pool.append(container)
+	return container
+
+
+func _on_grid_video_mask_draw(container: Control) -> void:
+	if not container.has_meta("mask_cells"):
+		return
+	var mask_cells = container.get_meta("mask_cells")
+	var min_x = container.get_meta("min_x")
+	var min_y = container.get_meta("min_y")
+	var c_size = container.get_meta("cell_size")
+	for cell in mask_cells:
+		var local_x = (cell.x - min_x) * c_size
+		var local_y = (cell.y - min_y) * c_size
+		container.draw_rect(Rect2(local_x, local_y, c_size, c_size), Color.WHITE)
 
 
 func _update_video_cores() -> void:
@@ -252,7 +220,6 @@ func _update_video_cores() -> void:
 		visited.append(row)
 		
 	_active_videos_count = 0
-	var cell_size: int = grid.cell_size
 	
 	for y in range(Grid.SIZE):
 		for x in range(Grid.SIZE):
@@ -290,45 +257,39 @@ func _update_video_cores() -> void:
 			if video_path == "":
 				continue
 				
-			# Find the largest square of cells that fits entirely inside the component
-			var fit = _find_largest_fit_square(component)
-			var fit_pos: Vector2i = fit["position"]
-			var S: int = fit["size"]
-			
-			var player_size = Vector2(S * cell_size, S * cell_size)
-			var player_pos = grid._grid_origin + Vector2(fit_pos.x, fit_pos.y) * cell_size
-			
-			_show_video_core(video_path, color, player_pos, player_size)
+			# Find bounding box
+			var min_x = component[0].x
+			var max_x = component[0].x
+			var min_y = component[0].y
+			var max_y = component[0].y
+			for pos in component:
+				min_x = min(min_x, pos.x)
+				max_x = max(max_x, pos.x)
+				min_y = min(min_y, pos.y)
+				max_y = max(max_y, pos.y)
+				
+			_show_video_core(video_path, color, component, min_x, min_y, max_x, max_y)
 			
 	# Hide unused video players in the pool
 	for i in range(_active_videos_count, _video_pool.size()):
-		var player = _video_pool[i]
-		if player.visible:
-			player.visible = false
+		var container = _video_pool[i]
+		if container.visible:
+			container.visible = false
+			var player = container.get_child(0) as VideoStreamPlayer
 			player.stop()
 
 
-func _show_video_core(video_path: String, color: Color, pos: Vector2, size_vec: Vector2) -> void:
-	var player: VideoStreamPlayer
+func _show_video_core(video_path: String, color: Color, component_cells: Array, min_x: int, min_y: int, max_x: int, max_y: int) -> void:
+	var container: Control
 	if _active_videos_count < _video_pool.size():
-		player = _video_pool[_active_videos_count]
+		container = _video_pool[_active_videos_count]
 	else:
-		player = VideoStreamPlayer.new()
-		player.autoplay = true
-		player.loop = true
-		player.expand = true
-		player.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		player.volume_db = -80.0
-		
-		var mat := ShaderMaterial.new()
-		mat.shader = TINT_SHADER
-		player.material = mat
-		
-		add_child(player)
-		_video_pool.append(player)
+		container = _create_video_container_in_pool()
 		
 	_active_videos_count += 1
-	player.visible = true
+	container.visible = true
+	
+	var player: VideoStreamPlayer = container.get_child(0) as VideoStreamPlayer
 	
 	var current_stream_path = ""
 	if player.stream:
@@ -340,9 +301,22 @@ func _show_video_core(video_path: String, color: Color, pos: Vector2, size_vec: 
 	elif not player.is_playing():
 		player.play()
 		
-	player.position = pos
-	player.size = size_vec
+	var cell_size: int = grid.cell_size
+	var W = max_x - min_x + 1
+	var H = max_y - min_y + 1
+	
+	container.position = grid._grid_origin + Vector2(min_x, min_y) * cell_size
+	container.size = Vector2(W * cell_size, H * cell_size)
+	
+	player.position = Vector2.ZERO
+	player.size = container.size
 	player.material.set_shader_parameter("target_color", color)
+	
+	container.set_meta("mask_cells", component_cells)
+	container.set_meta("min_x", min_x)
+	container.set_meta("min_y", min_y)
+	container.set_meta("cell_size", cell_size)
+	container.queue_redraw()
 
 
 func _draw_flowing_link(from: Vector2, to: Vector2, color: Color) -> void:

@@ -36,6 +36,7 @@ var _drag_start_pos: Vector2 = Vector2.ZERO
 var _glow_shader: Shader
 
 var video_player: VideoStreamPlayer = null
+var video_mask_container: Control = null
 var _current_video_path := ""
 
 
@@ -326,6 +327,9 @@ func _setup_piece_video_stream() -> void:
 		if video_player != null:
 			video_player.queue_free()
 			video_player = null
+		if video_mask_container != null:
+			video_mask_container.queue_free()
+			video_mask_container = null
 		_current_video_path = ""
 		return
 		
@@ -336,9 +340,19 @@ func _setup_piece_video_stream() -> void:
 	if video_player != null:
 		video_player.queue_free()
 		video_player = null
+	if video_mask_container != null:
+		video_mask_container.queue_free()
+		video_mask_container = null
 		
 	if ResourceLoader.exists(video_path):
 		_current_video_path = video_path
+		
+		video_mask_container = Control.new()
+		video_mask_container.name = "VideoMask"
+		video_mask_container.clip_children = CanvasItem.CLIP_CHILDREN_ONLY
+		video_mask_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		video_mask_container.draw.connect(_on_video_mask_draw)
+		add_child(video_mask_container)
 		
 		video_player = VideoStreamPlayer.new()
 		video_player.stream = load(video_path)
@@ -355,77 +369,23 @@ func _setup_piece_video_stream() -> void:
 		mat.set_shader_parameter("target_color", color)
 		video_player.material = mat
 		
-		add_child(video_player)
+		video_mask_container.add_child(video_player)
 		_update_video_position()
 		video_player.play()
 
 
-# Finds the largest square of cells that fits entirely inside the piece's block shape cells.
-func _find_largest_fit_square(cells: Array[Vector2i]) -> Dictionary:
-	var cell_set = {}
-	for pos in cells:
-		cell_set[pos] = true
-		
-	# Find bounding box
-	var min_x = cells[0].x
-	var max_x = cells[0].x
-	var min_y = cells[0].y
-	var max_y = cells[0].y
-	for pos in cells:
-		min_x = min(min_x, pos.x)
-		max_x = max(max_x, pos.x)
-		min_y = min(min_y, pos.y)
-		max_y = max(max_y, pos.y)
-		
-	var bbox_width = max_x - min_x + 1
-	var bbox_height = max_y - min_y + 1
-	var max_S = min(bbox_width, bbox_height)
-	
-	# Bounding box center
-	var bbox_center = Vector2(min_x + max_x + 1, min_y + max_y + 1) * 0.5
-	
-	for S in range(max_S, 0, -1):
-		var best_pos = Vector2i(-1, -1)
-		var best_dist = INF
-		var best_degree = -1
-		
-		# Search all possible top-left positions
-		for y in range(min_y, max_y - S + 2):
-			for x in range(min_x, max_x - S + 2):
-				var valid = true
-				for dy in range(S):
-					for dx in range(S):
-						if not Vector2i(x + dx, y + dy) in cell_set:
-							valid = false
-							break
-					if not valid:
-						break
-						
-				if valid:
-					var sq_center = Vector2(x, y) + Vector2(S, S) * 0.5
-					var dist = sq_center.distance_to(bbox_center)
-					
-					var degree = 0
-					for dy in range(S):
-						for dx in range(S):
-							var cell = Vector2i(x + dx, y + dy)
-							for offset in [Vector2i(-1,0), Vector2i(1,0), Vector2i(0,-1), Vector2i(0,1)]:
-								if (cell + offset) in cell_set:
-									degree += 1
-									
-					if dist < best_dist - 0.001 or (abs(dist - best_dist) <= 0.001 and degree > best_degree):
-						best_dist = dist
-						best_degree = degree
-						best_pos = Vector2i(x, y)
-						
-		if best_pos != Vector2i(-1, -1):
-			return {"position": best_pos, "size": S}
-			
-	return {"position": cells[0], "size": 1}
+func _on_video_mask_draw() -> void:
+	if shape == null or video_mask_container == null:
+		return
+	var b_size := idle_block_size
+	if _is_dragging:
+		b_size = drag_block_size
+	for cell in shape.get_normalized_cells():
+		video_mask_container.draw_rect(Rect2(cell.x * b_size, cell.y * b_size, b_size, b_size), Color.WHITE)
 
 
 func _update_video_position() -> void:
-	if not is_instance_valid(video_player) or shape == null:
+	if not is_instance_valid(video_player) or not is_instance_valid(video_mask_container) or shape == null:
 		return
 	var b_size := idle_block_size
 	if _is_dragging:
@@ -435,16 +395,20 @@ func _update_video_position() -> void:
 	if cells.is_empty():
 		return
 		
-	var fit = _find_largest_fit_square(cells)
-	var fit_pos: Vector2i = fit["position"]
-	var S: int = fit["size"]
+	var bbox = shape.get_size()
+	var w = bbox.x * b_size
+	var h = bbox.y * b_size
 	
-	var player_size = Vector2(S * b_size, S * b_size)
-	video_player.size = player_size
-	video_player.position = Vector2(fit_pos.x * b_size, fit_pos.y * b_size)
+	video_mask_container.position = Vector2.ZERO
+	video_mask_container.size = Vector2(w, h)
 	
-	# Make sure it renders behind Line2D and Blocks
-	move_child(video_player, 0)
+	video_player.position = Vector2.ZERO
+	video_player.size = Vector2(w, h)
+	
+	video_mask_container.queue_redraw()
+	
+	# Make sure mask container renders behind blocks
+	move_child(video_mask_container, 0)
 
 
 func _update_internal_lightning() -> void:
