@@ -1,12 +1,16 @@
-[gd_scene format=3 uid="uid://b18game"]
+[gd_scene load_steps=10 format=3]
 
-[ext_resource type="Script" uid="uid://b0dg2ddxu54q5" path="res://Scenes/Game/Game.gd" id="1_game"]
-[ext_resource type="PackedScene" uid="uid://b11h11h11h11h" path="res://Scenes/Game/Component/HUD/HUD.tscn" id="2_hud"]
-[ext_resource type="PackedScene" uid="uid://b5g5g5g5g5g5g" path="res://Scenes/Game/Component/Grid/Grid.tscn" id="3_grid"]
-[ext_resource type="PackedScene" uid="uid://cauauauauauat" path="res://Scenes/Game/Component/PieceTray/PieceTray.tscn" id="4_tray"]
-[ext_resource type="PackedScene" uid="uid://b22progress" path="res://Scenes/Game/Component/HUD/ScoreProgressBar.tscn" id="5_progress"]
+[ext_resource type="Script" path="res://Scenes/Game/Game.gd" id="1_game"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Component/HUD/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Component/Grid/Grid.tscn" id="3_grid"]
+[ext_resource type="Script" path="res://Scenes/Game/Component/HUD/HUD.gd" id="3_wnvd7"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Component/PieceTray/PieceTray.tscn" id="4_tray"]
+[ext_resource type="Script" path="res://Scenes/Game/Component/HUD/ScoreProgressBar.gd" id="5_kq3gv"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Component/HUD/ScoreProgressBar.tscn" id="5_progress"]
+[ext_resource type="Script" path="res://Scenes/Game/Component/Grid/Grid.gd" id="7_wgmry"]
+[ext_resource type="Script" path="res://Scenes/Game/Component/PieceTray/PieceTray.gd" id="9_kknq5"]
 
-[node name="Game" type="Control" unique_id=339731659]
+[node name="Game" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,10 +18,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_game")
-shake_base_strength = 12.0
-shake_base_duration = 0.39999999999999997
 
-[node name="Background" type="ColorRect" parent="." unique_id=2099674945]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,7 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.09, 0.07, 0.05, 1)
 
-[node name="BackgroundTexture" type="TextureRect" parent="." unique_id=123456788]
+[node name="BackgroundTexture" type="TextureRect" parent="."]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -38,23 +40,29 @@ stretch_mode = 6
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
-[node name="HUD" parent="Layout" unique_id=1759249270 instance=ExtResource("2_hud")]
-custom_minimum_size = Vector2(0, 120)
+[node name="HUD" type="Control" parent="Layout" instance=ExtResource("2_hud")]
+custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
+mouse_filter = 1
+script = ExtResource("3_wnvd7")
 
-[node name="ProgressFrame" type="MarginContainer" parent="Layout" unique_id=1545611777]
+[node name="ProgressFrame" type="MarginContainer" parent="Layout"]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_right = 32
 
-[node name="ScoreProgressBar" parent="Layout/ProgressFrame" unique_id=148779168 instance=ExtResource("5_progress")]
+[node name="ScoreProgressBar" type="PanelContainer" parent="Layout/ProgressFrame" instance=ExtResource("5_progress")]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+mouse_filter = 2
+script = ExtResource("5_kq3gv")
 
-[node name="GridFrame" type="MarginContainer" parent="Layout" unique_id=183142445]
+[node name="GridFrame" type="MarginContainer" parent="Layout"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 32
@@ -62,16 +70,22 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 8
 
-[node name="AspectRatio" type="AspectRatioContainer" parent="Layout/GridFrame" unique_id=1338792584]
+[node name="AspectRatio" type="AspectRatioContainer" parent="Layout/GridFrame"]
 layout_mode = 2
 
-[node name="Grid" parent="Layout/GridFrame/AspectRatio" unique_id=168324580 instance=ExtResource("3_grid")]
+[node name="Grid" type="Control" parent="Layout/GridFrame/AspectRatio" instance=ExtResource("3_grid")]
 layout_mode = 2
+mouse_filter = 2
+script = ExtResource("7_wgmry")
 
-[node name="Tray" parent="Layout" unique_id=1533346769 instance=ExtResource("4_tray")]
+[node name="Tray" type="MarginContainer" parent="Layout" instance=ExtResource("4_tray")]
+custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
+script = ExtResource("9_kknq5")
 
-[node name="DragLayer" type="Control" parent="." unique_id=1102016256]
+[node name="DragLayer" type="Control" parent="."]
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -11,10 +11,10 @@ config_version=5
 [application]
 
 config/name="BloxChain"
+config/version="1.0.10"
 run/main_scene="res://Scenes/Main/Main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.png"
-config/version="1.0.10"
 
 [audio]
 

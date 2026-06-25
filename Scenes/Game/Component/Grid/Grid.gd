@@ -7,6 +7,9 @@ class_name Grid extends Control
 const SIZE: int = 9
 const QUADRANT_SIZE: int = 3
 
+const CHAOS_START_BLOCKS = 20
+const CHAOS_OBSTACLE_COLOR = Color(0.4, 0.4, 0.4, 1.0)
+
 const CELL_SCENE := preload("res://Scenes/Game/Component/Grid/Cell.tscn")
 const QUADRANT_SCENE := preload("res://Scenes/Game/Component/Grid/Quadrant.tscn")
 
@@ -42,6 +45,23 @@ func _update_theme() -> void:
 	var playboard = get_node_or_null("Playboard")
 	if playboard:
 		playboard.texture = preload("res://Assets/Sprites/playboard.png")
+		
+		# Create shader material to clean out solid background of playboard.png
+		var mat = ShaderMaterial.new()
+		mat.shader = preload("res://Assets/Shaders/playboard_clean.gdshader")
+		
+		# Modulate the grid lines to theme accent color (neon cyan)
+		var line_col = theme_config.accent_color if theme_config else Color(0.0, 0.96, 0.83)
+		mat.set_shader_parameter("line_color", line_col)
+		mat.set_shader_parameter("threshold", 0.6)
+		
+		# Set playboard background color and opacity similar to piece slots (~0.47 opacity modulated by 0.9 mod)
+		var bg_col = theme_config.panel_bg_color if theme_config else Color(0.08, 0.06, 0.15, 1.0)
+		bg_col.a = 0.52 # Set alpha so that final opacity after modulate is ~0.47
+		mat.set_shader_parameter("bg_color", bg_col)
+		
+		playboard.material = mat
+		playboard.modulate = Color(1, 1, 1, 0.9) # High opacity to make lines stand out!
 		playboard.visible = true
 
 	if _quadrants.size() > 0:
@@ -137,21 +157,92 @@ func clear_cells(cells: Array[Vector2i]) -> void:
 	if cells.is_empty():
 		clears_completed.emit()
 		return
-	# Lift the clearing cells so their bump renders above surviving blocks.
-	# Cell.clear_with_animation resets z_index when the tween ends.
+
+	# Identify cleared rows, cols, and quadrants from the cell array
+	var rows: Array[int] = []
+	var cols: Array[int] = []
+	var quadrants: Array[Vector2i] = []
+	
+	for y in range(SIZE):
+		var row_cleared := true
+		for x in range(SIZE):
+			if not Vector2i(x, y) in cells:
+				row_cleared = false
+				break
+		if row_cleared:
+			rows.append(y)
+			
+	for x in range(SIZE):
+		var col_cleared := true
+		for y in range(SIZE):
+			if not Vector2i(x, y) in cells:
+				col_cleared = false
+				break
+		if col_cleared:
+			cols.append(x)
+			
+	for qy in range(SIZE / QUADRANT_SIZE):
+		for qx in range(SIZE / QUADRANT_SIZE):
+			var quad_cleared := true
+			for dy in range(QUADRANT_SIZE):
+				for dx in range(QUADRANT_SIZE):
+					var cx = qx * QUADRANT_SIZE + dx
+					var cy = qy * QUADRANT_SIZE + dy
+					if not Vector2i(cx, cy) in cells:
+						quad_cleared = false
+						break
+				if not quad_cleared:
+					break
+			if quad_cleared:
+				quadrants.append(Vector2i(qx, qy))
+
+	# Compute propagation wave centers
+	var centers: Array[Vector2] = []
+	var intersected_rows: Dictionary = {}
+	var intersected_cols: Dictionary = {}
+	
+	for r in rows:
+		for col in cols:
+			centers.append(Vector2(col, r))
+			intersected_rows[r] = true
+			intersected_cols[col] = true
+			
+	for r in rows:
+		if not r in intersected_rows:
+			centers.append(Vector2(4, r))
+			
+	for col in cols:
+		if not col in intersected_cols:
+			centers.append(Vector2(col, 4))
+			
+	for q in quadrants:
+		centers.append(Vector2(q.x * 3 + 1, q.y * 3 + 1))
+		
+	if centers.is_empty():
+		var centroid := Vector2.ZERO
+		for c in cells:
+			centroid += Vector2(c.x, c.y)
+		centroid /= float(cells.size())
+		centers.append(centroid)
+
 	for c in cells:
 		_cells[c.y][c.x].z_index = 10
 
 	var max_stagger: float = 0.0
 	for c in cells:
-		var delay: float = (c.x + c.y) * 0.030
+		var min_dist := 999.0
+		for center in centers:
+			var d = Vector2(c.x, c.y).distance_to(center)
+			if d < min_dist:
+				min_dist = d
+		var delay: float = min_dist * 0.12
 		if delay > max_stagger:
 			max_stagger = delay
 		_occupied[c.y][c.x] = false
 		_cells[c.y][c.x].clear_with_animation(delay)
 
-	# Total = longest stagger + bump (0.18) + shrink (0.22) + safety margin.
-	var total_duration: float = max_stagger + 0.18 + 0.22 + 0.05
+	# Total = longest stagger + bump (0.12) + shake (0.12) + dissolve (0.35) + safety
+	var total_duration: float = max_stagger + 0.65
 	await get_tree().create_timer(total_duration).timeout
 	clears_completed.emit()
 
@@ -165,7 +256,7 @@ func project_preview(shape: PieceShape, origin: Vector2i, piece_color: Color) ->
 		var p: Vector2i = origin + offset
 		_cells[p.y][p.x].show_preview(piece_color)
 	# Hint at lines/quadrants this placement would clear.
-	_highlight_potential_clears(shape, origin)
+	_highlight_potential_clears(shape, origin, piece_color)
 
 
 func clear_preview() -> void:
@@ -174,6 +265,7 @@ func clear_preview() -> void:
 			c.clear_preview()
 			c.clear_clear_hint()
 			c.stop_pulse()
+			c.clear_clear_aura()
 
 
 # Deep copy of the occupancy matrix for GridSolver, avoiding aliasing.
@@ -296,6 +388,8 @@ func _build_grid() -> void:
 		var occ_row: Array = []
 		for x in SIZE:
 			var c: Cell = CELL_SCENE.instantiate()
+			c.cell_x = x
+			c.cell_y = y
 			c.position = Vector2(x * cell_size, y * cell_size)
 			c.custom_minimum_size = Vector2(cell_size, cell_size)
 			c.size = c.custom_minimum_size
@@ -367,16 +461,15 @@ func _is_quadrant_full(qx: int, qy: int) -> bool:
 
 
 # Highlights cells that would be cleared on drop. Works on hypothetical
+# Highlights cells that would be cleared on drop. Works on hypothetical
 # occupancy = current ∪ shape cells.
-func _highlight_potential_clears(shape: PieceShape, origin: Vector2i) -> void:
+func _highlight_potential_clears(shape: PieceShape, origin: Vector2i, piece_color: Color) -> void:
 	var hypothetical: Array = []
 	for y in SIZE:
 		hypothetical.append((_occupied[y] as Array).duplicate())
 	for offset in shape.cells:
 		var p: Vector2i = origin + offset
 		hypothetical[p.y][p.x] = true
-
-	var color := Color(1, 0.8, 0.2, 0.7)
 
 	for y in SIZE:
 		var full := true
@@ -386,7 +479,7 @@ func _highlight_potential_clears(shape: PieceShape, origin: Vector2i) -> void:
 				break
 		if full:
 			for x in SIZE:
-				_apply_clear_feedback(_cells[y][x], color)
+				_cells[y][x].show_clear_aura(piece_color)
 
 	for x in SIZE:
 		var full := true
@@ -396,7 +489,7 @@ func _highlight_potential_clears(shape: PieceShape, origin: Vector2i) -> void:
 				break
 		if full:
 			for y in SIZE:
-				_apply_clear_feedback(_cells[y][x], color)
+				_cells[y][x].show_clear_aura(piece_color)
 
 	for qy in QUADRANT_SIZE:
 		for qx in QUADRANT_SIZE:
@@ -411,19 +504,11 @@ func _highlight_potential_clears(shape: PieceShape, origin: Vector2i) -> void:
 			if full:
 				for dy in QUADRANT_SIZE:
 					for dx in QUADRANT_SIZE:
-						_apply_clear_feedback(_cells[qy * QUADRANT_SIZE + dy][qx * QUADRANT_SIZE + dx], color)
-
-
-# Filled cells pulse (shader flash); empty cells get the static overlay.
-func _apply_clear_feedback(c: Cell, color: Color) -> void:
-	if c.occupied:
-		c.start_pulse()
-	else:
-		c.show_clear_hint(color)
+						_cells[qy * QUADRANT_SIZE + dy][qx * QUADRANT_SIZE + dx].show_clear_aura(piece_color)
 
 
 # Generates random start blocks (Chaos Start) avoiding instant clears.
-func generate_random_start_blocks(count: int = 10) -> void:
+func generate_random_start_blocks(count: int = CHAOS_START_BLOCKS) -> void:
 	var occupied_positions: Array[Vector2i] = []
 	var all_positions: Array[Vector2i] = []
 	for y in range(SIZE):
@@ -441,23 +526,23 @@ func generate_random_start_blocks(count: int = 10) -> void:
 		spawned += 1
 		
 	for pos in occupied_positions:
-		var color = ThemeManager.get_random_piece_color_for_score(0)
-		_fill_single(pos.x, pos.y, color)
+		_fill_single(pos.x, pos.y, CHAOS_OBSTACLE_COLOR)
 
 
+# Limits pre-filled blocks per row, column, and quadrant to prevent easy clears and make obstacles challenging.
 func _would_cause_instant_clear(pos: Vector2i, current_occupied: Array[Vector2i]) -> bool:
 	var row_count = 0
 	for p in current_occupied:
 		if p.y == pos.y:
 			row_count += 1
-	if row_count >= SIZE - 1:
+	if row_count >= 3:
 		return true
 		
 	var col_count = 0
 	for p in current_occupied:
 		if p.x == pos.x:
 			col_count += 1
-	if col_count >= SIZE - 1:
+	if col_count >= 3:
 		return true
 		
 	var qx = pos.x / 3
@@ -466,7 +551,17 @@ func _would_cause_instant_clear(pos: Vector2i, current_occupied: Array[Vector2i]
 	for p in current_occupied:
 		if p.x / 3 == qx and p.y / 3 == qy:
 			quad_count += 1
-	if quad_count >= 8:
+	if quad_count >= 3:
 		return true
 		
 	return false
+
+
+func get_occupied_cell_count() -> int:
+	var count = 0
+	for y in range(SIZE):
+		for x in range(SIZE):
+			if _occupied[y][x]:
+				count += 1
+	return count
+

@@ -17,12 +17,12 @@ alignment = 1
 
 [node name="PieceSlot1" parent="HBox" instance=ExtResource("2_slot")]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 
 [node name="PieceSlot2" parent="HBox" instance=ExtResource("2_slot")]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 
 [node name="PieceSlot3" parent="HBox" instance=ExtResource("2_slot")]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3

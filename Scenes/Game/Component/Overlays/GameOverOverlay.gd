@@ -37,6 +37,21 @@ func _ready() -> void:
 func _update_theme_styles() -> void:
 	var active_theme = ThemeManager.get_active_theme()
 	if active_theme:
+		# Style panel container
+		var panel_style = panel.get_theme_stylebox("panel") as StyleBoxFlat
+		if not panel_style:
+			panel_style = StyleBoxFlat.new()
+			panel.add_theme_stylebox_override("panel", panel_style)
+			
+		panel_style.bg_color = active_theme.panel_bg_color
+		panel_style.border_color = active_theme.panel_border_color
+		var border_w = active_theme.popup_border_width
+		panel_style.border_width_left = border_w
+		panel_style.border_width_right = border_w
+		panel_style.border_width_top = border_w
+		panel_style.border_width_bottom = border_w
+		panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
+
 		var title_node = get_node_or_null("Panel/Margin/VBox/Title")
 		if title_node:
 			title_node.add_theme_color_override("font_color", active_theme.alert_color)

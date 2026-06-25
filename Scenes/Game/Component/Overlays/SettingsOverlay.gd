@@ -43,10 +43,14 @@ func _ready() -> void:
 		theme_button.selected = 0
 	theme_button.item_selected.connect(_on_theme_selected)
 	
+	# Temporarily hide the theme selection row from UI
+	$Panel/Margin/VBox/ThemeRow.visible = false
+	
 	restart_button.pressed.connect(_on_restart_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_pressed)
 	close_button.pressed.connect(_on_close_pressed)
 	save_name_button.pressed.connect(_on_save_name_pressed)
+	name_input.focus_entered.connect(_on_name_input_focus_entered)
 	restart_button.visible = show_game_actions
 	main_menu_button.visible = show_game_actions
 
@@ -211,7 +215,7 @@ func _show_confirm_dialog() -> void:
 		panel_style.bg_color = active_theme.panel_bg_color
 		panel_style.border_color = active_theme.accent_color
 		panel_style.set_border_width_all(4)
-		panel_style.set_corner_radius_all(12)
+		panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
 		$ConfirmOverlay/CenterContainer/ConfirmPanel.add_theme_stylebox_override("panel", panel_style)
 		
 		var label = $ConfirmOverlay/CenterContainer/ConfirmPanel/Margin/VBox/Label
@@ -228,14 +232,14 @@ func _show_confirm_dialog() -> void:
 		yes_normal.bg_color = active_theme.alert_color
 		yes_normal.border_color = active_theme.alert_color.lightened(0.2)
 		yes_normal.set_border_width_all(2)
-		yes_normal.set_corner_radius_all(8)
+		yes_normal.set_corner_radius_all(active_theme.inner_button_corner_radius)
 		btn_yes.add_theme_stylebox_override("normal", yes_normal)
 		
 		var yes_hover = StyleBoxFlat.new()
 		yes_hover.bg_color = active_theme.alert_color.lightened(0.1)
 		yes_hover.border_color = active_theme.alert_color.lightened(0.3)
 		yes_hover.set_border_width_all(2)
-		yes_hover.set_corner_radius_all(8)
+		yes_hover.set_corner_radius_all(active_theme.inner_button_corner_radius)
 		btn_yes.add_theme_stylebox_override("hover", yes_hover)
 		
 		var btn_no = $ConfirmOverlay/CenterContainer/ConfirmPanel/Margin/VBox/ButtonsRow/BtnNo
@@ -246,14 +250,14 @@ func _show_confirm_dialog() -> void:
 		no_normal.bg_color = active_theme.button_normal_bg
 		no_normal.border_color = active_theme.button_border_color
 		no_normal.set_border_width_all(2)
-		no_normal.set_corner_radius_all(8)
+		no_normal.set_corner_radius_all(active_theme.inner_button_corner_radius)
 		btn_no.add_theme_stylebox_override("normal", no_normal)
 		
 		var no_hover = StyleBoxFlat.new()
 		no_hover.bg_color = active_theme.button_hover_bg
 		no_hover.border_color = active_theme.button_border_color
 		no_hover.set_border_width_all(2)
-		no_hover.set_corner_radius_all(8)
+		no_hover.set_corner_radius_all(active_theme.inner_button_corner_radius)
 		btn_no.add_theme_stylebox_override("hover", no_hover)
 		
 	_confirm_overlay.visible = true
@@ -289,6 +293,21 @@ func _apply_skin_change(index: int) -> void:
 func _update_theme_styles() -> void:
 	var active_theme = ThemeManager.get_active_theme()
 	if active_theme:
+		# Style panel container
+		var panel_style = panel.get_theme_stylebox("panel") as StyleBoxFlat
+		if not panel_style:
+			panel_style = StyleBoxFlat.new()
+			panel.add_theme_stylebox_override("panel", panel_style)
+		
+		panel_style.bg_color = active_theme.panel_bg_color
+		panel_style.border_color = active_theme.panel_border_color
+		var border_w = active_theme.popup_border_width
+		panel_style.border_width_left = border_w
+		panel_style.border_width_right = border_w
+		panel_style.border_width_top = border_w
+		panel_style.border_width_bottom = border_w
+		panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
+
 		var title_node = get_node_or_null("Panel/Margin/VBox/Title")
 		if title_node:
 			title_node.add_theme_color_override("font_color", active_theme.accent_color)
@@ -380,6 +399,20 @@ func _on_close_pressed() -> void:
 	close()
 
 
+func _on_name_input_focus_entered() -> void:
+	if OS.has_feature("web"):
+		name_input.release_focus()
+		var js_bridge = Engine.get_singleton("JavaScriptBridge")
+		if js_bridge:
+			var current_val = name_input.text.replace("'", "\\'")
+			var js_prompt = js_bridge.eval("prompt('Enter your name (3-15 characters):', '" + current_val + "')")
+			if js_prompt != null:
+				var typed_name = str(js_prompt).strip_edges()
+				if typed_name != "":
+					name_input.text = typed_name
+					_on_save_name_pressed()
+
+
 func _on_save_name_pressed() -> void:
 	var new_name = name_input.text.strip_edges()
 	if new_name == "":
@@ -402,3 +435,4 @@ func _on_save_name_pressed() -> void:
 	save_name_button.disabled = false
 	save_name_button.text = "Save"
 	AudioManager.play_sfx("button")
+

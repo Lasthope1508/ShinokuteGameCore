@@ -15,9 +15,25 @@ func _ready() -> void:
 	skip_button.pressed.connect(_on_skip_pressed)
 	confirm_button.pressed.connect(_on_confirm_pressed)
 	line_edit.text_submitted.connect(func(_new_text): _on_confirm_pressed())
+	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_update_theme_styles()
+
+
+func _on_line_edit_focus_entered() -> void:
+	if OS.has_feature("web"):
+		line_edit.release_focus()
+		var js_bridge = Engine.get_singleton("JavaScriptBridge")
+		if js_bridge:
+			var current_val = line_edit.text.replace("'", "\\'")
+			var js_prompt = js_bridge.eval("prompt('Enter your name (3-15 characters):', '" + current_val + "')")
+			if js_prompt != null:
+				var typed_name = str(js_prompt).strip_edges()
+				if typed_name != "":
+					line_edit.text = typed_name
+					_on_confirm_pressed()
+
 
 
 func _update_theme_styles() -> void:
@@ -33,14 +49,12 @@ func _update_theme_styles() -> void:
 		
 	panel_style.bg_color = active_theme.panel_bg_color
 	panel_style.border_color = active_theme.panel_border_color
-	panel_style.border_width_left = 3
-	panel_style.border_width_right = 3
-	panel_style.border_width_top = 3
-	panel_style.border_width_bottom = 3
-	panel_style.corner_radius_top_left = 12
-	panel_style.corner_radius_top_right = 12
-	panel_style.corner_radius_bottom_left = 12
-	panel_style.corner_radius_bottom_right = 12
+	var border_w = active_theme.popup_border_width
+	panel_style.border_width_left = border_w
+	panel_style.border_width_right = border_w
+	panel_style.border_width_top = border_w
+	panel_style.border_width_bottom = border_w
+	panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
 	
 	# Style labels
 	var title = $Panel/Margin/VBox/Title

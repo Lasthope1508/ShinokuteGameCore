@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7mck6d4xg4vr"
-path="res://.godot/imported/blockpuzzle.icon.png-e0fc1122bb591247f087bd6dc44d7949.ctex"
+uid="uid://c8g0s8ulqp5cj"
+path="res://.godot/imported/flame_06.png-c8cccb4524fa3ff51c3ed8b9505ad525.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://reskin_dashboard/blockpuzzle.icon.png"
-dest_files=["res://.godot/imported/blockpuzzle.icon.png-e0fc1122bb591247f087bd6dc44d7949.ctex"]
+source_file="res://addons/kenney_particle_pack/flame_06.png"
+dest_files=["res://.godot/imported/flame_06.png-c8cccb4524fa3ff51c3ed8b9505ad525.ctex"]
 
 [params]
 

@@ -28,7 +28,6 @@ func _ready() -> void:
 		_sfx_pool.append(p)
 
 	apply_saved_volumes()
-	play_music()
 
 	if has_node("/root/ThemeManager"):
 		get_node("/root/ThemeManager").theme_changed.connect(_on_theme_changed)
@@ -56,24 +55,96 @@ func play_sfx(sfx_name: String, pitch_variation: float = 0.0, custom_pitch: floa
 	player.play()
 
 
+func _enable_looping(stream: AudioStream) -> void:
+	if stream == null:
+		return
+	if stream is AudioStreamWAV:
+		stream.loop_mode = 1 # LOOP_FORWARD
+	elif "loop" in stream:
+		stream.set("loop", true)
+
 # Starts the looped music track. Set Loop in the import dock if the file doesn't loop.
 func play_music() -> void:
 	if _music_player.playing:
 		return
-	if not ResourceLoader.exists(MUSIC_PATH):
+	var path = "res://Audio/Music/Relax mode.wav"
+	if not ResourceLoader.exists(path):
 		return
-	var stream := load(MUSIC_PATH) as AudioStream
+	var stream := load(path) as AudioStream
 	if stream == null:
 		return
+	_enable_looping(stream)
 	_music_player.stream = stream
+	_music_player.volume_db = 0.0
 	_music_player.play()
+	_current_music_mode = "relax"
+
+
+func stop_music() -> void:
+	if _music_player.playing:
+		_music_player.stop()
+	_current_music_mode = ""
+
+
+var _current_music_mode: String = "" # "relax" or "danger"
+
+func set_music_mode(mode: String) -> void:
+	if _current_music_mode == mode:
+		return
+	_current_music_mode = mode
+	print("[AudioManager] Music mode changed to: ", mode)
+	
+	var path := ""
+	if mode == "danger":
+		path = "res://Audio/Music/Danger.wav"
+	else:
+		path = "res://Audio/Music/Relax mode.wav"
+		
+	_transition_to_music(path)
+
+func _transition_to_music(path: String) -> void:
+	if not ResourceLoader.exists(path):
+		push_warning("AudioManager: music file not found at " + path)
+		return
+		
+	var new_stream = load(path) as AudioStream
+	if new_stream == null:
+		return
+		
+	_enable_looping(new_stream)
+	
+	if not _music_player.playing:
+		_music_player.stream = new_stream
+		_music_player.volume_db = 0.0
+		_music_player.play()
+		return
+		
+	var tw = create_tween()
+	tw.tween_property(_music_player, "volume_db", -80.0, 0.8)
+	tw.tween_callback(func():
+		_music_player.stream = new_stream
+		_music_player.play()
+	)
+	tw.tween_property(_music_player, "volume_db", 0.0, 0.8)
+
+func is_music_muted() -> bool:
+	return get_bus_volume(BUS_MUSIC) <= 0.0001
+
+func toggle_music_mute() -> bool:
+	if is_music_muted():
+		set_bus_volume(BUS_MUSIC, 0.7)
+		return false
+	else:
+		set_bus_volume(BUS_MUSIC, 0.0)
+		return true
+
 
 
 # Reads volumes (linear 0..1) from SaveManager and applies them to the buses.
 func apply_saved_volumes() -> void:
 	_set_bus_volume(BUS_MASTER, SaveManager.get_volume(BUS_MASTER, 1.0))
 	_set_bus_volume(BUS_MUSIC, SaveManager.get_volume(BUS_MUSIC, 0.7))
-	_set_bus_volume(BUS_SFX, SaveManager.get_volume(BUS_SFX, 1.0))
+	_set_bus_volume(BUS_SFX, SaveManager.get_volume(BUS_SFX, 0.5))
 
 
 func set_bus_volume(bus_name: String, linear_value: float) -> void:
@@ -83,7 +154,12 @@ func set_bus_volume(bus_name: String, linear_value: float) -> void:
 
 
 func get_bus_volume(bus_name: String) -> float:
-	return SaveManager.get_volume(bus_name, 1.0)
+	var default_val := 1.0
+	if bus_name == BUS_SFX:
+		default_val = 0.5
+	elif bus_name == BUS_MUSIC:
+		default_val = 0.7
+	return SaveManager.get_volume(bus_name, default_val)
 
 
 func _set_bus_volume(bus_name: String, linear_value: float) -> void:

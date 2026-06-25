@@ -122,9 +122,12 @@ layout_mode = 2
 text = "Main Menu"
 
 [node name="CloseButton" type="TextureButton" parent="Panel" unique_id=1719703267]
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+ignore_texture_size = true
+stretch_mode = 5
 texture_normal = ExtResource("2_close")
 
 [node name="ConfirmOverlay" type="Control" parent="."]

@@ -2,7 +2,7 @@
 ## divided into World, Continent, and Country tabs.
 extends Control
 
-@onready var close_button: Button = $Panel/Margin/VBox/Header/CloseButton
+@onready var close_button: TextureButton = $Panel/CloseButton
 @onready var world_tab: Button = $Panel/Margin/VBox/Tabs/WorldTab
 @onready var continent_tab: Button = $Panel/Margin/VBox/Tabs/ContinentTab
 @onready var country_tab: Button = $Panel/Margin/VBox/Tabs/CountryTab
@@ -69,14 +69,12 @@ func _apply_styles() -> void:
 		
 	panel_style.bg_color = active_theme.panel_bg_color
 	panel_style.border_color = active_theme.panel_border_color
-	panel_style.border_width_left = 3
-	panel_style.border_width_right = 3
-	panel_style.border_width_top = 3
-	panel_style.border_width_bottom = 3
-	panel_style.corner_radius_top_left = 12
-	panel_style.corner_radius_top_right = 12
-	panel_style.corner_radius_bottom_left = 12
-	panel_style.corner_radius_bottom_right = 12
+	var border_w = active_theme.popup_border_width
+	panel_style.border_width_left = border_w
+	panel_style.border_width_right = border_w
+	panel_style.border_width_top = border_w
+	panel_style.border_width_bottom = border_w
+	panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
 	
 	# Style MyHighestRow panel container
 	var my_row: PanelContainer = $Panel/Margin/VBox/MyHighestRow
@@ -88,10 +86,7 @@ func _apply_styles() -> void:
 	my_row_style.border_width_right = 2
 	my_row_style.border_width_top = 2
 	my_row_style.border_width_bottom = 2
-	my_row_style.corner_radius_top_left = 8
-	my_row_style.corner_radius_top_right = 8
-	my_row_style.corner_radius_bottom_left = 8
-	my_row_style.corner_radius_bottom_right = 8
+	my_row_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
 	my_row.add_theme_stylebox_override("panel", my_row_style)
 	
 	# Style labels in MyHighestRow
@@ -292,10 +287,7 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 			bg_style.border_width_right = 2
 			bg_style.border_width_top = 2
 			bg_style.border_width_bottom = 2
-			bg_style.corner_radius_top_left = 8
-			bg_style.corner_radius_top_right = 8
-			bg_style.corner_radius_bottom_left = 8
-			bg_style.corner_radius_bottom_right = 8
+			bg_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
 			
 			if rank_idx == 1:
 				bg_style.bg_color = Color("#FFD700", 0.08)
@@ -322,19 +314,15 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 					bg_style.border_width_top = 3
 					bg_style.border_width_bottom = 3
 			else:
-				# Other ranks player highlight
 				if active_theme:
 					bg_style.bg_color = active_theme.accent_color
 					bg_style.bg_color.a = 0.15
 					bg_style.border_color = active_theme.accent_color
+					bg_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
 				bg_style.border_width_left = 2
 				bg_style.border_width_right = 2
 				bg_style.border_width_top = 2
 				bg_style.border_width_bottom = 2
-				bg_style.corner_radius_top_left = 6
-				bg_style.corner_radius_top_right = 6
-				bg_style.corner_radius_bottom_left = 6
-				bg_style.corner_radius_bottom_right = 6
 				
 			var panel_item := PanelContainer.new()
 			panel_item.add_theme_stylebox_override("panel", bg_style)

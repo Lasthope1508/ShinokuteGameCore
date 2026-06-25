@@ -13,7 +13,7 @@ const THEME_PATH := "res://Resources/Data/default_theme.tres"
 @onready var background: ColorRect = $Background
 @onready var background_texture_rect: TextureRect = $BackgroundTexture
 @onready var hud: HUD = $Layout/HUD
-@onready var progress_bar_widget: ScoreProgressBar = $Layout/ProgressFrame/ScoreProgressBar
+var progress_bar_widget: ScoreProgressBar
 @onready var grid: Grid = $Layout/GridFrame/AspectRatio/Grid
 @onready var tray: PieceTray = $Layout/Tray
 @onready var drag_layer: Control = $DragLayer
@@ -53,6 +53,7 @@ var _tutorial_ghost: Piece
 
 
 func _ready() -> void:
+	progress_bar_widget = hud.progress_bar
 	# Create BackgroundTextureNew dynamically for cross-fade transitions
 	_background_texture_new = TextureRect.new()
 	_background_texture_new.name = "BackgroundTextureNew"
@@ -67,6 +68,10 @@ func _ready() -> void:
 	add_child(_background_texture_new)
 	move_child(_background_texture_new, bg_idx + 1)
 
+	# Background blur shader disabled to show raw 9Router silhouettes
+	background_texture_rect.material = null
+	_background_texture_new.material = null
+
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.game_reset.connect(_on_game_reset)
@@ -76,23 +81,38 @@ func _ready() -> void:
 	GameState.reset_run()
 	tray.setup(grid, drag_layer)
 
-
 	hud.settings_requested.connect(_on_settings_requested)
+	hud.replay_pressed.connect(_restart_run)
 	hud.leaderboard_requested.connect(_on_leaderboard_requested)
 	tray.piece_picked.connect(_on_piece_picked)
 	GameState.game_over.connect(_on_game_over)
 	progress_bar_widget.level_up_triggered.connect(_on_level_up_triggered)
 
 	# First launch → tutorial. Returning players resume a saved run if any.
+	if GameState.start_mode == "chaos":
+		SaveManager.set_tutorial_completed(true)
+
 	if not SaveManager.is_tutorial_completed():
 		_start_tutorial()
 	elif SaveManager.has_saved_game():
 		_load_saved_game()
 	else:
 		if GameState.start_mode == "chaos":
-			grid.generate_random_start_blocks(10)
+			grid.generate_random_start_blocks(Grid.CHAOS_START_BLOCKS)
 		tray.refill()
 		tray.update_availability()
+	
+	AdManager.show_banner(true)
+	var audio_mgr = get_node_or_null("/root/AudioManager")
+	if audio_mgr:
+		audio_mgr.play_music()
+
+
+func _exit_tree() -> void:
+	AdManager.show_banner(false)
+	var audio_mgr = get_node_or_null("/root/AudioManager")
+	if audio_mgr:
+		audio_mgr.stop_music()
 
 
 func _update_theme() -> void:
@@ -119,6 +139,34 @@ func _update_background_layout() -> void:
 		return
 	_scale_texture_rect_to_bottom(background_texture_rect)
 	_scale_texture_rect_to_bottom(_background_texture_new)
+	_update_interactive_area_alignment()
+
+
+func _update_interactive_area_alignment() -> void:
+	# Wait a frame so the layout sizes of the Grid and containers are updated and accurate
+	await get_tree().process_frame
+	if not is_inside_tree() or not is_instance_valid(grid) or not grid.is_inside_tree():
+		return
+	
+	# Get the grid's global rect
+	var grid_global_rect = grid.get_global_rect()
+	var screen_width = get_viewport_rect().size.x
+	
+	# Calculate padding relative to screen width
+	var left_pad = grid_global_rect.position.x
+	var right_pad = screen_width - (grid_global_rect.position.x + grid_global_rect.size.x)
+	
+	# 1. Update HUD alignment
+	if is_instance_valid(hud):
+		var hud_margin = hud.get_node_or_null("HUDMarginContainer") as MarginContainer
+		if hud_margin:
+			hud_margin.add_theme_constant_override("margin_left", max(0.0, left_pad))
+			hud_margin.add_theme_constant_override("margin_right", max(0.0, right_pad))
+			
+	# 2. Update PieceTray alignment
+	if is_instance_valid(tray):
+		tray.add_theme_constant_override("margin_left", max(0.0, left_pad))
+		tray.add_theme_constant_override("margin_right", max(0.0, right_pad))
 
 
 func _scale_texture_rect_to_bottom(tex_rect: TextureRect) -> void:
@@ -162,19 +210,16 @@ func _update_background(score: int, force_immediate: bool = false) -> void:
 	var target_bg: Texture2D = null
 	var target_index: int = -1
 	
-	if _theme_config.show_background_in_game:
-		target_bg = ThemeManager.shared_background_texture
-		target_index = 0
-		if not ThemeManager.shared_milestone_backgrounds.is_empty():
-			var level = GameState.get_level_for_score(score)
-			if _shuffled_bg_indices.is_empty():
-				_initialize_shuffled_backgrounds()
-				
-			if not _shuffled_bg_indices.is_empty():
-				var shuffled_pos = level % _shuffled_bg_indices.size()
-				target_index = _shuffled_bg_indices[shuffled_pos]
-				if ThemeManager.shared_milestone_backgrounds[target_index] != null:
-					target_bg = ThemeManager.shared_milestone_backgrounds[target_index]
+	if not ThemeManager.shared_milestone_backgrounds.is_empty():
+		var level = GameState.get_level_for_score(score)
+		if _shuffled_bg_indices.is_empty():
+			_initialize_shuffled_backgrounds()
+			
+		if not _shuffled_bg_indices.is_empty():
+			var shuffled_pos = level % _shuffled_bg_indices.size()
+			target_index = _shuffled_bg_indices[shuffled_pos]
+			if ThemeManager.shared_milestone_backgrounds[target_index] != null:
+				target_bg = ThemeManager.shared_milestone_backgrounds[target_index]
 			
 	if target_index == _current_bg_index and not force_immediate:
 		return
@@ -328,6 +373,7 @@ func _on_drop_requested(piece: Piece, target_origin: Vector2i) -> void:
 		await get_tree().create_timer(0.85).timeout
 
 	tray.update_availability()
+	_check_music_state()
 	_save_game_state()
 	if not tray.has_any_enabled():
 		await _run_game_over_sequence(refilled)
@@ -385,14 +431,24 @@ func _resolve_clears(_origin: Vector2i) -> void:
 		var p_end2 = grid._grid_origin + Vector2(q.x * 3 * grid.cell_size, (q.y * 3 + 3) * grid.cell_size)
 		_spawn_slash(p_start2, p_end2, slash_color)
 
-	# Spawn particle explosion for each cleared cell
-	for cell in cells:
-		var particles = LINE_CLEAR_PARTICLES.instantiate()
-		particles.global_position = grid.cell_center_to_global(Vector2(cell))
-		var cell_color = grid.get_cell_color(cell)
-		if particles.has_method("set_particle_color"):
-			particles.set_particle_color(cell_color)
-		add_child(particles)
+	# Spawn group clear VFX at the midpoint of each row, col, and quadrant in local coordinates
+	for y in rows:
+		var midpoint_cell = Vector2i(4, y)
+		var cell_color = grid.get_cell_color(midpoint_cell)
+		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, cell_color)
+		
+	for x in cols:
+		var midpoint_cell = Vector2i(x, 4)
+		var cell_color = grid.get_cell_color(midpoint_cell)
+		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, cell_color)
+		
+	for q in quadrants:
+		var midpoint_cell = Vector2i(q.x * 3 + 1, q.y * 3 + 1)
+		var cell_color = grid.get_cell_color(midpoint_cell)
+		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, cell_color)
 
 	# Cascade first: spinning blocks fly off before any score readout.
 	await grid.clear_cells(cells)
@@ -656,7 +712,7 @@ func _restart_run() -> void:
 	GameState.reset_run()
 	grid.reset()
 	if GameState.start_mode == "chaos":
-		grid.generate_random_start_blocks(10)
+		grid.generate_random_start_blocks(Grid.CHAOS_START_BLOCKS)
 	tray.refill()
 	tray.update_availability()
 
@@ -703,12 +759,16 @@ func _load_saved_game() -> void:
 func _on_game_reset() -> void:
 	_current_bg_index = -1
 	_initialize_shuffled_backgrounds()
+	_update_background(0, true)
+	var audio_mgr = get_node_or_null("/root/AudioManager")
+	if audio_mgr:
+		audio_mgr.set_music_mode("relax")
 
 
 func _initialize_shuffled_backgrounds() -> void:
 	_shuffled_bg_indices.clear()
 	if not ThemeManager.shared_milestone_backgrounds.is_empty():
-		for i in range(ThemeManager.shared_milestone_backgrounds.size()):
+		for i in range(1, ThemeManager.shared_milestone_backgrounds.size()):
 			_shuffled_bg_indices.append(i)
 		_shuffled_bg_indices.shuffle()
 
@@ -735,12 +795,14 @@ func _camera_shake(combo: int) -> void:
 	var combo_config = ThemeManager.get_combo_config(combo)
 	var intensity: float = combo_config["shake_intensity"] if combo_config else float(combo)
 	
+	# ONLY cache the baseline canvas transform if we are not already shaking,
+	# otherwise we would bake the current shake offset into the baseline!
+	if _shake_remaining <= 0.0:
+		_shake_base_transform = get_viewport().canvas_transform
+		
 	_shake_strength = shake_base_strength * intensity
 	_shake_total = shake_base_duration
 	_shake_remaining = _shake_total
-	# Cache the canvas transform so we offset relative to it (preserves any
-	# stretch / dpi scaling Godot already applied).
-	_shake_base_transform = get_viewport().canvas_transform
 	set_process(true)
 
 
@@ -968,3 +1030,117 @@ func _stop_cursor_animation() -> void:
 	if _tutorial_ghost and is_instance_valid(_tutorial_ghost):
 		_tutorial_ghost.queue_free()
 		_tutorial_ghost = null
+
+
+func _spawn_group_clear_vfx(local_pos: Vector2, color: Color) -> void:
+	# --- Layer 1: Core Impact Flash ("The Punch") ---
+	var flash := Sprite2D.new()
+	flash.texture = preload("res://addons/kenney_particle_pack/flare_01.png")
+	var mat_flash = CanvasItemMaterial.new()
+	mat_flash.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	flash.material = mat_flash
+	flash.modulate = color * 1.6
+	flash.scale = Vector2.ZERO
+	grid.cells_layer.add_child(flash)
+	flash.position = local_pos
+	
+	var tw_flash = create_tween()
+	tw_flash.tween_property(flash, "scale", Vector2(2.4, 2.4), 0.07).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw_flash.tween_property(flash, "scale", Vector2.ZERO, 0.09).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tw_flash.tween_callback(flash.queue_free)
+	
+	# --- Layer 2: Shockwave Ring ("The Expansion") ---
+	var ring := Sprite2D.new()
+	ring.texture = preload("res://addons/kenney_particle_pack/circle_02.png")
+	var mat_ring = CanvasItemMaterial.new()
+	mat_ring.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	ring.material = mat_ring
+	ring.modulate = color
+	ring.scale = Vector2(0.3, 0.3)
+	grid.cells_layer.add_child(ring)
+	ring.position = local_pos
+	
+	var tw_ring = create_tween()
+	tw_ring.tween_property(ring, "scale", Vector2(4.5, 4.5), 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw_ring.parallel().tween_property(ring, "modulate:a", 0.0, 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw_ring.tween_callback(ring.queue_free)
+
+	# --- Layer 3: Large Spark Burst ("The Crunch") ---
+	var sparks := CPUParticles2D.new()
+	sparks.texture = preload("res://addons/kenney_particle_pack/spark_01.png")
+	sparks.amount = 26
+	sparks.one_shot = true
+	sparks.explosiveness = 0.92
+	sparks.lifetime = 0.55
+	sparks.spread = 180.0
+	sparks.gravity = Vector2(0, 320)
+	sparks.initial_velocity_min = 160.0
+	sparks.initial_velocity_max = 320.0
+	sparks.scale_amount_min = 0.05
+	sparks.scale_amount_max = 0.12
+	
+	var spark_curve := Curve.new()
+	spark_curve.add_point(Vector2(0.0, 1.0))
+	spark_curve.add_point(Vector2(1.0, 0.0))
+	sparks.scale_amount_curve = spark_curve
+	
+	var spark_gradient := Gradient.new()
+	spark_gradient.set_color(0, Color.WHITE)
+	spark_gradient.set_color(1, Color(1, 1, 1, 0))
+	sparks.color_ramp = spark_gradient
+	
+	sparks.modulate = color * 1.3
+	grid.cells_layer.add_child(sparks)
+	sparks.position = local_pos
+	sparks.emitting = true
+	sparks.finished.connect(sparks.queue_free)
+
+	# --- Layer 4: Magical Dust ("Dissipation") ---
+	var dust := CPUParticles2D.new()
+	dust.texture = preload("res://addons/kenney_particle_pack/star_05.png")
+	dust.amount = 12
+	dust.one_shot = true
+	dust.explosiveness = 0.65
+	dust.lifetime = 0.65
+	dust.direction = Vector2(0, -1)
+	dust.spread = 45.0
+	dust.gravity = Vector2(0, -60)
+	dust.initial_velocity_min = 40.0
+	dust.initial_velocity_max = 100.0
+	dust.scale_amount_min = 0.03
+	dust.scale_amount_max = 0.08
+	
+	var dust_curve := Curve.new()
+	dust_curve.add_point(Vector2(0.0, 1.0))
+	dust_curve.add_point(Vector2(1.0, 0.0))
+	dust.scale_amount_curve = dust_curve
+	
+	var dust_gradient := Gradient.new()
+	dust_gradient.set_color(0, Color.WHITE)
+	dust_gradient.set_color(1, Color(1, 1, 1, 0))
+	dust.color_ramp = dust_gradient
+	
+	dust.modulate = color * 1.5
+	grid.cells_layer.add_child(dust)
+	dust.position = local_pos
+	dust.emitting = true
+	dust.finished.connect(dust.queue_free)
+
+
+func _check_music_state() -> void:
+	if not is_instance_valid(grid):
+		return
+	var audio_mgr = get_node_or_null("/root/AudioManager")
+	if not audio_mgr:
+		return
+		
+	var occupied_count = grid.get_occupied_cell_count()
+	var current_mode = audio_mgr._current_music_mode
+	
+	if current_mode == "relax":
+		if occupied_count >= 65:
+			audio_mgr.set_music_mode("danger")
+	elif current_mode == "danger":
+		if occupied_count <= 40:
+			audio_mgr.set_music_mode("relax")
+

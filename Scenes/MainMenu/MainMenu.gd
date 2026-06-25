@@ -150,10 +150,6 @@ const START_OPTION_OVERLAY := preload("res://Scenes/Game/Component/Overlays/Star
 
 func _on_play_pressed() -> void:
 	AudioManager.play_sfx("button")
-	if not SaveManager.is_tutorial_completed():
-		SceneRouter.change_scene(GAME_SCENE_PATH)
-		return
-		
 	var overlay = START_OPTION_OVERLAY.instantiate()
 	add_child(overlay)
 	overlay.mode_selected.connect(func(mode: String):

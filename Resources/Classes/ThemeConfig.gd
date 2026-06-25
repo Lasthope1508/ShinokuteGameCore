@@ -22,7 +22,7 @@ class_name ThemeConfig extends Resource
 @export var show_background_in_game: bool = false
 @export var quadrant_dark_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
 @export var quadrant_light_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
-@export var cell_empty_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
+@export var cell_empty_tint: Color = Color(1.0, 1.0, 1.0, 0.02)
 @export var preview_valid_tint: Color = Color(1.0, 1.0, 1.0, 1.0)
 @export var preview_clear_highlight: Color = Color(1.0, 1.0, 1.0, 1.0)
 
@@ -87,7 +87,7 @@ class_name ThemeConfig extends Resource
 
 @export_group("UI Colors & Style Overrides")
 @export var text_color: Color = Color(1.0, 1.0, 1.0, 1.0)
-@export var accent_color: Color = Color(1.0, 0.78, 0.05) # Yellow/Gold
+@export var accent_color: Color = Color(0, 0.96, 0.83, 1) # Neon Cyan
 @export var alert_color: Color = Color(0.95, 0.18, 0.12) # Red
 
 @export var button_normal_bg: Color = Color(0.55, 0.38, 0.22, 1)
@@ -97,5 +97,15 @@ class_name ThemeConfig extends Resource
 
 @export var panel_bg_color: Color = Color(0.18, 0.14, 0.1, 1)
 @export var panel_border_color: Color = Color(0.45, 0.35, 0.25, 1)
+
+@export_group("UI Layout & Corner Radius SSOT")
+@export var capsule_corner_radius: float = 20.0
+@export var button_corner_radius: float = 16.0
+@export var popup_corner_radius: float = 12.0
+@export var inner_button_corner_radius: float = 8.0
+
+@export var capsule_border_width: int = 2
+@export var button_border_width: int = 2
+@export var popup_border_width: int = 3
 
 @export var custom_font: Font = preload("res://Assets/Fonts/Poppins-Bold.ttf")

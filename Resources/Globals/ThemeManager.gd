@@ -41,16 +41,32 @@ var shared_milestone_backgrounds: Array[Texture2D] = []
 signal theme_changed(new_theme_name: String, theme_config: ThemeConfig)
 
 func _ready() -> void:
-	shared_background_texture = preload("res://Assets/Sprites/greeting_bg.png")
+	# Load greeting_bg.png directly from disk to bypass Godot import caching
+	if FileAccess.file_exists("res://Assets/Sprites/greeting_bg.png"):
+		var img = Image.load_from_file("res://Assets/Sprites/greeting_bg.png")
+		if img:
+			shared_background_texture = ImageTexture.create_from_image(img)
+	if not shared_background_texture:
+		shared_background_texture = preload("res://Assets/Sprites/greeting_bg.png")
+		
 	# Load shared SSOT background assets from fruit theme configuration
 	var fruit_config = load("res://Resources/Data/Themes/fruit_theme/theme_config.tres")
 	if fruit_config:
-		shared_milestone_backgrounds = fruit_config.get("milestone_backgrounds")
+		var raw_bgs = fruit_config.get("milestone_backgrounds")
+		shared_milestone_backgrounds.clear()
+		for bg in raw_bgs:
+			if bg and bg.resource_path.begins_with("res://"):
+				var path = bg.resource_path
+				if FileAccess.file_exists(path):
+					var img = Image.load_from_file(path)
+					if img:
+						shared_milestone_backgrounds.append(ImageTexture.create_from_image(img))
+						continue
+			shared_milestone_backgrounds.append(bg)
 
-	active_skin = SaveManager.get_setting(SKIN_SAVE_KEY, "brick")
-	active_theme_name = SaveManager.get_setting(SAVE_KEY, DEFAULT_THEME)
-	
-	var target_theme = "fruit_theme" if active_skin == "fruits" else "brick_theme"
+	active_skin = "brick"
+	active_theme_name = DEFAULT_THEME
+	var target_theme = "brick_theme"
 	if OS.has_feature("web"):
 		var search = JavaScriptBridge.eval("window.location.search")
 		if search and search is String and not search.is_empty():
@@ -59,9 +75,9 @@ func _ready() -> void:
 				var parts = param.split("=")
 				if parts.size() == 2 and parts[0] == "theme":
 					var web_theme = parts[1].strip_edges()
-					if THEME_PATHS.has(web_theme):
+					if THEME_PATHS.has(web_theme) and web_theme != "fruit_theme":
 						target_theme = web_theme
-						active_skin = "fruits" if web_theme == "fruit_theme" else "brick"
+						active_skin = "brick"
 						SaveManager.set_setting(SKIN_SAVE_KEY, active_skin)
 						break
 	load_theme(target_theme)
@@ -85,6 +101,13 @@ func load_theme(theme_name: String) -> void:
 	# Apply stylebox and font overrides to the shared main theme resource
 	var main_theme: Theme = load("res://Resources/Theme/main_theme.tres")
 	if main_theme and active_theme:
+		# Update corner radii and border widths for all button states
+		for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+			var sb = main_theme.get_stylebox(state, "Button") as StyleBoxFlat
+			if sb:
+				sb.set_corner_radius_all(active_theme.button_corner_radius)
+				sb.set_border_width_all(active_theme.button_border_width)
+				
 		var normal_sb = main_theme.get_stylebox("normal", "Button") as StyleBoxFlat
 		if normal_sb:
 			normal_sb.bg_color = active_theme.button_normal_bg
@@ -109,6 +132,12 @@ func load_theme(theme_name: String) -> void:
 		if panel_sb:
 			panel_sb.bg_color = active_theme.panel_bg_color
 			panel_sb.border_color = active_theme.panel_border_color
+			var border_w = active_theme.popup_border_width
+			panel_sb.border_width_left = border_w
+			panel_sb.border_width_right = border_w
+			panel_sb.border_width_top = border_w
+			panel_sb.border_width_bottom = border_w
+			panel_sb.set_corner_radius_all(active_theme.popup_corner_radius)
 			
 		# Set global Label colors in the main theme
 		main_theme.set_color("font_color", "Label", active_theme.text_color)
@@ -186,11 +215,10 @@ func get_active_skin() -> String:
 	return active_skin
 
 func set_active_skin(skin_name: String) -> void:
-	if skin_name == "brick" or skin_name == "fruits":
-		active_skin = skin_name
+	if skin_name == "brick":
+		active_skin = "brick"
 		SaveManager.set_setting(SKIN_SAVE_KEY, active_skin)
-		var target_theme = "fruit_theme" if skin_name == "fruits" else "brick_theme"
-		load_theme(target_theme)
+		load_theme("brick_theme")
 
 
 # Single Source of Truth (SSOT) for Combo & Streak VFX and Pitch Scaling

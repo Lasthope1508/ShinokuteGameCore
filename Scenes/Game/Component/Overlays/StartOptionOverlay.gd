@@ -14,6 +14,9 @@ func _ready() -> void:
 	classic_button.pressed.connect(_on_classic_pressed)
 	chaos_button.pressed.connect(_on_chaos_pressed)
 	
+	# Set button text dynamically based on the constants
+	chaos_button.text = "Chaos Start (%d Obstacles)" % Grid.CHAOS_START_BLOCKS
+	
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_update_theme_styles()
 
@@ -31,14 +34,12 @@ func _update_theme_styles() -> void:
 		
 	panel_style.bg_color = active_theme.panel_bg_color
 	panel_style.border_color = active_theme.panel_border_color
-	panel_style.border_width_left = 3
-	panel_style.border_width_right = 3
-	panel_style.border_width_top = 3
-	panel_style.border_width_bottom = 3
-	panel_style.corner_radius_top_left = 12
-	panel_style.corner_radius_top_right = 12
-	panel_style.corner_radius_bottom_left = 12
-	panel_style.corner_radius_bottom_right = 12
+	var border_w = active_theme.popup_border_width
+	panel_style.border_width_left = border_w
+	panel_style.border_width_right = border_w
+	panel_style.border_width_top = border_w
+	panel_style.border_width_bottom = border_w
+	panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
 	
 	# Style labels
 	title.add_theme_color_override("font_color", active_theme.accent_color)
