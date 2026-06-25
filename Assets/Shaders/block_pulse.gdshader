@@ -11,56 +11,8 @@ uniform vec4 glow_color : source_color = vec4(1.0);
 uniform float glow_spread : hint_range(0.01, 0.2) = 0.08;
 uniform float shrink_factor : hint_range(1.0, 2.0) = 1.0;
 
-uniform bool is_ice_element = false;
-uniform bool conn_left = false;
-uniform bool conn_right = false;
-uniform bool conn_up = false;
-uniform bool conn_down = false;
-uniform float channel_width : hint_range(0.05, 0.8) = 0.38;
-
 void fragment() {
 	vec2 uv = (UV - vec2(0.5)) * shrink_factor + vec2(0.5);
-	
-	if (is_ice_element) {
-		float half_w = channel_width * 0.5;
-		bool in_hole = false;
-		
-		// High-frequency sine wave displacement for jagged cracks
-		float base_jagged = sin(uv.x * 32.0) * 0.05 + cos(uv.y * 38.0) * 0.04 + sin((uv.x + uv.y) * 50.0) * 0.02;
-		
-		// Center hole
-		if (length(uv - vec2(0.5)) < half_w + base_jagged * 0.5) {
-			in_hole = true;
-		}
-		
-		// Horizontal channels - jagged cracks bleed all the way to the borders
-		if (conn_left && uv.x < 0.5) {
-			if (abs(uv.y - 0.5 + base_jagged * 0.4) < half_w + base_jagged * 0.3) {
-				in_hole = true;
-			}
-		}
-		if (conn_right && uv.x > 0.5) {
-			if (abs(uv.y - 0.5 + base_jagged * 0.4) < half_w + base_jagged * 0.3) {
-				in_hole = true;
-			}
-		}
-		
-		// Vertical channels - jagged cracks bleed all the way to the borders
-		if (conn_up && uv.y < 0.5) {
-			if (abs(uv.x - 0.5 + base_jagged * 0.4) < half_w + base_jagged * 0.3) {
-				in_hole = true;
-			}
-		}
-		if (conn_down && uv.y > 0.5) {
-			if (abs(uv.x - 0.5 + base_jagged * 0.4) < half_w + base_jagged * 0.3) {
-				in_hole = true;
-			}
-		}
-		
-		if (in_hole) {
-			discard;
-		}
-	}
 
 	vec4 tex = vec4(0.0);
 	if (uv.x >= 0.0 && uv.x <= 1.0 && uv.y >= 0.0 && uv.y <= 1.0) {

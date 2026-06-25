@@ -80,6 +80,7 @@ func _ready() -> void:
 	_update_theme()
 
 	GameState.reset_run()
+	drag_layer.z_index = 30
 	tray.setup(grid, drag_layer)
 
 	hud.settings_requested.connect(_on_settings_requested)

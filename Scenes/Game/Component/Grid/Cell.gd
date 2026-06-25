@@ -29,11 +29,6 @@ var occupied_color: Color = Color.WHITE
 var _block_material: ShaderMaterial
 var _preview_material: ShaderMaterial
 
-var conn_left: bool = false
-var conn_right: bool = false
-var conn_up: bool = false
-var conn_down: bool = false
-
 var is_clearing: bool = false
 
 
@@ -77,32 +72,6 @@ func reset_cell() -> void:
 	_update_theme()
 
 
-func reset_connections() -> void:
-	conn_left = false
-	conn_right = false
-	conn_up = false
-	conn_down = false
-	_update_connection_shader()
-
-
-func add_connection(direction: String) -> void:
-	match direction:
-		"left": conn_left = true
-		"right": conn_right = true
-		"up": conn_up = true
-		"down": conn_down = true
-	_update_connection_shader()
-
-
-func _update_connection_shader() -> void:
-	if _block_material:
-		_block_material.set_shader_parameter("is_ice_element", false)
-		_block_material.set_shader_parameter("conn_left", conn_left)
-		_block_material.set_shader_parameter("conn_right", conn_right)
-		_block_material.set_shader_parameter("conn_up", conn_up)
-		_block_material.set_shader_parameter("conn_down", conn_down)
-
-
 func is_obstacle() -> bool:
 	return occupied and abs(occupied_color.r - 0.4) < 0.01 and abs(occupied_color.g - 0.4) < 0.01 and abs(occupied_color.b - 0.4) < 0.01
 
@@ -137,7 +106,6 @@ func _update_theme() -> void:
 		_update_texture_for_color(block, occupied_color)
 		if active_theme:
 			block.modulate = block.modulate * active_theme.placed_block_modulate
-	_update_connection_shader()
 
 
 

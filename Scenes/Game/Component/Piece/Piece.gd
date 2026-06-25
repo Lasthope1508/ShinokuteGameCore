@@ -69,7 +69,6 @@ func setup(p_shape: PieceShape, p_color: Color) -> void:
 	var bbox: Vector2i = shape.get_size()
 	custom_minimum_size = Vector2(bbox.x * idle_block_size, bbox.y * idle_block_size)
 	size = custom_minimum_size
-	_update_block_connections()
 
 
 
@@ -271,7 +270,6 @@ func _apply_block_size(block_size: int) -> void:
 	var bbox: Vector2i = shape.get_size()
 	custom_minimum_size = Vector2(bbox.x * block_size, bbox.y * block_size)
 	size = custom_minimum_size
-	_update_block_connections()
 
 
 
@@ -297,159 +295,3 @@ func _reparent_to(new_parent: Control) -> void:
 func _clear_blocks() -> void:
 	for c in get_children():
 		c.queue_free()
-
-
-func _update_block_connections() -> void:
-	if shape == null:
-		return
-	var cells = shape.get_normalized_cells()
-	var i := 0
-	for offset in cells:
-		var b = get_child(i) as Block
-		if b:
-			var conn_left = Vector2i(offset.x - 1, offset.y) in cells
-			var conn_right = Vector2i(offset.x + 1, offset.y) in cells
-			var conn_up = Vector2i(offset.x, offset.y - 1) in cells
-			var conn_down = Vector2i(offset.x, offset.y + 1) in cells
-			b.set_connections(conn_left, conn_right, conn_up, conn_down)
-		i += 1
-	_update_internal_lightning()
-
-
-func _update_internal_lightning() -> void:
-	if shape == null:
-		return
-		
-	# Clear old Line2D children
-	for child in get_children():
-		if child is Line2D:
-			child.queue_free()
-			
-	var cells = shape.get_normalized_cells()
-	if cells.is_empty():
-		return
-		
-	var element_type = ThemeManager.get_element_type_for_color(color)
-	return
-		
-	# Find current block size
-	var b_size := idle_block_size
-	for child in get_children():
-		if child is Block:
-			b_size = int(child.size.x)
-			break
-	
-	var bolt_tex = preload("res://addons/kenney_particle_pack/trace_01.png")
-	var speed = 1.5
-	var width = 12.0
-	var is_spritesheet = false
-	
-	if element_type == ThemeManager.ElementChainType.FIRE:
-		bolt_tex = load("res://addons/kenney_particle_pack/trace_07.png")
-		speed = 2.2
-		width = 16.0
-	elif element_type == ThemeManager.ElementChainType.ICE:
-		bolt_tex = load("res://addons/kenney_particle_pack/trace_06.png")
-		speed = 1.5
-		width = 14.0
-		is_spritesheet = false
-	elif element_type == ThemeManager.ElementChainType.EARTH:
-		bolt_tex = load("res://addons/kenney_particle_pack/trace_03.png")
-		speed = 1.2
-		width = 14.0
-	elif element_type == ThemeManager.ElementChainType.LIGHTNING:
-		bolt_tex = load("res://addons/kenney_particle_pack/trace_02.png")
-		speed = 3.6
-		width = 18.0
-	elif element_type == ThemeManager.ElementChainType.SOUL:
-		bolt_tex = load("res://addons/kenney_particle_pack/trace_05.png")
-		speed = 1.6
-		width = 15.0
-
-	if _glow_shader == null:
-		_glow_shader = Shader.new()
-		_glow_shader.code = """
-		shader_type canvas_item;
-		uniform sampler2D line_texture;
-		uniform vec4 line_color : source_color = vec4(1.0);
-		uniform float speed = 1.5;
-		uniform bool is_spritesheet = false;
-		uniform float hframes = 6.0;
-		uniform float vframes = 4.0;
-		uniform float fps = 30.0;
-		uniform float time_offset = 0.0;
-
-		void fragment() {
-			vec2 uv = UV;
-			if (is_spritesheet) {
-				float total_frames = hframes * vframes;
-				float frame_time = (TIME + time_offset) * fps;
-				float frame = mod(floor(frame_time), total_frames);
-				
-				float col = mod(frame, hframes);
-				float row = floor(frame / hframes);
-				
-				uv.x = (uv.x + col) / hframes;
-				uv.y = (uv.y + row) / vframes;
-			} else {
-				uv.x -= TIME * speed;
-			}
-			vec4 tex = texture(line_texture, uv);
-			COLOR = vec4(line_color.rgb, clamp(tex.a * 5.0, 0.0, 1.0) * line_color.a);
-		}
-		"""
-
-	var scale_ratio = float(b_size) / 64.0
-	var final_width = width * scale_ratio
-	
-	for c1 in cells:
-		var center1 = Vector2(c1.x + 0.5, c1.y + 0.5) * b_size
-		
-		# Right connection
-		if Vector2i(c1.x + 1, c1.y) in cells:
-			var c2 = Vector2i(c1.x + 1, c1.y)
-			var center2 = Vector2(c2.x + 0.5, c2.y + 0.5) * b_size
-			_create_internal_line(center1, center2, bolt_tex, final_width, is_spritesheet, speed)
-			
-		# Down connection
-		if Vector2i(c1.x, c1.y + 1) in cells:
-			var c2 = Vector2i(c1.x, c1.y + 1)
-			var center2 = Vector2(c2.x + 0.5, c2.y + 0.5) * b_size
-			_create_internal_line(center1, center2, bolt_tex, final_width, is_spritesheet, speed)
-
-
-func _create_internal_line(from: Vector2, to: Vector2, tex: Texture2D, w: float, is_sheet: bool, spd: float) -> void:
-	var line = Line2D.new()
-	line.points = PackedVector2Array([from, to])
-	line.texture = tex
-	line.joint_mode = Line2D.LINE_JOINT_ROUND
-	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	line.end_cap_mode = Line2D.LINE_CAP_ROUND
-	
-	if is_sheet:
-		line.texture_mode = Line2D.LINE_TEXTURE_STRETCH
-	else:
-		line.texture_mode = Line2D.LINE_TEXTURE_TILE
-		
-	line.width = w
-	line.default_color = color * 1.4
-	line.z_index = 0
-	
-	var mat = ShaderMaterial.new()
-	mat.shader = _glow_shader
-	mat.set_shader_parameter("line_texture", tex)
-	mat.set_shader_parameter("line_color", color * 1.4)
-	if is_sheet:
-		mat.set_shader_parameter("is_spritesheet", true)
-		mat.set_shader_parameter("hframes", 6.0)
-		mat.set_shader_parameter("vframes", 4.0)
-		mat.set_shader_parameter("fps", 30.0)
-		mat.set_shader_parameter("time_offset", from.x * 0.01 + from.y * 0.07)
-	else:
-		mat.set_shader_parameter("is_spritesheet", false)
-		mat.set_shader_parameter("speed", spd)
-		
-	line.material = mat
-	add_child(line)
-	move_child(line, 0)
-
