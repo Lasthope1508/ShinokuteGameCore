@@ -7,6 +7,7 @@ const LEADERBOARD_OVERLAY := preload("res://Scenes/Game/Component/Overlays/Leade
 const GAMEOVER_OVERLAY := preload("res://Scenes/Game/Component/Overlays/GameOverOverlay.tscn")
 const SCORE_POPUP := preload("res://Scenes/Game/Component/HUD/ScorePopup.tscn")
 const LINE_CLEAR_PARTICLES := preload("res://Scenes/Game/Component/Grid/LineClearParticles.tscn")
+const TINT_SHADER := preload("res://Assets/Shaders/video_tint.gdshader")
 
 const THEME_PATH := "res://Resources/Data/default_theme.tres"
 
@@ -1020,10 +1021,56 @@ func _stop_cursor_animation() -> void:
 
 
 func _spawn_group_clear_vfx(local_pos: Vector2, color: Color) -> void:
-	_spawn_default_clear_vfx(local_pos, color)
+	var element_type = ThemeManager.get_element_type_for_color(color)
+	if element_type == ThemeManager.ElementChainType.FIRE:
+		_spawn_fire_clear_vfx(local_pos)
+	elif element_type == ThemeManager.ElementChainType.ICE:
+		_spawn_ice_clear_vfx(local_pos)
+	elif element_type == ThemeManager.ElementChainType.EARTH:
+		_spawn_earth_clear_vfx(local_pos)
+	elif element_type == ThemeManager.ElementChainType.LIGHTNING:
+		_spawn_lightning_clear_vfx(local_pos)
+	elif element_type == ThemeManager.ElementChainType.SOUL:
+		_spawn_soul_clear_vfx(local_pos)
+	else:
+		_spawn_default_clear_vfx(local_pos, color)
+
+
+func _spawn_video_explosion(local_pos: Vector2, video_path: String, color: Color, scale_multiplier: float = 1.0) -> void:
+	if not ResourceLoader.exists(video_path):
+		return
+		
+	var player = VideoStreamPlayer.new()
+	player.stream = load(video_path)
+	player.autoplay = true
+	player.loop = false
+	player.expand = true
+	player.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	player.volume_db = -80.0 # Silent
+	
+	# Apply the tint shader to make the black background transparent and map colors correctly
+	var mat := ShaderMaterial.new()
+	mat.shader = TINT_SHADER
+	mat.set_shader_parameter("target_color", color)
+	player.material = mat
+	
+	var size_dim := 160.0 * scale_multiplier
+	player.size = Vector2(size_dim, size_dim)
+	player.pivot_offset = player.size * 0.5
+	player.position = local_pos - player.pivot_offset
+	
+	grid.cells_layer.add_child(player)
+	player.finished.connect(player.queue_free)
+	
+	var timer = get_tree().create_timer(2.0)
+	timer.timeout.connect(func():
+		if is_instance_valid(player):
+			player.queue_free()
+	)
 
 
 func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
+	_spawn_video_explosion(local_pos, "res://VFX/Groundfire_09_Front_2k_H.264.ogv", Color(1.0, 0.3, 0.15))
 	var scene = load("res://effects/2d_explosion/source/explosion.tscn")
 	if scene:
 		var explosion = scene.instantiate()
@@ -1040,6 +1087,7 @@ func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
 
 
 func _spawn_lightning_clear_vfx(local_pos: Vector2) -> void:
+	_spawn_video_explosion(local_pos, "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv", Color(1.0, 0.9, 0.25))
 	# Optimized CPUParticles2D for lightning sparks (bypasses heavy GPUParticles2D shaders)
 	var sparks := CPUParticles2D.new()
 	sparks.texture = preload("res://addons/kenney_particle_pack/spark_05.png")
@@ -1176,6 +1224,7 @@ func _spawn_soul_clear_vfx(local_pos: Vector2) -> void:
 
 
 func _spawn_ice_clear_vfx(local_pos: Vector2) -> void:
+	_spawn_video_explosion(local_pos, "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv", Color(0.2, 0.7, 1.0))
 	# Frost expanding ring
 	var ring := Sprite2D.new()
 	ring.texture = preload("res://addons/kenney_particle_pack/magic_03.png")
@@ -1340,8 +1389,9 @@ func _spawn_default_clear_vfx(local_pos: Vector2, color: Color) -> void:
 
 
 func _spawn_cell_pop_vfx(local_pos: Vector2, color: Color) -> void:
-	# Extremely optimized, lightweight per-cell popup particles for smooth mobile HTML5
 	var element_type = ThemeManager.get_element_type_for_color(color)
+	
+	# All elements use optimized CPU particles for popping
 	var texture_path = "res://addons/kenney_particle_pack/spark_01.png"
 	var particle_amount = 6
 	var particle_gravity = Vector2(0, 150)
@@ -1355,6 +1405,11 @@ func _spawn_cell_pop_vfx(local_pos: Vector2, color: Color) -> void:
 			particle_gravity = Vector2(0, -60)
 			scale_min = 0.03
 			scale_max = 0.07
+		ThemeManager.ElementChainType.ICE:
+			texture_path = "res://addons/kenney_particle_pack/spark_02.png"
+			particle_gravity = Vector2(0, 100)
+			scale_min = 0.03
+			scale_max = 0.06
 		ThemeManager.ElementChainType.LIGHTNING:
 			texture_path = "res://addons/kenney_particle_pack/spark_05.png"
 			particle_velocity = 120.0
@@ -1365,11 +1420,6 @@ func _spawn_cell_pop_vfx(local_pos: Vector2, color: Color) -> void:
 			particle_gravity = Vector2(0, -40)
 			scale_min = 0.03
 			scale_max = 0.06
-		ThemeManager.ElementChainType.ICE:
-			texture_path = "res://addons/kenney_particle_pack/spark_02.png"
-			particle_gravity = Vector2(0, 100)
-			scale_min = 0.03
-			scale_max = 0.07
 		ThemeManager.ElementChainType.EARTH:
 			texture_path = "res://addons/kenney_particle_pack/dirt_01.png"
 			particle_gravity = Vector2(0, 180)

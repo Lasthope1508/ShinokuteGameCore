@@ -5,6 +5,7 @@ class_name Cell extends Control
 
 # Pulse highlight applied when the cell is part of a projected clear.
 const PULSE_SHADER := preload("res://Assets/Shaders/block_pulse.gdshader")
+const TINT_SHADER := preload("res://Assets/Shaders/video_tint.gdshader")
 var OBSTACLE_TEXTURES = [
 	load("res://Assets/Sprites/obstacle_block_1.png"),
 	load("res://Assets/Sprites/obstacle_block_2.png"),
@@ -27,6 +28,14 @@ var occupied: bool = false
 var occupied_color: Color = Color.WHITE
 var _block_material: ShaderMaterial
 var _preview_material: ShaderMaterial
+
+var conn_left: bool = false
+var conn_right: bool = false
+var conn_up: bool = false
+var conn_down: bool = false
+
+var is_clearing: bool = false
+
 
 var _orig_texture: Texture2D
 var _orig_modulate: Color
@@ -57,6 +66,41 @@ func _ready() -> void:
 	# Listen to theme changes
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_update_theme()
+
+
+func reset_cell() -> void:
+	occupied = false
+	is_clearing = false
+	block.visible = false
+	clear_preview()
+	clear_clear_hint()
+	_update_theme()
+
+
+func reset_connections() -> void:
+	conn_left = false
+	conn_right = false
+	conn_up = false
+	conn_down = false
+	_update_connection_shader()
+
+
+func add_connection(direction: String) -> void:
+	match direction:
+		"left": conn_left = true
+		"right": conn_right = true
+		"up": conn_up = true
+		"down": conn_down = true
+	_update_connection_shader()
+
+
+func _update_connection_shader() -> void:
+	if _block_material:
+		_block_material.set_shader_parameter("is_ice_element", not is_obstacle())
+		_block_material.set_shader_parameter("conn_left", conn_left)
+		_block_material.set_shader_parameter("conn_right", conn_right)
+		_block_material.set_shader_parameter("conn_up", conn_up)
+		_block_material.set_shader_parameter("conn_down", conn_down)
 
 
 func is_obstacle() -> bool:
@@ -93,6 +137,8 @@ func _update_theme() -> void:
 		_update_texture_for_color(block, occupied_color)
 		if active_theme:
 			block.modulate = block.modulate * active_theme.placed_block_modulate
+	_update_connection_shader()
+
 
 
 func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
@@ -141,6 +187,7 @@ func fill(color: Color) -> void:
 
 ## Elastic "bump → cracking tilt & shake" followed by dissolving from the center outwards.
 func clear_with_animation(delay: float = 0.0) -> Tween:
+	is_clearing = true
 	occupied = false
 	preview.visible = false
 	highlight.visible = false
@@ -182,6 +229,8 @@ func clear_with_animation(delay: float = 0.0) -> Tween:
 		block.position = orig_pos
 		_block_material.set_shader_parameter("dissolve_cutoff", 0.0)
 		z_index = 0
+		
+		is_clearing = false
 	)
 	
 	# Add a small delay in the tween so grid matches timing.

@@ -38,6 +38,9 @@ func _ready() -> void:
 	call_deferred("_layout_grid")
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_update_theme()
+	cells_layer.z_index = 10
+	links_layer.z_index = 9
+
 
 
 func _update_theme() -> void:
@@ -371,10 +374,7 @@ func reset() -> void:
 		for x in SIZE:
 			_occupied[y][x] = false
 			var c: Cell = _cells[y][x]
-			c.occupied = false
-			c.block.visible = false
-			c.clear_preview()
-			c.clear_clear_hint()
+			c.reset_cell()
 
 
 func get_cell_color(cell: Vector2i) -> Color:

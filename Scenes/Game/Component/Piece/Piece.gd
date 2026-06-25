@@ -33,6 +33,10 @@ var _origin_position: Vector2 = Vector2.ZERO
 var _last_mouse_global: Vector2 = Vector2.ZERO  # keeps lift smoothing aware of cursor moves
 var _drag_start_time: float = 0.0
 var _drag_start_pos: Vector2 = Vector2.ZERO
+var _glow_shader: Shader
+
+var video_player: VideoStreamPlayer = null
+var _current_video_path := ""
 
 
 func _ready() -> void:
@@ -66,6 +70,8 @@ func setup(p_shape: PieceShape, p_color: Color) -> void:
 	var bbox: Vector2i = shape.get_size()
 	custom_minimum_size = Vector2(bbox.x * idle_block_size, bbox.y * idle_block_size)
 	size = custom_minimum_size
+	_update_block_connections()
+
 
 
 func _input(event: InputEvent) -> void:
@@ -266,6 +272,8 @@ func _apply_block_size(block_size: int) -> void:
 	var bbox: Vector2i = shape.get_size()
 	custom_minimum_size = Vector2(bbox.x * block_size, bbox.y * block_size)
 	size = custom_minimum_size
+	_update_block_connections()
+
 
 
 func _end_drag_visuals() -> void:
@@ -290,3 +298,295 @@ func _reparent_to(new_parent: Control) -> void:
 func _clear_blocks() -> void:
 	for c in get_children():
 		c.queue_free()
+
+
+func _update_block_connections() -> void:
+	if shape == null:
+		return
+	var cells = shape.get_normalized_cells()
+	var i := 0
+	for offset in cells:
+		var b = get_child(i) as Block
+		if b:
+			var conn_left = Vector2i(offset.x - 1, offset.y) in cells
+			var conn_right = Vector2i(offset.x + 1, offset.y) in cells
+			var conn_up = Vector2i(offset.x, offset.y - 1) in cells
+			var conn_down = Vector2i(offset.x, offset.y + 1) in cells
+			b.set_connections(conn_left, conn_right, conn_up, conn_down)
+		i += 1
+	_update_internal_lightning()
+	_setup_piece_video_stream()
+
+
+func _setup_piece_video_stream() -> void:
+	var element_type = ThemeManager.get_element_type_for_color(color)
+	var video_path := ""
+	if element_type == ThemeManager.ElementChainType.LIGHTNING:
+		video_path = "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv"
+	elif element_type == ThemeManager.ElementChainType.FIRE:
+		video_path = "res://VFX/Groundfire_09_Front_2k_H.264.ogv"
+	elif element_type == ThemeManager.ElementChainType.ICE:
+		video_path = "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv"
+		
+	if video_path == "":
+		if video_player != null:
+			video_player.queue_free()
+			video_player = null
+		_current_video_path = ""
+		return
+		
+	if video_player != null and _current_video_path == video_path:
+		_update_video_position()
+		return
+		
+	if video_player != null:
+		video_player.queue_free()
+		video_player = null
+		
+	if ResourceLoader.exists(video_path):
+		_current_video_path = video_path
+		
+		video_player = VideoStreamPlayer.new()
+		video_player.stream = load(video_path)
+		video_player.autoplay = true
+		video_player.loop = true
+		video_player.expand = true
+		video_player.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		video_player.volume_db = -80.0
+		
+		# Set tint shader
+		const TINT_SHADER := preload("res://Assets/Shaders/video_tint.gdshader")
+		var mat := ShaderMaterial.new()
+		mat.shader = TINT_SHADER
+		mat.set_shader_parameter("target_color", color)
+		video_player.material = mat
+		
+		add_child(video_player)
+		_update_video_position()
+		video_player.play()
+
+
+# Finds the largest square of cells that fits entirely inside the piece's block shape cells.
+func _find_largest_fit_square(cells: Array[Vector2i]) -> Dictionary:
+	var cell_set = {}
+	for pos in cells:
+		cell_set[pos] = true
+		
+	# Find bounding box
+	var min_x = cells[0].x
+	var max_x = cells[0].x
+	var min_y = cells[0].y
+	var max_y = cells[0].y
+	for pos in cells:
+		min_x = min(min_x, pos.x)
+		max_x = max(max_x, pos.x)
+		min_y = min(min_y, pos.y)
+		max_y = max(max_y, pos.y)
+		
+	var bbox_width = max_x - min_x + 1
+	var bbox_height = max_y - min_y + 1
+	var max_S = min(bbox_width, bbox_height)
+	
+	# Bounding box center
+	var bbox_center = Vector2(min_x + max_x + 1, min_y + max_y + 1) * 0.5
+	
+	for S in range(max_S, 0, -1):
+		var best_pos = Vector2i(-1, -1)
+		var best_dist = INF
+		var best_degree = -1
+		
+		# Search all possible top-left positions
+		for y in range(min_y, max_y - S + 2):
+			for x in range(min_x, max_x - S + 2):
+				var valid = true
+				for dy in range(S):
+					for dx in range(S):
+						if not Vector2i(x + dx, y + dy) in cell_set:
+							valid = false
+							break
+					if not valid:
+						break
+						
+				if valid:
+					var sq_center = Vector2(x, y) + Vector2(S, S) * 0.5
+					var dist = sq_center.distance_to(bbox_center)
+					
+					var degree = 0
+					for dy in range(S):
+						for dx in range(S):
+							var cell = Vector2i(x + dx, y + dy)
+							for offset in [Vector2i(-1,0), Vector2i(1,0), Vector2i(0,-1), Vector2i(0,1)]:
+								if (cell + offset) in cell_set:
+									degree += 1
+									
+					if dist < best_dist - 0.001 or (abs(dist - best_dist) <= 0.001 and degree > best_degree):
+						best_dist = dist
+						best_degree = degree
+						best_pos = Vector2i(x, y)
+						
+		if best_pos != Vector2i(-1, -1):
+			return {"position": best_pos, "size": S}
+			
+	return {"position": cells[0], "size": 1}
+
+
+func _update_video_position() -> void:
+	if not is_instance_valid(video_player) or shape == null:
+		return
+	var b_size := idle_block_size
+	if _is_dragging:
+		b_size = drag_block_size
+		
+	var cells = shape.get_normalized_cells()
+	if cells.is_empty():
+		return
+		
+	var fit = _find_largest_fit_square(cells)
+	var fit_pos: Vector2i = fit["position"]
+	var S: int = fit["size"]
+	
+	var player_size = Vector2(S * b_size, S * b_size)
+	video_player.size = player_size
+	video_player.position = Vector2(fit_pos.x * b_size, fit_pos.y * b_size)
+	
+	# Make sure it renders behind Line2D and Blocks
+	move_child(video_player, 0)
+
+
+func _update_internal_lightning() -> void:
+	if shape == null:
+		return
+		
+	# Clear old Line2D children
+	for child in get_children():
+		if child is Line2D:
+			child.queue_free()
+			
+	var cells = shape.get_normalized_cells()
+	if cells.is_empty():
+		return
+		
+	var element_type = ThemeManager.get_element_type_for_color(color)
+	return
+		
+	# Find current block size
+	var b_size := idle_block_size
+	for child in get_children():
+		if child is Block:
+			b_size = int(child.size.x)
+			break
+	
+	var bolt_tex = preload("res://addons/kenney_particle_pack/trace_01.png")
+	var speed = 1.5
+	var width = 12.0
+	var is_spritesheet = false
+	
+	if element_type == ThemeManager.ElementChainType.FIRE:
+		bolt_tex = load("res://addons/kenney_particle_pack/trace_07.png")
+		speed = 2.2
+		width = 16.0
+	elif element_type == ThemeManager.ElementChainType.ICE:
+		bolt_tex = load("res://addons/kenney_particle_pack/trace_06.png")
+		speed = 1.5
+		width = 14.0
+		is_spritesheet = false
+	elif element_type == ThemeManager.ElementChainType.EARTH:
+		bolt_tex = load("res://addons/kenney_particle_pack/trace_03.png")
+		speed = 1.2
+		width = 14.0
+	elif element_type == ThemeManager.ElementChainType.LIGHTNING:
+		bolt_tex = load("res://addons/kenney_particle_pack/trace_02.png")
+		speed = 3.6
+		width = 18.0
+	elif element_type == ThemeManager.ElementChainType.SOUL:
+		bolt_tex = load("res://addons/kenney_particle_pack/trace_05.png")
+		speed = 1.6
+		width = 15.0
+
+	if _glow_shader == null:
+		_glow_shader = Shader.new()
+		_glow_shader.code = """
+		shader_type canvas_item;
+		uniform sampler2D line_texture;
+		uniform vec4 line_color : source_color = vec4(1.0);
+		uniform float speed = 1.5;
+		uniform bool is_spritesheet = false;
+		uniform float hframes = 6.0;
+		uniform float vframes = 4.0;
+		uniform float fps = 30.0;
+		uniform float time_offset = 0.0;
+
+		void fragment() {
+			vec2 uv = UV;
+			if (is_spritesheet) {
+				float total_frames = hframes * vframes;
+				float frame_time = (TIME + time_offset) * fps;
+				float frame = mod(floor(frame_time), total_frames);
+				
+				float col = mod(frame, hframes);
+				float row = floor(frame / hframes);
+				
+				uv.x = (uv.x + col) / hframes;
+				uv.y = (uv.y + row) / vframes;
+			} else {
+				uv.x -= TIME * speed;
+			}
+			vec4 tex = texture(line_texture, uv);
+			COLOR = vec4(line_color.rgb, clamp(tex.a * 5.0, 0.0, 1.0) * line_color.a);
+		}
+		"""
+
+	var scale_ratio = float(b_size) / 64.0
+	var final_width = width * scale_ratio
+	
+	for c1 in cells:
+		var center1 = Vector2(c1.x + 0.5, c1.y + 0.5) * b_size
+		
+		# Right connection
+		if Vector2i(c1.x + 1, c1.y) in cells:
+			var c2 = Vector2i(c1.x + 1, c1.y)
+			var center2 = Vector2(c2.x + 0.5, c2.y + 0.5) * b_size
+			_create_internal_line(center1, center2, bolt_tex, final_width, is_spritesheet, speed)
+			
+		# Down connection
+		if Vector2i(c1.x, c1.y + 1) in cells:
+			var c2 = Vector2i(c1.x, c1.y + 1)
+			var center2 = Vector2(c2.x + 0.5, c2.y + 0.5) * b_size
+			_create_internal_line(center1, center2, bolt_tex, final_width, is_spritesheet, speed)
+
+
+func _create_internal_line(from: Vector2, to: Vector2, tex: Texture2D, w: float, is_sheet: bool, spd: float) -> void:
+	var line = Line2D.new()
+	line.points = PackedVector2Array([from, to])
+	line.texture = tex
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	
+	if is_sheet:
+		line.texture_mode = Line2D.LINE_TEXTURE_STRETCH
+	else:
+		line.texture_mode = Line2D.LINE_TEXTURE_TILE
+		
+	line.width = w
+	line.default_color = color * 1.4
+	line.z_index = 0
+	
+	var mat = ShaderMaterial.new()
+	mat.shader = _glow_shader
+	mat.set_shader_parameter("line_texture", tex)
+	mat.set_shader_parameter("line_color", color * 1.4)
+	if is_sheet:
+		mat.set_shader_parameter("is_spritesheet", true)
+		mat.set_shader_parameter("hframes", 6.0)
+		mat.set_shader_parameter("vframes", 4.0)
+		mat.set_shader_parameter("fps", 30.0)
+		mat.set_shader_parameter("time_offset", from.x * 0.01 + from.y * 0.07)
+	else:
+		mat.set_shader_parameter("is_spritesheet", false)
+		mat.set_shader_parameter("speed", spd)
+		
+	line.material = mat
+	add_child(line)
+	move_child(line, 0)
+

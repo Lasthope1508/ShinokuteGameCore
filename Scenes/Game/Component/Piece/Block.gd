@@ -47,10 +47,28 @@ func _apply_color_and_shader(color: Color) -> void:
 		_material.shader = PULSE_SHADER
 		sprite.material = _material
 		
+	var is_obs = abs(color.r - 0.4) < 0.01 and abs(color.g - 0.4) < 0.01 and abs(color.b - 0.4) < 0.01
+	_material.set_shader_parameter("is_ice_element", not is_obs)
 	_material.set_shader_parameter("glow_color", color)
 	_material.set_shader_parameter("glow_strength", 1.0)
 	_material.set_shader_parameter("glow_flare", 1.3)
 	_material.set_shader_parameter("shrink_factor", 1.2)
 	_material.set_shader_parameter("glow_spread", 0.08)
+
+
+func set_connections(left: bool, right: bool, up: bool, down: bool) -> void:
+	if _material == null:
+		_material = ShaderMaterial.new()
+		_material.shader = PULSE_SHADER
+		if sprite:
+			sprite.material = _material
+			
+	_material.set_shader_parameter("is_ice_element", true)
+	_material.set_shader_parameter("conn_left", left)
+	_material.set_shader_parameter("conn_right", right)
+	_material.set_shader_parameter("conn_up", up)
+	_material.set_shader_parameter("conn_down", down)
+
+
 
 

@@ -197,11 +197,11 @@ func get_random_piece_color_for_score(score: int) -> Color:
 enum ElementChainType { FIRE, ICE, EARTH, LIGHTNING, SOUL }
 
 const ELEMENT_COLORS: Dictionary = {
-	ElementChainType.FIRE: Color(0.95, 0.3, 0.2),       # Orange-Red
-	ElementChainType.ICE: Color(0.3, 0.8, 1.0),        # Cyan-Blue
-	ElementChainType.EARTH: Color(0.2, 0.8, 0.4),      # Green
-	ElementChainType.LIGHTNING: Color(0.95, 0.9, 0.1),  # Yellow
-	ElementChainType.SOUL: Color(0.7, 0.2, 0.95)       # Magenta/Purple
+	ElementChainType.FIRE: Color(0.95, 0.2, 0.2),       # Red
+	ElementChainType.ICE: Color(0.0, 0.55, 1.0),        # Blue
+	ElementChainType.EARTH: Color(0.1, 0.8, 0.2),      # Green
+	ElementChainType.LIGHTNING: Color(1.0, 0.85, 0.0),  # Yellow
+	ElementChainType.SOUL: Color(0.65, 0.1, 0.95)       # Purple
 }
 
 func get_element_type_for_color(color: Color) -> int:
