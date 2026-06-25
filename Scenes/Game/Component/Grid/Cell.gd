@@ -66,25 +66,27 @@ func is_obstacle() -> bool:
 func _update_theme() -> void:
 	var active_theme = ThemeManager.get_active_theme()
 	if active_theme:
-		if active_theme.cell_empty_texture:
-			background.texture = active_theme.cell_empty_texture
-		else:
-			background.texture = preload("res://Assets/Sprites/cell_empty.png")
-		
 		if is_obstacle():
-			# Solid, matted warm slate stone background under obstacles
-			background.modulate = Color(0.28, 0.25, 0.23, 0.7)
+			background.texture = preload("res://Assets/Sprites/obstacle_bg.png")
+			# High opacity solid slate stone texture
+			background.modulate = Color(0.9, 0.9, 0.9, 0.95)
 		else:
+			if active_theme.cell_empty_texture:
+				background.texture = active_theme.cell_empty_texture
+			else:
+				background.texture = preload("res://Assets/Sprites/cell_empty.png")
+			
 			# If the theme's empty cell tint is opaque, default it to translucent
 			var tint = active_theme.cell_empty_tint
 			if tint.a > 0.1:
 				tint.a = 0.02
 			background.modulate = tint
 	else:
-		background.texture = preload("res://Assets/Sprites/cell_empty.png")
 		if is_obstacle():
-			background.modulate = Color(0.28, 0.25, 0.23, 0.7)
+			background.texture = preload("res://Assets/Sprites/obstacle_bg.png")
+			background.modulate = Color(0.9, 0.9, 0.9, 0.95)
 		else:
+			background.texture = preload("res://Assets/Sprites/cell_empty.png")
 			background.modulate = Color(1.0, 1.0, 1.0, 0.02)
 	
 	if occupied:
