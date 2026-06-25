@@ -424,18 +424,7 @@ func _resolve_clears(_origin: Vector2i, placed_color: Color = Color.TRANSPARENT)
 		var p_end = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, Grid.SIZE * grid.cell_size)
 		_spawn_slash(p_start, p_end, slash_color)
 
-	# Spawn group clear VFX at the midpoint of each row and col in local coordinates
-	for y in rows:
-		var midpoint_cell = Vector2i(4, y)
-		var cell_color = grid.get_cell_color(midpoint_cell)
-		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
-		_spawn_group_clear_vfx(local_pos, cell_color)
-		
-	for x in cols:
-		var midpoint_cell = Vector2i(x, 4)
-		var cell_color = grid.get_cell_color(midpoint_cell)
-		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
-		_spawn_group_clear_vfx(local_pos, cell_color)
+	# Clear VFX are spawned per-cell during clear_with_animation to align with block pop stagger.
 
 	# Cascade first: spinning blocks fly off before any score readout.
 	await grid.clear_cells(cells)

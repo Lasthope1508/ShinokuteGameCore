@@ -193,37 +193,41 @@ func _spawn_magic_sparks() -> void:
 	if not block.texture:
 		return
 		
-	var effect_color = block.modulate
-	var center_pos = size * 0.5
-	
-	var sparks := CPUParticles2D.new()
-	sparks.texture = preload("res://addons/kenney_particle_pack/spark_01.png")
-	sparks.amount = 6
-	sparks.one_shot = true
-	sparks.explosiveness = 0.9
-	sparks.lifetime = 0.4
-	sparks.spread = 180.0
-	sparks.gravity = Vector2(0, 180)
-	sparks.initial_velocity_min = 50.0
-	sparks.initial_velocity_max = 110.0
-	sparks.scale_amount_min = 0.02
-	sparks.scale_amount_max = 0.05
-	
-	var spark_curve := Curve.new()
-	spark_curve.add_point(Vector2(0.0, 1.0))
-	spark_curve.add_point(Vector2(1.0, 0.0))
-	sparks.scale_amount_curve = spark_curve
-	
-	var spark_gradient := Gradient.new()
-	spark_gradient.set_color(0, Color.WHITE)
-	spark_gradient.set_color(1, Color(1, 1, 1, 0))
-	sparks.color_ramp = spark_gradient
-	
-	sparks.modulate = effect_color * 1.3
-	add_child(sparks)
-	sparks.position = center_pos
-	sparks.emitting = true
-	sparks.finished.connect(sparks.queue_free)
+	var effect_color = occupied_color
+	var main_scene = get_tree().current_scene
+	if main_scene and main_scene.has_method("_spawn_group_clear_vfx"):
+		# Cell's position is local relative to the Grid node, which matches the cells_layer coordinate space.
+		main_scene._spawn_group_clear_vfx(position + size * 0.5, effect_color)
+	else:
+		var center_pos = size * 0.5
+		var sparks := CPUParticles2D.new()
+		sparks.texture = preload("res://addons/kenney_particle_pack/spark_01.png")
+		sparks.amount = 6
+		sparks.one_shot = true
+		sparks.explosiveness = 0.9
+		sparks.lifetime = 0.4
+		sparks.spread = 180.0
+		sparks.gravity = Vector2(0, 180)
+		sparks.initial_velocity_min = 50.0
+		sparks.initial_velocity_max = 110.0
+		sparks.scale_amount_min = 0.02
+		sparks.scale_amount_max = 0.05
+		
+		var spark_curve := Curve.new()
+		spark_curve.add_point(Vector2(0.0, 1.0))
+		spark_curve.add_point(Vector2(1.0, 0.0))
+		sparks.scale_amount_curve = spark_curve
+		
+		var spark_gradient := Gradient.new()
+		spark_gradient.set_color(0, Color.WHITE)
+		spark_gradient.set_color(1, Color(1, 1, 1, 0))
+		sparks.color_ramp = spark_gradient
+		
+		sparks.modulate = block.modulate * 1.3
+		add_child(sparks)
+		sparks.position = center_pos
+		sparks.emitting = true
+		sparks.finished.connect(sparks.queue_free)
 
 
 # Shows a translucent ghost of the dragged piece on this cell.
