@@ -59,6 +59,10 @@ func _ready() -> void:
 	_update_theme()
 
 
+func is_obstacle() -> bool:
+	return occupied and abs(occupied_color.r - 0.4) < 0.01 and abs(occupied_color.g - 0.4) < 0.01 and abs(occupied_color.b - 0.4) < 0.01
+
+
 func _update_theme() -> void:
 	var active_theme = ThemeManager.get_active_theme()
 	if active_theme:
@@ -67,14 +71,21 @@ func _update_theme() -> void:
 		else:
 			background.texture = preload("res://Assets/Sprites/cell_empty.png")
 		
-		# If the theme's empty cell tint is opaque, default it to translucent
-		var tint = active_theme.cell_empty_tint
-		if tint.a > 0.1:
-			tint.a = 0.02
-		background.modulate = tint
+		if is_obstacle():
+			# Solid, matted warm slate stone background under obstacles
+			background.modulate = Color(0.28, 0.25, 0.23, 0.7)
+		else:
+			# If the theme's empty cell tint is opaque, default it to translucent
+			var tint = active_theme.cell_empty_tint
+			if tint.a > 0.1:
+				tint.a = 0.02
+			background.modulate = tint
 	else:
 		background.texture = preload("res://Assets/Sprites/cell_empty.png")
-		background.modulate = Color(1.0, 1.0, 1.0, 0.02)
+		if is_obstacle():
+			background.modulate = Color(0.28, 0.25, 0.23, 0.7)
+		else:
+			background.modulate = Color(1.0, 1.0, 1.0, 0.02)
 	
 	if occupied:
 		_update_texture_for_color(block, occupied_color)
@@ -123,6 +134,7 @@ func fill(color: Color) -> void:
 		block.modulate = block.modulate * Color(0.92, 0.92, 0.92, 1.0)
 	block.visible = true
 	block.scale = Vector2.ONE
+	_update_theme()
 
 
 ## Elastic "bump → cracking tilt & shake" followed by dissolving from the center outwards.
@@ -130,6 +142,7 @@ func clear_with_animation(delay: float = 0.0) -> Tween:
 	occupied = false
 	preview.visible = false
 	highlight.visible = false
+	_update_theme()
 
 	block.pivot_offset = block.size * 0.5
 	var spin_dir: float = 1.0 if randf() > 0.5 else -1.0
