@@ -1020,20 +1020,7 @@ func _stop_cursor_animation() -> void:
 
 
 func _spawn_group_clear_vfx(local_pos: Vector2, color: Color) -> void:
-	var element_type = ThemeManager.get_element_type_for_color(color)
-	match element_type:
-		ThemeManager.ElementChainType.FIRE:
-			_spawn_fire_clear_vfx(local_pos)
-		ThemeManager.ElementChainType.LIGHTNING:
-			_spawn_lightning_clear_vfx(local_pos)
-		ThemeManager.ElementChainType.SOUL:
-			_spawn_soul_clear_vfx(local_pos)
-		ThemeManager.ElementChainType.ICE:
-			_spawn_ice_clear_vfx(local_pos)
-		ThemeManager.ElementChainType.EARTH:
-			_spawn_earth_clear_vfx(local_pos)
-		_:
-			_spawn_default_clear_vfx(local_pos, color)
+	_spawn_default_clear_vfx(local_pos, color)
 
 
 func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
