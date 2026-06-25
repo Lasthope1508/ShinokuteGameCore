@@ -90,9 +90,9 @@ func _update_texture_for_color(rect: TextureRect, color: Color) -> void:
 	# Detect and apply custom 9Router obstacle texture for starting blocks
 	if abs(color.r - 0.4) < 0.01 and abs(color.g - 0.4) < 0.01 and abs(color.b - 0.4) < 0.01:
 		var index := (cell_x + cell_y * 9) % OBSTACLE_TEXTURES.size()
-		var tex = OBSTACLE_TEXTURES[index]
-		if tex:
-			rect.texture = tex
+		var obstacle_tex = OBSTACLE_TEXTURES[index]
+		if obstacle_tex:
+			rect.texture = obstacle_tex
 		else:
 			rect.texture = load("res://Assets/Sprites/block.png")
 		rect.modulate = Color.WHITE

@@ -67,7 +67,7 @@ func _enable_looping(stream: AudioStream) -> void:
 func play_music() -> void:
 	if _music_player.playing:
 		return
-	var path = "res://Audio/Music/Relax mode.wav"
+	var path = "res://Audio/Music/Relax mode.ogg"
 	if not ResourceLoader.exists(path):
 		return
 	var stream := load(path) as AudioStream
@@ -96,9 +96,9 @@ func set_music_mode(mode: String) -> void:
 	
 	var path := ""
 	if mode == "danger":
-		path = "res://Audio/Music/Danger.wav"
+		path = "res://Audio/Music/Danger.ogg"
 	else:
-		path = "res://Audio/Music/Relax mode.wav"
+		path = "res://Audio/Music/Relax mode.ogg"
 		
 	_transition_to_music(path)
 

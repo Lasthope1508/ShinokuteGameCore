@@ -8,10 +8,15 @@ uniform float dissolve_cutoff : hint_range(0.0, 1.0) = 0.0;
 uniform float glow_strength : hint_range(0.0, 1.0) = 0.0;
 uniform float glow_flare : hint_range(1.0, 3.0) = 1.0;
 uniform vec4 glow_color : source_color = vec4(1.0);
+uniform float glow_spread : hint_range(0.01, 0.2) = 0.08;
+uniform float shrink_factor : hint_range(1.0, 2.0) = 1.0;
 
 void fragment() {
-	vec2 uv = UV;
-	vec4 tex = texture(TEXTURE, uv);
+	vec2 uv = (UV - vec2(0.5)) * shrink_factor + vec2(0.5);
+	vec4 tex = vec4(0.0);
+	if (uv.x >= 0.0 && uv.x <= 1.0 && uv.y >= 0.0 && uv.y <= 1.0) {
+		tex = texture(TEXTURE, uv);
+	}
 	
 	// Dissolve from center outwards
 	float dist_from_center = length(uv - vec2(0.5));
@@ -38,8 +43,13 @@ void fragment() {
 				if (dx != 0.0 || dy != 0.0) {
 					// 3 levels of distance sampling (1px, 2px, 3px)
 					for (float dist = 1.0; dist <= 3.0; dist += 1.0) {
-						vec2 offset = vec2(dx, dy) * dist * 1.5 / float(textureSize(TEXTURE, 0).x);
-						outline += texture(TEXTURE, uv + offset).a * (1.0 - (dist - 1.0) * 0.3);
+						vec2 offset = vec2(dx, dy) * (dist / 3.0) * glow_spread;
+						vec2 sample_uv = uv + offset;
+						float sample_alpha = 0.0;
+						if (sample_uv.x >= 0.0 && sample_uv.x <= 1.0 && sample_uv.y >= 0.0 && sample_uv.y <= 1.0) {
+							sample_alpha = texture(TEXTURE, sample_uv).a;
+						}
+						outline += sample_alpha * (1.0 - (dist - 1.0) * 0.3);
 						samples++;
 					}
 				}
@@ -49,10 +59,14 @@ void fragment() {
 		// Subtract the block itself so it's an outer glow
 		float outer_glow = max(outline - tex.a, 0.0);
 		
+		// Boost the outer glow opacity and shape the falloff for a vibrant neon look
+		float glow_boosted = pow(outer_glow, 0.8) * 3.5;
+		float glow_intensity_factor = clamp(glow_boosted * current_glow, 0.0, 1.0);
+		
 		// Blending: mix inner texture with glow, and draw the soft outer outline
-		vec3 inner_mixed = mix(base_color.rgb, glow_color.rgb * 1.6, glow_strength * 0.35);
-		vec3 final_rgb = mix(inner_mixed, glow_color.rgb * 2.0, outer_glow * current_glow);
-		float final_alpha = max(base_color.a, outer_glow * current_glow * 0.85);
+		vec3 inner_mixed = mix(base_color.rgb, glow_color.rgb * 1.8, glow_strength * 0.45);
+		vec3 final_rgb = mix(inner_mixed, glow_color.rgb * 2.5, glow_intensity_factor);
+		float final_alpha = max(base_color.a, glow_intensity_factor * 0.95);
 		base_color = vec4(final_rgb, final_alpha);
 	}
 	
