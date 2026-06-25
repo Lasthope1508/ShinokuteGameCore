@@ -1,5 +1,29 @@
 [
   {
+    "task": "VFX Centralization (SSOT) & Tag Release v1.0.24",
+    "agent": "Antigravity",
+    "details": "Centralized all elemental and fallback clear/pop VFX to ThemeManager.gd. Refactored Game.gd to load them dynamically. Stripped all video-based VFX and VideoStreamPlayer loading logic, and reverted row/col clear midpoint VFX to the clean original circular pop. Bumped version to 1.0.24 (Android code 15) and tagged release v1.0.24.",
+    "status": "Hoàn thành",
+    "id": 80,
+    "timestamp": "2026-06-26 06:23"
+  },
+  {
+    "task": "HTML5 Web Build & Firebase Hosting Deploy",
+    "agent": "Antigravity",
+    "details": "Export HTML5 Web build, optimize asset pack size by excluding debug files (index.pck ~44.2 MB), copy to reskin_dashboard/game/ and deploy to Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 81,
+    "timestamp": "2026-06-26 06:15"
+  },
+  {
+    "task": "Publish Android v1.0.23 (Code 14)",
+    "agent": "Antigravity",
+    "details": "Upload signed Android App Bundle (bloxchain.aab) to Google Play Console Internal Testing track and roll out successfully.",
+    "status": "Hoàn thành",
+    "id": 80,
+    "timestamp": "2026-06-26 06:10"
+  },
+  {
     "task": "Commit & Tag release v1.0.23",
     "agent": "Antigravity",
     "details": "Bump version to 1.0.23 (Android version code 14) in project.godot and export_presets.cfg, commit changes and tag release v1.0.23.",

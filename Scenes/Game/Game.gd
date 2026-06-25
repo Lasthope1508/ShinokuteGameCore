@@ -7,7 +7,6 @@ const LEADERBOARD_OVERLAY := preload("res://Scenes/Game/Component/Overlays/Leade
 const GAMEOVER_OVERLAY := preload("res://Scenes/Game/Component/Overlays/GameOverOverlay.tscn")
 const SCORE_POPUP := preload("res://Scenes/Game/Component/HUD/ScorePopup.tscn")
 const LINE_CLEAR_PARTICLES := preload("res://Scenes/Game/Component/Grid/LineClearParticles.tscn")
-const TINT_SHADER := preload("res://Assets/Shaders/video_tint.gdshader")
 
 const THEME_PATH := "res://Resources/Data/default_theme.tres"
 
@@ -1022,318 +1021,15 @@ func _stop_cursor_animation() -> void:
 
 
 func _spawn_group_clear_vfx(local_pos: Vector2, color: Color) -> void:
-	var element_type = ThemeManager.get_element_type_for_color(color)
-	if element_type == ThemeManager.ElementChainType.FIRE:
-		_spawn_fire_clear_vfx(local_pos)
-	elif element_type == ThemeManager.ElementChainType.ICE:
-		_spawn_ice_clear_vfx(local_pos)
-	elif element_type == ThemeManager.ElementChainType.EARTH:
-		_spawn_earth_clear_vfx(local_pos)
-	elif element_type == ThemeManager.ElementChainType.LIGHTNING:
-		_spawn_lightning_clear_vfx(local_pos)
-	elif element_type == ThemeManager.ElementChainType.SOUL:
-		_spawn_soul_clear_vfx(local_pos)
-	else:
-		_spawn_default_clear_vfx(local_pos, color)
-
-
-func _spawn_video_explosion(local_pos: Vector2, video_path: String, color: Color, scale_multiplier: float = 1.0) -> void:
-	if not ResourceLoader.exists(video_path):
-		return
-		
-	var player = VideoStreamPlayer.new()
-	player.stream = load(video_path)
-	player.autoplay = true
-	player.loop = false
-	player.expand = true
-	player.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	player.volume_db = -80.0 # Silent
-	
-	# Apply the tint shader to make the black background transparent and map colors correctly
-	var mat := ShaderMaterial.new()
-	mat.shader = TINT_SHADER
-	mat.set_shader_parameter("target_color", color)
-	player.material = mat
-	
-	var size_dim := 160.0 * scale_multiplier
-	player.size = Vector2(size_dim, size_dim)
-	player.pivot_offset = player.size * 0.5
-	player.position = local_pos - player.pivot_offset
-	
-	grid.cells_layer.add_child(player)
-	player.finished.connect(player.queue_free)
-	
-	var timer = get_tree().create_timer(2.0)
-	timer.timeout.connect(func():
-		if is_instance_valid(player):
-			player.queue_free()
-	)
-
-
-func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
-	var path := ThemeManager.get_element_video_path(ThemeManager.ElementChainType.FIRE)
-	_spawn_video_explosion(local_pos, path, Color(1.0, 0.3, 0.15))
-	var scene = load("res://effects/2d_explosion/source/explosion.tscn")
-	if scene:
-		var explosion = scene.instantiate()
-		explosion.position = local_pos
-		explosion.scale = Vector2(0.4, 0.4) # fit the cell size nicely
-		grid.cells_layer.add_child(explosion)
-		
-		# Snappy duration: speed up the explosion's AnimationPlayer
-		var anim_player = explosion.get_node_or_null("AnimationPlayer")
-		if anim_player:
-			anim_player.speed_scale = 4.0
-	else:
-		_spawn_default_clear_vfx(local_pos, Color(0.95, 0.3, 0.2))
-
-
-func _spawn_lightning_clear_vfx(local_pos: Vector2) -> void:
-	var path := ThemeManager.get_element_video_path(ThemeManager.ElementChainType.LIGHTNING)
-	_spawn_video_explosion(local_pos, path, Color(1.0, 0.9, 0.25))
-	# Optimized CPUParticles2D for lightning sparks (bypasses heavy GPUParticles2D shaders)
-	var sparks := CPUParticles2D.new()
-	sparks.texture = preload("res://addons/kenney_particle_pack/spark_05.png")
-	sparks.amount = 14
-	sparks.one_shot = true
-	sparks.explosiveness = 0.9
-	sparks.lifetime = 0.5
-	sparks.spread = 180.0
-	sparks.gravity = Vector2(0, 100)
-	sparks.initial_velocity_min = 80.0
-	sparks.initial_velocity_max = 160.0
-	sparks.scale_amount_min = 0.03
-	sparks.scale_amount_max = 0.07
-	
-	var spark_curve := Curve.new()
-	spark_curve.add_point(Vector2(0.0, 1.0))
-	spark_curve.add_point(Vector2(1.0, 0.0))
-	sparks.scale_amount_curve = spark_curve
-	
-	var spark_gradient := Gradient.new()
-	spark_gradient.set_color(0, Color.WHITE)
-	spark_gradient.set_color(1, Color(1, 1, 1, 0))
-	sparks.color_ramp = spark_gradient
-	
-	sparks.modulate = Color(1.0, 0.9, 0.2, 1.5) # Intense yellow
-	grid.cells_layer.add_child(sparks)
-	sparks.position = local_pos
-	sparks.emitting = true
-	sparks.finished.connect(sparks.queue_free)
-		
-	# Draw procedural zigzag lightning strike
-	var lightning = Line2D.new()
-	lightning.width = 4.5
-	lightning.default_color = Color.WHITE
-	lightning.position = local_pos
-	
-	# Glow line underneath
-	var glow = Line2D.new()
-	glow.width = 14.0
-	glow.default_color = Color(1.0, 0.85, 0.1, 0.45)
-	lightning.add_child(glow)
-	
-	grid.cells_layer.add_child(lightning)
-	
-	# Generate points
-	var points = PackedVector2Array()
-	var start_pt = Vector2(randf_range(-40, 40), -240)
-	var end_pt = Vector2.ZERO
-	var segments = 5
-	points.append(start_pt)
-	for i in range(1, segments):
-		var t = float(i) / segments
-		var p = start_pt.lerp(end_pt, t)
-		var perp = Vector2(-(end_pt - start_pt).normalized().y, (end_pt - start_pt).normalized().x)
-		p += perp * randf_range(-18, 18)
-		points.append(p)
-	points.append(end_pt)
-	
-	lightning.points = points
-	glow.points = points
-	
-	# Flash animation using tween
-	var tw = create_tween()
-	# First quick flash
-	tw.tween_property(lightning, "width", 0.0, 0.06)
-	tw.tween_callback(func():
-		# Re-generate points for a second rapid strike
-		var new_points = PackedVector2Array()
-		var start_pt2 = Vector2(randf_range(-30, 30), -240)
-		new_points.append(start_pt2)
-		for i in range(1, segments):
-			var t = float(i) / segments
-			var p = start_pt2.lerp(end_pt, t)
-			var perp = Vector2(-(end_pt - start_pt2).normalized().y, (end_pt - start_pt2).normalized().x)
-			p += perp * randf_range(-15, 15)
-			new_points.append(p)
-		new_points.append(end_pt)
-		lightning.points = new_points
-		glow.points = new_points
-		lightning.width = 3.5
-	)
-	tw.tween_property(lightning, "width", 0.0, 0.1)
-	tw.tween_callback(lightning.queue_free)
-
-
-func _spawn_soul_clear_vfx(local_pos: Vector2) -> void:
-	var vortex_scene = load("res://effects/2d_vortex/source/vortex.tscn")
-	if vortex_scene:
-		var vortex = vortex_scene.instantiate()
-		vortex.position = local_pos
-		vortex.pivot_offset = Vector2(136, 136)
-		vortex.scale = Vector2.ZERO
-		vortex.modulate = Color(0.75, 0.15, 0.9, 1.3) # Violet/purple glow
-		grid.cells_layer.add_child(vortex)
-		
-		# Animate vortex
-		var tw = create_tween()
-		tw.tween_property(vortex, "scale", Vector2(0.35, 0.35), 0.15).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		tw.tween_interval(0.18)
-		tw.tween_property(vortex, "scale", Vector2(0.5, 0.5), 0.22).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-		tw.parallel().tween_property(vortex, "modulate:a", 0.0, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		tw.tween_callback(vortex.queue_free)
-		
-	# Rising soul dust particles
-	var dust := CPUParticles2D.new()
-	dust.texture = preload("res://addons/kenney_particle_pack/star_05.png")
-	dust.amount = 14
-	dust.one_shot = true
-	dust.explosiveness = 0.55
-	dust.lifetime = 0.75
-	dust.direction = Vector2(0, -1)
-	dust.spread = 35.0
-	dust.gravity = Vector2(0, -50) # Floating up
-	dust.initial_velocity_min = 60.0
-	dust.initial_velocity_max = 120.0
-	dust.scale_amount_min = 0.04
-	dust.scale_amount_max = 0.09
-	
-	var dust_curve := Curve.new()
-	dust_curve.add_point(Vector2(0.0, 1.0))
-	dust_curve.add_point(Vector2(1.0, 0.0))
-	dust.scale_amount_curve = dust_curve
-	
-	var dust_gradient := Gradient.new()
-	dust_gradient.set_color(0, Color.WHITE)
-	dust_gradient.set_color(1, Color(1, 1, 1, 0))
-	dust.color_ramp = dust_gradient
-	
-	dust.modulate = Color(0.85, 0.2, 0.95, 1.5)
-	grid.cells_layer.add_child(dust)
-	dust.position = local_pos
-	dust.emitting = true
-	dust.finished.connect(dust.queue_free)
-
-
-func _spawn_ice_clear_vfx(local_pos: Vector2) -> void:
-	var path := ThemeManager.get_element_video_path(ThemeManager.ElementChainType.ICE)
-	_spawn_video_explosion(local_pos, path, Color(0.2, 0.7, 1.0))
-	# Frost expanding ring
-	var ring := Sprite2D.new()
-	ring.texture = preload("res://addons/kenney_particle_pack/magic_03.png")
-	var mat_ring = CanvasItemMaterial.new()
-	mat_ring.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-	ring.material = mat_ring
-	ring.modulate = Color(0.25, 0.8, 1.0, 1.4) # Ice Cyan
-	ring.scale = Vector2.ZERO
-	grid.cells_layer.add_child(ring)
-	ring.position = local_pos
-	
-	var tw_ring = create_tween()
-	tw_ring.tween_property(ring, "scale", Vector2(1.8, 1.8), 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw_ring.parallel().tween_property(ring, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tw_ring.tween_callback(ring.queue_free)
-	
-	# Shattering ice crystals
-	var shards := CPUParticles2D.new()
-	shards.texture = preload("res://addons/kenney_particle_pack/spark_02.png")
-	shards.amount = 18
-	shards.one_shot = true
-	shards.explosiveness = 0.92
-	shards.lifetime = 0.58
-	shards.spread = 180.0
-	shards.gravity = Vector2(0, 150) # Fall like heavy ice
-	shards.initial_velocity_min = 140.0
-	shards.initial_velocity_max = 240.0
-	shards.scale_amount_min = 0.05
-	shards.scale_amount_max = 0.12
-	shards.damping_min = 100.0
-	shards.damping_max = 150.0
-	
-	var shard_curve := Curve.new()
-	shard_curve.add_point(Vector2(0.0, 1.0))
-	shard_curve.add_point(Vector2(1.0, 0.0))
-	shards.scale_amount_curve = shard_curve
-	
-	var shard_gradient := Gradient.new()
-	shard_gradient.set_color(0, Color.WHITE)
-	shard_gradient.set_color(1, Color(1, 1, 1, 0))
-	shards.color_ramp = shard_gradient
-	
-	shards.modulate = Color(0.4, 0.9, 1.0, 1.5)
-	grid.cells_layer.add_child(shards)
-	shards.position = local_pos
-	shards.emitting = true
-	shards.finished.connect(shards.queue_free)
-
-
-func _spawn_earth_clear_vfx(local_pos: Vector2) -> void:
-	# Expanding earth wave
-	var wave := Sprite2D.new()
-	wave.texture = preload("res://addons/kenney_particle_pack/dirt_02.png")
-	var mat_wave = CanvasItemMaterial.new()
-	mat_wave.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
-	wave.material = mat_wave
-	wave.modulate = Color(0.2, 0.62, 0.32, 0.8) # Deep green-brown
-	wave.scale = Vector2.ZERO
-	grid.cells_layer.add_child(wave)
-	wave.position = local_pos
-	
-	var tw_wave = create_tween()
-	tw_wave.tween_property(wave, "scale", Vector2(1.5, 1.5), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw_wave.parallel().tween_property(wave, "modulate:a", 0.0, 0.32).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tw_wave.tween_callback(wave.queue_free)
-	
-	# Falling leaves/dirt debris
-	var leaves := CPUParticles2D.new()
-	leaves.texture = preload("res://addons/kenney_particle_pack/dirt_01.png")
-	leaves.amount = 16
-	leaves.one_shot = true
-	leaves.explosiveness = 0.88
-	leaves.lifetime = 0.65
-	leaves.spread = 180.0
-	leaves.gravity = Vector2(0, 240)
-	leaves.initial_velocity_min = 100.0
-	leaves.initial_velocity_max = 200.0
-	leaves.scale_amount_min = 0.04
-	leaves.scale_amount_max = 0.1
-	leaves.angular_velocity_min = -180.0 # Spin beautifully
-	leaves.angular_velocity_max = 180.0
-	leaves.damping_min = 50.0
-	leaves.damping_max = 100.0
-	
-	var leaf_curve := Curve.new()
-	leaf_curve.add_point(Vector2(0.0, 1.0))
-	leaf_curve.add_point(Vector2(1.0, 0.0))
-	leaves.scale_amount_curve = leaf_curve
-	
-	var leaf_gradient := Gradient.new()
-	leaf_gradient.set_color(0, Color.WHITE)
-	leaf_gradient.set_color(1, Color(1, 1, 1, 0))
-	leaves.color_ramp = leaf_gradient
-	
-	leaves.modulate = Color(0.3, 0.8, 0.4, 1.4) # Emerald Green
-	grid.cells_layer.add_child(leaves)
-	leaves.position = local_pos
-	leaves.emitting = true
-	leaves.finished.connect(leaves.queue_free)
+	_spawn_default_clear_vfx(local_pos, color)
 
 
 func _spawn_default_clear_vfx(local_pos: Vector2, color: Color) -> void:
+	var cfg = ThemeManager.get_default_vfx_config()
 	# Fallback/General Neon clear VFX
 	var flash := Sprite2D.new()
-	flash.texture = preload("res://addons/kenney_particle_pack/flare_01.png")
+	var flash_tex_path = cfg.get("flash_texture", "res://addons/kenney_particle_pack/flare_01.png")
+	flash.texture = load(flash_tex_path)
 	var mat_flash = CanvasItemMaterial.new()
 	mat_flash.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	flash.material = mat_flash
@@ -1343,37 +1039,39 @@ func _spawn_default_clear_vfx(local_pos: Vector2, color: Color) -> void:
 	flash.position = local_pos
 	
 	var tw_flash = create_tween()
-	tw_flash.tween_property(flash, "scale", Vector2(2.4, 2.4), 0.07).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw_flash.tween_property(flash, "scale", Vector2.ZERO, 0.09).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tw_flash.tween_property(flash, "scale", cfg.get("flash_scale_1", Vector2(2.4, 2.4)), cfg.get("flash_dur_1", 0.07)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw_flash.tween_property(flash, "scale", cfg.get("flash_scale_2", Vector2.ZERO), cfg.get("flash_dur_2", 0.09)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tw_flash.tween_callback(flash.queue_free)
 	
 	var ring := Sprite2D.new()
-	ring.texture = preload("res://addons/kenney_particle_pack/circle_02.png")
+	var ring_tex_path = cfg.get("ring_texture", "res://addons/kenney_particle_pack/circle_02.png")
+	ring.texture = load(ring_tex_path)
 	var mat_ring = CanvasItemMaterial.new()
 	mat_ring.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	ring.material = mat_ring
 	ring.modulate = color
-	ring.scale = Vector2(0.3, 0.3)
+	ring.scale = cfg.get("ring_scale", Vector2(0.3, 0.3))
 	grid.cells_layer.add_child(ring)
 	ring.position = local_pos
 	
 	var tw_ring = create_tween()
-	tw_ring.tween_property(ring, "scale", Vector2(4.5, 4.5), 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw_ring.parallel().tween_property(ring, "modulate:a", 0.0, 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw_ring.tween_property(ring, "scale", cfg.get("ring_scale_target", Vector2(4.5, 4.5)), cfg.get("ring_dur", 0.28)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw_ring.parallel().tween_property(ring, "modulate:a", 0.0, cfg.get("ring_dur", 0.28)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw_ring.tween_callback(ring.queue_free)
 	
 	var sparks := CPUParticles2D.new()
-	sparks.texture = preload("res://addons/kenney_particle_pack/spark_01.png")
-	sparks.amount = 26
+	var texture_path = cfg.get("particles_texture", "res://addons/kenney_particle_pack/spark_01.png")
+	sparks.texture = load(texture_path)
+	sparks.amount = cfg.get("particles_amount", 26)
 	sparks.one_shot = true
-	sparks.explosiveness = 0.92
-	sparks.lifetime = 0.55
-	sparks.spread = 180.0
-	sparks.gravity = Vector2(0, 320)
-	sparks.initial_velocity_min = 160.0
-	sparks.initial_velocity_max = 320.0
-	sparks.scale_amount_min = 0.05
-	sparks.scale_amount_max = 0.12
+	sparks.explosiveness = cfg.get("particles_explosiveness", 0.92)
+	sparks.lifetime = cfg.get("particles_lifetime", 0.55)
+	sparks.spread = cfg.get("particles_spread", 180.0)
+	sparks.gravity = cfg.get("particles_gravity", Vector2(0, 320))
+	sparks.initial_velocity_min = cfg.get("particles_velocity_min", 160.0)
+	sparks.initial_velocity_max = cfg.get("particles_velocity_max", 320.0)
+	sparks.scale_amount_min = cfg.get("particles_scale_min", 0.05)
+	sparks.scale_amount_max = cfg.get("particles_scale_max", 0.12)
 	
 	var spark_curve := Curve.new()
 	spark_curve.add_point(Vector2(0.0, 1.0))
@@ -1394,45 +1092,33 @@ func _spawn_default_clear_vfx(local_pos: Vector2, color: Color) -> void:
 
 func _spawn_cell_pop_vfx(local_pos: Vector2, color: Color) -> void:
 	var element_type = ThemeManager.get_element_type_for_color(color)
+	var cfg = ThemeManager.get_element_vfx_config(element_type)
+	var default_cfg = ThemeManager.get_default_vfx_config()
 	
-	# All elements use optimized CPU particles for popping
-	var texture_path = "res://addons/kenney_particle_pack/spark_01.png"
-	var particle_amount = 6
-	var particle_gravity = Vector2(0, 150)
-	var particle_velocity = 80.0
-	var scale_min = 0.02
-	var scale_max = 0.05
+	var texture_path = ""
+	var particle_gravity = Vector2.ZERO
+	var scale_min = 0.0
+	var scale_max = 0.0
+	var particle_velocity = 0.0
 	
-	match element_type:
-		ThemeManager.ElementChainType.FIRE:
-			texture_path = "res://addons/kenney_particle_pack/flame_05.png"
-			particle_gravity = Vector2(0, -60)
-			scale_min = 0.03
-			scale_max = 0.07
-		ThemeManager.ElementChainType.ICE:
-			texture_path = "res://addons/kenney_particle_pack/spark_02.png"
-			particle_gravity = Vector2(0, 100)
-			scale_min = 0.03
-			scale_max = 0.06
-		ThemeManager.ElementChainType.LIGHTNING:
-			texture_path = "res://addons/kenney_particle_pack/spark_05.png"
-			particle_velocity = 120.0
-			scale_min = 0.02
-			scale_max = 0.05
-		ThemeManager.ElementChainType.SOUL:
-			texture_path = "res://addons/kenney_particle_pack/star_05.png"
-			particle_gravity = Vector2(0, -40)
-			scale_min = 0.03
-			scale_max = 0.06
-		ThemeManager.ElementChainType.EARTH:
-			texture_path = "res://addons/kenney_particle_pack/dirt_01.png"
-			particle_gravity = Vector2(0, 180)
-			scale_min = 0.03
-			scale_max = 0.07
+	if not cfg.is_empty():
+		texture_path = cfg.get("pop_texture", "")
+		particle_gravity = cfg.get("pop_gravity", Vector2.ZERO)
+		scale_min = cfg.get("pop_scale_min", 0.0)
+		scale_max = cfg.get("pop_scale_max", 0.0)
+		particle_velocity = cfg.get("pop_velocity", 0.0)
+		
+	# Fallback if config is missing pop fields
+	if texture_path.is_empty():
+		texture_path = default_cfg.get("pop_texture", "res://addons/kenney_particle_pack/spark_01.png")
+		particle_gravity = default_cfg.get("pop_gravity", Vector2(0, 150))
+		scale_min = default_cfg.get("pop_scale_min", 0.02)
+		scale_max = default_cfg.get("pop_scale_max", 0.05)
+		particle_velocity = default_cfg.get("pop_velocity", 80.0)
 			
 	var sparks := CPUParticles2D.new()
 	sparks.texture = load(texture_path)
-	sparks.amount = particle_amount
+	sparks.amount = 6
 	sparks.one_shot = true
 	sparks.explosiveness = 0.9
 	sparks.lifetime = 0.38

@@ -204,21 +204,195 @@ const ELEMENT_COLORS: Dictionary = {
 	ElementChainType.SOUL: Color(0.65, 0.1, 0.95)       # Purple
 }
 
-const ELEMENT_VIDEO_PATHS: Dictionary = {
-	ElementChainType.LIGHTNING: "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv",
-	ElementChainType.FIRE: "res://VFX/Groundfire_09_Front_2k_H.264.ogv",
-	ElementChainType.ICE: "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv"
+const ELEMENTAL_VFX_CONFIGS: Dictionary = {
+	ElementChainType.FIRE: {
+		"color": Color(1.0, 0.3, 0.15),
+		"video_path": "",
+		"extra_scene_path": "res://effects/2d_explosion/source/explosion.tscn",
+		"extra_scene_scale": Vector2(0.4, 0.4),
+		"extra_scene_speed_scale": 4.0,
+		"particles_texture": "res://addons/kenney_particle_pack/spark_01.png",
+		"particles_amount": 26,
+		"particles_explosiveness": 0.92,
+		"particles_lifetime": 0.55,
+		"particles_spread": 180.0,
+		"particles_gravity": Vector2(0, 320),
+		"particles_velocity_min": 160.0,
+		"particles_velocity_max": 320.0,
+		"particles_scale_min": 0.05,
+		"particles_scale_max": 0.12,
+		"particles_modulate_multiplier": 1.3,
+		
+		"pop_texture": "res://addons/kenney_particle_pack/flame_05.png",
+		"pop_gravity": Vector2(0, -60),
+		"pop_scale_min": 0.03,
+		"pop_scale_max": 0.07,
+		"pop_velocity": 80.0
+	},
+	ElementChainType.ICE: {
+		"color": Color(0.2, 0.7, 1.0),
+		"video_path": "",
+		"ring_texture": "res://addons/kenney_particle_pack/magic_03.png",
+		"ring_modulate": Color(0.25, 0.8, 1.0, 1.4),
+		"ring_scale_target": Vector2(1.8, 1.8),
+		"ring_tween_duration": 0.25,
+		"particles_texture": "res://addons/kenney_particle_pack/spark_02.png",
+		"particles_amount": 18,
+		"particles_explosiveness": 0.92,
+		"particles_lifetime": 0.58,
+		"particles_spread": 180.0,
+		"particles_gravity": Vector2(0, 150),
+		"particles_velocity_min": 140.0,
+		"particles_velocity_max": 240.0,
+		"particles_scale_min": 0.05,
+		"particles_scale_max": 0.12,
+		"particles_damping_min": 100.0,
+		"particles_damping_max": 150.0,
+		"particles_modulate": Color(0.4, 0.9, 1.0, 1.5),
+		
+		"pop_texture": "res://addons/kenney_particle_pack/spark_02.png",
+		"pop_gravity": Vector2(0, 100),
+		"pop_scale_min": 0.03,
+		"pop_scale_max": 0.06,
+		"pop_velocity": 80.0
+	},
+	ElementChainType.EARTH: {
+		"color": Color(0.1, 0.8, 0.2),
+		"video_path": "",
+		"wave_texture": "res://addons/kenney_particle_pack/dirt_02.png",
+		"wave_modulate": Color(0.2, 0.62, 0.32, 0.8),
+		"wave_scale_target": Vector2(1.5, 1.5),
+		"wave_tween_duration": 0.32,
+		"particles_texture": "res://addons/kenney_particle_pack/dirt_01.png",
+		"particles_amount": 16,
+		"particles_explosiveness": 0.88,
+		"particles_lifetime": 0.65,
+		"particles_spread": 180.0,
+		"particles_gravity": Vector2(0, 240),
+		"particles_velocity_min": 100.0,
+		"particles_velocity_max": 200.0,
+		"particles_scale_min": 0.04,
+		"particles_scale_max": 0.1,
+		"particles_angular_velocity_min": -180.0,
+		"particles_angular_velocity_max": 180.0,
+		"particles_damping_min": 50.0,
+		"particles_damping_max": 100.0,
+		"particles_modulate": Color(0.3, 0.8, 0.4, 1.4),
+		
+		"pop_texture": "res://addons/kenney_particle_pack/spark_01.png",
+		"pop_gravity": Vector2(0, 150),
+		"pop_scale_min": 0.02,
+		"pop_scale_max": 0.05,
+		"pop_velocity": 80.0
+	},
+	ElementChainType.LIGHTNING: {
+		"color": Color(1.0, 0.9, 0.25),
+		"video_path": "",
+		"particles_texture": "res://addons/kenney_particle_pack/spark_05.png",
+		"particles_amount": 14,
+		"particles_explosiveness": 0.9,
+		"particles_lifetime": 0.5,
+		"particles_spread": 180.0,
+		"particles_gravity": Vector2(0, 100),
+		"particles_velocity_min": 80.0,
+		"particles_velocity_max": 160.0,
+		"particles_scale_min": 0.03,
+		"particles_scale_max": 0.07,
+		"particles_modulate": Color(1.0, 0.9, 0.2, 1.5),
+		
+		"lightning_width": 4.5,
+		"lightning_color": Color.WHITE,
+		"glow_width": 14.0,
+		"glow_color": Color(1.0, 0.85, 0.1, 0.45),
+		"lightning_start_x_range": 40.0,
+		"lightning_start_y": -240.0,
+		"lightning_segments": 5,
+		"lightning_perp_range": 18.0,
+		"flash_1_duration": 0.06,
+		"flash_2_start_x_range": 30.0,
+		"flash_2_perp_range": 15.0,
+		"flash_2_width": 3.5,
+		"flash_2_duration": 0.1,
+		
+		"pop_texture": "res://addons/kenney_particle_pack/spark_05.png",
+		"pop_gravity": Vector2(0, 150),
+		"pop_scale_min": 0.02,
+		"pop_scale_max": 0.05,
+		"pop_velocity": 120.0
+	},
+	ElementChainType.SOUL: {
+		"color": Color(0.65, 0.1, 0.95),
+		"video_path": "",
+		"extra_scene_path": "res://effects/2d_vortex/source/vortex.tscn",
+		"extra_scene_pivot": Vector2(136, 136),
+		"extra_scene_modulate": Color(0.75, 0.15, 0.9, 1.3),
+		"vortex_scale_1": Vector2(0.35, 0.35),
+		"vortex_dur_1": 0.15,
+		"vortex_interval": 0.18,
+		"vortex_scale_2": Vector2(0.5, 0.5),
+		"vortex_dur_2": 0.22,
+		"particles_texture": "res://addons/kenney_particle_pack/star_05.png",
+		"particles_amount": 14,
+		"particles_explosiveness": 0.55,
+		"particles_lifetime": 0.75,
+		"particles_direction": Vector2(0, -1),
+		"particles_spread": 35.0,
+		"particles_gravity": Vector2(0, -50),
+		"particles_velocity_min": 60.0,
+		"particles_velocity_max": 120.0,
+		"particles_scale_min": 0.04,
+		"particles_scale_max": 0.09,
+		"particles_modulate": Color(0.85, 0.2, 0.95, 1.5),
+		
+		"pop_texture": "res://addons/kenney_particle_pack/spark_01.png",
+		"pop_gravity": Vector2(0, 150),
+		"pop_scale_min": 0.02,
+		"pop_scale_max": 0.05,
+		"pop_velocity": 80.0
+	}
 }
 
-const THOR_LIGHTNING_VIDEO_PATH = "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv"
+const DEFAULT_VFX_CONFIG: Dictionary = {
+	"flash_texture": "res://addons/kenney_particle_pack/flare_01.png",
+	"flash_scale_1": Vector2(2.4, 2.4),
+	"flash_dur_1": 0.07,
+	"flash_scale_2": Vector2.ZERO,
+	"flash_dur_2": 0.09,
+	
+	"ring_texture": "res://addons/kenney_particle_pack/circle_02.png",
+	"ring_scale": Vector2(0.3, 0.3),
+	"ring_scale_target": Vector2(4.5, 4.5),
+	"ring_dur": 0.28,
+	
+	"particles_texture": "res://addons/kenney_particle_pack/spark_01.png",
+	"particles_amount": 26,
+	"particles_explosiveness": 0.92,
+	"particles_lifetime": 0.55,
+	"particles_spread": 180.0,
+	"particles_gravity": Vector2(0, 320),
+	"particles_velocity_min": 160.0,
+	"particles_velocity_max": 320.0,
+	"particles_scale_min": 0.05,
+	"particles_scale_max": 0.12,
+	
+	"pop_texture": "res://addons/kenney_particle_pack/spark_01.png",
+	"pop_gravity": Vector2(0, 150),
+	"pop_scale_min": 0.02,
+	"pop_scale_max": 0.05,
+	"pop_velocity": 80.0
+}
+
+func get_element_vfx_config(element_type: int) -> Dictionary:
+	if ELEMENTAL_VFX_CONFIGS.has(element_type):
+		return ELEMENTAL_VFX_CONFIGS[element_type]
+	return {}
+
+func get_default_vfx_config() -> Dictionary:
+	return DEFAULT_VFX_CONFIG
 
 func get_element_video_path(element_type: int) -> String:
-	if ELEMENT_VIDEO_PATHS.has(element_type):
-		return ELEMENT_VIDEO_PATHS[element_type]
 	return ""
 
-func get_thor_lightning_video_path() -> String:
-	return THOR_LIGHTNING_VIDEO_PATH
 
 func get_element_type_for_color(color: Color) -> int:
 	var min_dist := 999.0
