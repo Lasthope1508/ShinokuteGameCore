@@ -12,6 +12,7 @@ var _active_lines_count: int = 0
 var _outline_pool: Array[Line2D] = []
 var _active_outlines_count: int = 0
 const RAINBOW_OUTLINE_SHADER := preload("res://Assets/Shaders/rainbow_outline.gdshader")
+var _thor_video_player: VideoStreamPlayer = null
 
 # Map elements to Kenney pack textures, scrolling speeds, and widths
 var ELEMENT_LINK_CONFIGS = {
@@ -245,6 +246,23 @@ func _trace_boundary(cells: Array) -> PackedVector2Array:
 	return path
 
 
+func _setup_thor_video_player() -> void:
+	if _thor_video_player == null:
+		var path = ThemeManager.get_thor_lightning_video_path()
+		if ResourceLoader.exists(path):
+			_thor_video_player = VideoStreamPlayer.new()
+			_thor_video_player.stream = load(path)
+			_thor_video_player.autoplay = true
+			_thor_video_player.loop = true
+			_thor_video_player.expand = true
+			_thor_video_player.volume_db = -80.0
+			_thor_video_player.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			_thor_video_player.position = Vector2(-9999, -9999)
+			_thor_video_player.size = Vector2(100, 100)
+			add_child(_thor_video_player)
+			_thor_video_player.play()
+
+
 func _update_group_outlines() -> void:
 	var visited = []
 	for y in range(Grid.SIZE):
@@ -255,6 +273,10 @@ func _update_group_outlines() -> void:
 		
 	_active_outlines_count = 0
 	var cell_size: int = grid.cell_size
+	
+	# Check if any component is >= 10, if so, initialize the video player
+	var has_large_component := false
+	var components_to_process := []
 	
 	for y in range(Grid.SIZE):
 		for x in range(Grid.SIZE):
@@ -283,30 +305,57 @@ func _update_group_outlines() -> void:
 								if grid._are_cells_same_color(curr, n):
 									visited[n.y][n.x] = true
 									queue.append(n)
-									
-			# Trace and draw outline
-			var path_vertices = _trace_boundary(component)
-			if path_vertices.is_empty():
-				continue
-				
-			var line: Line2D
-			if _active_outlines_count < _outline_pool.size():
-				line = _outline_pool[_active_outlines_count]
-			else:
-				line = _create_outline_in_pool()
-				
-			_active_outlines_count += 1
-			line.visible = true
 			
-			var pixel_points = PackedVector2Array()
-			for v in path_vertices:
-				pixel_points.append(grid._grid_origin + v * cell_size)
-				
-			line.points = pixel_points
+			if component.size() >= 10:
+				has_large_component = true
+			components_to_process.append({
+				"component": component,
+				"color": cell.occupied_color
+			})
 			
-			# Render the outline on top of everything
-			move_child(line, get_child_count() - 1)
+	if has_large_component:
+		_setup_thor_video_player()
+		
+	for comp_data in components_to_process:
+		var component = comp_data["component"]
+		var color = comp_data["color"]
+		
+		# Trace and draw outline
+		var path_vertices = _trace_boundary(component)
+		if path_vertices.is_empty():
+			continue
 			
+		var line: Line2D
+		if _active_outlines_count < _outline_pool.size():
+			line = _outline_pool[_active_outlines_count]
+		else:
+			line = _create_outline_in_pool()
+			
+		_active_outlines_count += 1
+		line.visible = true
+		
+		var pixel_points = PackedVector2Array()
+		for v in path_vertices:
+			pixel_points.append(grid._grid_origin + v * cell_size)
+			
+		line.points = pixel_points
+		
+		# Configure shader uniforms and texture based on size
+		var mat = line.material as ShaderMaterial
+		if component.size() >= 10 and _thor_video_player != null:
+			line.texture = _thor_video_player.get_video_texture()
+			if mat:
+				mat.set_shader_parameter("use_lightning", true)
+				mat.set_shader_parameter("block_color", color)
+		else:
+			line.texture = null
+			if mat:
+				mat.set_shader_parameter("use_lightning", false)
+				mat.set_shader_parameter("block_color", Color.WHITE)
+		
+		# Render the outline on top of everything
+		move_child(line, get_child_count() - 1)
+		
 	# Hide unused outlines in the pool
 	for i in range(_active_outlines_count, _outline_pool.size()):
 		_outline_pool[i].visible = false
