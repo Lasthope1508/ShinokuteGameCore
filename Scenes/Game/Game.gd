@@ -394,8 +394,10 @@ func _resolve_clears(_origin: Vector2i) -> void:
 	var quadrants: Array[Vector2i] = clears["quadrants"]
 	if cells.is_empty():
 		GameState.reset_streak()
+		GameState.turns_without_clear += 1
 		return
 
+	GameState.turns_without_clear = 0
 	var combo: int = GameState.compute_combo(rows.size(), cols.size(), quadrants.size())
 	
 	# Increment streak and calculate pitch scale using pentatonic steps

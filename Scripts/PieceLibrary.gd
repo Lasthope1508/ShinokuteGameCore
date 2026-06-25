@@ -215,7 +215,7 @@ func pick_random_from_tiers(allowed_tiers: Array[int]) -> PieceShape:
 # Adjusts weights dynamically to give smaller blocks during danger, matching block
 # sizes when rows/columns are close to clearing, and boosting blocks that keep
 # the current clear streak alive.
-func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) -> PieceShape:
+func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, turns_without_clear: int) -> PieceShape:
 	if _shapes.is_empty():
 		return null
 		
@@ -226,10 +226,15 @@ func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) 
 			if occupancy[y][x]:
 				occupied_cells += 1
 				
-	var total_cells := 81.0
-	var is_in_danger := (occupied_cells / total_cells) > DANGER_OCCUPANCY_THRESHOLD
+	var occupancy_ratio := occupied_cells / 81.0
+	var is_in_danger := occupancy_ratio > DANGER_OCCUPANCY_THRESHOLD
 	
-	# 2. Check row / column / quadrant gap sizes
+	# Determine AI Director Pacing State
+	var relief_mode := (turns_without_clear >= 3 and occupancy_ratio > 0.45)
+	var melody_mode := (GameState.current_streak > 0 and not relief_mode)
+	var challenge_mode := (occupancy_ratio < 0.30 and not relief_mode and not melody_mode)
+	
+	# 2. Check row / column gap sizes
 	var row_empty_counts = []
 	row_empty_counts.resize(9)
 	var col_empty_counts = []
@@ -248,17 +253,6 @@ func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) 
 			if occupancy[y][x]:
 				col_occ += 1
 		col_empty_counts[x] = 9 - col_occ
-		
-	var quad_empty_counts = []
-	quad_empty_counts.resize(9)
-	for qy in range(3):
-		for qx in range(3):
-			var quad_occ := 0
-			for dy in range(3):
-				for dx in range(3):
-					if occupancy[qy * 3 + dy][qx * 3 + dx]:
-						quad_occ += 1
-			quad_empty_counts[qy * 3 + qx] = 9 - quad_occ
 			
 	var has_gap_1 := false
 	var has_gap_2 := false
@@ -274,11 +268,6 @@ func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) 
 		elif count == 2: has_gap_2 = true
 		elif count == 3: has_gap_3 = true
 		
-	for count in quad_empty_counts:
-		if count == 1: has_gap_1 = true
-		elif count == 2: has_gap_2 = true
-		elif count == 3: has_gap_3 = true
-		
 	# 3. Dynamic weight calculation
 	var filtered: Array[PieceShape] = []
 	var temp_weights: Array[float] = []
@@ -290,7 +279,7 @@ func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) 
 			
 		var w: float = s.weight
 		
-		# Apply danger scaling
+		# Base danger scaling
 		if is_in_danger:
 			if s.tier == 1:
 				w *= TIER_1_DANGER_BOOST
@@ -299,19 +288,32 @@ func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) 
 			elif s.tier == 4:
 				w *= TIER_4_DANGER_NERF
 				
-		# Apply gap-matching boosts
-		var shape_size := s.cells.size()
-		if has_gap_1 and shape_size == 1:
-			w *= GAP_1_BOOST
-		if has_gap_2 and shape_size == 2:
-			w *= GAP_2_BOOST
-		if has_gap_3 and shape_size == 3:
-			w *= GAP_3_BOOST
+		var can_clear := _can_shape_cause_clear(s, occupancy)
+		
+		# Apply Pacing Mode tweaks
+		if relief_mode:
+			# Relief Mode: boost savior blocks massively, remove tier 3/4 pieces entirely
+			if can_clear:
+				w *= 20.0
+			elif s.tier >= 3:
+				w = 0.0
+		elif melody_mode:
+			# Melody Mode: support active clear streak/combos
+			if can_clear:
+				w *= 3.0
+		elif challenge_mode:
+			# Challenge Mode: safe board, standard distribution
+			pass
 			
-		# Apply streak preservation boost (favor shapes that cause a clear)
-		if streak > 0:
-			if _can_shape_cause_clear(s, occupancy):
-				w *= STREAK_CLEAR_BOOST
+		# Gap-matching boosts (skip in relief mode to prevent cluttering weights)
+		if not relief_mode:
+			var shape_size := s.cells.size()
+			if has_gap_1 and shape_size == 1:
+				w *= GAP_1_BOOST
+			if has_gap_2 and shape_size == 2:
+				w *= GAP_2_BOOST
+			if has_gap_3 and shape_size == 3:
+				w *= GAP_3_BOOST
 				
 		filtered.append(s)
 		temp_weights.append(w)
@@ -333,7 +335,7 @@ func pick_smart_piece(allowed_tiers: Array[int], occupancy: Array, streak: int) 
 	return filtered.back()
 
 
-# Checks if placing a shape anywhere on the current grid would complete a row, column, or quadrant.
+# Checks if placing a shape anywhere on the current grid would complete a row or column.
 func _can_shape_cause_clear(shape: PieceShape, occupancy: Array) -> bool:
 	for y in range(9):
 		for x in range(9):
@@ -354,7 +356,7 @@ func _can_fit_at_matrix(occupancy: Array, shape: PieceShape, origin: Vector2i) -
 	return true
 
 
-# Helper to check if placing a shape at origin completes any row, column, or quadrant.
+# Helper to check if placing a shape at origin completes any row or column.
 func _placement_causes_clear(occupancy: Array, shape: PieceShape, origin: Vector2i) -> bool:
 	var placed_cells = []
 	for cell in shape.cells:
@@ -377,22 +379,6 @@ func _placement_causes_clear(occupancy: Array, shape: PieceShape, origin: Vector
 				col_complete = false
 				break
 		if col_complete:
-			return true
-			
-		# Check 3x3 quadrant
-		var qx := int(pc.x / 3)
-		var qy := int(pc.y / 3)
-		var quad_complete := true
-		for dy in range(3):
-			for dx in range(3):
-				var tx := qx * 3 + dx
-				var ty := qy * 3 + dy
-				if (tx != pc.x or ty != pc.y) and not occupancy[ty][tx]:
-					quad_complete = false
-					break
-			if not quad_complete:
-				break
-		if quad_complete:
 			return true
 			
 	return false

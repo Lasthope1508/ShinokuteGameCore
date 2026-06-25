@@ -130,14 +130,6 @@ func compute_clears() -> Dictionary:
 			for y in SIZE:
 				cells_to_clear[Vector2i(x, y)] = true
 
-	for qy in QUADRANT_SIZE:
-		for qx in QUADRANT_SIZE:
-			if _is_quadrant_full(qx, qy):
-				quadrants.append(Vector2i(qx, qy))
-				for dy in QUADRANT_SIZE:
-					for dx in QUADRANT_SIZE:
-						cells_to_clear[Vector2i(qx * QUADRANT_SIZE + dx, qy * QUADRANT_SIZE + dy)] = true
-
 	var cell_array: Array[Vector2i] = []
 	for k in cells_to_clear.keys():
 		cell_array.append(k)
@@ -181,20 +173,7 @@ func clear_cells(cells: Array[Vector2i]) -> void:
 		if col_cleared:
 			cols.append(x)
 			
-	for qy in range(SIZE / QUADRANT_SIZE):
-		for qx in range(SIZE / QUADRANT_SIZE):
-			var quad_cleared := true
-			for dy in range(QUADRANT_SIZE):
-				for dx in range(QUADRANT_SIZE):
-					var cx = qx * QUADRANT_SIZE + dx
-					var cy = qy * QUADRANT_SIZE + dy
-					if not Vector2i(cx, cy) in cells:
-						quad_cleared = false
-						break
-				if not quad_cleared:
-					break
-			if quad_cleared:
-				quadrants.append(Vector2i(qx, qy))
+
 
 	# Compute propagation wave centers
 	var centers: Array[Vector2] = []

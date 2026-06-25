@@ -69,7 +69,7 @@ func refill() -> void:
 		colors.clear()
 		for i in _slots.size():
 			var allowed_tiers = _get_slot_allowed_tiers(i, GameState.current_score)
-			shapes.append(_library.pick_smart_piece(allowed_tiers, occupancy, GameState.current_streak))
+			shapes.append(_library.pick_smart_piece(allowed_tiers, occupancy, GameState.turns_without_clear))
 			colors.append(_random_color())
 		if grid == null or _any_shape_playable(shapes, occupancy):
 			break
@@ -129,7 +129,7 @@ func regenerate_empty_slots() -> bool:
 			var slot_node = empty_slots[i]
 			var slot_idx = _slots.find(slot_node)
 			var allowed_tiers = _get_slot_allowed_tiers(slot_idx, GameState.current_score)
-			picked.append(_library.pick_smart_piece(allowed_tiers, occupancy, GameState.current_streak))
+			picked.append(_library.pick_smart_piece(allowed_tiers, occupancy, GameState.turns_without_clear))
 			colors.append(_random_color())
 		# Need >=1 placeable across fixed_shapes + picked.
 		if _shapes_union_has_playable(fixed_shapes, picked, occupancy):

@@ -23,6 +23,7 @@ var assists_used: int = 0
 var is_game_over: bool = false
 var current_streak: int = 0
 var start_mode: String = "classic"
+var turns_without_clear: int = 0
 
 
 func _ready() -> void:
@@ -36,6 +37,7 @@ func reset_run() -> void:
 	assists_used = 0
 	is_game_over = false
 	current_streak = 0
+	turns_without_clear = 0
 	score_changed.emit(current_score, 0)
 	game_reset.emit()
 
