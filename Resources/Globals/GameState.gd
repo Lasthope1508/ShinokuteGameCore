@@ -9,6 +9,7 @@ const MAX_AD_REWARDS: int = 2
 # Cap on assisted refill re-rolls per run. Past this, the first random draw is
 # accepted as-is so the difficulty curve isn't softened indefinitely.
 const MAX_ASSISTS: int = 3
+const QUADRANT_COMBO_EVENT_WEIGHT: int = 2
 
 signal score_changed(new_score: int, delta: int)
 signal best_changed(new_best: int)
@@ -56,8 +57,9 @@ func award_placement(cells_count: int) -> int:
 
 
 # Combo multiplier = number of clear events (row/col/quadrant) when >= 2, else 1.
+# Each quadrant cleared counts as QUADRANT_COMBO_EVENT_WEIGHT events to reward players.
 func compute_combo(rows_cleared: int, cols_cleared: int, quadrants_cleared: int) -> int:
-	var events: int = rows_cleared + cols_cleared + quadrants_cleared
+	var events: int = rows_cleared + cols_cleared + (quadrants_cleared * QUADRANT_COMBO_EVENT_WEIGHT)
 	return events if events >= 2 else 1
 
 
