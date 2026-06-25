@@ -189,22 +189,31 @@ func get_random_piece_color() -> Color:
 	return Color.WHITE
 
 func get_random_piece_color_for_score(score: int) -> Color:
-	var theme = get_active_theme()
-	if theme and not theme.piece_colors.is_empty():
-		var pool_size = 1
-		if score < 250:
-			pool_size = 1
-		elif score < 600:
-			pool_size = 2
-		elif score < 1200:
-			pool_size = 4
-		elif score < 2000:
-			pool_size = 6
-		else:
-			pool_size = theme.piece_colors.size()
-		var active_pool = theme.piece_colors.slice(0, pool_size)
-		return active_pool.pick_random()
-	return Color.WHITE
+	# Ignore score to unlock all colors right from the start (多样 colors from start)
+	return get_random_piece_color()
+
+
+# Single Source of Truth (SSOT) for Elemental Chains mapping
+enum ElementChainType { FIRE, ICE, EARTH, LIGHTNING, SOUL }
+
+const ELEMENT_COLORS: Dictionary = {
+	ElementChainType.FIRE: Color(0.95, 0.3, 0.2),       # Orange-Red
+	ElementChainType.ICE: Color(0.3, 0.8, 1.0),        # Cyan-Blue
+	ElementChainType.EARTH: Color(0.2, 0.8, 0.4),      # Green
+	ElementChainType.LIGHTNING: Color(0.95, 0.9, 0.1),  # Yellow
+	ElementChainType.SOUL: Color(0.7, 0.2, 0.95)       # Magenta/Purple
+}
+
+func get_element_type_for_color(color: Color) -> int:
+	var min_dist := 999.0
+	var best_element: int = ElementChainType.FIRE
+	for element in ELEMENT_COLORS.keys():
+		var ec: Color = ELEMENT_COLORS[element]
+		var dist = Vector3(color.r - ec.r, color.g - ec.g, color.b - ec.b).length()
+		if dist < min_dist:
+			min_dist = dist
+			best_element = element
+	return best_element
 
 func get_sfx(sfx_name: String) -> AudioStream:
 	if GENERAL_SFX_MAP.has(sfx_name):
