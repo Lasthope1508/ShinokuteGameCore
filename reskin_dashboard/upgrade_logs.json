@@ -1,0 +1,634 @@
+[
+  {
+    "task": "Commit & Tag release v1.0.23",
+    "agent": "Antigravity",
+    "details": "Bump version to 1.0.23 (Android version code 14) in project.godot and export_presets.cfg, commit changes and tag release v1.0.23.",
+    "status": "Hoàn thành",
+    "id": 79,
+    "timestamp": "2026-06-26 06:02"
+  },
+  {
+    "task": "Sửa lỗi VFX gạch xanh và thứ tự hiển thị kéo thả",
+    "agent": "Antigravity",
+    "details": "Đã dọn dẹp triệt để các code thừa, kết nối dây và các VFX sấm sét/nứt vỡ của khối gạch màu xanh dương (ICE). Sửa lỗi hiển thị kéo thả: tăng z_index của drag_layer lên 30 để gạch active luôn nằm trên các gạch có sẵn trên playboard.",
+    "status": "Hoàn thành",
+    "id": 78,
+    "timestamp": "2026-06-25 23:56"
+  },
+  {
+    "task": "Commit & Tag release",
+    "agent": "Coding Agent",
+    "details": "Commit code, cap nhat version config/version=1.0.22 trong project.godot va tag release v1.0.22.",
+    "status": "Hoan thanh",
+    "id": 77,
+    "timestamp": "2026-06-25 23:09"
+  },
+  {
+    "task": "Ban giao Source",
+    "agent": "Coding Agent",
+    "details": "Hoan thanh sua loi lech video core va cap nhat file OGV moi cho xanh duong.",
+    "status": "Hoan thanh",
+    "id": 76,
+    "timestamp": "2026-06-25 23:09"
+  },
+  {
+    "task": "Element Chain Clear VFX Dispatch",
+    "agent": "Coding Agent",
+    "details": "Kích hoạt định tuyến hiệu ứng nổ theo hệ nguyên tố (lửa, sét, linh hồn, băng, đất) cho các nhóm gạch khi ăn hàng/cột.",
+    "status": "Hoàn thành",
+    "id": 75,
+    "timestamp": "2026-06-25 21:02"
+  },
+  {
+    "task": "Sửa lỗi hốc gạch chướng ngại vật",
+    "agent": "Coding Agent",
+    "details": "Sửa shader block_pulse.gdshader và logic Cell.gd để chặn hoàn toàn việc khoét rỗng lỗi trên các khối gạch đá chướng ngại vật (obstacles), giữ nguyên độ đặc đá phiến.",
+    "status": "Hoàn thành",
+    "id": 74,
+    "timestamp": "2026-06-25 20:57"
+  },
+  {
+    "task": "Kênh nứt vỡ trong suốt & Lightning VFX",
+    "agent": "Coding Agent",
+    "details": "Hoàn thành khắc lõi trong suốt nứt vỡ cho gạch ICE (xanh dương). Sét tự động kết nối tràn viền tạo thành dòng chảy liên tục. Sửa lỗi custom texture sampler trên Line2D chạy tương thích WebGL2.",
+    "status": "Hoàn thành",
+    "id": 73,
+    "timestamp": "2026-06-25 19:17"
+  },
+  {
+    "task": "VFX upgrade & colors unlock",
+    "agent": "Coding Agent",
+    "details": "Implemented element-specific clear VFX (fire explosion, anime lightning, soul vortex, ice shatter, earth debris) mapped to ElementChainType SSOT.",
+    "status": "Hoàn thành",
+    "id": 72,
+    "timestamp": "2026-06-25 18:15"
+  },
+  {
+    "task": "VFX upgrade & colors unlock",
+    "agent": "Coding Agent",
+    "details": "Implemented element-specific clear VFX (fire explosion, anime lightning, soul vortex, ice shatter, earth debris) mapped to ElementChainType SSOT.",
+    "status": "Hoàn thành",
+    "id": 71,
+    "timestamp": "2026-06-25 18:07"
+  },
+  {
+    "task": "VFX upgrade & colors unlock",
+    "agent": "Coding Agent",
+    "details": "Implemented element-specific clear VFX (fire explosion, anime lightning, soul vortex, ice shatter, earth debris) mapped to ElementChainType SSOT.",
+    "status": "Hoàn thành",
+    "id": 70,
+    "timestamp": "2026-06-25 18:03"
+  },
+  {
+    "task": "Upload Y8.com",
+    "agent": "Antigravity",
+    "details": "Submitted BloxChain - Block Puzzle to Y8.com successfully.",
+    "status": "Hoàn thành",
+    "id": 69,
+    "timestamp": "2026-06-25 17:55"
+  },
+  {
+    "task": "VFX upgrade & colors unlock",
+    "agent": "Coding Agent",
+    "details": "Implemented element-specific clear VFX (fire explosion, anime lightning, soul vortex, ice shatter, earth debris) mapped to ElementChainType SSOT.",
+    "status": "Hoàn thành",
+    "id": 68,
+    "timestamp": "2026-06-25 17:52"
+  },
+  {
+    "task": "Trien khai Color Matching Chain Trigger",
+    "agent": "Antigravity",
+    "details": "Sua loi no lan tran lan cac chuoi khong lien quan. Chi kich hoat no lan cho cac o gach cung mau voi vien gach vua dat tai hang/cot vua hoan thanh.",
+    "status": "Hoan thanh",
+    "id": 67,
+    "timestamp": "2026-06-25 17:43"
+  },
+  {
+    "task": "Trien khai gach da sac va VFX Chuoi Nguyen To",
+    "agent": "Antigravity",
+    "details": "Da xoa bo gioi han mo khoa mau sac de kich hoat gach da sac ngay tu dau. Dong thoi trien khai SSOT anh xa mau sang 5 nguyen to Hoa, Bang, Moc, Loi, Hon va ve hieu ung chuyen dong tuong ung trong LinksLayer.gd.",
+    "status": "Hoan thanh",
+    "id": 66,
+    "timestamp": "2026-06-25 17:37"
+  },
+  {
+    "task": "Xoa dut diem hieu ung 3x3",
+    "agent": "Antigravity",
+    "details": "Da xoa hoan toan hieu ung sang 3x3, cap nhat tutorial buoc 2 sang clear cot, xoa nut test 3x3 tren dashboard.",
+    "status": "Hoan thanh",
+    "id": 65,
+    "timestamp": "2026-06-25 17:27"
+  },
+  {
+    "task": "Nâng cấp Chuỗi liên hoàn & Xoay gạch năng lượng",
+    "agent": "Web Pub Agent",
+    "details": "Triển khai cơ chế Gạch Liên Kết (Link Blocks) & Nổ chuỗi (Chain Reaction) lan truyền BFS cùng màu. Tích lũy Năng Lượng Chuỗi trên HUD, tiêu tốn 30 điểm để gõ xoay gạch 90 độ. Sửa lỗi triệt để việc góc 3x3 phát sáng aura xem trước.",
+    "status": "Hoàn thành",
+    "id": 64,
+    "timestamp": "2026-06-25 17:05"
+  },
+  {
+    "task": "Nâng cấp AI Director & Loại bỏ Ăn 3x3",
+    "agent": "Web Pub Agent",
+    "details": "Loại bỏ hoàn toàn cơ chế ăn ô vuông 3x3 (chỉ giữ lại hiển thị trực quan). Triển khai bộ điều phối AI Director siêu nhẹ điều tiết spawner động dựa trên độ trống bảng và chuỗi streak mà không tốn tài nguyên. Đã deploy thành công lên Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 63,
+    "timestamp": "2026-06-25 16:56"
+  },
+  {
+    "task": "Nâng cấp Thuật toán sinh gạch & Ô vuông 3x3",
+    "agent": "Coding Agent",
+    "details": "Đã nâng cấp thuật toán spawner thích ứng (Smart Spawner) giúp tự động phân tích lưới để cấp gạch cứu sinh khi nguy hiểm (>55% đầy) và tăng tỷ lệ cấp gạch khớp để ăn điểm hàng/cột/ô vuông. Đồng thời, buff điểm cho ô 3x3 (tính x2.0 sự kiện combo) để tăng động lực xếp hình.",
+    "status": "Hoàn thành",
+    "id": 62,
+    "timestamp": "2026-06-25 16:37"
+  },
+  {
+    "task": "Nền giả đá chân thực dưới Obstacles",
+    "agent": "Coding Agent",
+    "details": "Đã thiết kế và áp dụng texture giả đá phiến thực tế (obstacle_bg.png) làm nền dưới các ô chứa đá chướng ngại vật trong chế độ Chaos Start, tăng độ cản quang (alpha 0.95), tạo cảm giác khối đá đặc, vững chãi thay vì bị rỗng nhìn xuyên qua như trước.",
+    "status": "Hoàn thành",
+    "id": 61,
+    "timestamp": "2026-06-25 16:18"
+  },
+  {
+    "task": "Nền giả đá chân thực dưới Obstacles",
+    "agent": "Coding Agent",
+    "details": "Đã thiết kế và áp dụng texture giả đá phiến thực tế (obstacle_bg.png) làm nền dưới các ô chứa đá chướng ngại vật trong chế độ Chaos Start, tăng độ cản quang (alpha 0.95), tạo cảm giác khối đá đặc, vững chãi thay vì bị rỗng nhìn xuyên qua như trước.",
+    "status": "Hoàn thành",
+    "id": 60,
+    "timestamp": "2026-06-25 16:16"
+  },
+  {
+    "task": "Nền tráng mờ dưới Obstacles",
+    "agent": "Coding Agent",
+    "details": "Đã thêm lớp nền màu đá phiến ấm mờ (modulate với alpha 0.7) dưới các ô chứa đá tảng chướng ngại vật trong chế độ Chaos Start, tạo độ khối rõ ràng và tiệp màu đá tự nhiên.",
+    "status": "Hoàn thành",
+    "id": 59,
+    "timestamp": "2026-06-25 16:08"
+  },
+  {
+    "task": "Thay thế Nhạc Nền Gameplay",
+    "agent": "Coding Agent",
+    "details": "Nén file nhạc 'Game Play.wav' nặng 45.7MB thành định dạng 'Gameplay.ogg' nhẹ 3.2MB để làm nhạc nền mặc định của game (thay thế nhạc Relax mode cũ). Build Web và Deploy thành công v1.0.13.",
+    "status": "Hoàn thành",
+    "id": 58,
+    "timestamp": "2026-06-25 15:50"
+  },
+  {
+    "task": "Thay thế Nhạc Nền Gameplay",
+    "agent": "Coding Agent",
+    "details": "Nén file nhạc 'Game Play.wav' nặng 45.7MB thành định dạng 'Gameplay.ogg' nhẹ 3.2MB để làm nhạc nền mặc định của game (thay thế nhạc Relax mode cũ). Build Web và Deploy thành công v1.0.13.",
+    "status": "Hoàn thành",
+    "id": 57,
+    "timestamp": "2026-06-25 15:47"
+  },
+  {
+    "task": "Nén Âm Thanh OGG Chuẩn Mobile",
+    "agent": "Coding Agent",
+    "details": "Đã chuyển đổi nhạc nền Relax mode và Danger từ file WAV nặng 50MB+ sang định dạng nén OGG chỉ còn 4.2MB (giảm 91% dung lượng), cấu hình loop tự động, đảm bảo mượt mà và tối ưu bộ nhớ RAM cho nền tảng Mobile & Web.",
+    "status": "Hoàn thành",
+    "id": 56,
+    "timestamp": "2026-06-25 15:32"
+  },
+  {
+    "task": "Glow-in-the-dark Wait Tray Pieces",
+    "agent": "Antigravity",
+    "details": "Fixed Block.gd ready/set_color lifecycle bug, boosted glow_intensity and shaped falloff curve in shader for a bright neon aura.",
+    "status": "Hoàn thành",
+    "id": 55,
+    "timestamp": "2026-06-25 15:18"
+  },
+  {
+    "task": "Publish Android v1.0.11 (Code 13)",
+    "agent": "Android Pub Agent",
+    "details": "Build AAB v13 (1.0.11) dung lượng 226MB (do tích hợp các file nhạc nền WAV) và upload thành công lên Play Console Internal Testing track.",
+    "status": "Hoàn thành",
+    "timestamp": "2026-06-25 15:15",
+    "id": 54
+  },
+  {
+    "task": "Commit & Tag release",
+    "agent": "Coding Agent",
+    "details": "Đã add toàn bộ file, commit code sạch sẽ lên git local chuẩn bị đóng gói tag release.",
+    "status": "Hoàn thành",
+    "id": 53,
+    "timestamp": "2026-06-25 14:16"
+  },
+  {
+    "task": "Bàn giao Source Code",
+    "agent": "Coding Agent",
+    "details": "Hoàn thành tích hợp nhạc nền Danger/Relax, chuyển đổi mượt bằng Tween, thêm nút bật/tắt nhạc ngoài HUD đồng bộ dữ liệu SSOT, sửa lỗi nhập tên trên Web.",
+    "status": "Hoàn thành",
+    "id": 52,
+    "timestamp": "2026-06-25 14:16"
+  },
+  {
+    "task": "Sửa Lỗi Nhập Tên Trên HTML5 Web",
+    "agent": "Antigravity",
+    "details": "Giải quyết triệt để lỗi không nhận bàn phím khi nhập tên trên nền tảng Web (do cơ chế browser focus canvas và iframe). Triển khai cơ chế fallback gọi prompt() nguyên bản của trình duyệt qua JavaScriptBridge khi người chơi bấm vào LineEdit nhập tên (áp dụng cho cả ô nhập tên lần đầu và trong phần Cài đặt).",
+    "status": "Hoàn thành",
+    "id": 51,
+    "timestamp": "2026-06-25 11:49"
+  },
+  {
+    "task": "Nâng cấp Visual Đá Chướng Ngại Chaos Mode",
+    "agent": "Antigravity",
+    "details": "Thiết kế và tạo mới 8 block đá nứt màu sáng khác nhau thông qua 9Router + Photoroom. Cấu hình Cell.gd load 8 texture và chọn ngẫu nhiên theo tọa độ (x + y * 9) % 8 giúp các block đá xếp cạnh nhau có các vết nứt hoàn toàn khác nhau, tránh bị lặp (loop) và tăng tính thẩm mỹ.",
+    "status": "Hoàn thành",
+    "id": 50,
+    "timestamp": "2026-06-25 11:24"
+  },
+  {
+    "task": "Sửa Milestone ProgressBar & Fix Web Black Screen",
+    "agent": "Antigravity",
+    "details": "Chuyển Milestone Progress Bar sang hiển thị điểm thực (0 / 100) thay vì Level, kéo giãn ngang hết Center Capsule của Top Tray. Sửa lỗi 404 blockpuzzle.* trong index.html khi export game Web và deploy thành công lên Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 49,
+    "timestamp": "2026-06-25 07:02"
+  },
+  {
+    "task": "HTML5 Web Build & Firebase Hosting Deploy",
+    "agent": "Antigravity",
+    "details": "Đồng bộ source mới nhất, thực hiện headless Web export bằng Godot Console. Sao chép và đổi tên các file build vào thư mục reskin_dashboard/game và deploy thành công lên Firebase Hosting ở chế độ toàn màn hình (canvasResizePolicy: 2).",
+    "status": "Hoàn thành",
+    "id": 48,
+    "timestamp": "2026-06-25 06:44"
+  },
+  {
+    "task": "Generate 39 Country Milestone Backgrounds",
+    "agent": "Antigravity",
+    "details": "Gọi 9Router thiết kế và tạo mới toàn bộ 39 hình nền milestone quốc gia theo chuẩn thiết kế mới (starry galaxy sky top, matching color gradient middle, country landmarks silhouettes bottom, raw/unblurred). Tách hoàn toàn hình nền chào Việt Nam khỏi danh sách in-game random rotation, và sửa lỗi đồng bộ background index ngay khi reset game.",
+    "status": "Hoàn thành",
+    "id": 47,
+    "timestamp": "2026-06-25 06:27"
+  },
+  {
+    "task": "Vietnam Galaxy Background & UI Polish",
+    "agent": "Antigravity",
+    "details": "Gọi 9Router tạo hình nền landmark Việt Nam (Landmark 81, Bitexco, Chùa Một Cột) kết hợp bầu trời galaxy và màu chuyển. Đồng thời sửa cơ chế load ảnh trực tiếp từ disk bằng Image.load_from_file để bỏ qua cache import của Godot.",
+    "status": "Hoàn thành",
+    "id": 46,
+    "timestamp": "2026-06-25 00:37"
+  },
+  {
+    "task": "Refine Transparency and Top Tray UI",
+    "agent": "Antigravity",
+    "details": "Sử dụng playboard_clean.gdshader loại bỏ hoàn toàn nền xám, hiển thị lưới neon cyan rõ ràng và trong suốt 100%. Thiết kế lại 2 nút Settings/Replay thành squircle panel (tím/cyan border, white icon) và gộp ScoreProgressBar thành level badge progress pill nằm dưới mascot astronaut.",
+    "status": "Hoàn thành",
+    "id": 45,
+    "timestamp": "2026-06-25 00:27"
+  },
+  {
+    "task": "Playboard Transparency SSOT (Antigravity)",
+    "agent": "Antigravity",
+    "details": "Sửa đổi Playboard TextureRect modulate sang Color(1,1,1,0.15) để loại bỏ nền trắng xám đục của playboard.png. Cấu hình cell_empty_tint thành Color(1,1,1,0.08) cho giao diện hoàn toàn trong suốt đúng theo mockup bản gốc.",
+    "status": "Hoàn thành",
+    "id": 44,
+    "timestamp": "2026-06-25 00:12"
+  },
+  {
+    "task": "Refactor Layout, Mascot & Colors (Antigravity)",
+    "agent": "Antigravity",
+    "details": "Chỉnh sửa layout mascot pop-out 3D size 160x160 với level badge đặt tại chân. Loại bỏ hoàn toàn màu vàng trong UI classic và fruit theme sang tone-sur-tone cyan, tím, hồng.",
+    "status": "Hoàn thành",
+    "id": 43,
+    "timestamp": "2026-06-25 00:06"
+  },
+  {
+    "task": "Bàn giao Source (Coding Agent)",
+    "agent": "Antigravity",
+    "details": "Fix camera shake offset accumulation and simplify cell-level sparks to local coordinates.",
+    "status": "Hoàn thành",
+    "id": 42,
+    "timestamp": "2026-06-24 23:23"
+  },
+  {
+    "task": "Publish Android v1.0.10 (Code 12)",
+    "agent": "Android Pub Agent",
+    "details": "Build AAB v12 (1.0.10) dung lượng tối ưu 132MB (giảm tải file thừa) và upload thành công lên Play Console Internal Testing track.",
+    "status": "Hoàn thành",
+    "timestamp": "2026-06-24 22:17",
+    "id": 41
+  },
+  {
+    "task": "Bàn giao Release v1.0.10",
+    "agent": "Coding Agent",
+    "details": "Đã thực hiện cập nhật mã phiên bản v12 (1.0.10), commit, gán tag release v1.0.10, tự động build sẵn gói bloxchain.aab (138.4MB) và bàn giao cho Android Pub Agent.",
+    "status": "Hoàn thành",
+    "id": 40,
+    "timestamp": "2026-06-24 22:07"
+  },
+  {
+    "task": "Fix Layout and Milestone Backgrounds",
+    "agent": "Antigravity",
+    "details": "Fixed background milestone transitions reset, added drag_lift_offset & tray_bottom_margin to Theme Config SSOT, and adjusted PieceTray layout spacing.",
+    "status": "Hoan thanh",
+    "id": 39,
+    "timestamp": "2026-06-24 21:12"
+  },
+  {
+    "task": "Fix Layout and Milestone Backgrounds",
+    "agent": "Antigravity",
+    "details": "Fixed background milestone transitions reset, added drag_lift_offset & tray_bottom_margin to Theme Config SSOT, and adjusted PieceTray layout spacing.",
+    "status": "Hoan thanh",
+    "id": 38,
+    "timestamp": "2026-06-24 21:12"
+  },
+  {
+    "task": "Tối ưu Mobile Responsive",
+    "agent": "Coding Agent",
+    "details": "Đã tối ưu giao diện web responsive hoàn chỉnh cho thiết bị di động, hỗ trợ màn hình tablet, điện thoại thông minh, và sửa lỗi tọa độ click chuột trên canvas khi tỷ lệ màn hình co giãn trên di động.",
+    "status": "Hoàn thành",
+    "id": 37,
+    "timestamp": "2026-06-24 20:06"
+  },
+  {
+    "task": "Deploy Web Portal lên Firebase Hosting",
+    "agent": "Web Pub Agent",
+    "details": "Build tĩnh tích hợp cấu hình dự phòng và phát hành toàn bộ Web Portal/Dashboard lên domain https://foodapp-7ff6b.web.app.",
+    "status": "Hoàn thành",
+    "id": 36,
+    "timestamp": "2026-06-24 19:24"
+  },
+  {
+    "task": "Khắc phục bug đứng hình VFX",
+    "agent": "Coding Agent",
+    "details": "Xử lý triệt để lỗi bất đồng bộ (Race Condition) và dọn sạch các array, hủy timer cũ khi chuyển đổi nhanh giữa các theme hiệu ứng.",
+    "status": "Hoàn thành",
+    "id": 35,
+    "timestamp": "2026-06-24 19:22"
+  },
+  {
+    "task": "Bổ sung 3 Theme VFX thương mại",
+    "agent": "Coding Agent",
+    "details": "Thêm 3 theme VFX mới có giấy phép thương mại (Candy Sweet, Frost Crystal, Volcano Lava) nâng tổng số theme lên 8. Đồng bộ hóa toàn bộ thuộc tính vật lý hạt và mô phỏng dọn lưới lên Dashboard.",
+    "status": "Hoàn thành",
+    "id": 34,
+    "timestamp": "2026-06-24 19:21"
+  },
+  {
+    "task": "Giả lập Xóa Hàng/Cột/Khối VFX",
+    "agent": "Coding Agent",
+    "details": "Thêm mô phỏng xóa hàng ngang, cột dọc, khối 3x3 và khối 9x9 vào VFX Dashboard, hiển thị lưới bàn cờ và nhát chém kiếm theo từng theme.",
+    "status": "Hoàn thành",
+    "id": 33,
+    "timestamp": "2026-06-24 19:17"
+  },
+  {
+    "task": "VFX Dropdown Color Fix",
+    "agent": "Coding Agent",
+    "details": "Khắc phục lỗi chữ trắng nền trắng trên select dropdown của VFX bằng cách style cứng background-color tối cho các thẻ option.",
+    "status": "Hoàn thành",
+    "id": 32,
+    "timestamp": "2026-06-24 19:13"
+  },
+  {
+    "task": "VFX Texture Dropdown on Web",
+    "agent": "Coding Agent",
+    "details": "Thêm dropdown cho phép chọn và chạy thử trực tiếp hơn 40 texture hạt khác nhau của Kenney trên Web Dashboard.",
+    "status": "Hoàn thành",
+    "id": 31,
+    "timestamp": "2026-06-24 19:06"
+  },
+  {
+    "task": "Install Kenney VFX & Render Web Textures",
+    "agent": "Coding Agent",
+    "details": "Tải bộ Kenney Particle Pack (CC0), cấu hình hạt chất lượng cao vào các theme Godot (Neon, Gold, Soul) và vẽ/tint màu trực tiếp các texture này trên Web Dashboard.",
+    "status": "Hoàn thành",
+    "id": 30,
+    "timestamp": "2026-06-24 19:03"
+  },
+  {
+    "task": "Add 3 VFX Themes",
+    "agent": "Coding Agent",
+    "details": "Tạo 3 cấu hình theme mới trong Godot (Neon, Gold Rain, Soul Fire) và tích hợp các nút xem thử trực tiếp lên Web Dashboard.",
+    "status": "Hoàn thành",
+    "id": 29,
+    "timestamp": "2026-06-24 18:52"
+  },
+  {
+    "task": "Publish Android v1.0.9 (Code 11)",
+    "agent": "Android Pub Agent",
+    "details": "Build AAB v11 (1.0.9) và upload thành công lên Play Console Internal Testing track.",
+    "status": "Hoàn thành",
+    "timestamp": "2026-06-24 18:32",
+    "id": 28
+  },
+  {
+    "task": "GameMonetize Submission & Verification",
+    "agent": "Web Pub Agent",
+    "details": "Tích hợp GameMonetize SDK, nén gói Web 47.4MB (giảm 31MB), tải tài nguyên/thumbnails thực tế, chạy kiểm thử SDK thành công và gửi yêu cầu kích hoạt. Trạng thái hiện tại: IN REVIEW.",
+    "status": "Hoàn thành",
+    "timestamp": "2026-06-24 18:24",
+    "id": 27
+  },
+  {
+    "task": "Bàn giao Release v1.0.9",
+    "agent": "Coding Agent",
+    "details": "Đã hoàn thành tích hợp VFX, cấu hình theme API cho Portal, gán nhãn v1.0.9 và chuyển giao quyền phát hành cho Android Pub Agent & Web Pub Agent.",
+    "status": "Hoàn thành",
+    "id": 26,
+    "timestamp": "2026-06-24 17:45"
+  },
+  {
+    "task": "Commit & Tag release",
+    "agent": "Coding Agent",
+    "details": "Commit các thay đổi của StartOptionOverlay, Game, MainMenu lên git branch block-puzzle-dev.",
+    "status": "Hoàn thành",
+    "id": 25,
+    "timestamp": "2026-06-24 17:39"
+  },
+  {
+    "task": "Bàn giao Source Code",
+    "agent": "Coding Agent",
+    "details": "Bàn giao mã nguồn sạch nâng cấp gameplay: chế độ Chaos Start, progressive colors và phân phối gạch Option B theo độ khó.",
+    "status": "Hoàn thành",
+    "id": 24,
+    "timestamp": "2026-06-24 17:39"
+  },
+  {
+    "task": "CrazyGames Covers Update",
+    "agent": "Coding Agent",
+    "details": "Da update toan bo cover images va gameplay videos bang hinh chup gameplay thuc te tu preview tab",
+    "status": "Hoan thanh",
+    "id": 23,
+    "timestamp": "2026-06-24 17:28"
+  },
+  {
+    "task": "Refactor VFX SSOT",
+    "agent": "Coding Agent",
+    "details": "Chuyển toàn bộ thuộc tính VFX cứng sang ThemeConfig, bổ sung API /api/theme-config và đồng bộ hóa dashboard Canvas.",
+    "status": "Hoàn thành",
+    "id": 22,
+    "timestamp": "2026-06-24 17:14"
+  },
+  {
+    "task": "Kiểm định mã nguồn",
+    "agent": "Audit Agent",
+    "details": "Đã kiểm định tích hợp StartOptionOverlay, Chaos Start, điều phối màu progressive và độ khó Piece shape (Option B) theo chuẩn SSOT. Chạy test và chụp ảnh màn hình xác nhận.",
+    "status": "Hoàn thành",
+    "id": 21,
+    "timestamp": "2026-06-24 17:08"
+  },
+  {
+    "task": "Publish Android v1.0.9",
+    "agent": "Android Pub Agent",
+    "details": "Build AAB v10 (1.0.9) và upload thành công lên Play Console Internal Testing track.",
+    "status": "Hoàn thành",
+    "timestamp": "2026-06-24 16:54",
+    "id": 20
+  },
+  {
+    "task": "Cập nhật sơ đồ luồng cổng Chrome Debug",
+    "agent": "Coding Agent",
+    "details": "Đã thay đổi cổng Chrome Debugging của Google Play Publish thành 9222 và HTML5/Web thành 9223 trên SVG flowchart.",
+    "status": "Hoàn thành",
+    "id": 19,
+    "timestamp": "2026-06-24 16:37"
+  },
+  {
+    "task": "Tự động hóa hiển thị phiên bản",
+    "agent": "Coding Agent",
+    "details": "Thiết lập cơ chế SSOT cho version trong project.godot và tự động đồng bộ lên màn hình MainMenu.",
+    "status": "Hoàn thành",
+    "id": 18,
+    "timestamp": "2026-06-24 16:31"
+  },
+  {
+    "task": "Kiểm định Mã Nguồn",
+    "agent": "Audit Agent",
+    "details": "Đã chạy phân tích tĩnh (linting), phát hiện 0 lỗi nghiêm trọng và hoàn thành kiểm định chất lượng.",
+    "status": "Hoàn thành",
+    "id": 17,
+    "timestamp": "2026-06-24 16:04"
+  },
+  {
+    "task": "Đưa background màn hình chào về SSOT",
+    "agent": "Antigravity",
+    "details": "Khôi phục background greeting_bg.png và đưa về cơ chế SSOT thông qua ThemeManager.",
+    "status": "Hoàn thành",
+    "id": 16,
+    "timestamp": "2026-06-24 15:56"
+  },
+  {
+    "task": "Dong bo Playboard SSOT",
+    "agent": "Coding Agent",
+    "details": "Da bo playboard_texture khoi ThemeConfig, Grid su dung chung playboard.png va khoi phuc mau quadrant empty cell cua brick_theme",
+    "status": "Hoan thanh",
+    "id": 15,
+    "timestamp": "2026-06-24 15:34"
+  },
+  {
+    "task": "GameDistribution Registration & Activation",
+    "agent": "Antigravity",
+    "details": "Completed GameDistribution HTML5 registration, asset provisioning, SDK integration, and submitted Activation Request. The game status is now In Review.",
+    "status": "Hoàn thành",
+    "id": 14,
+    "timestamp": "2026-06-24 14:56"
+  },
+  {
+    "task": "Dong bo Playboard SSOT",
+    "agent": "Coding Agent",
+    "details": "Da bo playboard_texture khoi ThemeConfig, Grid su dung chung playboard.png va khoi phuc mau quadrant empty cell cua brick_theme",
+    "status": "Hoan thanh",
+    "id": 13,
+    "timestamp": "2026-06-24 14:42"
+  },
+  {
+    "task": "Cap nhat playboard trang lam SSOT he thong",
+    "agent": "Antigravity",
+    "details": "Da thiet lap playboard trang lam mac dinh he thong, lam trong suot quadrants cua skin Brick de dung chung 100% giao dien playboard.",
+    "status": "Hoan thanh",
+    "id": 12,
+    "timestamp": "2026-06-24 14:39"
+  },
+  {
+    "task": "Cap nhat playboard trang va giu nguyen ban Brick",
+    "agent": "Antigravity",
+    "details": "Da thiet lap playboard lam mac dinh he thong (SSOT), dong thoi giu nguyen cac quadrant mau go dac trung cua skin Brick de hien thi hoa quyen.",
+    "status": "Hoan thanh",
+    "id": 11,
+    "timestamp": "2026-06-24 14:37"
+  },
+  {
+    "task": "Cap nhat playboard trang va loai bo skin go",
+    "agent": "Antigravity",
+    "details": "Da thiet lap playboard kinh trang lam mac dinh he thong, an cac quadrant go tren skin Brick de hien thi playboard trang.",
+    "status": "Hoan thanh",
+    "id": 10,
+    "timestamp": "2026-06-24 14:33"
+  },
+  {
+    "task": "Chinh sua playboard SSOT & Shape gach moi",
+    "agent": "Antigravity",
+    "details": "Da dua playboard trang ve core SSOT, nang U-shape len 3-1-3 va them L-shape nguoc 3-3.",
+    "status": "Hoan thanh",
+    "id": 9,
+    "timestamp": "2026-06-24 14:30"
+  },
+  {
+    "task": "Đồng bộ hóa dữ liệu Theme & Skin thành SSOT",
+    "agent": "Antigravity",
+    "details": "Đã chuyển đổi skin brick cấu hình cứng thành tệp Resource theme_config.tres độc lập và cập nhật Cell, Block, LineClearParticles để nạp động.",
+    "status": "Hoàn thành",
+    "id": 8,
+    "timestamp": "2026-06-24 14:03"
+  },
+  {
+    "id": 7,
+    "timestamp": "2026-06-24 13:30",
+    "task": "Deploy Web v1.0.8",
+    "agent": "Web Pub Agent",
+    "status": "Hoàn thành",
+    "details": "Biên dịch HTML5 WebAssembly và phát hành cập nhật trực tiếp lên Firebase Hosting."
+  },
+  {
+    "id": 6,
+    "timestamp": "2026-06-24 13:22",
+    "task": "Commit & Tag Release v1.0.8",
+    "agent": "Coding Agent",
+    "status": "Hoàn thành",
+    "details": "Cập nhật mã phiên bản v9 (1.0.8), thực hiện commit và gán tag release v1.0.8 thành công."
+  },
+  {
+    "id": 5,
+    "timestamp": "2026-06-24 12:30",
+    "task": "Bàn giao Source Code v1.0.8",
+    "agent": "Coding Agent",
+    "status": "Hoàn thành",
+    "details": "Tích hợp Ads SDK cho Android/Web và cập nhật cấu hình MainMenu thành công."
+  },
+  {
+    "id": 4,
+    "timestamp": "2026-06-24 13:30",
+    "task": "Publish Android v1.0.8",
+    "agent": "Android Pub Agent",
+    "status": "Hoàn thành",
+    "details": "Build AAB v9 (1.0.8) and published to Play Console Internal Testing track."
+  },
+  {
+    "id": 1,
+    "timestamp": "2026-06-24 12:30",
+    "task": "Tích Hợp Sách Hướng Dẫn Agent (Agent Manual)",
+    "agent": "Coding Agent",
+    "status": "Hoàn thành",
+    "details": "Bổ sung tab tài liệu tra cứu DOM Selectors trực quan giúp Agent tự động hóa tương tác."
+  },
+  {
+    "id": 2,
+    "timestamp": "2026-06-24 12:00",
+    "task": "Tái Cấu Trúc Thành Cổng Multi-Agent (Workflow Portal)",
+    "agent": "Coding Agent",
+    "status": "Hoàn thành",
+    "details": "Chuyển đổi dashboard tĩnh thành cổng thông tin dòng việc, tích hợp flowchart SVG và terminal."
+  },
+  {
+    "id": 3,
+    "timestamp": "2026-06-24 11:30",
+    "task": "Deploy Bản Build Lên Firebase Hosting",
+    "agent": "Web Pub Agent",
+    "status": "Hoàn thành",
+    "details": "Biên dịch tài nguyên và phát hành trực tiếp lên domain foodapp-7ff6b.web.app."
+  }
+]
