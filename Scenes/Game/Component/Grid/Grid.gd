@@ -105,7 +105,7 @@ func place(shape: PieceShape, origin: Vector2i, color: Color) -> int:
 
 
 # Returns {rows, cols, quadrants, cells} for the full lines/quadrants now occupied.
-func compute_clears() -> Dictionary:
+func compute_clears(placed_color: Color = Color.TRANSPARENT) -> Dictionary:
 	var rows: Array[int] = []
 	var cols: Array[int] = []
 	var quadrants: Array[Vector2i] = []
@@ -136,9 +136,23 @@ func compute_clears() -> Dictionary:
 	# BFS Cascade Propagation for linked same-color blocks
 	var queue: Array[Vector2i] = []
 	var visited: Dictionary = {}
+	
+	# Mark all line clearing cells as visited so they are cleared.
 	for cell in cells_to_clear.keys():
-		queue.append(cell)
 		visited[cell] = true
+		
+	# Only start the BFS cascade from cells in the cleared lines that match the placed_color.
+	# If placed_color is TRANSPARENT (fallback), we trigger cascade for all cleared cells.
+	for cell in cells_to_clear.keys():
+		var cell_color = _cells[cell.y][cell.x].occupied_color
+		var matches_placed_color = (
+			placed_color == Color.TRANSPARENT or 
+			(abs(cell_color.r - placed_color.r) < 0.02 and 
+			 abs(cell_color.g - placed_color.g) < 0.02 and 
+			 abs(cell_color.b - placed_color.b) < 0.02)
+		)
+		if matches_placed_color:
+			queue.append(cell)
 
 	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
 	while not queue.is_empty():
