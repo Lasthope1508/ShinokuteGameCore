@@ -204,6 +204,17 @@ const ELEMENT_COLORS: Dictionary = {
 	ElementChainType.SOUL: Color(0.65, 0.1, 0.95)       # Purple
 }
 
+const ELEMENT_VIDEO_PATHS: Dictionary = {
+	ElementChainType.LIGHTNING: "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv",
+	ElementChainType.FIRE: "res://VFX/Groundfire_09_Front_2k_H.264.ogv",
+	ElementChainType.ICE: "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv"
+}
+
+func get_element_video_path(element_type: int) -> String:
+	if ELEMENT_VIDEO_PATHS.has(element_type):
+		return ELEMENT_VIDEO_PATHS[element_type]
+	return ""
+
 func get_element_type_for_color(color: Color) -> int:
 	var min_dist := 999.0
 	var best_element: int = ElementChainType.FIRE

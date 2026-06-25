@@ -320,13 +320,7 @@ func _update_block_connections() -> void:
 
 func _setup_piece_video_stream() -> void:
 	var element_type = ThemeManager.get_element_type_for_color(color)
-	var video_path := ""
-	if element_type == ThemeManager.ElementChainType.LIGHTNING:
-		video_path = "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv"
-	elif element_type == ThemeManager.ElementChainType.FIRE:
-		video_path = "res://VFX/Groundfire_09_Front_2k_H.264.ogv"
-	elif element_type == ThemeManager.ElementChainType.ICE:
-		video_path = "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv"
+	var video_path := ThemeManager.get_element_video_path(element_type)
 		
 	if video_path == "":
 		if video_player != null:

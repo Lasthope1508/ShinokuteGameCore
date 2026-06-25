@@ -1070,7 +1070,8 @@ func _spawn_video_explosion(local_pos: Vector2, video_path: String, color: Color
 
 
 func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
-	_spawn_video_explosion(local_pos, "res://VFX/Groundfire_09_Front_2k_H.264.ogv", Color(1.0, 0.3, 0.15))
+	var path := ThemeManager.get_element_video_path(ThemeManager.ElementChainType.FIRE)
+	_spawn_video_explosion(local_pos, path, Color(1.0, 0.3, 0.15))
 	var scene = load("res://effects/2d_explosion/source/explosion.tscn")
 	if scene:
 		var explosion = scene.instantiate()
@@ -1087,7 +1088,8 @@ func _spawn_fire_clear_vfx(local_pos: Vector2) -> void:
 
 
 func _spawn_lightning_clear_vfx(local_pos: Vector2) -> void:
-	_spawn_video_explosion(local_pos, "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv", Color(1.0, 0.9, 0.25))
+	var path := ThemeManager.get_element_video_path(ThemeManager.ElementChainType.LIGHTNING)
+	_spawn_video_explosion(local_pos, path, Color(1.0, 0.9, 0.25))
 	# Optimized CPUParticles2D for lightning sparks (bypasses heavy GPUParticles2D shaders)
 	var sparks := CPUParticles2D.new()
 	sparks.texture = preload("res://addons/kenney_particle_pack/spark_05.png")
@@ -1224,7 +1226,8 @@ func _spawn_soul_clear_vfx(local_pos: Vector2) -> void:
 
 
 func _spawn_ice_clear_vfx(local_pos: Vector2) -> void:
-	_spawn_video_explosion(local_pos, "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv", Color(0.2, 0.7, 1.0))
+	var path := ThemeManager.get_element_video_path(ThemeManager.ElementChainType.ICE)
+	_spawn_video_explosion(local_pos, path, Color(0.2, 0.7, 1.0))
 	# Frost expanding ring
 	var ring := Sprite2D.new()
 	ring.texture = preload("res://addons/kenney_particle_pack/magic_03.png")
