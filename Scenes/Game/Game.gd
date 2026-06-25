@@ -391,14 +391,16 @@ func _resolve_clears(_origin: Vector2i) -> void:
 	var cells: Array[Vector2i] = clears["cells"]
 	var rows: Array[int] = clears["rows"]
 	var cols: Array[int] = clears["cols"]
-	var quadrants: Array[Vector2i] = clears["quadrants"]
 	if cells.is_empty():
 		GameState.reset_streak()
 		GameState.turns_without_clear += 1
 		return
 
 	GameState.turns_without_clear = 0
-	var combo: int = GameState.compute_combo(rows.size(), cols.size(), quadrants.size())
+	GameState.chain_energy = clamp(GameState.chain_energy + cells.size() * 1.5, 0.0, 100.0)
+	GameState.chain_energy_changed.emit(GameState.chain_energy)
+
+	var combo: int = GameState.compute_combo(rows.size(), cols.size())
 	
 	# Increment streak and calculate pitch scale using pentatonic steps
 	var streak: int = GameState.increment_streak()
@@ -421,19 +423,8 @@ func _resolve_clears(_origin: Vector2i) -> void:
 		var p_start = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, 0)
 		var p_end = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, Grid.SIZE * grid.cell_size)
 		_spawn_slash(p_start, p_end, slash_color)
-		
-	for q in quadrants:
-		# Top-left to bottom-right diagonal
-		var p_start1 = grid._grid_origin + Vector2(q.x * 3 * grid.cell_size, q.y * 3 * grid.cell_size)
-		var p_end1 = grid._grid_origin + Vector2((q.x * 3 + 3) * grid.cell_size, (q.y * 3 + 3) * grid.cell_size)
-		_spawn_slash(p_start1, p_end1, slash_color)
-		
-		# Top-right to bottom-left diagonal
-		var p_start2 = grid._grid_origin + Vector2((q.x * 3 + 3) * grid.cell_size, q.y * 3 * grid.cell_size)
-		var p_end2 = grid._grid_origin + Vector2(q.x * 3 * grid.cell_size, (q.y * 3 + 3) * grid.cell_size)
-		_spawn_slash(p_start2, p_end2, slash_color)
 
-	# Spawn group clear VFX at the midpoint of each row, col, and quadrant in local coordinates
+	# Spawn group clear VFX at the midpoint of each row and col in local coordinates
 	for y in rows:
 		var midpoint_cell = Vector2i(4, y)
 		var cell_color = grid.get_cell_color(midpoint_cell)
@@ -442,12 +433,6 @@ func _resolve_clears(_origin: Vector2i) -> void:
 		
 	for x in cols:
 		var midpoint_cell = Vector2i(x, 4)
-		var cell_color = grid.get_cell_color(midpoint_cell)
-		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
-		_spawn_group_clear_vfx(local_pos, cell_color)
-		
-	for q in quadrants:
-		var midpoint_cell = Vector2i(q.x * 3 + 1, q.y * 3 + 1)
 		var cell_color = grid.get_cell_color(midpoint_cell)
 		var local_pos = grid._grid_origin + Vector2((midpoint_cell.x + 0.5) * grid.cell_size, (midpoint_cell.y + 0.5) * grid.cell_size)
 		_spawn_group_clear_vfx(local_pos, cell_color)
@@ -464,7 +449,7 @@ func _resolve_clears(_origin: Vector2i) -> void:
 		await _spawn_streak_popup(streak)
 
 	var clear_value: int = GameState.award_clears(cells.size(), combo)
-	var magnitude: float = clamp(0.4 + 0.15 * (rows.size() + cols.size() + quadrants.size() * 2), 0.4, 1.0)
+	var magnitude: float = clamp(0.4 + 0.15 * (rows.size() + cols.size()), 0.4, 1.0)
 	_spawn_match_popup(clear_value, magnitude)
 
 
@@ -900,18 +885,18 @@ func _start_tutorial_step_1() -> void:
 	_animate_cursor_hint(1, _tutorial_expected_origin)
 
 
-# Step 2 — single block on (4,4) to clear the center 3x3 quadrant.
+# Step 2 — single block on (4,4) to clear column 4.
 func _start_tutorial_step_2() -> void:
 	_stop_cursor_animation()
 	_tutorial_step = 2
 	_tutorial_expected_origin = Vector2i(4, 4)
 
+	# Pre-fill column 4 except row 4.
 	var fill_color: Color = ThemeManager.get_block_color(5)
-	for y in range(3, 6):
-		for x in range(3, 6):
-			if x == 4 and y == 4:
-				continue
-			grid._fill_single(x, y, fill_color)
+	for y in range(Grid.SIZE):
+		if y == 4:
+			continue
+		grid._fill_single(4, y, fill_color)
 
 	tray.lock_all_except(1)
 	var shape := PieceShape.new()

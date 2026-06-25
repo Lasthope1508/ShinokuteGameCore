@@ -16,6 +16,8 @@ var center_capsule: PanelContainer
 var best_title: Label
 var score_title: Label
 var badge_panel: PanelContainer
+var energy_bar: ProgressBar
+var energy_label: Label
 
 var level_badge: Label
 var progress_bar: ScoreProgressBar
@@ -27,6 +29,7 @@ func _ready() -> void:
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.best_changed.connect(_on_best_changed)
 	GameState.game_reset.connect(_on_game_reset)
+	GameState.chain_energy_changed.connect(_on_energy_changed)
 
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 
@@ -248,6 +251,34 @@ func _setup_layout() -> void:
 		var progress_frame = get_node_or_null("../ProgressFrame")
 		if progress_frame:
 			progress_frame.visible = false
+			
+	# Create Chain Energy Bar programmatically
+	var energy_container = PanelContainer.new()
+	energy_container.name = "EnergyBarContainer"
+	energy_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	energy_container.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	energy_container.custom_minimum_size = Vector2(0, 20)
+	capsule_vbox.add_child(energy_container)
+	
+	energy_bar = ProgressBar.new()
+	energy_bar.name = "EnergyBar"
+	energy_bar.min_value = 0.0
+	energy_bar.max_value = 100.0
+	energy_bar.value = GameState.chain_energy
+	energy_bar.show_percentage = false
+	energy_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	energy_bar.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	energy_container.add_child(energy_bar)
+	
+	energy_label = Label.new()
+	energy_label.name = "EnergyLabel"
+	energy_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	energy_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	energy_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	energy_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	energy_container.add_child(energy_label)
+	
+	_update_energy_text(GameState.chain_energy)
 	
 	# Expanding Spacer Right
 	var spacer_right = Control.new()
@@ -410,6 +441,26 @@ func _update_theme_styles() -> void:
 		replay_button.modulate = Color.WHITE
 	if is_instance_valid(bgm_button):
 		bgm_button.modulate = Color.WHITE
+		
+	# Style Energy Bar
+	if is_instance_valid(energy_bar):
+		var bg_sb = StyleBoxFlat.new()
+		bg_sb.bg_color = Color(0.08, 0.06, 0.15, 0.5)
+		bg_sb.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		energy_bar.add_theme_stylebox_override("background", bg_sb)
+		
+		var fill_sb = StyleBoxFlat.new()
+		fill_sb.bg_color = Color(1.0, 0.65, 0.0) # Neon orange
+		fill_sb.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		fill_sb.shadow_color = Color(1.0, 0.65, 0.0, 0.3)
+		fill_sb.shadow_size = 2
+		energy_bar.add_theme_stylebox_override("fill", fill_sb)
+		
+	if is_instance_valid(energy_label):
+		energy_label.add_theme_color_override("font_color", Color.WHITE)
+		energy_label.add_theme_font_size_override("font_size", 11)
+		energy_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
+		energy_label.add_theme_constant_override("outline_size", 4)
 
 
 func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
@@ -450,5 +501,21 @@ func _on_settings_pressed() -> void:
 func _on_leaderboard_pressed() -> void:
 	AudioManager.play_sfx("button")
 	leaderboard_requested.emit()
+
+
+func _on_energy_changed(new_energy: float) -> void:
+	if is_instance_valid(energy_bar):
+		var tw = create_tween()
+		tw.tween_property(energy_bar, "value", new_energy, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_update_energy_text(new_energy)
+
+
+func _update_energy_text(energy: float) -> void:
+	if is_instance_valid(energy_label):
+		var rounded = int(round(energy))
+		if rounded >= GameState.ROTATION_ENERGY_COST:
+			energy_label.text = "Energy: %d / 100 (Click to Rotate)" % rounded
+		else:
+			energy_label.text = "Energy: %d / 100" % rounded
 
 

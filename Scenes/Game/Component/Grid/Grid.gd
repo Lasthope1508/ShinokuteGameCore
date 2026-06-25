@@ -21,6 +21,7 @@ signal clears_completed
 
 @onready var quadrants_layer: Control = $QuadrantsLayer
 @onready var cells_layer: Control = $CellsLayer
+@onready var links_layer: Control = $LinksLayer
 @onready var popups_layer: Control = $PopupsLayer
 
 var _cells: Array = []          # 9x9 of Cell, indexed [y][x]
@@ -98,6 +99,8 @@ func place(shape: PieceShape, origin: Vector2i, color: Color) -> int:
 		_occupied[p.y][p.x] = true
 		placed.append(p)
 	placement_committed.emit(placed)
+	if links_layer:
+		links_layer.queue_redraw()
 	return placed.size()
 
 
@@ -130,8 +133,26 @@ func compute_clears() -> Dictionary:
 			for y in SIZE:
 				cells_to_clear[Vector2i(x, y)] = true
 
+	# BFS Cascade Propagation for linked same-color blocks
+	var queue: Array[Vector2i] = []
+	var visited: Dictionary = {}
+	for cell in cells_to_clear.keys():
+		queue.append(cell)
+		visited[cell] = true
+
+	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	while not queue.is_empty():
+		var curr: Vector2i = queue.pop_front()
+		for d: Vector2i in dirs:
+			var nbr: Vector2i = curr + d
+			if _in_bounds(nbr) and _occupied[nbr.y][nbr.x]:
+				if not nbr in visited:
+					if _are_cells_same_color(curr, nbr):
+						visited[nbr] = true
+						queue.append(nbr)
+
 	var cell_array: Array[Vector2i] = []
-	for k in cells_to_clear.keys():
+	for k in visited.keys():
 		cell_array.append(k)
 	_last_clear_cells = cell_array
 
@@ -141,6 +162,17 @@ func compute_clears() -> Dictionary:
 		"quadrants": quadrants,
 		"cells": cell_array,
 	}
+
+
+# Helper to check if two adjacent cells have the same color (and are not obstacles)
+func _are_cells_same_color(c1: Vector2i, c2: Vector2i) -> bool:
+	var cell1: Cell = _cells[c1.y][c1.x]
+	var cell2: Cell = _cells[c2.y][c2.x]
+	if cell1.is_obstacle() or cell2.is_obstacle():
+		return false
+	var col1 := cell1.occupied_color
+	var col2 := cell2.occupied_color
+	return abs(col1.r - col2.r) < 0.02 and abs(col1.g - col2.g) < 0.02 and abs(col1.b - col2.b) < 0.02
 
 
 # Animates the removal of `cells`. Awaits a single fixed timer (not per-tween
@@ -219,6 +251,9 @@ func clear_cells(cells: Array[Vector2i]) -> void:
 			max_stagger = delay
 		_occupied[c.y][c.x] = false
 		_cells[c.y][c.x].clear_with_animation(delay)
+
+	if links_layer:
+		links_layer.queue_redraw()
 
 	# Total = longest stagger + bump (0.12) + shake (0.12) + dissolve (0.35) + safety
 	var total_duration: float = max_stagger + 0.65
@@ -470,20 +505,7 @@ func _highlight_potential_clears(shape: PieceShape, origin: Vector2i, piece_colo
 			for y in SIZE:
 				_cells[y][x].show_clear_aura(piece_color)
 
-	for qy in QUADRANT_SIZE:
-		for qx in QUADRANT_SIZE:
-			var full := true
-			for dy in QUADRANT_SIZE:
-				for dx in QUADRANT_SIZE:
-					if not hypothetical[qy * QUADRANT_SIZE + dy][qx * QUADRANT_SIZE + dx]:
-						full = false
-						break
-				if not full:
-					break
-			if full:
-				for dy in QUADRANT_SIZE:
-					for dx in QUADRANT_SIZE:
-						_cells[qy * QUADRANT_SIZE + dy][qx * QUADRANT_SIZE + dx].show_clear_aura(piece_color)
+
 
 
 # Generates random start blocks (Chaos Start) avoiding instant clears.

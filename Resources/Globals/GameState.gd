@@ -9,7 +9,6 @@ const MAX_AD_REWARDS: int = 2
 # Cap on assisted refill re-rolls per run. Past this, the first random draw is
 # accepted as-is so the difficulty curve isn't softened indefinitely.
 const MAX_ASSISTS: int = 3
-const QUADRANT_COMBO_EVENT_WEIGHT: int = 2
 
 signal score_changed(new_score: int, delta: int)
 signal best_changed(new_best: int)
@@ -25,6 +24,10 @@ var current_streak: int = 0
 var start_mode: String = "classic"
 var turns_without_clear: int = 0
 
+const ROTATION_ENERGY_COST: float = 30.0
+var chain_energy: float = 0.0
+signal chain_energy_changed(new_energy: float)
+
 
 func _ready() -> void:
 	best_score = SaveManager.get_best_score()
@@ -38,6 +41,8 @@ func reset_run() -> void:
 	is_game_over = false
 	current_streak = 0
 	turns_without_clear = 0
+	chain_energy = 0.0
+	chain_energy_changed.emit(chain_energy)
 	score_changed.emit(current_score, 0)
 	game_reset.emit()
 
@@ -58,10 +63,9 @@ func award_placement(cells_count: int) -> int:
 	return delta
 
 
-# Combo multiplier = number of clear events (row/col/quadrant) when >= 2, else 1.
-# Each quadrant cleared counts as QUADRANT_COMBO_EVENT_WEIGHT events to reward players.
-func compute_combo(rows_cleared: int, cols_cleared: int, quadrants_cleared: int) -> int:
-	var events: int = rows_cleared + cols_cleared + (quadrants_cleared * QUADRANT_COMBO_EVENT_WEIGHT)
+# Combo multiplier = number of clear events (row/col) when >= 2, else 1.
+func compute_combo(rows_cleared: int, cols_cleared: int) -> int:
+	var events: int = rows_cleared + cols_cleared
 	return events if events >= 2 else 1
 
 

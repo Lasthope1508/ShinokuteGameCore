@@ -31,6 +31,8 @@ var _drag_offset: Vector2 = Vector2.ZERO
 var _origin_parent: Control
 var _origin_position: Vector2 = Vector2.ZERO
 var _last_mouse_global: Vector2 = Vector2.ZERO  # keeps lift smoothing aware of cursor moves
+var _drag_start_time: float = 0.0
+var _drag_start_pos: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -46,7 +48,7 @@ func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
 # Builds the visual blocks and tints them. Idle block size doubles as the
 # hit-test cell size.
 func setup(p_shape: PieceShape, p_color: Color) -> void:
-	shape = p_shape
+	shape = p_shape.duplicate() if p_shape else null
 	color = p_color
 	_clear_blocks()
 	if shape == null:
@@ -118,6 +120,8 @@ func _begin_drag(global_pos: Vector2) -> void:
 		# Drag still works without a layer but the piece may be clipped.
 		push_warning("Piece: drag_layer not set; piece may be clipped")
 	_is_dragging = true
+	_drag_start_time = Time.get_ticks_msec() / 1000.0
+	_drag_start_pos = global_pos
 	_origin_parent = get_parent() as Control
 	_origin_position = position
 
@@ -193,12 +197,39 @@ func _update_drag(global_pos: Vector2) -> void:
 	_emit_hovered_cell()
 
 
-func _end_drag(_global_pos: Vector2) -> void:
+func _end_drag(global_pos: Vector2) -> void:
 	if not _is_dragging:
 		return
 	_is_dragging = false
+	
+	var elapsed = (Time.get_ticks_msec() / 1000.0) - _drag_start_time
+	var dist = global_pos.distance_to(_drag_start_pos)
+	if elapsed < 0.25 and dist < 10.0:
+		# Tap/Click to rotate
+		if GameState.chain_energy >= GameState.ROTATION_ENERGY_COST:
+			GameState.chain_energy -= GameState.ROTATION_ENERGY_COST
+			GameState.chain_energy_changed.emit(GameState.chain_energy)
+			rotate_clockwise()
+			AudioManager.play_sfx("button")
+		else:
+			AudioManager.play_sfx("invalid")
+			
+		bounce_back()
+		return
+		
 	var origin := _hovered_cell()
 	drop_requested.emit(self, origin)
+
+
+func rotate_clockwise() -> void:
+	if not shape:
+		return
+	var rotated_cells: Array[Vector2i] = []
+	for c in shape.cells:
+		rotated_cells.append(Vector2i(-c.y, c.x))
+	shape.cells = rotated_cells
+	shape.cells = shape.get_normalized_cells()
+	setup(shape, color)
 
 
 func _emit_hovered_cell() -> void:
