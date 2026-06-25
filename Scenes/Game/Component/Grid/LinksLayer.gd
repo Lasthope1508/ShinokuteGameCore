@@ -9,9 +9,9 @@ var _glow_shader: Shader
 var _line_pool: Array[Line2D] = []
 var _active_lines_count: int = 0
 
-var _video_pool: Array[Control] = []
-var _active_videos_count: int = 0
-const TINT_SHADER := preload("res://Assets/Shaders/video_tint.gdshader")
+var _outline_pool: Array[Line2D] = []
+var _active_outlines_count: int = 0
+const RAINBOW_OUTLINE_SHADER := preload("res://Assets/Shaders/rainbow_outline.gdshader")
 
 # Map elements to Kenney pack textures, scrolling speeds, and widths
 var ELEMENT_LINK_CONFIGS = {
@@ -170,48 +170,82 @@ func _update_links() -> void:
 		_line_pool[i].visible = false
 		
 	# Selectively toggle video core players for connected components of the same color
-	_update_video_cores()
+	_update_group_outlines()
 
 
-func _create_video_container_in_pool() -> Control:
-	var container = Control.new()
-	container.name = "VideoMaskContainer"
-	container.clip_children = CanvasItem.CLIP_CHILDREN_ONLY
-	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	
-	var player = VideoStreamPlayer.new()
-	player.autoplay = true
-	player.loop = true
-	player.expand = true
-	player.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	player.volume_db = -80.0
+func _create_outline_in_pool() -> Line2D:
+	var line = Line2D.new()
+	line.name = "RainbowOutline"
 	
 	var mat := ShaderMaterial.new()
-	mat.shader = TINT_SHADER
-	player.material = mat
+	mat.shader = RAINBOW_OUTLINE_SHADER
+	mat.set_shader_parameter("speed", 1.5)
+	mat.set_shader_parameter("frequency", 1.0)
+	mat.set_shader_parameter("glow_power", 2.0)
+	line.material = mat
 	
-	container.add_child(player)
-	container.draw.connect(_on_grid_video_mask_draw.bind(container))
+	line.texture_mode = Line2D.LINE_TEXTURE_STRETCH
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	line.width = 8.0
+	line.visible = false
 	
-	add_child(container)
-	_video_pool.append(container)
-	return container
+	add_child(line)
+	_outline_pool.append(line)
+	return line
 
 
-func _on_grid_video_mask_draw(container: Control) -> void:
-	if not container.has_meta("mask_cells"):
-		return
-	var mask_cells = container.get_meta("mask_cells")
-	var min_x = container.get_meta("min_x")
-	var min_y = container.get_meta("min_y")
-	var c_size = container.get_meta("cell_size")
-	for cell in mask_cells:
-		var local_x = (cell.x - min_x) * c_size
-		var local_y = (cell.y - min_y) * c_size
-		container.draw_rect(Rect2(local_x, local_y, c_size, c_size), Color.WHITE)
+func _trace_boundary(cells: Array) -> PackedVector2Array:
+	if cells.is_empty():
+		return PackedVector2Array()
+		
+	var cell_set = {}
+	for pos in cells:
+		cell_set[Vector2i(pos.x, pos.y)] = true
+		
+	var start_to_end = {}
+	for c in cells:
+		var tl = Vector2(c.x, c.y)
+		var tr = Vector2(c.x + 1, c.y)
+		var br = Vector2(c.x + 1, c.y + 1)
+		var bl = Vector2(c.x, c.y + 1)
+		
+		if not Vector2i(c.x, c.y - 1) in cell_set:
+			start_to_end[tl] = tr
+		if not Vector2i(c.x + 1, c.y) in cell_set:
+			start_to_end[tr] = br
+		if not Vector2i(c.x, c.y + 1) in cell_set:
+			start_to_end[br] = bl
+		if not Vector2i(c.x - 1, c.y) in cell_set:
+			start_to_end[bl] = tl
+			
+	if start_to_end.is_empty():
+		return PackedVector2Array()
+		
+	var start_cell = cells[0]
+	for c in cells:
+		if c.y < start_cell.y or (c.y == start_cell.y and c.x < start_cell.x):
+			start_cell = c
+	var start_vertex = Vector2(start_cell.x, start_cell.y)
+	
+	var path = PackedVector2Array()
+	var curr = start_vertex
+	
+	for i in range(start_to_end.size() + 2):
+		path.append(curr)
+		if not start_to_end.has(curr):
+			break
+		var next_vertex = start_to_end[curr]
+		if next_vertex == start_vertex:
+			path.append(next_vertex)
+			break
+		curr = next_vertex
+		
+	return path
 
 
-func _update_video_cores() -> void:
+func _update_group_outlines() -> void:
 	var visited = []
 	for y in range(Grid.SIZE):
 		var row = []
@@ -219,7 +253,8 @@ func _update_video_cores() -> void:
 			row.append(false)
 		visited.append(row)
 		
-	_active_videos_count = 0
+	_active_outlines_count = 0
+	var cell_size: int = grid.cell_size
 	
 	for y in range(Grid.SIZE):
 		for x in range(Grid.SIZE):
@@ -249,74 +284,32 @@ func _update_video_cores() -> void:
 									visited[n.y][n.x] = true
 									queue.append(n)
 									
-			# Determine video stream path for this component's color
-			var color = cell.occupied_color
-			var element_type = ThemeManager.get_element_type_for_color(color)
-			var video_path := ThemeManager.get_element_video_path(element_type)
-				
-			if video_path == "":
+			# Trace and draw outline
+			var path_vertices = _trace_boundary(component)
+			if path_vertices.is_empty():
 				continue
 				
-			# Find bounding box
-			var min_x = component[0].x
-			var max_x = component[0].x
-			var min_y = component[0].y
-			var max_y = component[0].y
-			for pos in component:
-				min_x = min(min_x, pos.x)
-				max_x = max(max_x, pos.x)
-				min_y = min(min_y, pos.y)
-				max_y = max(max_y, pos.y)
+			var line: Line2D
+			if _active_outlines_count < _outline_pool.size():
+				line = _outline_pool[_active_outlines_count]
+			else:
+				line = _create_outline_in_pool()
 				
-			_show_video_core(video_path, color, component, min_x, min_y, max_x, max_y)
+			_active_outlines_count += 1
+			line.visible = true
 			
-	# Hide unused video players in the pool
-	for i in range(_active_videos_count, _video_pool.size()):
-		var container = _video_pool[i]
-		if container.visible:
-			container.visible = false
-			var player = container.get_child(0) as VideoStreamPlayer
-			player.stop()
-
-
-func _show_video_core(video_path: String, color: Color, component_cells: Array, min_x: int, min_y: int, max_x: int, max_y: int) -> void:
-	var container: Control
-	if _active_videos_count < _video_pool.size():
-		container = _video_pool[_active_videos_count]
-	else:
-		container = _create_video_container_in_pool()
-		
-	_active_videos_count += 1
-	container.visible = true
-	
-	var player: VideoStreamPlayer = container.get_child(0) as VideoStreamPlayer
-	
-	var current_stream_path = ""
-	if player.stream:
-		current_stream_path = player.stream.resource_path
-		
-	if current_stream_path != video_path:
-		player.stream = load(video_path)
-		player.play()
-	elif not player.is_playing():
-		player.play()
-		
-	var cell_size: int = grid.cell_size
-	var W = max_x - min_x + 1
-	var H = max_y - min_y + 1
-	
-	container.position = grid._grid_origin + Vector2(min_x, min_y) * cell_size
-	container.size = Vector2(W * cell_size, H * cell_size)
-	
-	player.position = Vector2.ZERO
-	player.size = container.size
-	player.material.set_shader_parameter("target_color", color)
-	
-	container.set_meta("mask_cells", component_cells)
-	container.set_meta("min_x", min_x)
-	container.set_meta("min_y", min_y)
-	container.set_meta("cell_size", cell_size)
-	container.queue_redraw()
+			var pixel_points = PackedVector2Array()
+			for v in path_vertices:
+				pixel_points.append(grid._grid_origin + v * cell_size)
+				
+			line.points = pixel_points
+			
+			# Render the outline on top of everything
+			move_child(line, get_child_count() - 1)
+			
+	# Hide unused outlines in the pool
+	for i in range(_active_outlines_count, _outline_pool.size()):
+		_outline_pool[i].visible = false
 
 
 func _draw_flowing_link(from: Vector2, to: Vector2, color: Color) -> void:
