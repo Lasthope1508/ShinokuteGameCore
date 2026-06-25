@@ -210,7 +210,7 @@ const ELEMENT_VIDEO_PATHS: Dictionary = {
 	ElementChainType.ICE: "res://VFX/Energy_Burst_07_Front_2K_H.264.ogv"
 }
 
-const THOR_LIGHTNING_VIDEO_PATH = "res://VFX/Thor_Lightning_Ground_Strike_08_4K_H.264.ogv"
+const THOR_LIGHTNING_VIDEO_PATH = "res://VFX/lightning_boltarc_01_2k_v1_H.264.ogv"
 
 func get_element_video_path(element_type: int) -> String:
 	if ELEMENT_VIDEO_PATHS.has(element_type):

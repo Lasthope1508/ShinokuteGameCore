@@ -4,6 +4,7 @@ render_mode blend_add;
 uniform float speed = 1.0;
 uniform float frequency = 1.0;
 uniform float glow_power = 2.0;
+uniform bool use_rainbow = true;
 uniform bool use_lightning = false;
 uniform vec4 block_color : source_color = vec4(1.0);
 
@@ -18,13 +19,15 @@ void fragment() {
 	float glow = sin(UV.y * 3.14159265);
 	glow = pow(glow, glow_power);
 	
-	vec4 rainbow_color = vec4(rainbow, glow);
+	vec4 final_color = vec4(0.0);
+	
+	if (use_rainbow) {
+		final_color = vec4(rainbow, glow);
+	}
 	
 	if (use_lightning) {
-		// Swap UV.x and UV.y so the vertical lightning strike in the video
-		// runs along the length of the Line2D path instead of crossing it.
-		vec2 lightning_uv = vec2(UV.y, UV.x);
-		vec4 tex = texture(TEXTURE, lightning_uv);
+		// Sample texture using standard UV (which tiles naturally along the Line2D)
+		vec4 tex = texture(TEXTURE, UV);
 		
 		// Modulate lightning by block color
 		vec3 lightning_color = tex.rgb * block_color.rgb * 3.0;
@@ -32,10 +35,13 @@ void fragment() {
 		// Use the brightness of the lightning (length of RGB) as its luma key mask
 		float lightning_mask = clamp(length(tex.rgb) * 1.5, 0.0, 1.0);
 		
-		final_color.rgb = mix(rainbow_color.rgb, lightning_color, lightning_mask);
-		final_color.a = max(rainbow_color.a, lightning_mask) * glow;
-	} else {
-		final_color = rainbow_color;
+		if (use_rainbow) {
+			final_color.rgb = mix(final_color.rgb, lightning_color, lightning_mask);
+			final_color.a = max(final_color.a, lightning_mask * glow);
+		} else {
+			final_color.rgb = lightning_color;
+			final_color.a = lightning_mask * glow;
+		}
 	}
 	
 	COLOR = final_color;
