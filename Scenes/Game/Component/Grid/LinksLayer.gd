@@ -14,6 +14,7 @@ var _active_outlines_count: int = 0
 const RAINBOW_OUTLINE_SHADER := preload("res://Assets/Shaders/rainbow_outline.gdshader")
 var _video_pool: Array[VideoStreamPlayer] = []
 var _active_videos_count: int = 0
+var _white_texture: Texture2D
 
 # Map elements to Kenney pack textures, scrolling speeds, and widths
 var ELEMENT_LINK_CONFIGS = {
@@ -88,6 +89,11 @@ func _ready() -> void:
 	}
 	"""
 
+	
+	# Create a dummy white texture to ensure Godot generates valid UVs
+	var img = Image.create(2, 2, false, Image.FORMAT_RGBA8)
+	img.fill(Color.WHITE)
+	_white_texture = ImageTexture.create_from_image(img)
 	
 	# Pre-populate node pool with 32 lines to prevent runtime allocations
 	for i in range(32):
@@ -186,11 +192,12 @@ func _create_outline_in_pool() -> Line2D:
 	mat.set_shader_parameter("glow_power", 2.0)
 	line.material = mat
 	
-	line.texture_mode = Line2D.LINE_TEXTURE_TILE
+	line.texture = _white_texture
+	line.texture_mode = Line2D.LINE_TEXTURE_STRETCH
 	line.joint_mode = Line2D.LINE_JOINT_ROUND
 	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	line.end_cap_mode = Line2D.LINE_CAP_ROUND
-	line.width = 2.0
+	line.width = 3.0
 	line.visible = false
 	
 	add_child(line)
@@ -351,9 +358,9 @@ func _update_group_outlines() -> void:
 				
 			line.points = pixel_points
 			
-			# Configure shader uniforms: just slowly running rainbow aura (no texture)
+			# Configure shader uniforms: just slowly running rainbow aura (using white texture for UVs)
 			var mat = line.material as ShaderMaterial
-			line.texture = null
+			line.texture = _white_texture
 			if mat:
 				mat.set_shader_parameter("use_lightning", false)
 				mat.set_shader_parameter("use_rainbow", true)

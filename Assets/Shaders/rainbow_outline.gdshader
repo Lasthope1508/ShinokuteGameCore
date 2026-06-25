@@ -1,5 +1,4 @@
 shader_type canvas_item;
-render_mode blend_add;
 
 uniform float speed = 1.0;
 uniform float frequency = 1.0;
@@ -22,7 +21,8 @@ void fragment() {
 	vec4 final_color = vec4(0.0);
 	
 	if (use_rainbow) {
-		final_color = vec4(rainbow, glow);
+		// Use a combination of solid color and slight edge softening for high visibility
+		final_color = vec4(rainbow, smoothstep(0.0, 0.1, UV.y) * smoothstep(1.0, 0.9, UV.y));
 	}
 	
 	if (use_lightning) {
