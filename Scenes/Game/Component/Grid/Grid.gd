@@ -39,7 +39,7 @@ func _ready() -> void:
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_update_theme()
 	cells_layer.z_index = 10
-	links_layer.z_index = 9
+	links_layer.z_index = 11
 
 
 

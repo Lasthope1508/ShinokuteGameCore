@@ -35,8 +35,7 @@ var _drag_start_time: float = 0.0
 var _drag_start_pos: Vector2 = Vector2.ZERO
 var _glow_shader: Shader
 
-var outline_line: Line2D = null
-const RAINBOW_OUTLINE_SHADER := preload("res://Assets/Shaders/rainbow_outline.gdshader")
+
 
 
 func _ready() -> void:
@@ -298,7 +297,6 @@ func _reparent_to(new_parent: Control) -> void:
 func _clear_blocks() -> void:
 	for c in get_children():
 		c.queue_free()
-	outline_line = null
 
 
 func _update_block_connections() -> void:
@@ -316,106 +314,6 @@ func _update_block_connections() -> void:
 			b.set_connections(conn_left, conn_right, conn_up, conn_down)
 		i += 1
 	_update_internal_lightning()
-	_setup_piece_outline()
-
-
-func _setup_piece_outline() -> void:
-	if shape == null:
-		if outline_line != null:
-			outline_line.queue_free()
-			outline_line = null
-		return
-		
-	if outline_line == null:
-		outline_line = Line2D.new()
-		outline_line.name = "RainbowOutline"
-		
-		# Set up custom shader material for the 7-color aura
-		var mat := ShaderMaterial.new()
-		mat.shader = RAINBOW_OUTLINE_SHADER
-		mat.set_shader_parameter("speed", 1.5)
-		mat.set_shader_parameter("frequency", 1.0)
-		mat.set_shader_parameter("glow_power", 2.0)
-		outline_line.material = mat
-		
-		# Use stretch mode so UV.x maps from 0 to 1 along the line path
-		outline_line.texture_mode = Line2D.LINE_TEXTURE_STRETCH
-		outline_line.joint_mode = Line2D.LINE_JOINT_ROUND
-		outline_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-		outline_line.end_cap_mode = Line2D.LINE_CAP_ROUND
-		
-		# Make it a beautiful neon glow line
-		outline_line.width = 8.0
-		
-		add_child(outline_line)
-		
-	# Compute and trace the boundary outline
-	var cells = shape.get_normalized_cells()
-	var path_vertices = _trace_boundary(cells)
-	
-	# Convert vertices to local pixel coordinates
-	var b_size := idle_block_size
-	if _is_dragging:
-		b_size = drag_block_size
-		
-	var local_points = PackedVector2Array()
-	for v in path_vertices:
-		local_points.append(Vector2(v.x * b_size, v.y * b_size))
-		
-	outline_line.points = local_points
-	
-	# Render the border outline on top of the block texture
-	move_child(outline_line, get_child_count() - 1)
-
-
-func _trace_boundary(cells: Array[Vector2i]) -> PackedVector2Array:
-	if cells.is_empty():
-		return PackedVector2Array()
-		
-	var cell_set = {}
-	for pos in cells:
-		cell_set[pos] = true
-		
-	var start_to_end = {}
-	for c in cells:
-		var tl = Vector2(c.x, c.y)
-		var tr = Vector2(c.x + 1, c.y)
-		var br = Vector2(c.x + 1, c.y + 1)
-		var bl = Vector2(c.x, c.y + 1)
-		
-		if not Vector2i(c.x, c.y - 1) in cell_set:
-			start_to_end[tl] = tr
-		if not Vector2i(c.x + 1, c.y) in cell_set:
-			start_to_end[tr] = br
-		if not Vector2i(c.x, c.y + 1) in cell_set:
-			start_to_end[br] = bl
-		if not Vector2i(c.x - 1, c.y) in cell_set:
-			start_to_end[bl] = tl
-			
-	if start_to_end.is_empty():
-		return PackedVector2Array()
-		
-	# Start at top-leftmost cell
-	var start_cell = cells[0]
-	for c in cells:
-		if c.y < start_cell.y or (c.y == start_cell.y and c.x < start_cell.x):
-			start_cell = c
-	var start_vertex = Vector2(start_cell.x, start_cell.y)
-	
-	var path = PackedVector2Array()
-	var curr = start_vertex
-	
-	for i in range(start_to_end.size() + 2):
-		path.append(curr)
-		if not start_to_end.has(curr):
-			break
-		var next_vertex = start_to_end[curr]
-		if next_vertex == start_vertex:
-			path.append(next_vertex) # close loop
-			break
-		curr = next_vertex
-		
-	return path
 
 
 func _update_internal_lightning() -> void:

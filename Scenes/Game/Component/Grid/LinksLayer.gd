@@ -180,7 +180,7 @@ func _create_outline_in_pool() -> Line2D:
 	
 	var mat := ShaderMaterial.new()
 	mat.shader = RAINBOW_OUTLINE_SHADER
-	mat.set_shader_parameter("speed", 1.5)
+	mat.set_shader_parameter("speed", 0.4)
 	mat.set_shader_parameter("frequency", 1.0)
 	mat.set_shader_parameter("glow_power", 2.0)
 	line.material = mat
@@ -189,7 +189,7 @@ func _create_outline_in_pool() -> Line2D:
 	line.joint_mode = Line2D.LINE_JOINT_ROUND
 	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	line.end_cap_mode = Line2D.LINE_CAP_ROUND
-	line.width = 8.0
+	line.width = 2.0
 	line.visible = false
 	
 	add_child(line)
@@ -320,7 +320,10 @@ func _update_group_outlines() -> void:
 		var component = comp_data["component"]
 		var color = comp_data["color"]
 		
-		# Trace and draw outline
+		# Trace and draw outline if the component has 8 or more blocks
+		if component.size() < 8:
+			continue
+			
 		var path_vertices = _trace_boundary(component)
 		if path_vertices.is_empty():
 			continue
