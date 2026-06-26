@@ -1,5 +1,21 @@
 [
   {
+    "task": "Commit & Tag release",
+    "agent": "Antigravity",
+    "details": "Fix obstacle HP / grid occupancy desync bug and save/restore obstacle HP. Bump version to 1.0.31 (Code 22).",
+    "status": "Hoan thanh",
+    "id": 103,
+    "timestamp": "2026-06-26 15:56"
+  },
+  {
+    "task": "Commit & Tag release",
+    "agent": "Antigravity",
+    "details": "Da thuc hien commit cac thay doi va tao tag release v1.0.30 cho phien ban Android/Web.",
+    "status": "Hoan thanh",
+    "id": 102,
+    "timestamp": "2026-06-26 15:02"
+  },
+  {
     "task": "Build Web & Deploy Firebase",
     "agent": "Antigravity",
     "details": "Xuất bản Web HTML5 của game BloxChain và deploy thành công lên Firebase Hosting.",

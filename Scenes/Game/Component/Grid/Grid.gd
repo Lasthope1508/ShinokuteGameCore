@@ -266,8 +266,14 @@ func clear_cells(cells: Array[Vector2i]) -> void:
 		var delay: float = min_dist * 0.12
 		if delay > max_stagger:
 			max_stagger = delay
-		_occupied[c.y][c.x] = false
-		_cells[c.y][c.x].clear_with_animation(delay)
+		
+		var cell_node = _cells[c.y][c.x]
+		if cell_node.is_obstacle() and cell_node.obstacle_hp > 1:
+			# Cell survives damage, keep it occupied in grid memory
+			pass
+		else:
+			_occupied[c.y][c.x] = false
+		cell_node.clear_with_animation(delay)
 
 	if links_layer:
 		links_layer.queue_redraw()
@@ -336,16 +342,18 @@ func get_popups_layer() -> Control:
 
 # --- Save / load helpers --------------------------------------------------
 
-# Serializable list of occupied cells: [{"x", "y", "color": "#rrggbbaa"}].
+# Serializable list of occupied cells: [{"x", "y", "color": "#rrggbbaa", "obstacle_hp": int}].
 func snapshot_grid_state() -> Array:
 	var out: Array = []
 	for y in SIZE:
 		for x in SIZE:
 			if _occupied[y][x]:
+				var cell_node = _cells[y][x] as Cell
 				out.append({
 					"x": x,
 					"y": y,
-					"color": (_cells[y][x] as Cell).occupied_color.to_html(),
+					"color": cell_node.occupied_color.to_html(),
+					"obstacle_hp": cell_node.obstacle_hp
 				})
 	return out
 
@@ -357,15 +365,19 @@ func restore_grid_state(state: Array) -> void:
 		var x: int = int(entry.get("x", -1))
 		var y: int = int(entry.get("y", -1))
 		var color: Color = Color(str(entry.get("color", "#ffffffff")))
-		_fill_single(x, y, color)
+		var hp: int = int(entry.get("obstacle_hp", 0))
+		_fill_single(x, y, color, hp)
 
 
-func _fill_single(x: int, y: int, color: Color) -> void:
+func _fill_single(x: int, y: int, color: Color, hp: int = 0) -> void:
 	if not _in_bounds(Vector2i(x, y)):
 		return
 	if _occupied[y][x]:
 		return
-	(_cells[y][x] as Cell).fill(color)
+	if hp > 0:
+		(_cells[y][x] as Cell).fill_obstacle(hp)
+	else:
+		(_cells[y][x] as Cell).fill(color)
 	_occupied[y][x] = true
 
 
