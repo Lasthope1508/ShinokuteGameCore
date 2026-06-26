@@ -12,9 +12,9 @@ signal tray_refilled
 var grid: Grid
 var drag_layer: Control
 
-@onready var slot1: PieceSlot = $HBox/PieceSlot1
-@onready var slot2: PieceSlot = $HBox/PieceSlot2
-@onready var slot3: PieceSlot = $HBox/PieceSlot3
+@onready var slot1: PieceSlot = $ContentVBox/HBox/PieceSlot1
+@onready var slot2: PieceSlot = $ContentVBox/HBox/PieceSlot2
+@onready var slot3: PieceSlot = $ContentVBox/HBox/PieceSlot3
 
 var _slots: Array[PieceSlot] = []
 var _library: PieceLibrary

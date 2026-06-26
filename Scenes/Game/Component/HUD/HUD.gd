@@ -252,33 +252,17 @@ func _setup_layout() -> void:
 		if progress_frame:
 			progress_frame.visible = false
 			
-	# Create Chain Energy Bar programmatically
-	var energy_container = PanelContainer.new()
-	energy_container.name = "EnergyBarContainer"
-	energy_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	energy_container.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	energy_container.custom_minimum_size = Vector2(0, 20)
-	capsule_vbox.add_child(energy_container)
-	
-	energy_bar = ProgressBar.new()
-	energy_bar.name = "EnergyBar"
-	energy_bar.min_value = 0.0
-	energy_bar.max_value = 100.0
-	energy_bar.value = GameState.chain_energy
-	energy_bar.show_percentage = false
-	energy_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	energy_bar.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	energy_container.add_child(energy_bar)
-	
-	energy_label = Label.new()
-	energy_label.name = "EnergyLabel"
-	energy_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	energy_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	energy_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	energy_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	energy_container.add_child(energy_label)
-	
-	_update_energy_text(GameState.chain_energy)
+	# Retrieve the statically defined Energy Bar from the PieceTray (Tray sibling)
+	var tray = get_node_or_null("../Tray")
+	if tray:
+		energy_bar = tray.get_node_or_null("ContentVBox/EnergyBarContainer/EnergyBar")
+		energy_label = tray.get_node_or_null("ContentVBox/EnergyBarContainer/EnergyLabel")
+		
+		# Set current value
+		if is_instance_valid(energy_bar):
+			energy_bar.value = GameState.chain_energy
+			
+		_update_energy_text(GameState.chain_energy)
 	
 	# Expanding Spacer Right
 	var spacer_right = Control.new()

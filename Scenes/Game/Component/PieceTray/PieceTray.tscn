@@ -4,25 +4,48 @@
 [ext_resource type="PackedScene" path="res://Scenes/Game/Component/PieceTray/PieceSlot.tscn" id="2_slot"]
 
 [node name="PieceTray" type="MarginContainer"]
-custom_minimum_size = Vector2(0, 220)
+custom_minimum_size = Vector2(0, 252)
 mouse_filter = 1
 script = ExtResource("1_tray")
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_right = 32
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="ContentVBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBox" type="HBoxContainer" parent="ContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
 mouse_filter = 1
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="PieceSlot1" parent="HBox" instance=ExtResource("2_slot")]
+[node name="PieceSlot1" parent="ContentVBox/HBox" instance=ExtResource("2_slot")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PieceSlot2" parent="HBox" instance=ExtResource("2_slot")]
+[node name="PieceSlot2" parent="ContentVBox/HBox" instance=ExtResource("2_slot")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PieceSlot3" parent="HBox" instance=ExtResource("2_slot")]
+[node name="PieceSlot3" parent="ContentVBox/HBox" instance=ExtResource("2_slot")]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="EnergyBarContainer" type="PanelContainer" parent="ContentVBox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="EnergyBar" type="ProgressBar" parent="ContentVBox/EnergyBarContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+min_value = 0.0
+max_value = 100.0
+show_percentage = false
+
+[node name="EnergyLabel" type="Label" parent="ContentVBox/EnergyBarContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1

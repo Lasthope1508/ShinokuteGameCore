@@ -1,5 +1,37 @@
 [
   {
+    "task": "Bàn giao Release v1.0.26",
+    "agent": "Coding Agent",
+    "details": "Cập nhật mã phiên bản v17 (1.0.26), cấu hình lại project.godot, đóng gói source mới nhất, gán tag release v1.0.26 và bàn giao quyền phát hành cho Android Pub Agent & Web Pub Agent.",
+    "status": "Hoàn thành",
+    "id": 87,
+    "timestamp": "2026-06-26 08:18"
+  },
+  {
+    "task": "Điều chỉnh layout Thanh Năng Lượng",
+    "agent": "Coding Agent",
+    "details": "Dời thanh năng lượng xuống dưới khay gạch chuẩn bị (PieceTray) và căn chỉnh chiều dài co giãn trùng khớp với khay gạch.",
+    "status": "Hoàn thành",
+    "id": 86,
+    "timestamp": "2026-06-26 08:01"
+  },
+  {
+    "task": "HTML5 Web Build & Firebase Hosting Deploy (v1.0.25)",
+    "agent": "Antigravity",
+    "details": "Export HTML5 Web build, optimize asset pack size by excluding debug files (index.pck ~44.4 MB), copy to reskin_dashboard/game/, patch references and deploy to Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 85,
+    "timestamp": "2026-06-26 07:42"
+  },
+  {
+    "task": "Publish Android v1.0.25 (Code 16)",
+    "agent": "Antigravity",
+    "details": "Upload signed Android App Bundle (bloxchain.aab) version 1.0.25 (Code 16) to Google Play Console Internal Testing track and roll out successfully.",
+    "status": "Hoàn thành",
+    "id": 84,
+    "timestamp": "2026-06-26 07:42"
+  },
+  {
     "task": "Bàn giao Release v1.0.25",
     "agent": "Coding Agent",
     "details": "Đã thực hiện cập nhật mã phiên bản v16 (1.0.25), gộp các thay đổi nâng cấp PieceTray phân phối gạch theo điểm, gán tag release v1.0.25 và bàn giao quyền phát hành.",
