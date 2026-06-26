@@ -37,9 +37,20 @@ func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
 	pass
 
 
+# Centralized base volume offsets (in dB) for specific SFX to achieve a balanced audio mix.
+const SFX_VOLUME_OFFSETS := {
+	"clear": -8.0,
+	"combo": -8.0,
+	"popup": -3.0,
+	"drop": -2.0,
+	"pick": -1.0,
+	"button": -2.0,
+	"invalid": -4.0,
+}
+
 # Plays a SFX by name; no-ops if missing. `pitch_variation` (0..1) randomizes
-# pitch_scale within ±variation around custom_pitch.
-func play_sfx(sfx_name: String, pitch_variation: float = 0.0, custom_pitch: float = 1.0) -> void:
+# pitch_scale within ±variation around custom_pitch. `volume_offset_db` adds runtime db adjustments.
+func play_sfx(sfx_name: String, pitch_variation: float = 0.0, custom_pitch: float = 1.0, volume_offset_db: float = 0.0) -> void:
 	var stream := _get_sfx(sfx_name)
 	if stream == null:
 		return
@@ -52,6 +63,10 @@ func play_sfx(sfx_name: String, pitch_variation: float = 0.0, custom_pitch: floa
 		player.pitch_scale = custom_pitch + randf_range(-v, v)
 	else:
 		player.pitch_scale = custom_pitch
+		
+	# Apply central volume balance adjustments
+	var base_offset = SFX_VOLUME_OFFSETS.get(sfx_name, 0.0)
+	player.volume_db = base_offset + volume_offset_db
 	player.play()
 
 
@@ -149,7 +164,7 @@ func toggle_music_mute() -> bool:
 func apply_saved_volumes() -> void:
 	_set_bus_volume(BUS_MASTER, SaveManager.get_volume(BUS_MASTER, 1.0))
 	_set_bus_volume(BUS_MUSIC, SaveManager.get_volume(BUS_MUSIC, 0.7))
-	_set_bus_volume(BUS_SFX, SaveManager.get_volume(BUS_SFX, 0.85))
+	_set_bus_volume(BUS_SFX, SaveManager.get_volume(BUS_SFX, 0.65))
 
 
 func set_bus_volume(bus_name: String, linear_value: float) -> void:
@@ -161,7 +176,7 @@ func set_bus_volume(bus_name: String, linear_value: float) -> void:
 func get_bus_volume(bus_name: String) -> float:
 	var default_val := 1.0
 	if bus_name == BUS_SFX:
-		default_val = 0.85
+		default_val = 0.65
 	elif bus_name == BUS_MUSIC:
 		default_val = 0.7
 	return SaveManager.get_volume(bus_name, default_val)

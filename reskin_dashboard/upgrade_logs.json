@@ -1,5 +1,29 @@
 [
   {
+    "task": "Submit HTML5 to CrazyGames and Y8.com",
+    "agent": "Antigravity",
+    "details": "Hoan thanh submit game BloxChain len CrazyGames va Y8.com",
+    "status": "Hoan thanh",
+    "id": 106,
+    "timestamp": "2026-06-26 16:21"
+  },
+  {
+    "task": "Build Web & Deploy Firebase",
+    "agent": "Antigravity",
+    "details": "Xuất bản Web HTML5 của game BloxChain (v1.0.31) và deploy thành công lên Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 105,
+    "timestamp": "2026-06-26 16:17"
+  },
+  {
+    "task": "Build AAB & Publish Play Console",
+    "agent": "Antigravity",
+    "details": "Đóng gói AAB bản 1.0.31 (Code 22), tối ưu hóa dung lượng và phát hành thành công lên Google Play Console (Internal Testing Track).",
+    "status": "Hoàn thành",
+    "id": 104,
+    "timestamp": "2026-06-26 16:17"
+  },
+  {
     "task": "Commit & Tag release",
     "agent": "Antigravity",
     "details": "Fix obstacle HP / grid occupancy desync bug and save/restore obstacle HP. Bump version to 1.0.31 (Code 22).",
