@@ -1,5 +1,21 @@
 [
   {
+    "task": "Bàn giao Release v1.0.25",
+    "agent": "Coding Agent",
+    "details": "Đã thực hiện cập nhật mã phiên bản v16 (1.0.25), gộp các thay đổi nâng cấp PieceTray phân phối gạch theo điểm, gán tag release v1.0.25 và bàn giao quyền phát hành.",
+    "status": "Hoàn thành",
+    "id": 83,
+    "timestamp": "2026-06-26 07:02"
+  },
+  {
+    "task": "Nâng cấp Gameplay (Piece Tray Tiers)",
+    "agent": "Coding Agent",
+    "details": "Cập nhật _get_slot_allowed_tiers() trong PieceTray.gd để trộn gạch Tier 2 từ đầu game.",
+    "status": "Hoàn thành",
+    "id": 82,
+    "timestamp": "2026-06-26 06:58"
+  },
+  {
     "task": "VFX Centralization (SSOT) & Tag Release v1.0.24",
     "agent": "Antigravity",
     "details": "Centralized all elemental and fallback clear/pop VFX to ThemeManager.gd. Refactored Game.gd to load them dynamically. Stripped all video-based VFX and VideoStreamPlayer loading logic, and reverted row/col clear midpoint VFX to the clean original circular pop. Bumped version to 1.0.24 (Android code 15) and tagged release v1.0.24.",

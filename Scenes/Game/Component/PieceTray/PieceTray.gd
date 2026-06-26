@@ -296,15 +296,24 @@ func _random_color() -> Color:
 
 # Helper to determine allowed tiers for a given slot index based on current score
 func _get_slot_allowed_tiers(slot_idx: int, score: int) -> Array[int]:
-	if score < 500:
-		# Early game: all slots are Tier 1 (Easy)
-		return [1]
-	elif score < 1200:
-		# Mid game
+	if score < 100:
+		# First ~5 placement turns — basic familiarization
 		match slot_idx:
 			0: return [1]
 			1: return [1, 2]
 			2: return [2]
+	elif score < 500:
+		# Warm-up phase — Tier 2 mandatory on slot 2 & 3
+		match slot_idx:
+			0: return [1]
+			1: return [2]
+			2: return [2]
+	elif score < 1200:
+		# Mid game — slot 3 can now pull Tier 3
+		match slot_idx:
+			0: return [1]
+			1: return [2]
+			2: return [2, 3]
 	elif score < 2500:
 		# Late game
 		match slot_idx:
