@@ -116,22 +116,28 @@ func compute_clears(placed_color: Color = Color.TRANSPARENT) -> Dictionary:
 
 	for y in SIZE:
 		var full := true
+		var has_player_block := false
 		for x in SIZE:
 			if not _occupied[y][x]:
 				full = false
 				break
-		if full:
+			if not _cells[y][x].is_obstacle():
+				has_player_block = true
+		if full and has_player_block:
 			rows.append(y)
 			for x in SIZE:
 				cells_to_clear[Vector2i(x, y)] = true
 
 	for x in SIZE:
 		var full := true
+		var has_player_block := false
 		for y in SIZE:
 			if not _occupied[y][x]:
 				full = false
 				break
-		if full:
+			if not _cells[y][x].is_obstacle():
+				has_player_block = true
+		if full and has_player_block:
 			cols.append(x)
 			for y in SIZE:
 				cells_to_clear[Vector2i(x, y)] = true
@@ -513,21 +519,37 @@ func _highlight_potential_clears(shape: PieceShape, origin: Vector2i, piece_colo
 
 	for y in SIZE:
 		var full := true
+		var has_player_block := false
 		for x in SIZE:
 			if not hypothetical[y][x]:
 				full = false
 				break
-		if full:
+			var lands_here = false
+			for offset in shape.cells:
+				if origin + offset == Vector2i(x, y):
+					lands_here = true
+					break
+			if lands_here or not _cells[y][x].is_obstacle():
+				has_player_block = true
+		if full and has_player_block:
 			for x in SIZE:
 				_cells[y][x].show_clear_aura(piece_color)
 
 	for x in SIZE:
 		var full := true
+		var has_player_block := false
 		for y in SIZE:
 			if not hypothetical[y][x]:
 				full = false
 				break
-		if full:
+			var lands_here = false
+			for offset in shape.cells:
+				if origin + offset == Vector2i(x, y):
+					lands_here = true
+					break
+			if lands_here or not _cells[y][x].is_obstacle():
+				has_player_block = true
+		if full and has_player_block:
 			for y in SIZE:
 				_cells[y][x].show_clear_aura(piece_color)
 

@@ -2,6 +2,22 @@
   {
     "task": "Commit & Tag release",
     "agent": "Antigravity",
+    "details": "Require at least one player block to clear a row/column, preventing obstacles from clearing themselves on idle. Bump version to 1.0.34 (Code 25).",
+    "status": "Hoan thanh",
+    "id": 109,
+    "timestamp": "2026-06-26 18:41"
+  },
+  {
+    "agent": "Antigravity",
+    "task": "Publish Amazon Appstore v1.0.33",
+    "status": "Hoàn thành",
+    "details": "Đã upload signed Android App Bundle (bloxchain.aab) phiên bản v1.0.33 (code 24) lên Amazon Developer Console và submit thành công.",
+    "id": 108,
+    "timestamp": "2026-06-26 17:29"
+  },
+  {
+    "task": "Commit & Tag release",
+    "agent": "Antigravity",
     "details": "Reset clear streak on shifting clears and accelerate meteor timer countdown (2x) when board is > 70% occupied. Bump version to 1.0.33 (Code 24).",
     "status": "Hoan thanh",
     "id": 107,
