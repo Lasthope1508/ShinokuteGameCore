@@ -2,6 +2,14 @@
   {
     "task": "Build AAB & Publish Play Console",
     "agent": "Antigravity",
+    "details": "Đã compile và publish thành công Android App Bundle (bloxchain.aab) tối ưu hóa v1.0.35 (Code 26) giảm dung lượng từ 146MB xuống còn 90.8MB (tiết kiệm ~35% dung lượng).",
+    "status": "Hoàn thành",
+    "id": 111,
+    "timestamp": "2026-06-26 19:05"
+  },
+  {
+    "task": "Build AAB & Publish Play Console",
+    "agent": "Antigravity",
     "details": "Đã compile và publish thành công Android App Bundle (bloxchain.aab) v1.0.34 (Code 25) lên Google Play Console track Internal Testing.",
     "status": "Hoàn thành",
     "id": 110,
