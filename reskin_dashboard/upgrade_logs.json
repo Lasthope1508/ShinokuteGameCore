@@ -1,5 +1,13 @@
 [
   {
+    "task": "Commit & Tag release",
+    "agent": "Antigravity",
+    "details": "Reset clear streak on shifting clears and accelerate meteor timer countdown (2x) when board is > 70% occupied. Bump version to 1.0.33 (Code 24).",
+    "status": "Hoan thanh",
+    "id": 107,
+    "timestamp": "2026-06-26 16:55"
+  },
+  {
     "task": "Submit HTML5 to CrazyGames and Y8.com",
     "agent": "Antigravity",
     "details": "Hoan thanh submit game BloxChain len CrazyGames va Y8.com",

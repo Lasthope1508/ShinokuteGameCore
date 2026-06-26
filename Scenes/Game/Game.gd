@@ -915,7 +915,12 @@ func _process(delta: float) -> void:
 
 	# Process Chaos Mode countdown
 	if GameState.start_mode == "chaos" and not GameState.is_game_over and not _is_chaos_transitioning and _tutorial_step == 0:
-		_chaos_time_left -= delta
+		var speed_multiplier := 1.0
+		if is_instance_valid(grid):
+			var occupied_count = grid.get_occupied_cell_count()
+			if float(occupied_count) / 81.0 > 0.70:
+				speed_multiplier = 2.0
+		_chaos_time_left -= delta * speed_multiplier
 		if hud:
 			hud.update_chaos_timer(_chaos_time_left, _chaos_max_time)
 		if _chaos_time_left <= 0.0:
@@ -1419,6 +1424,7 @@ func _drop_initial_demo_block() -> void:
 
 
 func _resolve_shifting_clears() -> void:
+	GameState.reset_streak()
 	var clears = grid.compute_clears(Color.TRANSPARENT)
 	var cells = clears["cells"]
 	if cells.is_empty():
