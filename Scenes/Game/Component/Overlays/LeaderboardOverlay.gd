@@ -1,6 +1,6 @@
 ## Controller for the regional leaderboard overlay. Displays top 15 ranks
 ## divided into World, Continent, and Country tabs.
-extends Control
+extends CanvasLayer
 
 @onready var close_button: TextureButton = $Panel/CloseButton
 @onready var world_tab: Button = $Panel/Margin/VBox/Tabs/WorldTab
@@ -33,7 +33,7 @@ func _ready() -> void:
 	_update_my_highest()
 		
 	# Connect resize
-	resized.connect(_on_resized)
+	get_viewport().size_changed.connect(_on_resized)
 	_on_resized()
 	
 	# Initial fetch
@@ -107,7 +107,7 @@ func _apply_styles() -> void:
 
 
 func _on_resized() -> void:
-	var parent_size = size
+	var parent_size = get_viewport().get_visible_rect().size
 	var max_w = parent_size.x - 40.0
 	var max_h = parent_size.y - 120.0
 	var min_panel_size = $Panel.get_combined_minimum_size()

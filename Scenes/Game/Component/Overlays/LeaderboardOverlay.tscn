@@ -3,13 +3,8 @@
 [ext_resource type="Script" path="res://Scenes/Game/Component/Overlays/LeaderboardOverlay.gd" id="1_leaderboard"]
 [ext_resource type="Texture2D" uid="uid://dqest0gxyyqcu" path="res://Assets/Icons/cross.png" id="2_close"]
 
-[node name="LeaderboardOverlay" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="LeaderboardOverlay" type="CanvasLayer"]
+layer = 55
 script = ExtResource("1_leaderboard")
 
 [node name="Backdrop" type="ColorRect" parent="."]

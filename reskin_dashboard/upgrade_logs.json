@@ -1,5 +1,13 @@
 [
   {
+    "task": "Sửa hiển thị Overlays & Bàn giao Release v1.0.27",
+    "agent": "Coding Agent",
+    "details": "Chuyển LeaderboardOverlay từ Control sang CanvasLayer (layer 55) để sửa lỗi hiển thị nằm dưới playboard. Cập nhật mã phiên bản v18 (1.0.27) và gán tag release v1.0.27.",
+    "status": "Hoàn thành",
+    "id": 88,
+    "timestamp": "2026-06-26 08:40"
+  },
+  {
     "task": "Bàn giao Release v1.0.26",
     "agent": "Coding Agent",
     "details": "Cập nhật mã phiên bản v17 (1.0.26), cấu hình lại project.godot, đóng gói source mới nhất, gán tag release v1.0.26 và bàn giao quyền phát hành cho Android Pub Agent & Web Pub Agent.",
