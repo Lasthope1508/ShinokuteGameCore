@@ -89,7 +89,7 @@ func show_game_over() -> void:
 	
 	# Automatically submit best score to regional online leaderboard
 	if GameState.best_score > 0:
-		LeaderboardManager.submit_score(GameState.best_score)
+		LeaderboardManager.submit_score(GameState.best_score, GameState.start_mode)
 		
 	open()
 

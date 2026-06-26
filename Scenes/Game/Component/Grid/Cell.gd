@@ -30,6 +30,8 @@ var _block_material: ShaderMaterial
 var _preview_material: ShaderMaterial
 
 var is_clearing: bool = false
+var obstacle_hp: int = 0
+var hp_label: Label
 
 
 var _orig_texture: Texture2D
@@ -65,15 +67,41 @@ func _ready() -> void:
 
 func reset_cell() -> void:
 	occupied = false
+	obstacle_hp = 0
 	is_clearing = false
 	block.visible = false
+	if hp_label != null:
+		hp_label.visible = false
 	clear_preview()
 	clear_clear_hint()
 	_update_theme()
 
 
 func is_obstacle() -> bool:
-	return occupied and abs(occupied_color.r - 0.4) < 0.01 and abs(occupied_color.g - 0.4) < 0.01 and abs(occupied_color.b - 0.4) < 0.01
+	return occupied and (obstacle_hp > 0 or (abs(occupied_color.r - 0.4) < 0.01 and abs(occupied_color.g - 0.4) < 0.01 and abs(occupied_color.b - 0.4) < 0.01))
+
+
+func update_hp_display() -> void:
+	if obstacle_hp > 1:
+		if hp_label == null:
+			hp_label = Label.new()
+			hp_label.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
+			hp_label.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
+			hp_label.anchors_preset = Control.PRESET_FULL_RECT
+			hp_label.anchor_right = 1.0
+			hp_label.anchor_bottom = 1.0
+			hp_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
+			hp_label.grow_vertical = Control.GROW_DIRECTION_BOTH
+			hp_label.add_theme_font_size_override("font_size", 22)
+			hp_label.add_theme_color_override("font_color", Color.WHITE)
+			hp_label.add_theme_color_override("font_outline_color", Color.BLACK)
+			hp_label.add_theme_constant_override("outline_size", 6)
+			add_child(hp_label)
+		hp_label.text = str(obstacle_hp)
+		hp_label.visible = true
+	else:
+		if hp_label != null:
+			hp_label.visible = false
 
 
 func _update_theme() -> void:
@@ -116,7 +144,8 @@ func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
 func _update_texture_for_color(rect: TextureRect, color: Color) -> void:
 	# Detect and apply custom 9Router obstacle texture for starting blocks
 	if abs(color.r - 0.4) < 0.01 and abs(color.g - 0.4) < 0.01 and abs(color.b - 0.4) < 0.01:
-		var index := (cell_x + cell_y * 9) % OBSTACLE_TEXTURES.size()
+		var hp_val = max(1, obstacle_hp)
+		var index = clamp(hp_val - 1, 0, OBSTACLE_TEXTURES.size() - 1)
 		var obstacle_tex = OBSTACLE_TEXTURES[index]
 		if obstacle_tex:
 			rect.texture = obstacle_tex
@@ -141,11 +170,12 @@ func _update_texture_for_color(rect: TextureRect, color: Color) -> void:
 func fill(color: Color) -> void:
 	occupied = true
 	occupied_color = color
+	obstacle_hp = 0
+	update_hp_display()
 	_update_texture_for_color(block, color)
 	var active_theme = ThemeManager.get_active_theme()
 	if active_theme:
 		block.modulate = block.modulate * active_theme.placed_block_modulate
-
 	else:
 		block.modulate = block.modulate * Color(0.92, 0.92, 0.92, 1.0)
 	block.visible = true
@@ -153,10 +183,56 @@ func fill(color: Color) -> void:
 	_update_theme()
 
 
+func fill_obstacle(hp: int) -> void:
+	occupied = true
+	occupied_color = Color(0.4, 0.4, 0.4, 1.0)
+	obstacle_hp = hp
+	update_hp_display()
+	_update_texture_for_color(block, occupied_color)
+	block.visible = true
+	block.scale = Vector2.ONE
+	_update_theme()
+
+
 ## Elastic "bump → cracking tilt & shake" followed by dissolving from the center outwards.
 func clear_with_animation(delay: float = 0.0) -> Tween:
+	var tw := create_tween()
+	if delay > 0.0:
+		tw.tween_interval(delay)
+		
+	var orig_pos = block.position
+
+	if is_obstacle() and obstacle_hp > 1:
+		obstacle_hp -= 1
+		update_hp_display()
+		_update_texture_for_color(block, occupied_color)
+		
+		# Play magical hit sound
+		AudioManager.play_sfx("obstacle_hit")
+		
+		# Hard shake and flash animation
+		block.pivot_offset = block.size * 0.5
+		
+		# Flash and shake
+		tw.tween_property(block, "modulate", Color(1.8, 0.4, 0.2), 0.08)
+		tw.parallel().tween_property(block, "position", orig_pos + Vector2(randf_range(-6, 6), randf_range(-6, 6)), 0.04)
+		tw.tween_property(block, "position", orig_pos + Vector2(randf_range(-6, 6), randf_range(-6, 6)), 0.04)
+		
+		tw.tween_callback(func() -> void:
+			_spawn_magic_sparks()
+		)
+		
+		# Return to normal stone color modulated
+		tw.tween_property(block, "modulate", Color.WHITE, 0.15)
+		tw.parallel().tween_property(block, "position", orig_pos, 0.1)
+		
+		tw.tween_interval(0.1)
+		return tw
+
 	is_clearing = true
 	occupied = false
+	obstacle_hp = 0
+	update_hp_display()
 	preview.visible = false
 	highlight.visible = false
 	_update_theme()
@@ -165,16 +241,11 @@ func clear_with_animation(delay: float = 0.0) -> Tween:
 	var spin_dir: float = 1.0 if randf() > 0.5 else -1.0
 	var spin_first: float = deg_to_rad(25.0) * spin_dir
 
-	var tw := create_tween()
-	if delay > 0.0:
-		tw.tween_interval(delay)
-
 	# Phase 1 — elastic bump + tilt.
 	tw.tween_property(block, "scale", Vector2(1.25, 1.25), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(block, "rotation", spin_first, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 	# Phase 1.5 — Cracking Jitter Shake (Tactile high-frequency vibration)
-	var orig_pos = block.position
 	tw.tween_property(block, "position", orig_pos + Vector2(-3, 2), 0.02)
 	tw.tween_property(block, "position", orig_pos + Vector2(3, -2), 0.02)
 	tw.tween_property(block, "position", orig_pos + Vector2(-2, -3), 0.02)

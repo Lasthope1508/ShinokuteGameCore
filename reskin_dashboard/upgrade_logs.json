@@ -1,5 +1,109 @@
 [
   {
+    "task": "Build Web & Deploy Firebase",
+    "agent": "Antigravity",
+    "details": "Xuất bản Web HTML5 của game BloxChain và deploy thành công lên Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 101,
+    "timestamp": "2026-06-26 14:54"
+  },
+  {
+    "task": "Build AAB & Publish Play Console",
+    "agent": "Antigravity",
+    "details": "Đóng gói AAB bản 1.0.30 (Code 21), tối ưu hóa dung lượng và phát hành thành công lên Google Play Console (Internal Testing Track).",
+    "status": "Hoàn thành",
+    "id": 100,
+    "timestamp": "2026-06-26 14:54"
+  },
+  {
+    "task": "Tach bang xep hang Classic va Chaos",
+    "agent": "Antigravity",
+    "details": "Da tach biet luu tru local, Firestore collections va thiet ke giao dien Chaos Board cao cap.",
+    "status": "Hoan thanh",
+    "id": 99,
+    "timestamp": "2026-06-26 14:38"
+  },
+  {
+    "task": "Unique HP Visual Mapping",
+    "agent": "Antigravity",
+    "details": "Triển khai đồng bộ độc bản 1-1 giữa chỉ số máu HP và hình ảnh texture thiên thạch, loại bỏ lựa chọn ngẫu nhiên",
+    "status": "Hoàn thành",
+    "id": 98,
+    "timestamp": "2026-06-26 13:42"
+  },
+  {
+    "task": "Fix Visual HP mapping",
+    "agent": "Antigravity",
+    "details": "Đồng bộ 1-1 giữa máu và hình ảnh của thiên thạch, hỗ trợ thay đổi hình ảnh theo độ hư hại",
+    "status": "Hoàn thành",
+    "id": 97,
+    "timestamp": "2026-06-26 13:34"
+  },
+  {
+    "task": "Fix Drag & Unlimited Scaling",
+    "agent": "Antigravity",
+    "details": "Sửa lỗi active drag desync và triển khai tăng thiên thạch không giới hạn",
+    "status": "Hoàn thành",
+    "id": 96,
+    "timestamp": "2026-06-26 13:28"
+  },
+  {
+    "task": "Chaos Mode meteor size scaling",
+    "agent": "Antigravity",
+    "details": "Meteors now scale in size (Tier 0 to Tier 3) depending on remaining obstacle cells on the playboard. Clean boards conserve the previous meteor size.",
+    "status": "Hoàn thành",
+    "id": 95,
+    "timestamp": "2026-06-26 12:29"
+  },
+  {
+    "task": "Chaos Mode backgrounds",
+    "agent": "Antigravity",
+    "details": "Generated 5 dynamic devastation backgrounds and implemented grid obstacle count tracking with smooth cross-fades.",
+    "status": "Hoàn thành",
+    "id": 94,
+    "timestamp": "2026-06-26 12:14"
+  },
+  {
+    "task": "Nâng cấp Chaos Mode: Tăng SFX Volume & Shatter Blocks",
+    "agent": "Coding Agent",
+    "details": "Tăng volume SFX mặc định lên 0.85. Khi meteor rớt xuống, các block sẽ tách rời thành từng ô đơn vị 1x1 và văng theo hướng ngẫu nhiên để gây bất lợi cho người chơi. Chaos mode bắt đầu bằng việc rơi khối demo 2x2 ở giữa, không tạo sẵn 20 block.",
+    "status": "Hoàn thành",
+    "id": 93,
+    "timestamp": "2026-06-26 11:56"
+  },
+  {
+    "task": "Nâng cấp Meteor Drop & Shifting trong Chaos Mode",
+    "agent": "Coding Agent",
+    "details": "Nén âm thanh Meteor.wav thành sfx_obstacle_fall.wav 240KB. Thêm hiệu ứng meteor rơi phóng to thu nhỏ từ 1.5x về 1.0x, khi va chạm (impact) mới kích hoạt văng gạch ra 4 cạnh, đè gạch và cộng điểm nhỏ.",
+    "status": "Hoàn thành",
+    "id": 92,
+    "timestamp": "2026-06-26 11:51"
+  },
+  {
+    "task": "HTML5 Web Build & Firebase Hosting Deploy (v1.0.27)",
+    "agent": "Antigravity",
+    "details": "Export HTML5 Web build, optimize asset pack size by excluding debug files (index.pck ~44.4 MB), copy to reskin_dashboard/game/, patch references and deploy to Firebase Hosting.",
+    "status": "Hoàn thành",
+    "id": 91,
+    "timestamp": "2026-06-26 11:20"
+  },
+  {
+    "task": "Publish Android v1.0.27 (Code 18)",
+    "agent": "Antigravity",
+    "details": "Upload signed Android App Bundle (bloxchain.aab) version 1.0.27 (Code 18) to Google Play Console Internal Testing track and roll out successfully.",
+    "status": "Hoàn thành",
+    "id": 90,
+    "timestamp": "2026-06-26 11:20"
+  },
+  {
+    "task": "Freeze & Backup Phiên bản v1.0.27",
+    "agent": "Coding Agent",
+    "details": "Chốt mã nguồn ổn định phiên bản v1.0.27 (tag v1.0.27), tạo thư mục backup vật lý Game_Backup_v1.0.27 trên Desktop.",
+    "status": "Hoàn thành",
+    "id": 89,
+    "timestamp": "2026-06-26 11:17"
+  },
+  {
     "task": "Sửa hiển thị Overlays & Bàn giao Release v1.0.27",
     "agent": "Coding Agent",
     "details": "Chuyển LeaderboardOverlay từ Control sang CanvasLayer (layer 55) để sửa lỗi hiển thị nằm dưới playboard. Cập nhật mã phiên bản v18 (1.0.27) và gán tag release v1.0.27.",

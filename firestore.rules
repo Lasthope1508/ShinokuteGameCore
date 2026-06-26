@@ -4,5 +4,8 @@ service cloud.firestore {
     match /leaderboard/{document} {
       allow read, write: if true;
     }
+    match /leaderboard_chaos/{document} {
+      allow read, write: if true;
+    }
   }
 }

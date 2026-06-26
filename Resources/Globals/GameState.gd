@@ -43,7 +43,9 @@ func reset_run() -> void:
 	turns_without_clear = 0
 	chain_energy = 0.0
 	chain_energy_changed.emit(chain_energy)
+	best_score = SaveManager.get_best_score(start_mode)
 	score_changed.emit(current_score, 0)
+	best_changed.emit(best_score)
 	game_reset.emit()
 
 
@@ -82,7 +84,7 @@ func trigger_game_over() -> void:
 	is_game_over = true
 	if current_score > best_score:
 		best_score = current_score
-		SaveManager.set_best_score(best_score)
+		SaveManager.set_best_score(best_score, start_mode)
 		best_changed.emit(best_score)
 	game_over.emit()
 
@@ -102,7 +104,7 @@ func _add_score(delta: int) -> void:
 	score_changed.emit(current_score, delta)
 	if current_score > best_score:
 		best_score = current_score
-		SaveManager.set_best_score(best_score)
+		SaveManager.set_best_score(best_score, start_mode)
 		best_changed.emit(best_score)
 
 

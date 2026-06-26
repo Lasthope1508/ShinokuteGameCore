@@ -30,6 +30,8 @@ const GENERAL_SFX_MAP: Dictionary = {
 	"gameover": preload("res://Audio/SFX/sfx_gameover.wav"),
 	"timeout": preload("res://Audio/SFX/sfx_timeout.wav"),
 	"fail": preload("res://Audio/SFX/sfx_fail.wav"),
+	"obstacle_fall": preload("res://Audio/SFX/sfx_obstacle_fall.wav"),
+	"obstacle_hit": preload("res://Audio/SFX/sfx_obstacle_hit.wav"),
 }
 
 var active_theme_name: String = DEFAULT_THEME

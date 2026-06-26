@@ -68,6 +68,8 @@ func play_music() -> void:
 	if _music_player.playing:
 		return
 	var path = "res://Audio/Music/Gameplay.ogg"
+	if GameState.start_mode == "chaos":
+		path = "res://Audio/Music/Death race mode.ogg"
 	if not ResourceLoader.exists(path):
 		return
 	var stream := load(path) as AudioStream
@@ -89,6 +91,9 @@ func stop_music() -> void:
 var _current_music_mode: String = "" # "relax" or "danger"
 
 func set_music_mode(mode: String) -> void:
+	if GameState.start_mode == "chaos":
+		# Always keep Death race mode in Chaos Mode
+		return
 	if _current_music_mode == mode:
 		return
 	_current_music_mode = mode
@@ -144,7 +149,7 @@ func toggle_music_mute() -> bool:
 func apply_saved_volumes() -> void:
 	_set_bus_volume(BUS_MASTER, SaveManager.get_volume(BUS_MASTER, 1.0))
 	_set_bus_volume(BUS_MUSIC, SaveManager.get_volume(BUS_MUSIC, 0.7))
-	_set_bus_volume(BUS_SFX, SaveManager.get_volume(BUS_SFX, 0.5))
+	_set_bus_volume(BUS_SFX, SaveManager.get_volume(BUS_SFX, 0.85))
 
 
 func set_bus_volume(bus_name: String, linear_value: float) -> void:
@@ -156,7 +161,7 @@ func set_bus_volume(bus_name: String, linear_value: float) -> void:
 func get_bus_volume(bus_name: String) -> float:
 	var default_val := 1.0
 	if bus_name == BUS_SFX:
-		default_val = 0.5
+		default_val = 0.85
 	elif bus_name == BUS_MUSIC:
 		default_val = 0.7
 	return SaveManager.get_volume(bus_name, default_val)

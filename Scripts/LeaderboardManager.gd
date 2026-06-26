@@ -2,7 +2,7 @@
 ## using the Firebase Firestore REST API.
 extends Node
 
-signal leaderboard_loaded(tab: String, scores: Array)
+signal leaderboard_loaded(tab: String, scores: Array, mode: String)
 signal score_submitted(success: bool)
 signal geolocation_resolved
 
@@ -18,6 +18,7 @@ var _geo_request: HTTPRequest
 var _submit_request: HTTPRequest
 var _query_request: HTTPRequest
 var _is_submitting: bool = false
+var _submit_queue: Array = []
 
 func _ready() -> void:
 	# Load cached geo data first
@@ -45,11 +46,14 @@ func _ready() -> void:
 	if player_country_code == "":
 		resolve_geolocation()
 		
-	# Auto-submit high score if it has not been submitted yet
-	var best = SaveManager.get_best_score()
-	if best > SaveManager.get_last_submitted_score():
-		submit_score(best)
-
+	# Auto-submit high scores if they have not been submitted yet
+	var best_classic = SaveManager.get_best_score("classic")
+	if best_classic > SaveManager.get_last_submitted_score("classic"):
+		submit_score(best_classic, "classic")
+		
+	var best_chaos = SaveManager.get_best_score("chaos")
+	if best_chaos > SaveManager.get_last_submitted_score("chaos"):
+		submit_score(best_chaos, "chaos")
 
 
 func resolve_geolocation() -> void:
@@ -60,18 +64,33 @@ func resolve_geolocation() -> void:
 		push_warning("LeaderboardManager: Failed to start geo request (err %d)" % err)
 
 
-func submit_score(score: int) -> void:
+func submit_score(score: int, mode: String = GameState.start_mode) -> void:
 	if score <= 0:
 		return
 		
-	if score <= SaveManager.get_last_submitted_score():
-		print("LeaderboardManager: Score %d is not higher than last submitted score (%d). Skipping." % [score, SaveManager.get_last_submitted_score()])
+	if score <= SaveManager.get_last_submitted_score(mode):
+		print("LeaderboardManager: Score %d is not higher than last submitted score (%d) for %s. Skipping." % [score, SaveManager.get_last_submitted_score(mode), mode])
 		return
 		
-	if _is_submitting:
-		print("LeaderboardManager: Score submission already in progress. Skipping.")
+	# Check if mode is already queued
+	for item in _submit_queue:
+		if item["mode"] == mode:
+			if score > item["score"]:
+				item["score"] = score # Queue the higher score
+			return
+			
+	_submit_queue.append({"score": score, "mode": mode})
+	_process_submit_queue()
+
+
+func _process_submit_queue() -> void:
+	if _is_submitting or _submit_queue.is_empty():
 		return
 		
+	var next = _submit_queue.pop_front()
+	var score = next["score"]
+	var mode = next["mode"]
+	
 	var username = SaveManager.get_username()
 	if username == "":
 		username = "Player_%s" % SaveManager.get_device_uuid().substr(0, 5)
@@ -96,42 +115,40 @@ func submit_score(score: int) -> void:
 		"Content-Type: application/json"
 	]
 	
-	# We use the device_id as the document ID in Firestore!
-	# This ensures each player (device) can only have ONE entry in the leaderboard collection,
-	# and writing again will overwrite/update their score!
-	var url = FIRESTORE_DOCS_URL + "/leaderboard/" + device_id + "?key=" + FIRESTORE_API_KEY
+	var collection = "leaderboard_chaos" if mode == "chaos" else "leaderboard"
+	var url = FIRESTORE_DOCS_URL + "/" + collection + "/" + device_id + "?key=" + FIRESTORE_API_KEY
 	
 	_is_submitting = true
 	_submit_request.set_meta("submitted_score", score)
+	_submit_request.set_meta("submitted_mode", mode)
 	
-	print("LeaderboardManager: Submitting score %d for %s (device: %s)..." % [score, username, device_id])
-	# Send a PATCH request to create or replace the document (writes to Firestore)
+	print("LeaderboardManager: Submitting score %d for %s (mode: %s, collection: %s, device: %s)..." % [score, username, mode, collection, device_id])
 	var err = _submit_request.request(url, headers, HTTPClient.METHOD_PATCH, JSON.stringify(document))
 	if err != OK:
 		_is_submitting = false
 		push_warning("LeaderboardManager: Failed to start score submit request (err %d)" % err)
 		score_submitted.emit(false)
+		_process_submit_queue()
 
 
-
-func fetch_leaderboard(tab: String) -> void:
+func fetch_leaderboard(tab: String, mode: String = GameState.start_mode) -> void:
 	# Auto-submit any unsubmitted high score first
-	var best = SaveManager.get_best_score()
+	var best = SaveManager.get_best_score(mode)
 	if _is_submitting:
 		print("LeaderboardManager: A score submission is already in progress. Waiting for it...")
 		await score_submitted
-	elif best > SaveManager.get_last_submitted_score():
-		print("LeaderboardManager: Found unsubmitted high score %d. Submitting first..." % best)
-		submit_score(best)
+	elif best > SaveManager.get_last_submitted_score(mode):
+		print("LeaderboardManager: Found unsubmitted high score %d for %s. Submitting first..." % [best, mode])
+		submit_score(best, mode)
 		await score_submitted
 		
 	# tab can be: "world", "continent", "country"
 	var query_url = FIRESTORE_DOCS_URL + ":runQuery?key=" + FIRESTORE_API_KEY
-
+	var collection = "leaderboard_chaos" if mode == "chaos" else "leaderboard"
 	
 	var structured_query = {
 		"structuredQuery": {
-			"from": [{"collectionId": "leaderboard"}],
+			"from": [{"collectionId": collection}],
 			"orderBy": [{
 				"field": {"fieldPath": "score"},
 				"direction": "DESCENDING"
@@ -162,14 +179,15 @@ func fetch_leaderboard(tab: String) -> void:
 		"Content-Type: application/json"
 	]
 	
-	# Save the active tab as metadata in the request (so we can pass it to the callback)
+	# Save the active tab and mode as metadata in the request
 	_query_request.set_meta("active_tab", tab)
+	_query_request.set_meta("active_mode", mode)
 	
-	print("LeaderboardManager: Fetching leaderboard tab: %s..." % tab)
+	print("LeaderboardManager: Fetching leaderboard tab: %s (mode: %s, collection: %s)..." % [tab, mode, collection])
 	var err = _query_request.request(query_url, headers, HTTPClient.METHOD_POST, JSON.stringify(structured_query))
 	if err != OK:
 		push_warning("LeaderboardManager: Failed to start query request (err %d)" % err)
-		leaderboard_loaded.emit(tab, [])
+		leaderboard_loaded.emit(tab, [], mode)
 
 
 # Callbacks
@@ -205,24 +223,27 @@ func _on_geo_request_completed(result: int, response_code: int, headers: PackedS
 	geolocation_resolved.emit()
 
 
-
 func _on_submit_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	_is_submitting = false
+	var submitted_mode = _submit_request.get_meta("submitted_mode") if _submit_request.has_meta("submitted_mode") else "classic"
 	if result == HTTPRequest.RESULT_SUCCESS and (response_code == 200 or response_code == 201 or response_code == 204):
-		print("LeaderboardManager: Score submitted successfully! Response code: %d" % response_code)
+		print("LeaderboardManager: Score submitted successfully for %s! Response code: %d" % [submitted_mode, response_code])
 		var submitted_score = _submit_request.get_meta("submitted_score") if _submit_request.has_meta("submitted_score") else 0
-		if submitted_score > SaveManager.get_last_submitted_score():
-			SaveManager.set_last_submitted_score(submitted_score)
+		if submitted_score > SaveManager.get_last_submitted_score(submitted_mode):
+			SaveManager.set_last_submitted_score(submitted_score, submitted_mode)
 		score_submitted.emit(true)
 	else:
 		var body_str = body.get_string_from_utf8()
-		push_warning("LeaderboardManager: Score submission failed (result %d, response code %d). Body: %s" % [result, response_code, body_str])
+		push_warning("LeaderboardManager: Score submission failed for %s (result %d, response code %d). Body: %s" % [submitted_mode, result, response_code, body_str])
 		score_submitted.emit(false)
-
+		
+	# Process next queue item
+	_process_submit_queue()
 
 
 func _on_query_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var tab = _query_request.get_meta("active_tab") if _query_request.has_meta("active_tab") else "world"
+	var mode = _query_request.get_meta("active_mode") if _query_request.has_meta("active_mode") else "classic"
 	var parsed_scores = []
 	
 	if result == HTTPRequest.RESULT_SUCCESS and response_code == 200:
@@ -245,8 +266,8 @@ func _on_query_request_completed(result: int, response_code: int, headers: Packe
 								"country_code": country_code,
 								"country_name": country_name
 							})
-		print("LeaderboardManager: Fetched %d scores for tab %s successfully!" % [parsed_scores.size(), tab])
+		print("LeaderboardManager: Fetched %d scores for tab %s (%s) successfully!" % [parsed_scores.size(), tab, mode])
 	else:
 		var body_str = body.get_string_from_utf8()
 		push_warning("LeaderboardManager: Query failed (result %d, response code %d). Body: %s" % [result, response_code, body_str])
-	leaderboard_loaded.emit(tab, parsed_scores)
+	leaderboard_loaded.emit(tab, parsed_scores, mode)

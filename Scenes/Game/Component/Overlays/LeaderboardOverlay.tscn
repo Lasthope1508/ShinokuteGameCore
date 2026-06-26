@@ -52,6 +52,19 @@ theme_type_variation = "HeaderMedium"
 text = "LEADERBOARD"
 horizontal_alignment = 1
 
+[node name="ModeSelector" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ClassicBtn" type="Button" parent="Panel/Margin/VBox/ModeSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Basic Board"
+
+[node name="ChaosBtn" type="Button" parent="Panel/Margin/VBox/ModeSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Chaos Board"
 
 [node name="StatusLabel" type="Label" parent="Panel/Margin/VBox"]
 layout_mode = 2

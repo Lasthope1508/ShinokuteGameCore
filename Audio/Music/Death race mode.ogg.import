@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://copwi7n1uiw7x"
+path="res://.godot/imported/Death race mode.ogg-fe0f3ec52171a23568a77deeca2ea998.oggvorbisstr"
+
+[deps]
+
+source_file="res://Audio/Music/Death race mode.ogg"
+dest_files=["res://.godot/imported/Death race mode.ogg-fe0f3ec52171a23568a77deeca2ea998.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

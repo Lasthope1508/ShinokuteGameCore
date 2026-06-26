@@ -580,3 +580,290 @@ func get_occupied_cell_count() -> int:
 				count += 1
 	return count
 
+
+# Pushes all player blocks outward to the 4 edges. Obstacles act as fixed anchors.
+func shift_blocks_outward(new_obstacle_cells: Array[Vector2i] = [], new_obstacle_hp: int = 0) -> void:
+	# 1. Create a temporary grid state
+	var temp_occupied = []
+	var temp_colors = []
+	var temp_hp = []
+	for y in range(SIZE):
+		var occ_row = []
+		var col_row = []
+		var hp_row = []
+		for x in range(SIZE):
+			occ_row.append(false)
+			col_row.append(Color.TRANSPARENT)
+			hp_row.append(0)
+		temp_occupied.append(occ_row)
+		temp_colors.append(col_row)
+		temp_hp.append(hp_row)
+		
+	# Copy existing obstacles first (immovable)
+	for y in range(SIZE):
+		for x in range(SIZE):
+			if _occupied[y][x] and _cells[y][x].is_obstacle():
+				temp_occupied[y][x] = true
+				temp_colors[y][x] = _cells[y][x].occupied_color
+				temp_hp[y][x] = _cells[y][x].obstacle_hp
+
+	# Identify player blocks that need to shift
+	var player_cells = []
+	for y in range(SIZE):
+		for x in range(SIZE):
+			if _occupied[y][x] and not _cells[y][x].is_obstacle():
+				var dist = min(x, min(8 - x, min(y, 8 - y)))
+				player_cells.append({
+					"x": x,
+					"y": y,
+					"color": _cells[y][x].occupied_color,
+					"dist_to_edge": dist
+				})
+				
+	# Sort player blocks so the ones closest to the edge shift first (outermost first)
+	player_cells.sort_custom(func(a, b): return a["dist_to_edge"] < b["dist_to_edge"])
+	
+	var shifts = []
+	
+	# Determine target cell for each shifting block
+	for cell in player_cells:
+		var x = cell["x"]
+		var y = cell["y"]
+		var color = cell["color"]
+		
+		# Fling each individual 1x1 block in a random direction to break shapes
+		var dirs = ["L", "R", "T", "B"]
+		var dir = dirs[randi() % dirs.size()]
+			
+		var target_x = x
+		var target_y = y
+		
+		if dir == "L":
+			for tx in range(0, x + 1):
+				if not temp_occupied[y][tx]:
+					target_x = tx
+					break
+		elif dir == "R":
+			for tx in range(8, x - 1, -1):
+				if not temp_occupied[y][tx]:
+					target_x = tx
+					break
+		elif dir == "T":
+			for ty in range(0, y + 1):
+				if not temp_occupied[ty][x]:
+					target_y = ty
+					break
+		elif dir == "B":
+			for ty in range(8, y - 1, -1):
+				if not temp_occupied[ty][x]:
+					target_y = ty
+					break
+					
+		temp_occupied[target_y][target_x] = true
+		temp_colors[target_y][target_x] = color
+		
+		if target_x != x or target_y != y:
+			shifts.append({
+				"from": Vector2i(x, y),
+				"to": Vector2i(target_x, target_y),
+				"color": color
+			})
+
+	# Place the new falling obstacles in the target grid state, crushing any normal blocks in landing zone
+	for p in new_obstacle_cells:
+		temp_occupied[p.y][p.x] = true
+		temp_hp[p.y][p.x] = new_obstacle_hp
+		temp_colors[p.y][p.x] = Color(0.4, 0.4, 0.4, 1.0)
+
+	# Animate the shifting using temporary replicas
+	var temp_blocks = []
+	var max_dur = 0.0
+	
+	if not shifts.is_empty():
+		var tw = create_tween().set_parallel(true)
+		
+		# First, hide the actual blocks that are going to shift,
+		# and create temporary visual blocks to animate.
+		for shift in shifts:
+			var from_cell = _cells[shift["from"].y][shift["from"].x]
+			from_cell.block.visible = false
+			if from_cell.hp_label != null:
+				from_cell.hp_label.visible = false
+			
+			var tr = TextureRect.new()
+			tr.texture = from_cell.block.texture
+			tr.modulate = from_cell.block.modulate
+			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tr.size = Vector2(cell_size, cell_size)
+			
+			# Position it at the source cell
+			tr.position = _grid_origin + Vector2(shift["from"].x * cell_size, shift["from"].y * cell_size)
+			cells_layer.add_child(tr)
+			temp_blocks.append(tr)
+			
+			var target_pos = _grid_origin + Vector2(shift["to"].x * cell_size, shift["to"].y * cell_size)
+			var dist_from_center = Vector2(shift["from"].x, shift["from"].y).distance_to(Vector2(4, 4))
+			var delay = dist_from_center * 0.04
+			var dur = 0.28
+			max_dur = max(max_dur, delay + dur)
+			
+			tr.pivot_offset = Vector2(cell_size * 0.5, cell_size * 0.5)
+			# Slide block to the target position
+			tw.tween_property(tr, "position", target_pos, dur).set_delay(delay).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+	# At the start of the shift animation, we visually fill the landing obstacles immediately
+	# so they are shown on impact.
+	for p in new_obstacle_cells:
+		_cells[p.y][p.x].fill_obstacle(new_obstacle_hp)
+		_occupied[p.y][p.x] = true
+
+	# Wait for animation to finish if we had shifts
+	if max_dur > 0.0:
+		await get_tree().create_timer(max_dur + 0.05).timeout
+
+	# Clean up temporary blocks
+	for tr in temp_blocks:
+		tr.queue_free()
+
+	# Apply the new logical state and clean up block positions
+	for y in range(SIZE):
+		for x in range(SIZE):
+			_cells[y][x].block.position = Vector2.ZERO
+			if temp_occupied[y][x]:
+				_occupied[y][x] = true
+				if temp_hp[y][x] > 0:
+					_cells[y][x].fill_obstacle(temp_hp[y][x])
+				else:
+					_cells[y][x].fill(temp_colors[y][x])
+			else:
+				_occupied[y][x] = false
+				_cells[y][x].reset_cell()
+				
+	if links_layer:
+		links_layer.queue_redraw()
+
+
+# Calculates the grid offset to center a shape around (4,4)
+func get_obstacle_offset(shape_cells: Array[Vector2i]) -> Vector2i:
+	var center_offset = Vector2i(4, 4)
+	var min_x = 9
+	var max_x = -1
+	var min_y = 9
+	var max_y = -1
+	for cell in shape_cells:
+		min_x = min(min_x, cell.x)
+		max_x = max(max_x, cell.x)
+		min_y = min(min_y, cell.y)
+		max_y = max(max_y, cell.y)
+		
+	var shape_w = max_x - min_x + 1
+	var shape_h = max_y - min_y + 1
+	return center_offset - Vector2i(shape_w / 2, shape_h / 2)
+
+
+# Calculates a random valid offset to place a shape within the 9x9 grid boundaries.
+func get_random_obstacle_offset(shape_cells: Array[Vector2i]) -> Vector2i:
+	var min_x = 9
+	var max_x = -1
+	var min_y = 9
+	var max_y = -1
+	for cell in shape_cells:
+		min_x = min(min_x, cell.x)
+		max_x = max(max_x, cell.x)
+		min_y = min(min_y, cell.y)
+		max_y = max(max_y, cell.y)
+		
+	var shape_w = max_x - min_x + 1
+	var shape_h = max_y - min_y + 1
+	
+	var max_offset_x = max(0, SIZE - shape_w)
+	var max_offset_y = max(0, SIZE - shape_h)
+	
+	var rx = randi() % (max_offset_x + 1)
+	var ry = randi() % (max_offset_y + 1)
+	
+	return Vector2i(rx - min_x, ry - min_y)
+
+
+# Animates the meteor shape falling from above the screen down to the target landing positions.
+# Returns the Tween representing the falling animation so the caller can await it.
+func animate_falling_meteor(shape_cells: Array[Vector2i], custom_offset: Vector2i = Vector2i(-99, -99), hp: int = 1) -> Tween:
+	var offset = custom_offset if custom_offset != Vector2i(-99, -99) else get_obstacle_offset(shape_cells)
+	var landed_cells: Array[Vector2i] = []
+	for cell in shape_cells:
+		var p = cell + offset
+		if _in_bounds(p):
+			landed_cells.append(p)
+			
+	if landed_cells.is_empty():
+		return null
+		
+	var temp_blocks = []
+	var tw = create_tween().set_parallel(true)
+	
+	# Cache textures for the animation to avoid loading inside loop
+	var textures = []
+	for i in range(8):
+		textures.append(load("res://Assets/Sprites/obstacle_block_%d.png" % (i + 1)))
+	
+	for p in landed_cells:
+		var target_pos = _grid_origin + Vector2(p.x * cell_size, p.y * cell_size)
+		var start_pos = target_pos + Vector2(0, -600) # Start high up off-screen
+		
+		var tr = TextureRect.new()
+		var index = clamp(hp - 1, 0, 7)
+		tr.texture = textures[index]
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.size = Vector2(cell_size, cell_size)
+		tr.position = start_pos
+		tr.modulate = Color(1.3, 1.3, 1.3, 1.0) # Slightly glowing
+		
+		cells_layer.add_child(tr)
+		temp_blocks.append(tr)
+		
+		# Tween it falling down
+		tw.tween_property(tr, "position", target_pos, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		
+		# Scale down from 1.5x to 1.0x to simulate dropping/depth
+		tr.pivot_offset = Vector2(cell_size * 0.5, cell_size * 0.5)
+		tr.scale = Vector2(1.5, 1.5)
+		tw.tween_property(tr, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		
+	tw.set_parallel(false) # Callback runs after all tweens finish
+	tw.tween_callback(func():
+		for tr in temp_blocks:
+			tr.queue_free()
+	)
+	
+	return tw
+
+
+# Drops an obstacle shape onto the board with an optional custom offset
+func drop_obstacle(shape_cells: Array[Vector2i], hp: int, custom_offset: Vector2i = Vector2i(-99, -99)) -> Array[Vector2i]:
+	var offset = custom_offset if custom_offset != Vector2i(-99, -99) else get_obstacle_offset(shape_cells)
+	var landed_cells: Array[Vector2i] = []
+	for cell in shape_cells:
+		var p = cell + offset
+		if _in_bounds(p):
+			_cells[p.y][p.x].fill_obstacle(hp)
+			_occupied[p.y][p.x] = true
+			landed_cells.append(p)
+			
+	if links_layer:
+		links_layer.queue_redraw()
+	return landed_cells
+
+
+## Counts the number of obstacle cells currently active on the playboard.
+func get_obstacle_cell_count() -> int:
+	var count := 0
+	for y in range(SIZE):
+		for x in range(SIZE):
+			if _occupied[y][x] and _cells[y][x].is_obstacle():
+				count += 1
+	return count
+
+
+

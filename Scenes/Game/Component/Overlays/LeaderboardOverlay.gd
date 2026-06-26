@@ -10,12 +10,22 @@ extends CanvasLayer
 @onready var loading_label: Label = $Panel/Margin/VBox/LoadingLabel
 @onready var status_label: Label = $Panel/Margin/VBox/StatusLabel
 
+@onready var classic_btn: Button = $Panel/Margin/VBox/ModeSelector/ClassicBtn
+@onready var chaos_btn: Button = $Panel/Margin/VBox/ModeSelector/ChaosBtn
+@onready var title_label: Label = $Panel/Margin/VBox/Header/Title
+
 var active_tab: String = "world"
+var active_mode: String = "classic"
 
 func _ready() -> void:
 	# Clean list
 	for child in scroll_list.get_children():
 		child.queue_free()
+		
+	# Initialize active mode from GameState
+	active_mode = GameState.start_mode
+	if active_mode == "":
+		active_mode = "classic"
 		
 	# Connections
 	close_button.pressed.connect(_on_close_pressed)
@@ -23,6 +33,9 @@ func _ready() -> void:
 	world_tab.pressed.connect(func(): _select_tab("world"))
 	continent_tab.pressed.connect(func(): _select_tab("continent"))
 	country_tab.pressed.connect(func(): _select_tab("country"))
+	
+	classic_btn.pressed.connect(func(): _select_mode("classic"))
+	chaos_btn.pressed.connect(func(): _select_mode("chaos"))
 	
 	LeaderboardManager.leaderboard_loaded.connect(_on_leaderboard_loaded)
 	
@@ -60,28 +73,118 @@ func _apply_styles() -> void:
 	if not active_theme:
 		return
 		
-	# Set panel container theme colors (Deep Space Indigo background, Neon Orchid borders)
+	# Set title text and style based on mode
+	if active_mode == "chaos":
+		title_label.text = "🌋 CHAOS ELITE LEADERBOARD 🌋"
+		title_label.add_theme_color_override("font_color", Color("#FFD54F")) # Fiery gold
+		title_label.add_theme_color_override("font_outline_color", Color("#BF360C")) # Lava red
+		title_label.add_theme_constant_override("outline_size", 12)
+		status_label.add_theme_color_override("font_color", Color("#FF8F00")) # Fiery orange
+	else:
+		title_label.text = "LEADERBOARD"
+		title_label.add_theme_color_override("font_color", active_theme.text_color)
+		title_label.add_theme_color_override("font_outline_color", active_theme.accent_color.darkened(0.8))
+		title_label.add_theme_constant_override("outline_size", 8)
+		status_label.add_theme_color_override("font_color", Color(0.7, 0.74, 0.85, 1))
+
+	# Set panel container theme colors (Deep Space Indigo vs. Obsidian Magma)
 	var panel: PanelContainer = $Panel
 	var panel_style = panel.get_theme_stylebox("panel") as StyleBoxFlat
 	if not panel_style:
 		panel_style = StyleBoxFlat.new()
 		panel.add_theme_stylebox_override("panel", panel_style)
 		
-	panel_style.bg_color = active_theme.panel_bg_color
-	panel_style.border_color = active_theme.panel_border_color
-	var border_w = active_theme.popup_border_width
-	panel_style.border_width_left = border_w
-	panel_style.border_width_right = border_w
-	panel_style.border_width_top = border_w
-	panel_style.border_width_bottom = border_w
+	if active_mode == "chaos":
+		panel_style.bg_color = Color("#0D0606") # Deep dark obsidian
+		panel_style.border_color = Color("#E65100") # Fiery magma orange
+		panel_style.border_width_left = 3
+		panel_style.border_width_right = 3
+		panel_style.border_width_top = 3
+		panel_style.border_width_bottom = 3
+		panel_style.shadow_color = Color("#FF5722", 0.25)
+		panel_style.shadow_size = 12
+	else:
+		panel_style.bg_color = active_theme.panel_bg_color
+		panel_style.border_color = active_theme.panel_border_color
+		var border_w = active_theme.popup_border_width
+		panel_style.border_width_left = border_w
+		panel_style.border_width_right = border_w
+		panel_style.border_width_top = border_w
+		panel_style.border_width_bottom = border_w
+		panel_style.shadow_color = Color(0, 0, 0, 0)
+		panel_style.shadow_size = 0
+		
 	panel_style.set_corner_radius_all(active_theme.popup_corner_radius)
 	
+	# Style Mode Selection Buttons (Basic vs. Chaos)
+	var btn_classic_style = StyleBoxFlat.new()
+	var btn_chaos_style = StyleBoxFlat.new()
+	
+	if active_mode == "chaos":
+		# Chaos button is glowing fiery orange/gold
+		btn_chaos_style.bg_color = Color("#D84315")
+		btn_chaos_style.border_color = Color("#FFD54F")
+		btn_chaos_style.border_width_left = 2
+		btn_chaos_style.border_width_right = 2
+		btn_chaos_style.border_width_top = 2
+		btn_chaos_style.border_width_bottom = 2
+		btn_chaos_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		chaos_btn.add_theme_stylebox_override("normal", btn_chaos_style)
+		chaos_btn.add_theme_stylebox_override("hover", btn_chaos_style)
+		chaos_btn.add_theme_stylebox_override("pressed", btn_chaos_style)
+		chaos_btn.add_theme_color_override("font_color", Color("#FFFFFF"))
+		
+		# Classic button is quiet dark indigo
+		btn_classic_style.bg_color = Color("#1A1424")
+		btn_classic_style.border_color = Color("#3D2E54")
+		btn_classic_style.border_width_left = 1
+		btn_classic_style.border_width_right = 1
+		btn_classic_style.border_width_top = 1
+		btn_classic_style.border_width_bottom = 1
+		btn_classic_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		classic_btn.add_theme_stylebox_override("normal", btn_classic_style)
+		classic_btn.add_theme_stylebox_override("hover", btn_classic_style)
+		classic_btn.add_theme_stylebox_override("pressed", btn_classic_style)
+		classic_btn.add_theme_color_override("font_color", Color("#8C7FA3"))
+	else:
+		# Classic button is highlighted in active theme color
+		btn_classic_style.bg_color = active_theme.accent_color
+		btn_classic_style.bg_color.a = 0.8
+		btn_classic_style.border_color = active_theme.accent_color
+		btn_classic_style.border_width_left = 2
+		btn_classic_style.border_width_right = 2
+		btn_classic_style.border_width_top = 2
+		btn_classic_style.border_width_bottom = 2
+		btn_classic_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		classic_btn.add_theme_stylebox_override("normal", btn_classic_style)
+		classic_btn.add_theme_stylebox_override("hover", btn_classic_style)
+		classic_btn.add_theme_stylebox_override("pressed", btn_classic_style)
+		classic_btn.add_theme_color_override("font_color", Color("#FFFFFF"))
+		
+		# Chaos button is quiet dark reddish black
+		btn_chaos_style.bg_color = Color("#291515")
+		btn_chaos_style.border_color = Color("#4D2121")
+		btn_chaos_style.border_width_left = 1
+		btn_chaos_style.border_width_right = 1
+		btn_chaos_style.border_width_top = 1
+		btn_chaos_style.border_width_bottom = 1
+		btn_chaos_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		chaos_btn.add_theme_stylebox_override("normal", btn_chaos_style)
+		chaos_btn.add_theme_stylebox_override("hover", btn_chaos_style)
+		chaos_btn.add_theme_stylebox_override("pressed", btn_chaos_style)
+		chaos_btn.add_theme_color_override("font_color", Color("#A37272"))
+
 	# Style MyHighestRow panel container
 	var my_row: PanelContainer = $Panel/Margin/VBox/MyHighestRow
 	var my_row_style = StyleBoxFlat.new()
-	my_row_style.bg_color = active_theme.accent_color
-	my_row_style.bg_color.a = 0.20 # 20% opacity for distinction
-	my_row_style.border_color = active_theme.accent_color
+	if active_mode == "chaos":
+		my_row_style.bg_color = Color("#E65100", 0.15) # Rust orange translucent
+		my_row_style.border_color = Color("#E65100")
+	else:
+		my_row_style.bg_color = active_theme.accent_color
+		my_row_style.bg_color.a = 0.20 # 20% opacity for distinction
+		my_row_style.border_color = active_theme.accent_color
+		
 	my_row_style.border_width_left = 2
 	my_row_style.border_width_right = 2
 	my_row_style.border_width_top = 2
@@ -93,17 +196,29 @@ func _apply_styles() -> void:
 	var my_rank_lbl: Label = $Panel/Margin/VBox/MyHighestRow/Margin/HBox/RankLabel
 	var my_name_lbl: Label = $Panel/Margin/VBox/MyHighestRow/Margin/HBox/NameLabel
 	var my_score_lbl: Label = $Panel/Margin/VBox/MyHighestRow/Margin/HBox/ScoreLabel
-	my_rank_lbl.add_theme_color_override("font_color", active_theme.accent_color)
-	my_name_lbl.add_theme_color_override("font_color", active_theme.text_color)
-	my_score_lbl.add_theme_color_override("font_color", active_theme.accent_color)
+	if active_mode == "chaos":
+		my_rank_lbl.add_theme_color_override("font_color", Color("#FFB74D")) # Goldish orange
+		my_name_lbl.add_theme_color_override("font_color", Color("#FFEB3B")) # Glowing yellow
+		my_score_lbl.add_theme_color_override("font_color", Color("#FF9800")) # Vibrant orange
+	else:
+		my_rank_lbl.remove_theme_color_override("font_color")
+		my_name_lbl.remove_theme_color_override("font_color")
+		my_score_lbl.remove_theme_color_override("font_color")
+		my_rank_lbl.add_theme_color_override("font_color", active_theme.accent_color)
+		my_name_lbl.add_theme_color_override("font_color", active_theme.text_color)
+		my_score_lbl.add_theme_color_override("font_color", active_theme.accent_color)
 	my_rank_lbl.custom_minimum_size = Vector2(110, 0)
 	
-	# Style tabs (purple backdrop, cyan borders)
+	# Style tabs (purple backdrop vs. amber fire)
 	for tab_btn in [world_tab, continent_tab, country_tab]:
-		tab_btn.add_theme_color_override("font_color", active_theme.text_color)
-		tab_btn.add_theme_color_override("font_hover_color", active_theme.accent_color)
-		
-
+		tab_btn.remove_theme_color_override("font_color")
+		tab_btn.remove_theme_color_override("font_hover_color")
+		if active_mode == "chaos":
+			tab_btn.add_theme_color_override("font_color", Color("#FFAB91")) # Light reddish-orange
+			tab_btn.add_theme_color_override("font_hover_color", Color("#FF9100")) # Rich orange
+		else:
+			tab_btn.add_theme_color_override("font_color", active_theme.text_color)
+			tab_btn.add_theme_color_override("font_hover_color", active_theme.accent_color)
 
 
 func _on_resized() -> void:
@@ -118,6 +233,16 @@ func _on_resized() -> void:
 	$Panel.position = (parent_size - Vector2(panel_width, panel_height)) * 0.5
 
 
+func _select_mode(mode: String) -> void:
+	if active_mode == mode:
+		return
+	active_mode = mode
+	AudioManager.play_sfx("button")
+	_update_my_highest()
+	_apply_styles()
+	_select_tab(active_tab)
+
+
 func _select_tab(tab: String) -> void:
 	active_tab = tab
 	loading_label.visible = true
@@ -130,19 +255,26 @@ func _select_tab(tab: String) -> void:
 	# Update tab visual indicators
 	var active_theme = ThemeManager.get_active_theme()
 	if active_theme:
-		world_tab.add_theme_color_override("font_color", active_theme.accent_color if tab == "world" else active_theme.text_color)
-		var is_continent = (tab == "continent")
-		var is_country = (tab == "country")
-		continent_tab.add_theme_color_override("font_color", active_theme.accent_color if is_continent else active_theme.text_color)
-		country_tab.add_theme_color_override("font_color", active_theme.accent_color if is_country else active_theme.text_color)
+		if active_mode == "chaos":
+			var active_color = Color("#FF9100") # Fire Gold/Orange
+			var normal_color = Color("#FFAB91") # Light Orange-red
+			world_tab.add_theme_color_override("font_color", active_color if tab == "world" else normal_color)
+			continent_tab.add_theme_color_override("font_color", active_color if tab == "continent" else normal_color)
+			country_tab.add_theme_color_override("font_color", active_color if tab == "country" else normal_color)
+		else:
+			world_tab.add_theme_color_override("font_color", active_theme.accent_color if tab == "world" else active_theme.text_color)
+			var is_continent = (tab == "continent")
+			var is_country = (tab == "country")
+			continent_tab.add_theme_color_override("font_color", active_theme.accent_color if is_continent else active_theme.text_color)
+			country_tab.add_theme_color_override("font_color", active_theme.accent_color if is_country else active_theme.text_color)
 		
 	# Trigger query
-	LeaderboardManager.fetch_leaderboard(tab)
+	LeaderboardManager.fetch_leaderboard(tab, active_mode)
 	AudioManager.play_sfx("button")
 
 
-func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
-	if tab != active_tab:
+func _on_leaderboard_loaded(tab: String, scores: Array, mode: String) -> void:
+	if tab != active_tab or mode != active_mode:
 		return
 		
 	loading_label.visible = false
@@ -179,7 +311,7 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 		margin.add_child(hbox)
 		
 		# Check if current entry is the player
-		var is_current_player = (entry["username"] == SaveManager.get_username() and entry["score"] == SaveManager.get_best_score())
+		var is_current_player = (entry["username"] == SaveManager.get_username() and entry["score"] == SaveManager.get_best_score(active_mode))
 		
 		# Create rank block container
 		var rank_container := HBoxContainer.new()
@@ -200,12 +332,20 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 			trophy_icon.custom_minimum_size = Vector2(24, 24)
 			trophy_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			
-			if rank_idx == 1:
-				trophy_icon.modulate = Color("#FFD700") # Gold
-			elif rank_idx == 2:
-				trophy_icon.modulate = Color("#E0E0E0") # Silver
-			elif rank_idx == 3:
-				trophy_icon.modulate = Color("#CD7F32") # Bronze
+			if active_mode == "chaos":
+				if rank_idx == 1:
+					trophy_icon.modulate = Color("#FFEB3B") # Shiny lava gold
+				elif rank_idx == 2:
+					trophy_icon.modulate = Color("#FFA726") # Fiery orange
+				elif rank_idx == 3:
+					trophy_icon.modulate = Color("#FF5722") # Hot crimson
+			else:
+				if rank_idx == 1:
+					trophy_icon.modulate = Color("#FFD700") # Gold
+				elif rank_idx == 2:
+					trophy_icon.modulate = Color("#E0E0E0") # Silver
+				elif rank_idx == 3:
+					trophy_icon.modulate = Color("#CD7F32") # Bronze
 			rank_container.add_child(trophy_icon)
 			
 		hbox.add_child(rank_container)
@@ -228,57 +368,99 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 		score_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		hbox.add_child(score_lbl)
 		
-		# Apply premium styling for Top 1, 2, 3
-		if rank_idx == 1:
-			# Gold Rank text
-			rank_lbl.add_theme_color_override("font_color", Color("#FFF3A3"))
-			rank_lbl.add_theme_color_override("font_outline_color", Color("#7C5900"))
-			rank_lbl.add_theme_constant_override("outline_size", 6)
-			
-			# Gold Name & Score text
-			name_lbl.add_theme_color_override("font_color", Color("#FFD700"))
-			name_lbl.add_theme_color_override("font_outline_color", Color("#5A4000"))
-			name_lbl.add_theme_constant_override("outline_size", 4)
-			
-			score_lbl.add_theme_color_override("font_color", Color("#FFD700"))
-			score_lbl.add_theme_color_override("font_outline_color", Color("#5A4000"))
-			score_lbl.add_theme_constant_override("outline_size", 4)
-			
-		elif rank_idx == 2:
-			# Silver Rank text
-			rank_lbl.add_theme_color_override("font_color", Color("#FFFFFF"))
-			rank_lbl.add_theme_color_override("font_outline_color", Color("#4A4A4A"))
-			rank_lbl.add_theme_constant_override("outline_size", 6)
-			
-			# Silver Name & Score text
-			name_lbl.add_theme_color_override("font_color", Color("#E0E0E0"))
-			name_lbl.add_theme_color_override("font_outline_color", Color("#3A3A3A"))
-			name_lbl.add_theme_constant_override("outline_size", 4)
-			
-			score_lbl.add_theme_color_override("font_color", Color("#E0E0E0"))
-			score_lbl.add_theme_color_override("font_outline_color", Color("#3A3A3A"))
-			score_lbl.add_theme_constant_override("outline_size", 4)
-			
-		elif rank_idx == 3:
-			# Bronze Rank text
-			rank_lbl.add_theme_color_override("font_color", Color("#FFE6D5"))
-			rank_lbl.add_theme_color_override("font_outline_color", Color("#7D3E15"))
-			rank_lbl.add_theme_constant_override("outline_size", 6)
-			
-			# Bronze Name & Score text
-			name_lbl.add_theme_color_override("font_color", Color("#D27D2D"))
-			name_lbl.add_theme_color_override("font_outline_color", Color("#4A240E"))
-			name_lbl.add_theme_constant_override("outline_size", 4)
-			
-			score_lbl.add_theme_color_override("font_color", Color("#D27D2D"))
-			score_lbl.add_theme_color_override("font_outline_color", Color("#4A240E"))
-			score_lbl.add_theme_constant_override("outline_size", 4)
-			
+		# Apply premium styling
+		if active_mode == "chaos":
+			if rank_idx == 1:
+				rank_lbl.add_theme_color_override("font_color", Color("#FFF3A3"))
+				rank_lbl.add_theme_color_override("font_outline_color", Color("#D84315"))
+				rank_lbl.add_theme_constant_override("outline_size", 8)
+				
+				name_lbl.add_theme_color_override("font_color", Color("#FFEB3B"))
+				name_lbl.add_theme_color_override("font_outline_color", Color("#BF360C"))
+				name_lbl.add_theme_constant_override("outline_size", 6)
+				
+				score_lbl.add_theme_color_override("font_color", Color("#FFEB3B"))
+				score_lbl.add_theme_color_override("font_outline_color", Color("#BF360C"))
+				score_lbl.add_theme_constant_override("outline_size", 6)
+			elif rank_idx == 2:
+				rank_lbl.add_theme_color_override("font_color", Color("#FFE0B2"))
+				rank_lbl.add_theme_color_override("font_outline_color", Color("#E65100"))
+				rank_lbl.add_theme_constant_override("outline_size", 6)
+				
+				name_lbl.add_theme_color_override("font_color", Color("#FFA726"))
+				name_lbl.add_theme_color_override("font_outline_color", Color("#E65100"))
+				name_lbl.add_theme_constant_override("outline_size", 4)
+				
+				score_lbl.add_theme_color_override("font_color", Color("#FFA726"))
+				score_lbl.add_theme_color_override("font_outline_color", Color("#E65100"))
+				score_lbl.add_theme_constant_override("outline_size", 4)
+			elif rank_idx == 3:
+				rank_lbl.add_theme_color_override("font_color", Color("#FFCCBC"))
+				rank_lbl.add_theme_color_override("font_outline_color", Color("#D84315"))
+				rank_lbl.add_theme_constant_override("outline_size", 6)
+				
+				name_lbl.add_theme_color_override("font_color", Color("#FF7043"))
+				name_lbl.add_theme_color_override("font_outline_color", Color("#D84315"))
+				name_lbl.add_theme_constant_override("outline_size", 4)
+				
+				score_lbl.add_theme_color_override("font_color", Color("#FF7043"))
+				score_lbl.add_theme_color_override("font_outline_color", Color("#D84315"))
+				score_lbl.add_theme_constant_override("outline_size", 4)
+			else:
+				rank_lbl.add_theme_color_override("font_color", Color("#FF8F00"))
+				name_lbl.add_theme_color_override("font_color", Color("#FFE0B2"))
+				score_lbl.add_theme_color_override("font_color", Color("#FF7043"))
 		else:
-			if active_theme:
-				rank_lbl.add_theme_color_override("font_color", active_theme.accent_color)
-				name_lbl.add_theme_color_override("font_color", active_theme.text_color)
-				score_lbl.add_theme_color_override("font_color", active_theme.accent_color)
+			if rank_idx == 1:
+				# Gold Rank text
+				rank_lbl.add_theme_color_override("font_color", Color("#FFF3A3"))
+				rank_lbl.add_theme_color_override("font_outline_color", Color("#7C5900"))
+				rank_lbl.add_theme_constant_override("outline_size", 6)
+				
+				# Gold Name & Score text
+				name_lbl.add_theme_color_override("font_color", Color("#FFD700"))
+				name_lbl.add_theme_color_override("font_outline_color", Color("#5A4000"))
+				name_lbl.add_theme_constant_override("outline_size", 4)
+				
+				score_lbl.add_theme_color_override("font_color", Color("#FFD700"))
+				score_lbl.add_theme_color_override("font_outline_color", Color("#5A4000"))
+				score_lbl.add_theme_constant_override("outline_size", 4)
+				
+			elif rank_idx == 2:
+				# Silver Rank text
+				rank_lbl.add_theme_color_override("font_color", Color("#FFFFFF"))
+				rank_lbl.add_theme_color_override("font_outline_color", Color("#4A4A4A"))
+				rank_lbl.add_theme_constant_override("outline_size", 6)
+				
+				# Silver Name & Score text
+				name_lbl.add_theme_color_override("font_color", Color("#E0E0E0"))
+				name_lbl.add_theme_color_override("font_outline_color", Color("#3A3A3A"))
+				name_lbl.add_theme_constant_override("outline_size", 4)
+				
+				score_lbl.add_theme_color_override("font_color", Color("#E0E0E0"))
+				score_lbl.add_theme_color_override("font_outline_color", Color("#3A3A3A"))
+				score_lbl.add_theme_constant_override("outline_size", 4)
+				
+			elif rank_idx == 3:
+				# Bronze Rank text
+				rank_lbl.add_theme_color_override("font_color", Color("#FFE6D5"))
+				rank_lbl.add_theme_color_override("font_outline_color", Color("#7D3E15"))
+				rank_lbl.add_theme_constant_override("outline_size", 6)
+				
+				# Bronze Name & Score text
+				name_lbl.add_theme_color_override("font_color", Color("#D27D2D"))
+				name_lbl.add_theme_color_override("font_outline_color", Color("#4A240E"))
+				name_lbl.add_theme_constant_override("outline_size", 4)
+				
+				score_lbl.add_theme_color_override("font_color", Color("#D27D2D"))
+				score_lbl.add_theme_color_override("font_outline_color", Color("#4A240E"))
+				score_lbl.add_theme_constant_override("outline_size", 4)
+				
+			else:
+				if active_theme:
+					rank_lbl.add_theme_color_override("font_color", active_theme.accent_color)
+					name_lbl.add_theme_color_override("font_color", active_theme.text_color)
+					score_lbl.add_theme_color_override("font_color", active_theme.accent_color)
 
 		# Wrap item in a PanelContainer if it is top 3 OR current player
 		if rank_idx in [1, 2, 3] or is_current_player:
@@ -289,40 +471,59 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 			bg_style.border_width_bottom = 2
 			bg_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
 			
-			if rank_idx == 1:
-				bg_style.bg_color = Color("#FFD700", 0.08)
-				bg_style.border_color = Color("#FFD700", 0.90 if is_current_player else 0.40)
-				if is_current_player:
-					bg_style.border_width_left = 3
-					bg_style.border_width_right = 3
-					bg_style.border_width_top = 3
-					bg_style.border_width_bottom = 3
-			elif rank_idx == 2:
-				bg_style.bg_color = Color("#E0E0E0", 0.08)
-				bg_style.border_color = Color("#E0E0E0", 0.90 if is_current_player else 0.35)
-				if is_current_player:
-					bg_style.border_width_left = 3
-					bg_style.border_width_right = 3
-					bg_style.border_width_top = 3
-					bg_style.border_width_bottom = 3
-			elif rank_idx == 3:
-				bg_style.bg_color = Color("#CD7F32", 0.08)
-				bg_style.border_color = Color("#CD7F32", 0.90 if is_current_player else 0.35)
+			if active_mode == "chaos":
+				if rank_idx == 1:
+					bg_style.bg_color = Color("#D84315", 0.12)
+					bg_style.border_color = Color("#FFEB3B", 0.90 if is_current_player else 0.50)
+				elif rank_idx == 2:
+					bg_style.bg_color = Color("#D84315", 0.08)
+					bg_style.border_color = Color("#FFA726", 0.90 if is_current_player else 0.40)
+				elif rank_idx == 3:
+					bg_style.bg_color = Color("#E65100", 0.08)
+					bg_style.border_color = Color("#FF5722", 0.90 if is_current_player else 0.40)
+				else:
+					bg_style.bg_color = Color("#E65100", 0.15)
+					bg_style.border_color = Color("#E65100")
+				
 				if is_current_player:
 					bg_style.border_width_left = 3
 					bg_style.border_width_right = 3
 					bg_style.border_width_top = 3
 					bg_style.border_width_bottom = 3
 			else:
-				if active_theme:
-					bg_style.bg_color = active_theme.accent_color
-					bg_style.bg_color.a = 0.15
-					bg_style.border_color = active_theme.accent_color
-					bg_style.set_corner_radius_all(active_theme.inner_button_corner_radius)
-				bg_style.border_width_left = 2
-				bg_style.border_width_right = 2
-				bg_style.border_width_top = 2
-				bg_style.border_width_bottom = 2
+				if rank_idx == 1:
+					bg_style.bg_color = Color("#FFD700", 0.08)
+					bg_style.border_color = Color("#FFD700", 0.90 if is_current_player else 0.40)
+					if is_current_player:
+						bg_style.border_width_left = 3
+						bg_style.border_width_right = 3
+						bg_style.border_width_top = 3
+						bg_style.border_width_bottom = 3
+				elif rank_idx == 2:
+					bg_style.bg_color = Color("#E0E0E0", 0.08)
+					bg_style.border_color = Color("#E0E0E0", 0.90 if is_current_player else 0.35)
+					if is_current_player:
+						bg_style.border_width_left = 3
+						bg_style.border_width_right = 3
+						bg_style.border_width_top = 3
+						bg_style.border_width_bottom = 3
+				elif rank_idx == 3:
+					bg_style.bg_color = Color("#CD7F32", 0.08)
+					bg_style.border_color = Color("#CD7F32", 0.90 if is_current_player else 0.35)
+					if is_current_player:
+						bg_style.border_width_left = 3
+						bg_style.border_width_right = 3
+						bg_style.border_width_top = 3
+						bg_style.border_width_bottom = 3
+				else:
+					if active_theme:
+						bg_style.bg_color = active_theme.accent_color
+						bg_style.bg_color.a = 0.15
+						bg_style.border_color = active_theme.accent_color
+					bg_style.border_width_left = 2
+					bg_style.border_width_right = 2
+					bg_style.border_width_top = 2
+					bg_style.border_width_bottom = 2
 				
 			var panel_item := PanelContainer.new()
 			panel_item.add_theme_stylebox_override("panel", bg_style)
@@ -338,7 +539,7 @@ func _on_leaderboard_loaded(tab: String, scores: Array) -> void:
 	var player_rank = -1
 	var entry_idx = 1
 	for entry in scores:
-		if entry["username"] == SaveManager.get_username() and entry["score"] == SaveManager.get_best_score():
+		if entry["username"] == SaveManager.get_username() and entry["score"] == SaveManager.get_best_score(active_mode):
 			player_rank = entry_idx
 			break
 		entry_idx += 1
@@ -365,7 +566,7 @@ func _update_my_highest() -> void:
 	else:
 		my_name_lbl.text = username
 		
-	var best_score = SaveManager.get_best_score()
+	var best_score = SaveManager.get_best_score(active_mode)
 	my_score_lbl.text = str(best_score)
 	my_rank_lbl.text = "My Best:"
 

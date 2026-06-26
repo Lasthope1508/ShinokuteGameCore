@@ -38,6 +38,27 @@ var _shake_total: float = 0.0
 var _shake_strength: float = 0.0
 var _shake_base_transform: Transform2D = Transform2D.IDENTITY
 
+# --- Chaos Mode timer & backgrounds ---------------------------------------
+var _chaos_time_left: float = 30.0
+var _chaos_max_time: float = 30.0
+var _is_chaos_transitioning: bool = false
+var _chaos_current_stage: int = -1
+var _chaos_background_textures: Dictionary = {}
+var _meteor_level: int = 0
+var _meteor_threat_modifier: float = 0.0
+
+
+const CHAOS_BACKGROUND_PATHS = [
+	"res://Assets/Themes/chaos/bg_0.webp",
+	"res://Assets/Themes/chaos/bg_1.webp",
+	"res://Assets/Themes/chaos/bg_2.webp",
+	"res://Assets/Themes/chaos/bg_3.webp",
+	"res://Assets/Themes/chaos/bg_4.webp"
+]
+
+const CHAOS_BACKGROUND_THRESHOLDS = [5, 10, 15, 20]
+
+
 # --- Tutorial state ------------------------------------------------------
 # _tutorial_step: 0 = inactive, 1/2 = active step.
 const TUTORIAL_CURSOR_PATH := "res://Assets/Sprites/tutorial_cursor.png"
@@ -92,16 +113,18 @@ func _ready() -> void:
 	# First launch → tutorial. Returning players resume a saved run if any.
 	if GameState.start_mode == "chaos":
 		SaveManager.set_tutorial_completed(true)
+		set_process(true)
+		_reset_chaos_timer()
 
 	if not SaveManager.is_tutorial_completed():
 		_start_tutorial()
 	elif SaveManager.has_saved_game():
 		_load_saved_game()
 	else:
-		if GameState.start_mode == "chaos":
-			grid.generate_random_start_blocks(Grid.CHAOS_START_BLOCKS)
 		tray.refill()
 		tray.update_availability()
+		if GameState.start_mode == "chaos":
+			_drop_initial_demo_block()
 	
 	AdManager.show_banner(true)
 	var audio_mgr = get_node_or_null("/root/AudioManager")
@@ -124,7 +147,10 @@ func _update_theme() -> void:
 	if _theme_config:
 		background.color = Color(0.08, 0.06, 0.15, 1.0)
 
-		_update_background(GameState.current_score, true)
+		if GameState.start_mode == "chaos":
+			_update_chaos_background(true)
+		else:
+			_update_background(GameState.current_score, true)
 
 
 func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
@@ -132,7 +158,8 @@ func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
 
 
 func _on_score_changed(new_score: int, _delta: int) -> void:
-	_update_background(new_score)
+	if GameState.start_mode != "chaos":
+		_update_background(new_score)
 
 
 func _update_background_layout() -> void:
@@ -265,6 +292,62 @@ func _update_background(score: int, force_immediate: bool = false) -> void:
 			background_texture_rect.modulate.a = 1.0
 			_update_background_layout()
 		)
+
+
+func _update_chaos_background(force_immediate: bool = false) -> void:
+	if not grid:
+		return
+		
+	var obstacle_count = grid.get_obstacle_cell_count()
+	
+	# Determine stage based on thresholds
+	var stage := 0
+	for i in range(CHAOS_BACKGROUND_THRESHOLDS.size()):
+		if obstacle_count >= CHAOS_BACKGROUND_THRESHOLDS[i]:
+			stage = i + 1
+			
+	if stage == _chaos_current_stage and not force_immediate:
+		return
+		
+	_chaos_current_stage = stage
+	
+	# Load texture if not cached
+	var target_bg: Texture2D = null
+	if _chaos_background_textures.has(stage):
+		target_bg = _chaos_background_textures[stage]
+	else:
+		var path = CHAOS_BACKGROUND_PATHS[stage]
+		if ResourceLoader.exists(path):
+			target_bg = load(path)
+			_chaos_background_textures[stage] = target_bg
+			
+	if not target_bg:
+		return
+		
+	if force_immediate or not is_inside_tree() or _background_texture_new == null:
+		background_texture_rect.texture = target_bg
+		background_texture_rect.visible = true
+		background_texture_rect.modulate.a = 1.0
+		_update_background_layout()
+		return
+		
+	# Cross-fade transition
+	if _fade_tween and _fade_tween.is_valid():
+		_fade_tween.kill()
+		
+	_background_texture_new.texture = target_bg
+	_background_texture_new.modulate.a = 0.0
+	_background_texture_new.visible = true
+	_update_background_layout()
+	
+	_fade_tween = create_tween()
+	_fade_tween.tween_property(_background_texture_new, "modulate:a", 1.0, 0.6)
+	_fade_tween.tween_callback(func():
+		background_texture_rect.texture = target_bg
+		background_texture_rect.visible = true
+		_background_texture_new.visible = false
+		_update_background_layout()
+	)
 
 
 
@@ -452,6 +535,8 @@ func _resolve_clears(_origin: Vector2i, placed_color: Color = Color.TRANSPARENT)
 	var clear_value: int = GameState.award_clears(cells.size(), combo)
 	var magnitude: float = clamp(0.4 + 0.15 * (rows.size() + cols.size()), 0.4, 1.0)
 	_spawn_match_popup(clear_value, magnitude)
+	if GameState.start_mode == "chaos":
+		_update_chaos_background()
 
 
 func _spawn_slash(p_start: Vector2, p_end: Vector2, color: Color) -> void:
@@ -699,10 +784,10 @@ func _restart_run() -> void:
 	SaveManager.clear_saved_game()
 	GameState.reset_run()
 	grid.reset()
-	if GameState.start_mode == "chaos":
-		grid.generate_random_start_blocks(Grid.CHAOS_START_BLOCKS)
 	tray.refill()
 	tray.update_availability()
+	if GameState.start_mode == "chaos":
+		_drop_initial_demo_block()
 
 
 # --- Persistence ---------------------------------------------------------
@@ -715,6 +800,10 @@ func _save_game_state() -> void:
 		"slots": tray.snapshot_state(),
 		"assists_used": GameState.assists_used,
 		"shuffled_bg_indices": _shuffled_bg_indices,
+		"chaos_time_left": _chaos_time_left,
+		"chaos_max_time": _chaos_max_time,
+		"chaos_meteor_level": _meteor_level,
+		"chaos_meteor_threat_modifier": _meteor_threat_modifier,
 	})
 
 
@@ -742,12 +831,26 @@ func _load_saved_game() -> void:
 		tray.refill()
 	tray.update_availability()
 	progress_bar_widget.refresh_from_state()
+	
+	if GameState.start_mode == "chaos":
+		_chaos_time_left = float(data.get("chaos_time_left", 30.0))
+		_chaos_max_time = float(data.get("chaos_max_time", 30.0))
+		_meteor_level = int(data.get("chaos_meteor_level", 0))
+		_meteor_threat_modifier = float(data.get("chaos_meteor_threat_modifier", 0.0))
+		if hud:
+			hud.update_chaos_timer(_chaos_time_left, _chaos_max_time)
 
 
 func _on_game_reset() -> void:
 	_current_bg_index = -1
+	_chaos_current_stage = -1
+	_meteor_level = 0
+	_meteor_threat_modifier = 0.0
 	_initialize_shuffled_backgrounds()
-	_update_background(0, true)
+	if GameState.start_mode == "chaos":
+		_update_chaos_background(true)
+	else:
+		_update_background(0, true)
 	var audio_mgr = get_node_or_null("/root/AudioManager")
 	if audio_mgr:
 		audio_mgr.set_music_mode("relax")
@@ -795,20 +898,28 @@ func _camera_shake(combo: int) -> void:
 
 
 func _process(delta: float) -> void:
-	if _shake_remaining <= 0.0:
-		return
-	_shake_remaining -= delta
-	if _shake_remaining <= 0.0:
-		get_viewport().canvas_transform = _shake_base_transform
-		set_process(false)
-		return
-	# Linear decay: punchy at the start, soft at the tail.
-	var t_norm: float = _shake_remaining / _shake_total
-	var s: float = _shake_strength * t_norm
-	var offset := Vector2(randf_range(-s, s), randf_range(-s, s))
-	var t := _shake_base_transform
-	t.origin += offset
-	get_viewport().canvas_transform = t
+	# Camera shake processing
+	if _shake_remaining > 0.0:
+		_shake_remaining -= delta
+		if _shake_remaining <= 0.0:
+			get_viewport().canvas_transform = _shake_base_transform
+			if GameState.start_mode != "chaos":
+				set_process(false)
+		else:
+			var t_norm: float = _shake_remaining / _shake_total
+			var s: float = _shake_strength * t_norm
+			var offset := Vector2(randf_range(-s, s), randf_range(-s, s))
+			var t := _shake_base_transform
+			t.origin += offset
+			get_viewport().canvas_transform = t
+
+	# Process Chaos Mode countdown
+	if GameState.start_mode == "chaos" and not GameState.is_game_over and not _is_chaos_transitioning and _tutorial_step == 0:
+		_chaos_time_left -= delta
+		if hud:
+			hud.update_chaos_timer(_chaos_time_left, _chaos_max_time)
+		if _chaos_time_left <= 0.0:
+			_trigger_meteor_event()
 
 
 # --- Tutorial ------------------------------------------------------------
@@ -1162,4 +1273,179 @@ func _check_music_state() -> void:
 	elif current_mode == "danger":
 		if occupied_count <= 40:
 			audio_mgr.set_music_mode("relax")
+
+
+func _reset_chaos_timer() -> void:
+	var level = GameState.get_level_for_score(GameState.current_score)
+	_chaos_max_time = max(8.0, 30.0 - level * 2.0)
+	_chaos_time_left = _chaos_max_time
+	_is_chaos_transitioning = false
+	if hud:
+		hud.update_chaos_timer(_chaos_time_left, _chaos_max_time)
+
+
+func _trigger_meteor_event() -> void:
+	_is_chaos_transitioning = true
+	AudioManager.play_sfx("timeout")
+	
+	# If the user is currently holding a piece, cancel the drag immediately to prevent desync
+	if _active_piece and is_instance_valid(_active_piece):
+		_active_piece.cancel_drag()
+		_disconnect_piece(_active_piece)
+		_active_piece = null
+		if grid:
+			grid.clear_preview()
+			
+	# Lock piece tray
+	tray.lock_all_except(-1)
+	
+	# Warning pause
+	await get_tree().create_timer(0.40).timeout
+	
+	# 1. Spawn/Drop the Obstacle Block details
+	var level = GameState.get_level_for_score(GameState.current_score)
+	var hp = 1 + int(level / 5)
+	
+	# Option B: Dynamic Threat System
+	var base_tier = min(2.0, GameState.current_score / 1500.0)
+	var obstacle_count = grid.get_obstacle_cell_count()
+	if obstacle_count > 0:
+		_meteor_threat_modifier = min(2.0, _meteor_threat_modifier + 0.5)
+	else:
+		_meteor_threat_modifier = max(-1.0, _meteor_threat_modifier - 0.5)
+		
+	_meteor_level = clamp(int(floor(base_tier + _meteor_threat_modifier)), 0, 3)
+	
+	# Calculate number of meteors to drop (unlimited scaling based on level)
+	var num_meteors = 1 + int(level / 3)
+	
+	# Prepare shapes and offsets
+	var shapes: Array = []
+	var offsets: Array[Vector2i] = []
+	var all_landed_cells: Array[Vector2i] = []
+	
+	for i in range(num_meteors):
+		# Distribute meteor tiers to keep it challenging but fair
+		var m_tier = _meteor_level
+		if i == 1:
+			m_tier = clamp(_meteor_level - 1, 0, 3)
+		elif i == 2:
+			m_tier = clamp(_meteor_level - 2, 0, 3)
+		elif i >= 3:
+			m_tier = 0
+			
+		var shape_cells = ObstacleLibrary.get_shape_by_tier(m_tier)
+		shapes.append(shape_cells)
+		
+		# Find random valid offset
+		var offset = grid.get_random_obstacle_offset(shape_cells)
+		offsets.append(offset)
+		
+		# Record landed cells
+		for cell in shape_cells:
+			var p = cell + offset
+			if grid._in_bounds(p) and not all_landed_cells.has(p):
+				all_landed_cells.append(p)
+				
+	# 2. Animate the falling meteors concurrently
+	var tweens = []
+	for i in range(num_meteors):
+		var tw = grid.animate_falling_meteor(shapes[i], offsets[i], hp)
+		if tw:
+			tweens.append(tw)
+			
+	for tw in tweens:
+		await tw.finished
+		
+	# 3. On Impact: Play SFX and Shake
+	AudioManager.play_sfx("obstacle_fall")
+	_camera_shake(min(6, 3 + int(num_meteors / 2))) # Shake harder for more meteors
+	
+	# 4. Trigger block shifting and actual obstacle placement
+	await grid.shift_blocks_outward(all_landed_cells, hp)
+	_update_chaos_background()
+	
+	# 5. Check for clears due to shifting and obstacle placement
+	await _resolve_shifting_clears()
+	
+	# Wait for impact recovery/animation
+	await get_tree().create_timer(0.50).timeout
+	
+	# 6. Check for clears again
+	await _resolve_clears(Vector2i(-1, -1))
+	
+	# Unlock tray
+	tray.unlock_all()
+	tray.update_availability()
+	
+	# Reset timer
+	_reset_chaos_timer()
+	_save_game_state()
+	
+	if not tray.has_any_enabled():
+		await _run_game_over_sequence(false)
+
+
+
+func _drop_initial_demo_block() -> void:
+	_is_chaos_transitioning = true
+	
+	# Wait for scene to settle/ready
+	await get_tree().create_timer(0.40).timeout
+	
+	var hp = 1
+	var shape_cells = ObstacleLibrary.get_shape_by_name("demo_2x2")
+	if shape_cells.is_empty():
+		shape_cells = [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]
+		
+	# 1. Animate the falling meteor
+	await grid.animate_falling_meteor(shape_cells)
+	
+	# 2. On Impact: Play SFX and Shake
+	AudioManager.play_sfx("obstacle_fall")
+	_camera_shake(3)
+	
+	# 3. Place the actual obstacle
+	var landed_cells = grid.drop_obstacle(shape_cells, hp)
+	_update_chaos_background()
+	
+	# Wait for impact animation
+	await get_tree().create_timer(0.50).timeout
+	
+	_is_chaos_transitioning = false
+	_reset_chaos_timer()
+	_save_game_state()
+
+
+
+func _resolve_shifting_clears() -> void:
+	var clears = grid.compute_clears(Color.TRANSPARENT)
+	var cells = clears["cells"]
+	if cells.is_empty():
+		return
+		
+	# Small score bonus: 1 point per cell cleared
+	var score_delta = cells.size() * 1
+	GameState._add_score(score_delta)
+	
+	AudioManager.play_sfx("clear", 0.0, 1.0)
+	_camera_shake(1)
+	
+	var rows = clears["rows"]
+	var cols = clears["cols"]
+	
+	for y in rows:
+		var local_pos = grid._grid_origin + Vector2(4.5 * grid.cell_size, (y + 0.5) * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, Color.WHITE)
+	for x in cols:
+		var local_pos = grid._grid_origin + Vector2((x + 0.5) * grid.cell_size, 4.5 * grid.cell_size)
+		_spawn_group_clear_vfx(local_pos, Color.WHITE)
+		
+	await grid.clear_cells(cells)
+	
+	var centroid = Vector2.ZERO
+	for c in cells:
+		centroid += Vector2(c.x, c.y)
+	centroid /= float(cells.size())
+	_spawn_score_popup(grid.cell_center_to_global(centroid), score_delta, 0.4)
 

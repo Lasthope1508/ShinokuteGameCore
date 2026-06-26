@@ -84,7 +84,7 @@ func _on_skip_pressed() -> void:
 	# Trigger score submission for high score if already achieved
 	var best = SaveManager.get_best_score()
 	if best > 0:
-		SaveManager.set_last_submitted_score(0)
+		SaveManager.set_last_submitted_score(0, "classic")
 		LeaderboardManager.submit_score(best)
 		
 	username_set.emit(default_username)
@@ -119,7 +119,7 @@ func _on_confirm_pressed() -> void:
 	# Trigger score submission for high score if already achieved
 	var best = SaveManager.get_best_score()
 	if best > 0:
-		SaveManager.set_last_submitted_score(0)
+		SaveManager.set_last_submitted_score(0, "classic")
 		LeaderboardManager.submit_score(best)
 		
 	username_set.emit(text)

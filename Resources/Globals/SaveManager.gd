@@ -52,12 +52,21 @@ func _debug_wipe_and_reload() -> void:
 		get_tree().change_scene_to_file("res://Scenes/Main/Main.tscn")
 
 
-func get_best_score() -> int:
-	return int(_config.get_value(SECTION_PROGRESS, "best_score", 0))
+func get_best_score(mode: String = "classic") -> int:
+	if mode == "chaos":
+		return int(_config.get_value(SECTION_PROGRESS, "best_score_chaos", 0))
+	else:
+		if _config.has_section_key(SECTION_PROGRESS, "best_score_classic"):
+			return int(_config.get_value(SECTION_PROGRESS, "best_score_classic", 0))
+		return int(_config.get_value(SECTION_PROGRESS, "best_score", 0))
 
 
-func set_best_score(value: int) -> void:
-	_config.set_value(SECTION_PROGRESS, "best_score", value)
+func set_best_score(value: int, mode: String = "classic") -> void:
+	if mode == "chaos":
+		_config.set_value(SECTION_PROGRESS, "best_score_chaos", value)
+	else:
+		_config.set_value(SECTION_PROGRESS, "best_score_classic", value)
+		_config.set_value(SECTION_PROGRESS, "best_score", value)
 	_save()
 
 
@@ -72,6 +81,11 @@ func set_volume(bus_name: String, value: float) -> void:
 
 func reset_progress() -> void:
 	_config.set_value(SECTION_PROGRESS, "best_score", 0)
+	_config.set_value(SECTION_PROGRESS, "best_score_classic", 0)
+	_config.set_value(SECTION_PROGRESS, "best_score_chaos", 0)
+	_config.set_value(SECTION_PROGRESS, "last_submitted_score", 0)
+	_config.set_value(SECTION_PROGRESS, "last_submitted_score_classic", 0)
+	_config.set_value(SECTION_PROGRESS, "last_submitted_score_chaos", 0)
 	_save()
 
 
@@ -184,11 +198,20 @@ func set_continent_code(value: String) -> void:
 	_config.set_value(SECTION_GEOLOCATION, "continent_code", value)
 	_save()
 
-func get_last_submitted_score() -> int:
-	return int(_config.get_value(SECTION_PROGRESS, "last_submitted_score", 0))
+func get_last_submitted_score(mode: String = "classic") -> int:
+	if mode == "chaos":
+		return int(_config.get_value(SECTION_PROGRESS, "last_submitted_score_chaos", 0))
+	else:
+		if _config.has_section_key(SECTION_PROGRESS, "last_submitted_score_classic"):
+			return int(_config.get_value(SECTION_PROGRESS, "last_submitted_score_classic", 0))
+		return int(_config.get_value(SECTION_PROGRESS, "last_submitted_score", 0))
 
-func set_last_submitted_score(value: int) -> void:
-	_config.set_value(SECTION_PROGRESS, "last_submitted_score", value)
+func set_last_submitted_score(value: int, mode: String = "classic") -> void:
+	if mode == "chaos":
+		_config.set_value(SECTION_PROGRESS, "last_submitted_score_chaos", value)
+	else:
+		_config.set_value(SECTION_PROGRESS, "last_submitted_score_classic", value)
+		_config.set_value(SECTION_PROGRESS, "last_submitted_score", value)
 	_save()
 
 func is_country_changed_manually() -> bool:

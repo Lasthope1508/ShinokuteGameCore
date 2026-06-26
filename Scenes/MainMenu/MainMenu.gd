@@ -24,7 +24,7 @@ const USERNAME_PROMPT_OVERLAY := preload("res://Scenes/Game/Component/Overlays/U
 
 
 func _ready() -> void:
-	best_label.text = "Best Score:\n %d" % GameState.best_score
+	best_label.text = "Best Score:\n %d" % SaveManager.get_best_score("classic")
 	
 	var display_version = version
 	if display_version == "":
@@ -34,7 +34,7 @@ func _ready() -> void:
 	settings_button.pressed.connect(_on_settings_pressed)
 	leaderboard_button.pressed.connect(_on_leaderboard_pressed)
 	GameState.best_changed.connect(func(value: int) -> void:
-		best_label.text = "Best: %d" % value
+		best_label.text = "Best Score:\n %d" % SaveManager.get_best_score("classic")
 	)
 	
 	ThemeManager.theme_changed.connect(_on_theme_changed)

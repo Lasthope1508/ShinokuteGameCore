@@ -177,7 +177,7 @@ func _ready() -> void:
 			LeaderboardManager.player_continent_code = selected_data["continent"]
 			LeaderboardManager.geolocation_resolved.emit()
 			
-			SaveManager.set_last_submitted_score(0)
+			SaveManager.set_last_submitted_score(0, "classic")
 			var best = SaveManager.get_best_score()
 			if best > 0:
 				LeaderboardManager.submit_score(best)

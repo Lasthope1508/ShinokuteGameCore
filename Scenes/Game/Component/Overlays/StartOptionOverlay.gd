@@ -15,7 +15,7 @@ func _ready() -> void:
 	chaos_button.pressed.connect(_on_chaos_pressed)
 	
 	# Set button text dynamically based on the constants
-	chaos_button.text = "Chaos Start (%d Obstacles)" % Grid.CHAOS_START_BLOCKS
+	chaos_button.text = "Chaos Mode (Meteor Drop)"
 	
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_update_theme_styles()

@@ -21,6 +21,8 @@ var energy_label: Label
 
 var level_badge: Label
 var progress_bar: ScoreProgressBar
+var chaos_timer_bar: ProgressBar
+var chaos_timer_label: Label
 var _score_tween: Tween
 var _displayed_score: int = 0
 
@@ -252,6 +254,29 @@ func _setup_layout() -> void:
 		if progress_frame:
 			progress_frame.visible = false
 			
+	# Create Chaos mode countdown progress bar
+	if GameState.start_mode == "chaos":
+		var timer_container = VBoxContainer.new()
+		timer_container.name = "ChaosTimerContainer"
+		timer_container.add_theme_constant_override("separation", 2)
+		capsule_vbox.add_child(timer_container)
+		
+		chaos_timer_label = Label.new()
+		chaos_timer_label.name = "ChaosTimerLabel"
+		chaos_timer_label.text = "METEOR COUNTDOWN: 30s"
+		chaos_timer_label.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
+		chaos_timer_label.add_theme_font_size_override("font_size", 10)
+		timer_container.add_child(chaos_timer_label)
+		
+		chaos_timer_bar = ProgressBar.new()
+		chaos_timer_bar.name = "ChaosTimerBar"
+		chaos_timer_bar.min_value = 0.0
+		chaos_timer_bar.max_value = 30.0
+		chaos_timer_bar.value = 30.0
+		chaos_timer_bar.show_percentage = false
+		chaos_timer_bar.custom_minimum_size = Vector2(0, 14)
+		timer_container.add_child(chaos_timer_bar)
+			
 	# Retrieve the statically defined Energy Bar from the PieceTray (Tray sibling)
 	var tray = get_node_or_null("../Tray")
 	if tray:
@@ -445,6 +470,23 @@ func _update_theme_styles() -> void:
 		energy_label.add_theme_font_size_override("font_size", 11)
 		energy_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
 		energy_label.add_theme_constant_override("outline_size", 4)
+			
+	# Style Chaos Timer Bar
+	if is_instance_valid(chaos_timer_bar):
+		var bg_sb = StyleBoxFlat.new()
+		bg_sb.bg_color = Color(0.08, 0.06, 0.15, 0.5)
+		bg_sb.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		chaos_timer_bar.add_theme_stylebox_override("background", bg_sb)
+		
+		var fill_sb = StyleBoxFlat.new()
+		fill_sb.bg_color = Color(0.9, 0.15, 0.25) # Neon Crimson
+		fill_sb.set_corner_radius_all(active_theme.inner_button_corner_radius)
+		fill_sb.shadow_color = Color(0.9, 0.15, 0.25, 0.3)
+		fill_sb.shadow_size = 2
+		chaos_timer_bar.add_theme_stylebox_override("fill", fill_sb)
+		
+	if is_instance_valid(chaos_timer_label):
+		chaos_timer_label.add_theme_color_override("font_color", active_theme.text_color)
 
 
 func _on_theme_changed(_name: String, _config: ThemeConfig) -> void:
@@ -501,5 +543,13 @@ func _update_energy_text(energy: float) -> void:
 			energy_label.text = "Energy: %d / 100 (Click to Rotate)" % rounded
 		else:
 			energy_label.text = "Energy: %d / 100" % rounded
+
+
+func update_chaos_timer(time_left: float, max_time: float) -> void:
+	if is_instance_valid(chaos_timer_bar):
+		chaos_timer_bar.max_value = max_time
+		chaos_timer_bar.value = time_left
+	if is_instance_valid(chaos_timer_label):
+		chaos_timer_label.text = "METEOR COUNTDOWN: %ds" % int(ceil(time_left))
 
 
