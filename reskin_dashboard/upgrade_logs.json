@@ -1,5 +1,13 @@
 [
   {
+    "task": "Build AAB & Publish Play Console",
+    "agent": "Antigravity",
+    "details": "Đã compile và publish thành công Android App Bundle (bloxchain.aab) v1.0.34 (Code 25) lên Google Play Console track Internal Testing.",
+    "status": "Hoàn thành",
+    "id": 110,
+    "timestamp": "2026-06-26 18:53"
+  },
+  {
     "task": "Commit & Tag release",
     "agent": "Antigravity",
     "details": "Require at least one player block to clear a row/column, preventing obstacles from clearing themselves on idle. Bump version to 1.0.34 (Code 25).",
