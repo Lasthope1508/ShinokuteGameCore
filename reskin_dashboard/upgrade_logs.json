@@ -2,6 +2,54 @@
   {
     "task": "Build AAB & Publish Play Console",
     "agent": "Antigravity",
+    "details": "Hiển thị bản quyền Shinoku Studio và website shinokute.com ở Main Menu. Tối ưu hóa dung lượng bundle, build AAB v1.0.38 (Code 29) và publish thành công lên Google Play Console Internal testing.",
+    "status": "Hoàn thành",
+    "id": 117,
+    "timestamp": "2026-06-27 09:47"
+  },
+  {
+    "task": "Submit HTML5 to Y8",
+    "agent": "Antigravity",
+    "details": "Đã update bản build HTML5 mới lên Y8.com thành công dưới tên BloxChain: Block Puzzle",
+    "status": "Hoàn thành",
+    "id": 116,
+    "timestamp": "2026-06-27 07:44"
+  },
+  {
+    "task": "Build AAB and Publish Play Console",
+    "agent": "Antigravity",
+    "details": "Build single unified AAB version 1.0.37 (code 28) and successfully submitted to both Amazon Developer Console and Google Play Console Internal testing track.",
+    "status": "Hoan thanh",
+    "id": 115,
+    "timestamp": "2026-06-27 00:07"
+  },
+  {
+    "task": "Publish Amazon Appstore v1.0.36",
+    "agent": "Antigravity",
+    "details": "Đã tích hợp AdMob App ID vào AndroidManifest.xml, biên dịch bản build signed AAB v1.0.36 (code 27) và upload lên Amazon Developer Portal thành công.",
+    "status": "Hoàn thành",
+    "id": 114,
+    "timestamp": "2026-06-26 23:02"
+  },
+  {
+    "task": "Publish Amazon Appstore v1.0.36",
+    "agent": "Antigravity",
+    "details": "Đã tích hợp AdMob App ID vào AndroidManifest.xml, biên dịch bản build signed AAB v1.0.36 (code 27) và upload lên Amazon Developer Portal thành công.",
+    "status": "Hoàn thành",
+    "id": 113,
+    "timestamp": "2026-06-26 23:02"
+  },
+  {
+    "task": "android-publish",
+    "agent": "Android Pub Agent",
+    "details": "Uploaded version 1.0.35 (code 26) to Amazon Appstore",
+    "status": "Hoàn thành",
+    "id": 112,
+    "timestamp": "2026-06-26 20:02"
+  },
+  {
+    "task": "Build AAB & Publish Play Console",
+    "agent": "Antigravity",
     "details": "Đã compile và publish thành công Android App Bundle (bloxchain.aab) tối ưu hóa v1.0.35 (Code 26) giảm dung lượng từ 146MB xuống còn 90.8MB (tiết kiệm ~35% dung lượng).",
     "status": "Hoàn thành",
     "id": 111,

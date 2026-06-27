@@ -16,10 +16,22 @@ signal ad_closed(ad_type: String, reward_earned: bool)
 enum WebPlatform { GAMEDISTRIBUTION, CRAZYGAMES, GAMEMONETIZE }
 @export var web_platform: WebPlatform = WebPlatform.GAMEDISTRIBUTION
 
-# Standard AdMob Test Ad Unit IDs for Android
-var banner_id: String = "ca-app-pub-3940256099942544/6300978111"
-var interstitial_id: String = "ca-app-pub-3940256099942544/1033173712"
-var rewarded_id: String = "ca-app-pub-3940256099942544/5224354917"
+# Active AdMob Ad Unit IDs for Android (assigned dynamically at runtime)
+var banner_id: String = ""
+var interstitial_id: String = ""
+var rewarded_id: String = ""
+
+# Google Play Specific Ad Unit IDs
+# (Currently sharing the same IDs as Amazon; replace if separate tracking or pricing is needed)
+const GOOGLE_PLAY_BANNER_ID: String = "ca-app-pub-6892464072387967/9412193415"
+const GOOGLE_PLAY_INTERSTITIAL_ID: String = "ca-app-pub-6892464072387967/1515758616"
+const GOOGLE_PLAY_REWARDED_ID: String = "ca-app-pub-6892464072387967/7250888336"
+
+# Amazon Appstore Specific Ad Unit IDs
+const AMAZON_BANNER_ID: String = "ca-app-pub-6892464072387967/9412193415"
+const AMAZON_INTERSTITIAL_ID: String = "ca-app-pub-6892464072387967/1515758616"
+const AMAZON_REWARDED_ID: String = "ca-app-pub-6892464072387967/7250888336"
+
 
 # Callback system for direct ad invocation
 var _ad_callback_obj: Object = null
@@ -50,6 +62,25 @@ func _initialize_platform_ads() -> void:
 # Native Android AdMob Initialization
 func _init_android_admob() -> void:
 	print("[AdManager] Android platform detected. Configuring AdMob SDK...")
+	
+	# Dynamically choose Ad Unit IDs based on the installer source
+	var installer_name = _get_android_installer()
+	if installer_name == "com.android.vending":
+		print("[AdManager] Detected Google Play installation source. Loading Google Play Ad Unit IDs.")
+		banner_id = GOOGLE_PLAY_BANNER_ID
+		interstitial_id = GOOGLE_PLAY_INTERSTITIAL_ID
+		rewarded_id = GOOGLE_PLAY_REWARDED_ID
+	elif installer_name == "com.amazon.venezia":
+		print("[AdManager] Detected Amazon Appstore installation source. Loading Amazon Ad Unit IDs.")
+		banner_id = AMAZON_BANNER_ID
+		interstitial_id = AMAZON_INTERSTITIAL_ID
+		rewarded_id = AMAZON_REWARDED_ID
+	else:
+		print("[AdManager] Installer: '", installer_name, "'. Using default Amazon Ad Unit IDs.")
+		banner_id = AMAZON_BANNER_ID
+		interstitial_id = AMAZON_INTERSTITIAL_ID
+		rewarded_id = AMAZON_REWARDED_ID
+
 	if Engine.has_singleton("AdMob"):
 		_android_admob = Engine.get_singleton("AdMob")
 		print("[AdManager] Native AdMob singleton found.")
@@ -65,6 +96,25 @@ func _init_android_admob() -> void:
 		_load_android_ads()
 	else:
 		print("[AdManager] Native AdMob singleton NOT found. Falling back to mock ads.")
+
+func _get_android_installer() -> String:
+	if not Engine.has_singleton("GodotAndroid"):
+		return ""
+	var activity = Engine.get_singleton("GodotAndroid").getActivity()
+	if not activity:
+		return ""
+	var context = activity.getApplicationContext()
+	if not context:
+		return ""
+	var pm = context.getPackageManager()
+	if not pm:
+		return ""
+	var package_name = context.getPackageName()
+	if package_name:
+		var installer = pm.getInstallerPackageName(package_name)
+		if installer:
+			return installer
+	return ""
 
 func _connect_admob_signals() -> void:
 	if not _android_admob:
