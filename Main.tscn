@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://wtthanpbgrtd"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" uid="uid://cpori4e0l2610" path="res://Scripts/MainMenu.gd" id="1_glv2v"]
-[ext_resource type="Texture2D" uid="uid://bmlhw3f416r7h" path="res://Sprites/logo1.png" id="2_uu6xs"]
-[ext_resource type="Script" uid="uid://djxi5b53u6jhq" path="res://Scripts/CollectionMenu.gd" id="3_r0du0"]
+[ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="1_glv2v"]
+[ext_resource type="Texture2D" path="res://Sprites/logo1.png" id="2_uu6xs"]
+[ext_resource type="Script" path="res://Scripts/CollectionMenu.gd" id="3_r0du0"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -41,7 +41,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="LeftCol" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-clip_contents = true
+clip_contents = false
 layout_mode = 2
 theme_override_constants/separation = 9
 
@@ -120,8 +120,8 @@ scale = Vector2(0.92, 0.92)
 
 [node name="Label" type="Label" parent="MarginContainer2"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.82, 0.82, 0.82, 1)
 theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.82, 0.82, 0.82, 1)
 text = "Godot 4 2D Game Examples Templates "
 
 [node name="Node2D" type="Node2D" parent="."]
@@ -135,7 +135,7 @@ offset_bottom = 618.0
 
 [node name="BtnItchSupport" type="Label" parent="Node2D/suppport"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9775341, 0.95685, 0.5491992, 1)
+theme_override_colors/font_color = Color(0.977534, 0.95685, 0.549199, 1)
 text = "Your support is our fuel. Early followers will continue to enjoy all future updates and new game templates for FREE. More high-quality Godot 4 logic is already on the way!\""
 
 [node name="rate" type="MarginContainer" parent="Node2D"]
@@ -147,6 +147,7 @@ offset_bottom = 676.0
 
 [node name="BtnItchSupport" type="Button" parent="Node2D/rate"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9775341, 0.95685, 0.5491992, 1)
+theme_override_colors/font_color = Color(0.977534, 0.95685, 0.549199, 1)
 text = "⭐ Rate & Follow"
 script = ExtResource("3_r0du0")
+itch_url = "https://godotexamplehub.itch.io/godot4-lesson1"

@@ -1,0 +1,19 @@
+{
+  "tool": "photoroom_browser_turnstile_segment",
+  "port": 9801,
+  "inputPath": "C:\\Users\\Admin\\Desktop\\Game\\Assets\\Themes\\fruit_theme\\blocks\\block_5.jpg",
+  "outputPath": "C:\\Users\\Admin\\Desktop\\Game\\Assets\\Themes\\fruit_theme\\blocks\\block_5.png",
+  "bytes": 1718784,
+  "status": 200,
+  "url": "https://sdk.photoroom.com/v1/segment",
+  "headers": {
+    "cache-control": "no-cache",
+    "content-length": "1718784",
+    "content-type": "image/png",
+    "x-foreground-height": "0.7473958",
+    "x-foreground-left": "0.13541667",
+    "x-foreground-top": "0.119791664",
+    "x-foreground-width": "0.7486979",
+    "x-uncertainty-score": "0.0005152065306901932"
+  }
+}

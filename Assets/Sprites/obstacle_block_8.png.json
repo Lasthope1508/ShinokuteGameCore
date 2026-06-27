@@ -1,0 +1,19 @@
+{
+  "tool": "photoroom_browser_turnstile_segment",
+  "port": 9222,
+  "inputPath": "c:\\Users\\Admin\\Desktop\\Game\\Assets\\Sprites\\obstacle_raw_8.png",
+  "outputPath": "c:\\Users\\Admin\\Desktop\\Game\\Assets\\Sprites\\obstacle_block_8.png",
+  "bytes": 3137194,
+  "status": 200,
+  "url": "https://sdk.photoroom.com/v1/segment",
+  "headers": {
+    "cache-control": "no-cache",
+    "content-length": "3137194",
+    "content-type": "image/png",
+    "x-foreground-height": "0.83723956",
+    "x-foreground-left": "0.08203125",
+    "x-foreground-top": "0.08203125",
+    "x-foreground-width": "0.83658856",
+    "x-uncertainty-score": "1.0"
+  }
+}

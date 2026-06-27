@@ -1,0 +1,19 @@
+{
+  "tool": "photoroom_browser_turnstile_segment",
+  "port": 9801,
+  "inputPath": "C:\\Users\\Admin\\Desktop\\Game\\Assets\\Sprites\\shinokute_logo.jpg",
+  "outputPath": "C:\\Users\\Admin\\Desktop\\Game\\Assets\\Sprites\\shinokute_logo.png",
+  "bytes": 850908,
+  "status": 200,
+  "url": "https://sdk.photoroom.com/v1/segment",
+  "headers": {
+    "cache-control": "no-cache",
+    "content-length": "850908",
+    "content-type": "image/png",
+    "x-foreground-height": "0.6692709",
+    "x-foreground-left": "0.13867188",
+    "x-foreground-top": "0.15559895",
+    "x-foreground-width": "0.7298177",
+    "x-uncertainty-score": "0.9429289245605469"
+  }
+}

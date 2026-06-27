@@ -11,9 +11,20 @@ config_version=5
 [application]
 
 config/name="collection"
-run/main_scene="uid://wtthanpbgrtd"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+McpInteractionServer="*res://Scripts/mcp_interaction_server.gd"
+AdManager="*res://Resources/Globals/AdManager.gd"
+SaveManager="*res://Resources/Globals/SaveManager.gd"
+GameState="*res://Resources/Globals/GameState.gd"
+ThemeManager="*res://Resources/Globals/ThemeManager.gd"
+AudioManager="*res://Resources/Globals/AudioManager.gd"
+SceneRouter="*res://Resources/Globals/SceneRouter.gd"
+LeaderboardManager="*res://Scripts/LeaderboardManager.gd"
 
 [display]
 

@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2q2q2q2q2q2q"]
+
+[ext_resource type="Script" path="res://Scenes/Common/ElasticOverlay.gd" id="1_elastic"]
+
+[node name="ElasticOverlay" type="CanvasLayer"]
+layer = 50
+script = ExtResource("1_elastic")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(420, 480)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -240.0
+offset_right = 210.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
