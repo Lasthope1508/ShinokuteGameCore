@@ -1,5 +1,21 @@
 [
   {
+    "task": "Publish Y8.com",
+    "agent": "Antigravity",
+    "details": "Successfully submitted version 1.0.38 HTML5 ZIP to Y8.com with title BloxChain: Block Puzzle v1.0.38",
+    "status": "Hoàn thành",
+    "id": 119,
+    "timestamp": "2026-06-27 10:32"
+  },
+  {
+    "task": "Publish Amazon Appstore",
+    "agent": "Antigravity",
+    "details": "Successfully submitted version 1.0.38 (code 29) to Amazon Appstore",
+    "status": "Hoàn thành",
+    "id": 118,
+    "timestamp": "2026-06-27 10:32"
+  },
+  {
     "task": "Build AAB & Publish Play Console",
     "agent": "Antigravity",
     "details": "Hiển thị bản quyền Shinoku Studio và website shinokute.com ở Main Menu. Tối ưu hóa dung lượng bundle, build AAB v1.0.38 (Code 29) và publish thành công lên Google Play Console Internal testing.",
