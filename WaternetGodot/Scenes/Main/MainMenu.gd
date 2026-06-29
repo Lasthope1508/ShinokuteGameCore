@@ -2,7 +2,6 @@ extends Control
 
 @onready var title_label: Label = $MarginContainer/VBoxContainer/TitleLabel
 @onready var subtitle_label: Label = $MarginContainer/VBoxContainer/SubtitleLabel
-@onready var theme_btn: Button = $MarginContainer/VBoxContainer/HBoxTheme/ThemeBtn
 @onready var mute_btn: Button = $MarginContainer/VBoxContainer/HBoxVolume/MuteBtn
 
 func _ready() -> void:
@@ -21,13 +20,12 @@ func _on_theme_changed(name: String, config: ThemeConfig) -> void:
 		title_label.text = "GLYPHFLOW ARRAYS"
 		title_label.add_theme_color_override("font_color", config.text_color)
 	if subtitle_label:
-		subtitle_label.text = config.theme_title.to_upper() + " — " + config.theme_subtitle.to_upper()
+		subtitle_label.text = config.theme_subtitle.to_upper()
 		subtitle_label.add_theme_color_override("font_color", config.accent_color)
 		
 	var copyright_label = get_node_or_null("MarginContainer/VBoxContainer/CopyrightLabel")
 	if copyright_label:
 		copyright_label.add_theme_color_override("font_color", config.text_color.darkened(0.2))
-
 		
 	# Redraw background ColorRect
 	$Background.color = config.panel_bg_color
@@ -52,11 +50,6 @@ func _on_theme_changed(name: String, config: ThemeConfig) -> void:
 		leader_btn.custom_minimum_size.y = config.play_button_height - 10.0
 		leader_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		
-	if theme_btn:
-		theme_btn.custom_minimum_size.x = config.menu_button_width
-		theme_btn.custom_minimum_size.y = config.utility_button_height
-		theme_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		
 	if mute_btn:
 		mute_btn.custom_minimum_size.x = config.menu_button_width
 		mute_btn.custom_minimum_size.y = config.utility_button_height
@@ -74,14 +67,6 @@ func _on_leaderboard_btn_pressed() -> void:
 	if popup_scene:
 		var inst = popup_scene.instantiate()
 		add_child(inst)
-
-func _on_theme_btn_pressed() -> void:
-	if ThemeManager.active_theme_name == "hacknet_theme":
-		ThemeManager.load_theme("wood_theme")
-	elif ThemeManager.active_theme_name == "wood_theme":
-		ThemeManager.load_theme("garden_theme")
-	else:
-		ThemeManager.load_theme("hacknet_theme")
 
 func _on_mute_btn_pressed() -> void:
 	if has_node("/root/AudioManager"):

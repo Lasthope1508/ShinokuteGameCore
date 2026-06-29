@@ -6,7 +6,7 @@
 script = ExtResource("1_water")
 theme_name = "hacknet_theme"
 theme_title = "GLYPHFLOW MATRIX"
-theme_subtitle = "Glyph & Array Edition"
+theme_subtitle = "Conduit Network Puzzle"
 text_color = Color(0, 1, 1, 1)
 accent_color = Color(0, 1, 1, 1)
 alert_color = Color(1, 0, 0.5, 1)

@@ -72,15 +72,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "LEADERBOARD & PROFILE"
 
-[node name="HBoxTheme" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="ThemeBtn" type="Button" parent="MarginContainer/VBoxContainer/HBoxTheme"]
-custom_minimum_size = Vector2(250, 50)
-layout_mode = 2
-text = "SWITCH THEME"
-
 [node name="HBoxVolume" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1
@@ -99,5 +90,4 @@ horizontal_alignment = 1
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PlayBtn" to="." method="_on_play_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/LeaderboardBtn" to="." method="_on_leaderboard_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxTheme/ThemeBtn" to="." method="_on_theme_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxVolume/MuteBtn" to="." method="_on_mute_btn_pressed"]
