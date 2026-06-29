@@ -85,11 +85,6 @@ func _enable_looping(stream: AudioStream) -> void:
 # Helper to resolve BGM path dynamically based on the active theme
 func _get_music_path(mode: String) -> String:
 	var file_name = "Gameplay.ogg"
-	if mode == "danger":
-		file_name = "Danger.ogg"
-	elif mode == "chaos" or GameState.start_mode == "chaos":
-		file_name = "Death race mode.ogg"
-		
 	# Try theme-specific folder first
 	var theme_name = "default"
 	if has_node("/root/ThemeManager"):
@@ -106,10 +101,7 @@ func _get_music_path(mode: String) -> String:
 func play_music() -> void:
 	if _music_player.playing:
 		return
-	var mode = "relax"
-	if GameState.start_mode == "chaos":
-		mode = "chaos"
-	var path = _get_music_path(mode)
+	var path = _get_music_path("gameplay")
 	if not ResourceLoader.exists(path):
 		return
 	var stream := load(path) as AudioStream
@@ -119,7 +111,7 @@ func play_music() -> void:
 	_music_player.stream = stream
 	_music_player.volume_db = 0.0
 	_music_player.play()
-	_current_music_mode = mode
+	_current_music_mode = "gameplay"
 
 
 func stop_music() -> void:
@@ -128,19 +120,12 @@ func stop_music() -> void:
 	_current_music_mode = ""
 
 
-var _current_music_mode: String = "" # "relax", "danger", or "chaos"
+var _current_music_mode: String = "" # Always "gameplay" for 1 single BGM loop
 
 func set_music_mode(mode: String) -> void:
-	if GameState.start_mode == "chaos":
-		# Always keep Death race mode in Chaos Mode
-		return
-	if _current_music_mode == mode:
-		return
-	_current_music_mode = mode
-	print("[AudioManager] Music mode changed to: ", mode)
-	
-	var path = _get_music_path(mode)
-	_transition_to_music(path)
+	# Disabled: 1 single BGM loop only to avoid unnecessary transitions
+	return
+
 
 
 func _transition_to_music(path: String) -> void:
