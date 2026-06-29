@@ -24,23 +24,17 @@ In **Glyphflow Arrays**, you play as a cyber-network calibration engineer in a h
 
 ---
 
-## 🎨 3. Design System & Theme-Aware Architecture
+## 🎨 3. Design System & Mascot Brand Visuals
 
-Glyphflow Arrays implements a strict **Single Source of Truth (SSOT)** style design system. Every visual skin is an independent `.tres` file inheriting from [ThemeConfig.gd](file:///C:/Users/Admin/Desktop/Godot%20Casual%20Games/WaternetGodot/Resources/Classes/ThemeConfig.gd).
+Glyphflow Arrays implements a strict **Single Source of Truth (SSOT)** style design system. The visual skin is loaded from a central [ThemeConfig.gd](file:///C:/Users/Admin/Desktop/Godot%20Casual%20Games/WaternetGodot/Resources/Classes/ThemeConfig.gd) configuration.
 
-### Available Visual Themes:
-1.  **Glyphflow Matrix (`hacknet_theme`)** [DEFAULT]:
-    *   *Aesthetic*: Cyberpunk terminal, neon laser lines.
-    *   *Colors*: Cyan (`#00ffff`) text & flows, hot magenta (`#ff007f`) borders, black (`#05050f`) backgrounds.
-    *   *Typography*: Monospace digital system font.
-2.  **Grow a Garden (`garden_theme`)**:
-    *   *Aesthetic*: Cozy greenhouse, friendly organic textures.
-    *   *Colors*: Forest Green text (`#2e7d32`), soft leaf green accents, cream off-white background (`#fbfaf5`).
-    *   *Typography*: `Poppins-Bold.ttf` (Soft geometric sans-serif).
-3.  **Luxury Wood & Gold (`wood_theme`)**:
-    *   *Aesthetic*: Classical skeuomorphic wooden board game.
-    *   *Colors*: Amber gold text (`#f59e0b`), walnut brown button backgrounds, dark mahogany panel backing.
-    *   *Typography*: `Alegreya-ExtraBold.ttf` (Elegant serif).
+### Visual Architecture:
+-   **Anthropomorphized Mascot**: The game is represented by a cute cybernetic mascot character (`logo.png`) that is integrated into the boot splash and welcome screen.
+-   **Color Palette Configuration**:
+    -   *Background Panel (`panel_bg_color`)*: Dark space-black (`#010103`) to allow neon circuits to glow with high contrast.
+    -   *Data Conduits & Text (`text_color`)*: Digital Green (`#1ae633`) for unwatered pipes and source/target direction indicators.
+    -   *Energy Accents (`accent_color`)*: Energy Orange (`#ff7300`) for the Source Power Core, active flowing paths, and active highlights.
+    -   *Secondary/Alerts (`alert_color`)*: Electric Blue (`#0099ff`) for target nodes and UI borders.
 
 ---
 
