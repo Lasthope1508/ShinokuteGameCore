@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6f2p847netgd"]
+
+[ext_resource type="Script" path="res://Scenes/Gameplay/DebugGameplay.gd" id="1_water"]
+
+[node name="DebugGameplay" type="Node2D"]
+script = ExtResource("1_water")

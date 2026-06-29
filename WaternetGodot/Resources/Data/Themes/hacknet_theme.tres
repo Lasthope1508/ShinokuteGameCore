@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ThemeConfig" load_steps=2 format=3 uid="uid://hacknettheme"]
+
+[ext_resource type="Script" path="res://Resources/Classes/ThemeConfig.gd" id="1_water"]
+
+[resource]
+script = ExtResource("1_water")
+theme_name = "hacknet_theme"
+theme_title = "CYBERPUNK HACKNET"
+theme_subtitle = "Neon Edition"
+text_color = Color(0, 1, 1, 1)
+accent_color = Color(0, 1, 1, 1)
+alert_color = Color(1, 0, 0.5, 1)
+button_normal_bg = Color(0.05, 0.05, 0.1, 1)
+button_hover_bg = Color(0.1, 0.1, 0.2, 1)
+button_pressed_bg = Color(0, 0.15, 0.3, 1)
+button_border_color = Color(1, 0, 0.5, 1)
+panel_bg_color = Color(0.02, 0.02, 0.06, 1)
+panel_border_color = Color(0, 1, 1, 1)
+button_corner_radius = 8.0
+popup_corner_radius = 8.0
+button_border_width = 2
+popup_border_width = 2

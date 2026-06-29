@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://profilepopupstandalone"]
+
+[ext_resource type="Script" path="res://Scenes/Common/ProfilePopup.gd" id="1_pop"]
+[ext_resource type="Theme" uid="uid://maintheme" path="res://Resources/Theme/main_theme.tres" id="2_theme"]
+
+[node name="ProfilePopup" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_pop")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "PLAYER PROFILE"
+horizontal_alignment = 1
+
+[node name="HBoxEdit" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxEdit"]
+layout_mode = 2
+text = "NAME:"
+
+[node name="UsernameEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxEdit"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter username..."
+max_length = 16
+
+[node name="SaveBtn" type="Button" parent="MarginContainer/VBoxContainer/HBoxEdit"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "SAVE"
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "WORLD LEADERBOARD:"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScoreList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="CloseBtn" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "CLOSE"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxEdit/SaveBtn" to="." method="_on_save_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CloseBtn" to="." method="_on_close_btn_pressed"]
