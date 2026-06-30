@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ThemeConfig" load_steps=10 format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/cell_bg.png" id="1_cell"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/pipe_cap.png" id="2_cap"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/pipe_i.png" id="3_i"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/pipe_l.png" id="4_l"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/pipe_t.png" id="5_t"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/pipe_x.png" id="6_x"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/source.png" id="7_source"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/garden_theme/target.png" id="8_target"]
+[ext_resource type="Script" path="res://Resources/Classes/ThemeConfig.gd" id="9_script"]
+
+[resource]
+script = ExtResource("9_script")
+theme_name = "garden_theme"
+theme_title = "GROW A GARDEN"
+theme_subtitle = "Relaxing Flower Connection"
+text_color = Color(0.18, 0.49, 0.2, 1)
+accent_color = Color(0.24, 0.55, 0.22, 1)
+alert_color = Color(0.83, 0.18, 0.18, 1)
+button_normal_bg = Color(0.99, 0.98, 0.97, 1)
+button_hover_bg = Color(0.96, 0.94, 0.9, 1)
+button_pressed_bg = Color(0.9, 0.86, 0.8, 1)
+button_border_color = Color(0.24, 0.55, 0.22, 1)
+panel_bg_color = Color(0.98, 0.98, 0.96, 1)
+panel_border_color = Color(0.18, 0.49, 0.2, 1)
+button_corner_radius = 12.0
+popup_corner_radius = 16.0
+button_border_width = 2
+popup_border_width = 3
+cell_bg_texture = ExtResource("1_cell")
+pipe_cap_texture = ExtResource("2_cap")
+pipe_i_texture = ExtResource("3_i")
+pipe_l_texture = ExtResource("4_l")
+pipe_t_texture = ExtResource("5_t")
+pipe_x_texture = ExtResource("6_x")
+source_texture = ExtResource("7_source")
+target_texture = ExtResource("8_target")

@@ -15,6 +15,9 @@ var is_solved := false
 var moves := 0
 var level_id := 1
 
+var visual_rotations: Array = []
+var active_tweens: Dictionary = {}
+
 # HUD node references
 @onready var hud_layer: CanvasLayer = $HUD
 @onready var level_label: Label = $HUD/MarginContainer/VBoxContainer/HBoxHeader/LevelLabel
@@ -36,6 +39,8 @@ func _ready() -> void:
 	
 	solver = ConnectionSolverScript.new()
 	is_solved = solver.check_connection(grid)
+	
+	_init_visual_rotations()
 	
 	# Connect to window size changes
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
@@ -194,30 +199,26 @@ func _draw() -> void:
 					var tex_size = tex.get_size()
 					var scale_factor = Vector2(CELL_SIZE / tex_size.x, CELL_SIZE / tex_size.y)
 					
-					# Determine flow modulation (watered tiles glow blue/cyan) - Disabled for raw texture preview
 					var is_watered = watered_tiles.has(cell_pos)
 					var mod_color = Color(1.0, 1.0, 1.0)
+					if is_watered:
+						mod_color = Color(0.85, 0.95, 1.0)
 					
-					draw_set_transform(center, tr.rotation, scale_factor)
+					var rot = visual_rotations[y][x] if visual_rotations.size() > y and visual_rotations[y].size() > x else tr.rotation
+					
+					# Draw shadow
+					var shadow_offset = Vector2(CELL_SIZE * 0.05, CELL_SIZE * 0.05)
+					draw_set_transform(center + shadow_offset, rot, scale_factor)
+					draw_texture_rect(tex, Rect2(-tex_size / 2.0, tex_size), false, Color(0, 0, 0, 0.25))
+					draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
+					
+					# Draw main pipe
+					draw_set_transform(center, rot, scale_factor)
 					draw_texture_rect(tex, Rect2(-tex_size / 2.0, tex_size), false, mod_color)
 					draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
 					
-					# Special visual juice: draw a glowing water indicator overlay if watered - Disabled for raw preview
-					# if is_watered and not (cell_pos == grid.source_pos or cell_pos == grid.target_pos):
-					# 	var ports = grid.get_tile_ports(x, y)
-					# 	var flow_color = Color(0.0, 0.8, 1.0, 0.6) # semi-transparent water blue
-					# 	var flow_w = line_width * 1.5
-					# 	
-					# 	# Draw small animated water flow lines
-					# 	if ports[0]:
-					# 		draw_line(center, center + Vector2(0, -ext), flow_color, flow_w)
-					# 	if ports[1]:
-					# 		draw_line(center, center + Vector2(ext, 0), flow_color, flow_w)
-					# 	if ports[2]:
-					# 		draw_line(center, center + Vector2(0, ext), flow_color, flow_w)
-					# 	if ports[3]:
-					# 		draw_line(center, center + Vector2(-ext, 0), flow_color, flow_w)
-					# 	draw_circle(center, CELL_SIZE * dot_ratio * 1.2, flow_color)
+					# Water flow glowing vector overlay removed as requested
+					pass
 	else:
 		# PASS 2: Draw Pipe Outlines (creates thick dark contours for physical depth)
 		var outline_color = Color(0.0, 0.0, 0.0, 0.75)
@@ -310,6 +311,28 @@ func _unhandled_input(event: InputEvent) -> void:
 			moves += 1
 			_update_hud()
 			
+			# Tween visual rotation with snappy spring-back bounce
+			if visual_rotations.size() > y and visual_rotations[y].size() > x:
+				var key = str(x) + "," + str(y)
+				if active_tweens.has(key) and active_tweens[key].is_valid():
+					active_tweens[key].kill()
+					
+				var old_rot = visual_rotations[y][x]
+				# Ensure target_rot is snapped to nearest PI/2 to prevent cumulative drift
+				var target_rot = round(old_rot / (PI / 2.0)) * (PI / 2.0) + PI / 2.0
+				
+				var tween = create_tween()
+				active_tweens[key] = tween
+				tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+				tween.tween_method(
+					func(val: float):
+						visual_rotations[y][x] = val
+						queue_redraw(),
+					old_rot,
+					target_rot,
+					0.18
+				)
+			
 			if moves > 15 and has_node("/root/AudioManager"):
 				AudioManager.set_music_mode("danger")
 				
@@ -362,6 +385,7 @@ func _on_reset_btn_pressed() -> void:
 	var LevelGeneratorScript = preload("res://Scripts/level_generator.gd")
 	var lvl = LevelGeneratorScript.generate_level(level_id)
 	grid.initialize(lvl)
+	_init_visual_rotations()
 	is_solved = solver.check_connection(grid)
 	queue_redraw()
 
@@ -481,8 +505,11 @@ func _get_tile_texture_and_rotation(x: int, y: int, theme: ThemeConfig) -> Dicti
 	if count == 0:
 		return {"texture": null, "rotation": 0.0}
 	elif count == 1:
-		# Cap: Rotates based on the single active port
-		return {"texture": theme.pipe_cap_texture, "rotation": active_indices[0] * PI / 2.0}
+		# Treat as a straight pipe aligned with the single active port (using pipe_i)
+		var rot = 0.0
+		if active_indices[0] == 1 or active_indices[0] == 3:
+			rot = PI / 2.0
+		return {"texture": theme.pipe_i_texture, "rotation": rot}
 	elif count == 2:
 		# Check if opposite
 		var diff = abs(active_indices[0] - active_indices[1])
@@ -534,3 +561,15 @@ func _get_tile_texture_and_rotation(x: int, y: int, theme: ThemeConfig) -> Dicti
 		return {"texture": theme.pipe_x_texture, "rotation": 0.0}
 		
 	return {"texture": null, "rotation": 0.0}
+
+func _init_visual_rotations() -> void:
+	visual_rotations.clear()
+	var theme = ThemeManager.get_active_theme()
+	if grid == null:
+		return
+	for y in range(grid.height):
+		var row = []
+		for x in range(grid.width):
+			var tr = _get_tile_texture_and_rotation(x, y, theme)
+			row.append(tr.rotation)
+		visual_rotations.append(row)

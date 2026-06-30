@@ -3,10 +3,12 @@ extends Node
 const ThemeConfig = preload("res://Resources/Classes/ThemeConfig.gd")
 
 const SAVE_KEY := "active_theme"
-const DEFAULT_THEME := "hacknet_theme"
+const DEFAULT_THEME := "wood_theme"
 
 const THEME_PATHS := {
-	"hacknet_theme": "res://Resources/Data/Themes/hacknet_theme.tres"
+	"hacknet_theme": "res://Resources/Data/Themes/hacknet_theme.tres",
+	"garden_theme": "res://Resources/Data/Themes/garden_theme.tres",
+	"wood_theme": "res://Resources/Data/Themes/wood_theme.tres"
 }
 
 var active_theme_name: String = DEFAULT_THEME
