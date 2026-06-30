@@ -505,11 +505,9 @@ func _get_tile_texture_and_rotation(x: int, y: int, theme: ThemeConfig) -> Dicti
 	if count == 0:
 		return {"texture": null, "rotation": 0.0}
 	elif count == 1:
-		# Treat as a straight pipe aligned with the single active port (using pipe_i)
-		var rot = 0.0
-		if active_indices[0] == 1 or active_indices[0] == 3:
-			rot = PI / 2.0
-		return {"texture": theme.pipe_i_texture, "rotation": rot}
+		# Cap pipe aligned with the single active port pointing outwards
+		var rot = active_indices[0] * PI / 2.0
+		return {"texture": theme.pipe_cap_texture, "rotation": rot}
 	elif count == 2:
 		# Check if opposite
 		var diff = abs(active_indices[0] - active_indices[1])
