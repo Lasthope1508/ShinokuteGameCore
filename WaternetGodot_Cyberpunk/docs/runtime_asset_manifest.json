@@ -1,0 +1,567 @@
+{
+  "version": 1,
+  "project": "Glyphflow Arrays",
+  "theme": "cyberpunk_theme",
+  "source_of_truth": "Resources/Data/Themes/cyberpunk_theme.tres",
+  "budget_source": "Resources/Data/AssetBudgets/cyberpunk_asset_budget.tres",
+  "budgets": {
+    "web_pck_mb": 30.0,
+    "android_aab_mb": 80.0,
+    "texture_total_mb": 25.0,
+    "generated_ui_mode_mb": 10.0,
+    "single_texture_mb": 1.2,
+    "vfx_atlas_mb": 1.5,
+    "bgm_mb": 3.0,
+    "sfx_total_mb": 2.0,
+    "texture_import_compress_mode": 1,
+    "texture_import_lossy_quality": 0.55,
+    "bgm_publish_vorbis_quality": 0.0
+  },
+  "export_forbidden_markers": [
+    "debug/",
+    "Tests/",
+    "docs/",
+    "component_refs/",
+    "style_trial_",
+    "_raw.png",
+    "raw.png",
+    "preview_sheet",
+    "backup_cyberpunk_assets_before",
+    "Audio/Music/Gameplay",
+    "Audio/Sfx/default",
+    "fruit_theme",
+    "garden_theme",
+    "wood_theme",
+    "chaos",
+    "energy_sheets_ai"
+  ],
+  "runtime_assets": [
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/background_full_landscape.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "landscape",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "background_landscape_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/background_full_portrait.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "portrait",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "background_portrait_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/board_backplate_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_tray_layer_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true,
+      "semantic_keys": ["bottom_reserve_layer", "bottom_tray_layer"]
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/logo_socket_photoroom.png",
+      "role": "runtime_library",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/modal_frame_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/stats_capsule_photoroom.png",
+      "role": "runtime_library",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/top_tray_layer_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/background_full_landscape.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "landscape",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "background_landscape_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/background_full_portrait.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "portrait",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "background_portrait_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/board_backplate_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/bottom_tray_layer_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true,
+      "semantic_keys": ["bottom_reserve_layer", "bottom_tray_layer"]
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/logo_socket_photoroom.png",
+      "role": "runtime_library",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/modal_frame_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/stats_capsule_photoroom.png",
+      "role": "runtime_library",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/top_tray_layer_photoroom.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/Themes/cyberpunk_theme/cell_tiles/dark_floorplate_b.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "cell_tile_runtime_derivative_needed",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/Themes/cyberpunk_theme/cell_tiles/light_floorplate_a.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "cell_tile_runtime_derivative_needed",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/Icons/logo.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "trimmed_logo_keep_lossless_alpha",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/Icons/menuList.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "small_icon_lossless_alpha",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/Icons/return.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "small_icon_lossless_alpha",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/VFX/lightning_boltarc_01_spritesheet.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vfx_atlas_over_budget_needs_owner_review_before_resize",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/Themes/cyberpunk_theme/energy_sheets/manifest.json",
+      "role": "runtime_manifest",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "json_manifest_keep_plain",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Music/cyberpunk_theme/Gameplay.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_q0_44100_mono_mobile_publish_under_budget",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Music/cyberpunk_theme/manifest.json",
+      "role": "runtime_manifest",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "json_manifest_keep_plain",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/disconnect.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/energy_connect_segment.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/energy_enter_tile.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/gameover.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/invalid_rotate.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/pipe_rotate.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/reset.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/target_reached.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/timeout.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/ui_button.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/ui_popup.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Audio/Sfx/cyberpunk_theme/win.ogg",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    }
+  ],
+  "runtime_directories": [
+    {
+      "path": "res://Assets/Themes/cyberpunk_theme/energy_sheets/",
+      "role": "runtime_directory",
+      "export_policy": "include",
+      "compression_policy": "energy_sheet_pngs_runtime_until_atlas_optimization_pass"
+    }
+  ],
+  "non_runtime_policies": [
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/component_refs/",
+      "role": "reference_only",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/style_trial_*",
+      "role": "owner_review_only",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/*/*_raw.png",
+      "role": "raw_generation",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/*/*_alpha.png",
+      "role": "temporary_chroma_key_preview",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/*/floating_*_pressed_photoroom.png",
+      "role": "unused_runtime_state_until_button_state_system_needs_it",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/*/floating_*_disabled_photoroom.png",
+      "role": "unused_runtime_state_until_button_state_system_needs_it",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/*/floating_*_modal_blocked_photoroom.png",
+      "role": "unused_runtime_state_until_button_state_system_needs_it",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/*/bottom_reserve_layer_photoroom.png",
+      "role": "legacy_bottom_tray_candidate_replaced_by_bottom_tray_layer",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://debug/",
+      "role": "debug_only",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://Tests/",
+      "role": "test_only",
+      "export_policy": "exclude"
+    },
+    {
+      "path": "res://docs/",
+      "role": "developer_documentation",
+      "export_policy": "exclude"
+    }
+  ],
+  "package_ready_gates": [
+    "AssetBudgetConfig fields exist and are positive.",
+    "AssetBudgetConfig.runtime_manifest_path points to this file.",
+    "Every ThemeConfig runtime path appears in runtime_assets.",
+    "Every runtime asset entry has role, runtime_required, export_policy, compression_policy, and owner_approved.",
+    "Forbidden export markers match docs/mobile_html5_asset_optimization_checklist.md.",
+    "Exported Web PCK and Android AAB scans contain no forbidden markers.",
+    "Budget violations are reported before owner package-ready approval."
+  ]
+}

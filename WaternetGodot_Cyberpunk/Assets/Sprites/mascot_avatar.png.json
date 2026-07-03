@@ -1,0 +1,19 @@
+{
+  "tool": "photoroom_browser_turnstile_segment",
+  "port": 9223,
+  "inputPath": "c:\\Users\\Admin\\Desktop\\Game\\Assets\\Sprites\\mascot_avatar.png",
+  "outputPath": "c:\\Users\\Admin\\Desktop\\Game\\Assets\\Sprites\\mascot_avatar.png",
+  "bytes": 1894041,
+  "status": 200,
+  "url": "https://sdk.photoroom.com/v1/segment",
+  "headers": {
+    "cache-control": "no-cache",
+    "content-length": "1894041",
+    "content-type": "image/png",
+    "x-foreground-height": "0.7714844",
+    "x-foreground-left": "0.026692709",
+    "x-foreground-top": "0.1171875",
+    "x-foreground-width": "0.8997396",
+    "x-uncertainty-score": "0.08311223983764648"
+  }
+}

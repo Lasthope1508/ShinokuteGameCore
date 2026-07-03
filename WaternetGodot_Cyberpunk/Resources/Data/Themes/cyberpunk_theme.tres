@@ -1,0 +1,948 @@
+[gd_resource type="Resource" script_class="ThemeConfig" load_steps=82 format=3]
+
+[ext_resource type="Script" path="res://Resources/Classes/ThemeConfig.gd" id="1_water"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cell_bg.png" id="2_cell"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/pipe_cap.png" id="3_cap"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/i_slices/i_slice_0.png" id="4_i"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/i_slices/i_slice_1.png" id="5_i_w"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/l_slices/l_slice_0.png" id="6_l"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/l_slices/l_slice_1.png" id="7_l_w"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_0.png" id="8_t"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_7.png" id="9_t_w"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_0.png" id="10_x"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_11.png" id="11_x_w"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/source.png" id="12_source"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/target.png" id="13_target"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/target_slices/target_slice_1.png" id="14_target_w"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_1.png" id="15_x1"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_2.png" id="16_x2"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_3.png" id="17_x3"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_4.png" id="18_x4"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_5.png" id="19_x5"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_6.png" id="20_x6"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_7.png" id="21_x7"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_8.png" id="22_x8"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_9.png" id="23_x9"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_10.png" id="24_x10"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_12.png" id="25_x12"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_13.png" id="26_x13"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_14.png" id="27_x14"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_15.png" id="28_x15"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_1.png" id="29_t1"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_2.png" id="30_t2"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_3.png" id="31_t3"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_4.png" id="32_t4"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_5.png" id="33_t5"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/t_slices/t_slice_6.png" id="34_t6"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/l_slices/l_slice_2.png" id="35_l2"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/l_slices/l_slice_3.png" id="36_l3"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/i_slices/i_slice_2.png" id="37_i2"]
+[ext_resource type="Texture2D" path="res://Assets/Themes/cyberpunk_theme/i_slices/i_slice_3.png" id="38_i3"]
+[ext_resource type="Script" path="res://Resources/Classes/PipeSliceConfig.gd" id="39_slice_script"]
+[ext_resource type="Script" path="res://Resources/Classes/AssetGeometryConfig.gd" id="40_geom_script"]
+[ext_resource type="Texture2D" path="res://Assets/VFX/lightning_boltarc_01_spritesheet.png" id="41_lightning"]
+
+[sub_resource type="Resource" id="Resource_Cross_0"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("10_x")
+flow_mask = 0
+description = "X-pipe unwatered"
+
+[sub_resource type="Resource" id="Resource_Cross_1"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("15_x1")
+flow_mask = 5
+description = "X-pipe Top-Bottom"
+
+[sub_resource type="Resource" id="Resource_Cross_2"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("16_x2")
+flow_mask = 10
+description = "X-pipe Right-Left"
+
+[sub_resource type="Resource" id="Resource_Cross_3"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("17_x3")
+flow_mask = 6
+description = "X-pipe Right-Bottom"
+
+[sub_resource type="Resource" id="Resource_Cross_4"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("18_x4")
+flow_mask = 3
+description = "X-pipe Top-Right"
+
+[sub_resource type="Resource" id="Resource_Cross_5"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("19_x5")
+flow_mask = 9
+description = "X-pipe Top-Left"
+
+[sub_resource type="Resource" id="Resource_Cross_6"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("20_x6")
+flow_mask = 12
+description = "X-pipe Bottom-Left"
+
+[sub_resource type="Resource" id="Resource_Cross_7"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("21_x7")
+flow_mask = 1
+description = "X-pipe Top only"
+
+[sub_resource type="Resource" id="Resource_Cross_8"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("22_x8")
+flow_mask = 2
+description = "X-pipe Right only"
+
+[sub_resource type="Resource" id="Resource_Cross_9"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("23_x9")
+flow_mask = 4
+description = "X-pipe Bottom only"
+
+[sub_resource type="Resource" id="Resource_Cross_10"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("24_x10")
+flow_mask = 8
+description = "X-pipe Left only"
+
+[sub_resource type="Resource" id="Resource_Cross_11"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("11_x_w")
+flow_mask = 15
+description = "X-pipe fully watered"
+
+[sub_resource type="Resource" id="Resource_Cross_12"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("25_x12")
+flow_mask = 11
+description = "X-pipe Top-Right-Left"
+
+[sub_resource type="Resource" id="Resource_Cross_13"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("26_x13")
+flow_mask = 7
+description = "X-pipe Top-Right-Bottom"
+
+[sub_resource type="Resource" id="Resource_Cross_14"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("27_x14")
+flow_mask = 14
+description = "X-pipe Right-Bottom-Left"
+
+[sub_resource type="Resource" id="Resource_Cross_15"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("28_x15")
+flow_mask = 13
+description = "X-pipe Top-Bottom-Left"
+
+[sub_resource type="Resource" id="Resource_T_0"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("8_t")
+flow_mask = 0
+description = "T-pipe unwatered"
+
+[sub_resource type="Resource" id="Resource_T_1"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("29_t1")
+flow_mask = 5
+description = "T-pipe North-South"
+
+[sub_resource type="Resource" id="Resource_T_2"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("30_t2")
+flow_mask = 3
+description = "T-pipe East-North"
+
+[sub_resource type="Resource" id="Resource_T_3"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("31_t3")
+flow_mask = 6
+description = "T-pipe East-South"
+
+[sub_resource type="Resource" id="Resource_T_4"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("32_t4")
+flow_mask = 1
+description = "T-pipe North only"
+
+[sub_resource type="Resource" id="Resource_T_5"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("33_t5")
+flow_mask = 4
+description = "T-pipe South only"
+
+[sub_resource type="Resource" id="Resource_T_6"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("34_t6")
+flow_mask = 2
+description = "T-pipe East only"
+
+[sub_resource type="Resource" id="Resource_T_7"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("9_t_w")
+flow_mask = 7
+description = "T-pipe fully watered (Top-Right-Bottom)"
+
+[sub_resource type="Resource" id="Resource_L_0"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("6_l")
+flow_mask = 0
+description = "L-pipe unwatered"
+
+[sub_resource type="Resource" id="Resource_L_1"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("7_l_w")
+flow_mask = 3
+description = "L-pipe North-East"
+
+[sub_resource type="Resource" id="Resource_L_2"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("35_l2")
+flow_mask = 1
+description = "L-pipe North only"
+
+[sub_resource type="Resource" id="Resource_L_3"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("36_l3")
+flow_mask = 2
+description = "L-pipe East only"
+
+[sub_resource type="Resource" id="Resource_I_0"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("4_i")
+flow_mask = 0
+description = "I-pipe unwatered"
+
+[sub_resource type="Resource" id="Resource_I_1"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("5_i_w")
+flow_mask = 5
+description = "I-pipe fully watered (Top-Bottom)"
+
+[sub_resource type="Resource" id="Resource_I_2"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("37_i2")
+flow_mask = 4
+description = "I-pipe Bottom only"
+
+[sub_resource type="Resource" id="Resource_I_3"]
+script = ExtResource("39_slice_script")
+texture = ExtResource("38_i3")
+flow_mask = 1
+description = "I-pipe Top only"
+
+[sub_resource type="Resource" id="Geometry_Cell"]
+script = ExtResource("40_geom_script")
+asset_key = "cell"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(0, 0, 512, 512)
+energy_rect = Rect2(0, 0, 512, 512)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_Source"]
+script = ExtResource("40_geom_script")
+asset_key = "source"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(24, 0, 488, 512)
+energy_rect = Rect2(96, 48, 320, 416)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_Target"]
+script = ExtResource("40_geom_script")
+asset_key = "target"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(24, 0, 488, 512)
+energy_rect = Rect2(104, 72, 304, 360)
+route_junction = Vector2(256, 256)
+core_center = Vector2(256, 288)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_Cap"]
+script = ExtResource("40_geom_script")
+asset_key = "cap"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(162, 0, 188, 400)
+energy_rect = Rect2(180, 0, 152, 384)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_I"]
+script = ExtResource("40_geom_script")
+asset_key = "I"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(163, 0, 187, 512)
+energy_rect = Rect2(190, 0, 132, 512)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_L"]
+script = ExtResource("40_geom_script")
+asset_key = "L"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(176, 0, 336, 336)
+energy_rect = Rect2(190, 0, 322, 322)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_T"]
+script = ExtResource("40_geom_script")
+asset_key = "T"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(154, 2, 358, 509)
+energy_rect = Rect2(186, 0, 326, 512)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[sub_resource type="Resource" id="Geometry_X"]
+script = ExtResource("40_geom_script")
+asset_key = "X"
+frame_size = Vector2(512, 512)
+draw_origin = Vector2(256, 256)
+center = Vector2(256, 256)
+content_rect = Rect2(0, 0, 512, 511)
+energy_rect = Rect2(0, 0, 512, 512)
+route_junction = Vector2(256, 256)
+north_port = Vector2(256, 0)
+east_port = Vector2(512, 256)
+south_port = Vector2(256, 512)
+west_port = Vector2(0, 256)
+
+[resource]
+script = ExtResource("1_water")
+theme_name = "cyberpunk_theme"
+theme_title = "CYBERPUNK NEON"
+theme_subtitle = "Cybernetic Energy Grid"
+text_color = Color(0.22, 1.0, 0.08, 1)
+accent_color = Color(0.22, 1.0, 0.08, 1)
+alert_color = Color(0.22, 1.0, 0.08, 1)
+button_normal_bg = Color(0.02, 0.02, 0.06, 1)
+button_hover_bg = Color(0.05, 0.08, 0.12, 1)
+button_pressed_bg = Color(0, 0.1, 0.2, 1)
+button_border_color = Color(0.22, 1.0, 0.08, 1)
+panel_bg_color = Color(0.01, 0.01, 0.03, 1)
+panel_border_color = Color(0.22, 1.0, 0.08, 1)
+button_corner_radius = 8.0
+popup_corner_radius = 8.0
+button_border_width = 2
+popup_border_width = 2
+menu_margin_x = 40.0
+menu_margin_y = 100.0
+menu_button_width = 300.0
+play_button_height = 70.0
+ui_main_menu_secondary_button_height = 60.0
+utility_button_height = 50.0
+level_button_size = 100.0
+grid_columns = 4
+levels_per_page = 20
+ui_level_select_button_font_size = 24
+ui_level_select_locked_alpha = 0.4
+ui_level_select_pagination_button_width = 60.0
+ui_level_select_grid_h_separation = 20
+ui_level_select_grid_v_separation = 20
+ui_main_menu_gap = 30
+ui_main_menu_title_font_size = 48
+ui_main_menu_subtitle_font_size = 24
+ui_main_menu_primary_button_font_size = 28
+ui_main_menu_secondary_button_font_size = 20
+ui_main_menu_copyright_font_size = 14
+ui_main_menu_logo_size = 160.0
+ui_level_select_title_font_size = 36
+ui_level_select_gap = 25
+ui_level_select_pagination_gap = 30
+ui_splash_gap = 15
+ui_splash_studio_font_size = 42
+ui_splash_presents_font_size = 20
+ui_splash_fade_in_duration = 1.2
+ui_splash_hold_duration = 1.5
+ui_splash_fade_out_duration = 0.8
+game_top_margin = 154.0
+game_landscape_top_margin = 204.0
+ui_landscape_board_avoid_top_tray_enabled = true
+ui_landscape_board_top_tray_gap = 24.0
+ui_landscape_board_bottom_safe_margin = 24.0
+ui_top_tray_height = 124.0
+ui_top_tray_layer_height = 128.0
+ui_top_tray_width_ratio = 0.76
+ui_top_tray_landscape_width_height_ratio = 0.76
+ui_top_tray_portrait_height_ratio = 0.18
+ui_top_tray_landscape_height_ratio = 0.16
+ui_top_tray_generated_object_stretch = "keep_aspect_centered"
+ui_top_tray_capsule_width_ratio = 0.72
+ui_top_tray_logo_size = 80.0
+ui_top_tray_icon_button_size = 50.0
+ui_top_tray_button_icon_scale = 0.48
+ui_top_tray_button_icon_color = Color(1, 1, 1, 0.96)
+ui_top_tray_button_icon_paths = {
+"left_floating_menu": "res://Assets/Icons/menuList.png",
+"right_floating_replay": "res://Assets/Icons/return.png"
+}
+ui_top_tray_stat_height = 34.0
+ui_top_tray_stat_side_slot_width_ratio = 0.29
+ui_top_tray_stat_center_slot_width_ratio = 0.42
+ui_top_tray_stat_font_size = 18
+ui_top_tray_stat_min_font_size = 8
+ui_top_tray_stat_line_height_ratio = 1.05
+ui_top_tray_stat_fit_width_ratio = 0.94
+ui_top_tray_time_font_path = "res://Assets/Fonts/Poppins-Bold.ttf"
+ui_top_tray_default_username = "PLAYER"
+ui_top_tray_best_wave_label_prefix = "BEST WAVE"
+ui_top_tray_moves_label_prefix = "MOVES"
+ui_top_tray_time_color = Color(0.52, 1, 0.18, 1)
+ui_top_tray_time_outline_color = Color(0, 0.03, 0.02, 0.96)
+ui_top_tray_time_shadow_color = Color(0.1, 1, 0.82, 0.44)
+ui_top_tray_time_outline_size = 4
+ui_top_tray_time_fit_padding_ratio = 0.12
+ui_top_tray_logo_center_y_ratio = 0.68
+ui_project_logo_alpha_bbox = Vector4(0, 0, 423, 485)
+ui_top_tray_regions = {
+"left_floating_menu": Vector4(0.0544, 0.7751, 0.0688, 0.2167),
+"left_floating_menu_icon": Vector4(0.0862, 0.84, 0.0331, 0.0868),
+"left_stats_readout": Vector4(0.147, 0.3494, 0.1843, 0.1843),
+"logo_core": Vector4(0.3908, 0.3076, 0.2122, 0.3988),
+"right_floating_replay": Vector4(0.8768, 0.7751, 0.0688, 0.2167),
+"right_floating_replay_icon": Vector4(0.9043, 0.84, 0.0331, 0.0868),
+"right_stats_readout": Vector4(0.6145, 0.3409, 0.0977, 0.1794),
+"total_play_time_readout": Vector4(0.6687, 0.3494, 0.1843, 0.1843)
+}
+ui_top_tray_region_sets = {
+"dark": {
+"left_floating_menu": Vector4(0.0544, 0.7751, 0.0688, 0.2167),
+"left_floating_menu_icon": Vector4(0.0862, 0.84, 0.0331, 0.0868),
+"left_stats_readout": Vector4(0.147, 0.3494, 0.1843, 0.1843),
+"logo_core": Vector4(0.3908, 0.3076, 0.2122, 0.3988),
+"right_floating_replay": Vector4(0.8768, 0.7751, 0.0688, 0.2167),
+"right_floating_replay_icon": Vector4(0.9043, 0.84, 0.0331, 0.0868),
+"right_stats_readout": Vector4(0.6145, 0.3409, 0.0977, 0.1794),
+"total_play_time_readout": Vector4(0.6687, 0.3494, 0.1843, 0.1843)
+},
+"light": {
+"left_floating_menu": Vector4(0.1433, 0.8066, 0.0742, 0.1934),
+"left_floating_menu_icon": Vector4(0.163958, 0.849153, 0.035616, 0.092832),
+"left_stats_readout": Vector4(0.1542, 0.4166, 0.1683, 0.129),
+"logo_core": Vector4(0.41, 0.29, 0.18, 0.36),
+"right_floating_replay": Vector4(0.7817, 0.8084, 0.0767, 0.1916),
+"right_floating_replay_icon": Vector4(0.798786, 0.850601, 0.036816, 0.091968),
+"right_stats_readout": Vector4(0.6767, 0.4219, 0.1608, 0.1219),
+"total_play_time_readout": Vector4(0.6767, 0.4219, 0.1608, 0.1219)
+}
+}
+ui_top_tray_art_stack = ["top_tray_layer"]
+ui_top_tray_art_node_names = {
+"logo_socket": "GeneratedLogoSocket",
+"stats_capsule": "GeneratedStatsCapsule",
+"top_tray_layer": "GeneratedTopTrayLayer"
+}
+ui_top_tray_region_source_size = Vector2(2032, 774)
+ui_top_tray_region_source_sizes = {
+"dark": Vector2(2032, 774),
+"light": Vector2(1829, 860)
+}
+ui_top_tray_region_pixel_rects = {
+"left_floating_menu": Vector4(111, 600, 140, 168),
+"left_floating_menu_icon": Vector4(175, 650, 67, 67),
+"left_stats_readout": Vector4(299, 270, 374, 143),
+"logo_core": Vector4(794, 238, 431, 309),
+"right_floating_replay": Vector4(1782, 600, 140, 168),
+"right_floating_replay_icon": Vector4(1838, 650, 67, 67),
+"right_stats_readout": Vector4(1249, 264, 199, 139),
+"total_play_time_readout": Vector4(1359, 270, 374, 143)
+}
+ui_top_tray_region_pixel_rect_sets = {
+"dark": {
+"left_floating_menu": Vector4(111, 600, 140, 168),
+"left_floating_menu_icon": Vector4(175, 650, 67, 67),
+"left_stats_readout": Vector4(299, 270, 374, 143),
+"logo_core": Vector4(794, 238, 431, 309),
+"right_floating_replay": Vector4(1782, 600, 140, 168),
+"right_floating_replay_icon": Vector4(1838, 650, 67, 67),
+"right_stats_readout": Vector4(1249, 264, 199, 139),
+"total_play_time_readout": Vector4(1359, 270, 374, 143)
+},
+"light": {
+"left_floating_menu": Vector4(262, 694, 136, 166),
+"left_floating_menu_icon": Vector4(300, 730, 65, 80),
+"left_stats_readout": Vector4(282, 358, 308, 111),
+"logo_core": Vector4(750, 249, 329, 310),
+"right_floating_replay": Vector4(1430, 695, 140, 165),
+"right_floating_replay_icon": Vector4(1461, 732, 67, 79),
+"right_stats_readout": Vector4(1238, 363, 294, 105),
+"total_play_time_readout": Vector4(1238, 363, 294, 105)
+}
+}
+ui_top_tray_board_gap = 24.0
+ui_playboard_region_sets = {
+"dark": {
+"portrait": {
+"board_backplate_rect": Vector4(0, 0.208, 1, 0.56525),
+"playboard_rect": Vector4(0.027778, 0.225, 0.944444, 0.53125)
+},
+"landscape": {
+"board_backplate_rect": Vector4(0.30432, 0.195833, 0.39136, 0.695581),
+"playboard_rect": Vector4(0.31609, 0.216667, 0.36782, 0.653742)
+}
+},
+"light": {
+"portrait": {
+"board_backplate_rect": Vector4(0, 0.208, 1, 0.56525),
+"playboard_rect": Vector4(0.027778, 0.225, 0.944444, 0.53125)
+},
+"landscape": {
+"board_backplate_rect": Vector4(0.319277, 0.210843, 0.350699, 0.623465),
+"playboard_rect": Vector4(0.329825, 0.229594, 0.329604, 0.585963)
+}
+}
+}
+ui_playboard_region_source_sizes = {
+"portrait": Vector2(720, 1280),
+"landscape": Vector2(1280, 720)
+}
+ui_playboard_region_pixel_rect_sets = {
+"dark": {
+"portrait": {
+"board_backplate_rect": Vector4(0, 266, 720, 724),
+"playboard_rect": Vector4(20, 288, 680, 680)
+},
+"landscape": {
+"board_backplate_rect": Vector4(390, 141, 501, 501),
+"playboard_rect": Vector4(405, 156, 471, 471)
+}
+},
+"light": {
+"portrait": {
+"board_backplate_rect": Vector4(0, 266, 720, 724),
+"playboard_rect": Vector4(20, 288, 680, 680)
+},
+"landscape": {
+"board_backplate_rect": Vector4(409, 152, 449, 449),
+"playboard_rect": Vector4(422, 165, 422, 422)
+}
+}
+}
+ui_bottom_reserve_width_ratio = 0.82
+ui_bottom_reserve_height_ratio = 0.105
+ui_bottom_reserve_bottom_margin_ratio = 0.026
+ui_bottom_reserve_min_height = 72.0
+ui_bottom_reserve_max_height = 132.0
+ui_top_tray_bg_color = Color(0.075, 0.055, 0.18, 0.72)
+ui_top_tray_border_color = Color(0.22, 1, 0.9, 0.92)
+ui_top_tray_shadow_color = Color(0, 0, 0, 0.58)
+ui_top_tray_glow_color = Color(0.22, 1, 0.82, 0.34)
+ui_top_tray_menu_color = Color(0.72, 0.08, 1, 1)
+ui_top_tray_replay_color = Color(1, 0.68, 0.08, 1)
+ui_hud_margin_left = 22.0
+ui_hud_margin_top = 24.0
+ui_hud_margin_right = 22.0
+ui_hud_margin_bottom = 32.0
+ui_background_depth_enabled = true
+ui_background_top_color = Color(0.045, 0.018, 0.11, 1)
+ui_background_bottom_color = Color(0.0, 0.006, 0.018, 1)
+ui_background_vignette_color = Color(0, 0, 0, 0.58)
+ui_background_star_color = Color(0.42, 1, 0.82, 0.38)
+ui_generated_asset_mode = "dark"
+ui_cell_texture_strict_mode_paths = true
+ui_cell_texture_paths = {
+"dark": "res://Assets/Themes/cyberpunk_theme/cell_tiles/dark_floorplate_b.png",
+"light": "res://Assets/Themes/cyberpunk_theme/cell_tiles/light_floorplate_a.png"
+}
+ui_generated_asset_paths = {
+"dark": {
+"background_full_landscape": "res://Assets/UI/cyberpunk_theme/generated/production/dark/background_full_landscape.png",
+"background_full_portrait": "res://Assets/UI/cyberpunk_theme/generated/production/dark/background_full_portrait.png",
+"board_backplate": "res://Assets/UI/cyberpunk_theme/generated/production/dark/board_backplate_photoroom.png",
+"bottom_reserve_layer": "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_tray_layer_photoroom.png",
+"bottom_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_tray_layer_photoroom.png",
+"floating_menu_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_photoroom.png",
+"floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_photoroom.png",
+"logo_socket": "res://Assets/UI/cyberpunk_theme/generated/production/dark/logo_socket_photoroom.png",
+"modal_frame": "res://Assets/UI/cyberpunk_theme/generated/production/dark/modal_frame_photoroom.png",
+"stats_capsule": "res://Assets/UI/cyberpunk_theme/generated/production/dark/stats_capsule_photoroom.png",
+"top_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/dark/top_tray_layer_photoroom.png"
+},
+"light": {
+"background_full_landscape": "res://Assets/UI/cyberpunk_theme/generated/production/light/background_full_landscape.png",
+"background_full_portrait": "res://Assets/UI/cyberpunk_theme/generated/production/light/background_full_portrait.png",
+"board_backplate": "res://Assets/UI/cyberpunk_theme/generated/production/light/board_backplate_photoroom.png",
+"bottom_reserve_layer": "res://Assets/UI/cyberpunk_theme/generated/production/light/bottom_tray_layer_photoroom.png",
+"bottom_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/light/bottom_tray_layer_photoroom.png",
+"floating_menu_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_photoroom.png",
+"floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_photoroom.png",
+"logo_socket": "res://Assets/UI/cyberpunk_theme/generated/production/light/logo_socket_photoroom.png",
+"modal_frame": "res://Assets/UI/cyberpunk_theme/generated/production/light/modal_frame_photoroom.png",
+"stats_capsule": "res://Assets/UI/cyberpunk_theme/generated/production/light/stats_capsule_photoroom.png",
+"top_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/light/top_tray_layer_photoroom.png"
+}
+}
+ui_generated_asset_geometry = {
+"background_full_landscape": {
+"anchor": "background.fullscreen.landscape",
+"scale_policy": "select_by_orientation_then_cover_safe_area_without_cross-orientation_stretch"
+},
+"background_full_portrait": {
+"anchor": "background.fullscreen.portrait",
+"scale_policy": "select_by_orientation_then_cover_safe_area_without_cross-orientation_stretch"
+},
+"board_backplate": {
+"alpha_bbox": {
+"dark": Vector4(0, 98, 1166, 1156),
+"light": Vector4(0, 75, 1169, 1179)
+},
+"anchor": "board.backplate",
+"scale_policy": "fit_under_canonical_square_board_rect_preserve_aspect_centered"
+},
+"bottom_reserve_layer": {
+"alpha_bbox": {
+"dark": Vector4(85, 226, 1604, 430),
+"light": Vector4(28, 219, 1717, 454)
+},
+"anchor": "bottom_tray.layer.runtime_alias",
+"scale_policy": "fit_width_inside_bottom_region_preserve_aspect_centered"
+},
+"bottom_tray_layer": {
+"alpha_bbox": {
+"dark": Vector4(85, 226, 1604, 430),
+"light": Vector4(28, 219, 1717, 454)
+},
+"anchor": "bottom_tray.layer",
+"scale_policy": "fit_width_inside_bottom_region_preserve_aspect_centered"
+},
+"floating_menu_button_default": {
+"alpha_bbox": {
+"dark": Vector4(0, 136, 1098, 1118),
+"light": Vector4(0, 168, 1075, 1086)
+},
+"anchor": "top_tray.floating_menu_button",
+"runtime_region": "full_source",
+"scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered"
+},
+"floating_replay_button_default": {
+"alpha_bbox": {
+"dark": Vector4(0, 94, 1165, 1160),
+"light": Vector4(0, 181, 1052, 1073)
+},
+"anchor": "top_tray.floating_replay_button",
+"runtime_region": "full_source",
+"scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered"
+},
+"logo_socket": {
+"alpha_bbox": {
+"dark": Vector4(0, 132, 1501, 815),
+"light": Vector4(0, 58, 1464, 886)
+},
+"anchor": "top_tray.center_logo_socket",
+"runtime_region": "full_source",
+"scale_policy": "stack_full_top_tray_canvas_preserve_aspect_centered"
+},
+"modal_frame": {
+"alpha_bbox": {
+"dark": Vector4(0, 76, 1490, 948),
+"light": Vector4(58, 76, 1509, 797)
+},
+"anchor": "modal.center_frame",
+"runtime_stretch_mode": "scale",
+"scale_policy": "fit_inside_canonical_modal_rect_preserve_aspect_centered_use_9slice_if_needed"
+},
+"stats_capsule": {
+"alpha_bbox": {
+"dark": Vector4(0, 151, 1885, 642),
+"light": Vector4(0, 171, 1855, 651)
+},
+"anchor": "top_tray.stats_capsule",
+"runtime_region": "full_source",
+"scale_policy": "stack_full_top_tray_canvas_preserve_aspect_centered"
+},
+"top_tray_layer": {
+"alpha_bbox": {
+"dark": Vector4(0, 120, 1944, 654),
+"light": Vector4(0, 111, 1780, 749)
+},
+"anchor": "top_tray.layer",
+"runtime_region": "full_source",
+"source_size": {
+"dark": Vector2(2032, 774),
+"light": Vector2(1829, 860)
+},
+"scale_policy": "fit_width_inside_top_region_preserve_aspect_centered"
+}
+}
+ui_board_shadow_color = Color(0, 0, 0, 0.16)
+ui_modal_width_ratio = 0.58
+ui_modal_height_ratio = 0.42
+ui_modal_landscape_width_ratio = 0.34
+ui_modal_landscape_height_ratio = 0.50
+ui_modal_close_button_size = 44.0
+ui_modal_close_button_padding = 8.0
+ui_modal_action_button_height = 54.0
+ui_modal_content_gap = 16.0
+ui_modal_content_margin_x = 28
+ui_modal_content_margin_top = 52
+ui_modal_content_margin_bottom = 28
+ui_profile_popup_content_margin_x = 30
+ui_profile_popup_content_margin_top = 58
+ui_profile_popup_content_margin_bottom = 30
+ui_profile_popup_title_font_size = 28
+ui_profile_popup_field_gap = 15
+ui_profile_popup_list_gap = 10
+ui_profile_popup_save_button_width = 80.0
+ui_profile_popup_score_font_size = 18
+fake_3d_enabled = true
+texture_native_size = Vector2(512, 512)
+cell_inset_ratio = 0.035
+cell_bevel_width_ratio = 0.022
+cell_shadow_color = Color(0, 0, 0, 0.42)
+cell_highlight_color = Color(0.42, 1, 0.82, 0.18)
+cell_border_width_ratio = 0.012
+pipe_shadow_offset_ratio = Vector2(0.045, 0.055)
+pipe_shadow_alpha = 0.22
+pipe_dry_modulate = Color(0.32, 0.34, 0.34, 1)
+pipe_powered_modulate = Color(1, 1, 1, 1)
+pipe_powered_fallback_modulate = Color(0.85, 0.95, 1, 1)
+target_dry_modulate = Color(0.56, 0.58, 0.58, 1)
+target_powered_modulate = Color(1.35, 1.5, 1.25, 1)
+target_core_idle_color = Color(0.24, 1, 0.08, 1)
+target_core_powered_color = Color(0.52, 1, 0.12, 1)
+target_core_idle_alpha_min = 0.12
+target_core_idle_alpha_max = 0.28
+target_core_powered_alpha_min = 0.76
+target_core_powered_alpha_max = 1.0
+target_core_idle_radius_px = 18.0
+target_core_powered_radius_px = 62.0
+target_core_blink_period = 0.78
+energy_sheet_frame_count = 8
+energy_sheet_frame_size = Vector2(512, 512)
+energy_default_frame_duration = 0.055
+energy_frame_duration_by_asset_key = {}
+energy_sheet_root = "res://Assets/Themes/cyberpunk_theme/energy_sheets"
+energy_texture_prefix = "res://Assets/Themes/cyberpunk_theme/"
+energy_sheet_manifest_path = "res://Assets/Themes/cyberpunk_theme/energy_sheets/manifest.json"
+energy_overlay_draw_enabled = false
+target_energy_overlay_draw_enabled = true
+bgm_path = "res://Audio/Music/cyberpunk_theme/Gameplay.ogg"
+bgm_manifest_path = "res://Audio/Music/cyberpunk_theme/manifest.json"
+bgm_mobile_sample_rate = 44100
+bgm_mobile_channels = 1
+bgm_vorbis_quality = 0
+sfx_event_paths = {
+"disconnect": "res://Audio/Sfx/cyberpunk_theme/disconnect.ogg",
+"energy_connect_segment": "res://Audio/Sfx/cyberpunk_theme/energy_connect_segment.ogg",
+"energy_enter_tile": "res://Audio/Sfx/cyberpunk_theme/energy_enter_tile.ogg",
+"gameover": "res://Audio/Sfx/cyberpunk_theme/gameover.ogg",
+"invalid_rotate": "res://Audio/Sfx/cyberpunk_theme/invalid_rotate.ogg",
+"pipe_rotate": "res://Audio/Sfx/cyberpunk_theme/pipe_rotate.ogg",
+"reset": "res://Audio/Sfx/cyberpunk_theme/reset.ogg",
+"target_reached": "res://Audio/Sfx/cyberpunk_theme/target_reached.ogg",
+"timeout": "res://Audio/Sfx/cyberpunk_theme/timeout.ogg",
+"ui_button": "res://Audio/Sfx/cyberpunk_theme/ui_button.ogg",
+"ui_popup": "res://Audio/Sfx/cyberpunk_theme/ui_popup.ogg",
+"win": "res://Audio/Sfx/cyberpunk_theme/win.ogg"
+}
+sfx_event_volume_offsets = {
+"disconnect": -5.0,
+"energy_connect_segment": -8.0,
+"energy_enter_tile": -6.0,
+"gameover": -4.0,
+"invalid_rotate": -4.0,
+"pipe_rotate": -2.0,
+"reset": -2.0,
+"target_reached": -3.0,
+"timeout": -4.0,
+"ui_button": -2.0,
+"ui_popup": -3.0,
+"win": -6.0
+}
+sfx_event_pitch_variation = {
+"energy_connect_segment": 0.04,
+"energy_enter_tile": 0.05,
+"pipe_rotate": 0.05,
+"ui_button": 0.02
+}
+vfx_enabled = true
+vfx_debug_visible = false
+vfx_debug_line_color = Color(0.22, 1, 0.08, 0.72)
+vfx_debug_line_width_ratio = 0.018
+vfx_contact_spark_color = Color(0.22, 1, 0.08, 0.9)
+vfx_contact_spark_duration = 0.22
+vfx_contact_spark_radius_ratio = 0.13
+vfx_trail_color = Color(0.22, 1, 0.08, 0.62)
+vfx_trail_draw_enabled = false
+vfx_trail_duration = 0.34
+vfx_trail_width_ratio = 0.045
+vfx_trail_min_alpha = 0.28
+vfx_path_wave_color = Color(0.65, 1, 0.22, 0.82)
+vfx_path_wave_draw_enabled = true
+vfx_path_wave_period = 0.95
+vfx_path_wave_segment_ratio = 0.22
+vfx_path_wave_width_ratio = 0.026
+vfx_path_wave_alpha = 0.72
+vfx_path_wave_max_effects = 80
+vfx_path_wave_min_particles_per_output = 1
+vfx_path_wave_max_particles_per_output = 4
+vfx_path_wave_density_curve = 1.35
+vfx_path_wave_order_phase_offset = 0.11
+vfx_energy_stream_enabled = true
+vfx_energy_stream_color = Color(0.36, 1, 0.78, 0.9)
+vfx_energy_stream_period = 0.7
+vfx_energy_stream_alpha = 0.7
+vfx_energy_stream_width_ratio = 0.032
+vfx_energy_stream_glow_width_ratio = 0.13
+vfx_energy_stream_shimmer_width_ratio = 0.052
+vfx_energy_stream_shimmer_segment_ratio = 0.34
+vfx_energy_stream_pulse_alpha_ratio = 0.28
+vfx_energy_stream_order_phase_offset = 0.09
+vfx_energy_stream_max_effects = 120
+vfx_target_pulse_color = Color(0.22, 1, 0.08, 0.82)
+vfx_target_pulse_duration = 0.48
+vfx_target_pulse_radius_ratio = 0.28
+vfx_target_pulse_ring_width_ratio = 0.035
+vfx_source_emission_color = Color(0.22, 1, 0.08, 0.78)
+vfx_source_emission_duration = 0.42
+vfx_source_emission_radius_ratio = 0.24
+vfx_source_emission_ring_width_ratio = 0.032
+vfx_idle_hum_color = Color(0.22, 1, 0.08, 0.34)
+vfx_idle_hum_delay = 0.72
+vfx_idle_hum_alpha = 0.34
+vfx_idle_hum_width_ratio = 0.018
+vfx_idle_hum_glow_width_ratio = 0.14
+vfx_idle_hum_core_width_ratio = 0.045
+vfx_idle_hum_radius_ratio = 0.23
+vfx_idle_hum_period = 0.75
+vfx_idle_hum_radius_pulse_ratio = 0.35
+vfx_idle_hum_alpha_pulse_ratio = 0.72
+vfx_disconnect_decay_color = Color(0.22, 1, 0.08, 0.32)
+vfx_disconnect_decay_duration = 0.32
+vfx_disconnect_decay_alpha = 0.28
+vfx_error_spark_color = Color(1, 0.28, 0.08, 0.82)
+vfx_error_spark_duration = 0.18
+vfx_error_spark_radius_ratio = 0.1
+vfx_rotation_spark_color = Color(0.92, 1, 0.18, 0.86)
+vfx_rotation_spark_duration = 0.26
+vfx_rotation_spark_radius_ratio = 0.31
+vfx_rotation_spark_ray_count = 8
+vfx_rotation_spark_width_ratio = 0.018
+vfx_win_burst_color = Color(0.32, 1, 0.96, 0.9)
+vfx_win_burst_duration = 0.9
+vfx_win_burst_radius_ratio = 0.34
+vfx_win_burst_ring_width_ratio = 0.028
+vfx_win_burst_max_cells = 36
+vfx_lightning_enabled = true
+vfx_lightning_texture = ExtResource("41_lightning")
+vfx_lightning_frame_size = Vector2i(256, 256)
+vfx_lightning_columns = 16
+vfx_lightning_rows = 16
+vfx_lightning_frame_count = 250
+vfx_lightning_period = 4.1666667
+vfx_lightning_contact_period = 0.4
+vfx_lightning_color = Color(0.72, 0.92, 1, 0.86)
+vfx_lightning_alpha = 0.72
+vfx_lightning_scale_ratio = 0.74
+vfx_lightning_max_arcs = 10
+vfx_lightning_cell_stride = 2
+vfx_lightning_min_order_progress = 0.18
+vfx_lightning_contact_bias = 0.68
+vfx_debug_anchor_color = Color(1, 1, 1, 0.8)
+vfx_debug_input_color = Color(1, 0.32, 0.08, 0.85)
+vfx_debug_output_color = Color(0.22, 1, 0.08, 0.85)
+vfx_debug_order_color = Color(0.1, 0.75, 1, 0.85)
+cell_geometry = SubResource("Geometry_Cell")
+source_geometry = SubResource("Geometry_Source")
+target_geometry = SubResource("Geometry_Target")
+pipe_cap_geometry = SubResource("Geometry_Cap")
+pipe_i_geometry = SubResource("Geometry_I")
+pipe_l_geometry = SubResource("Geometry_L")
+pipe_t_geometry = SubResource("Geometry_T")
+pipe_x_geometry = SubResource("Geometry_X")
+cell_bg_texture = ExtResource("2_cell")
+pipe_cap_texture = ExtResource("3_cap")
+pipe_cap_texture_watered = ExtResource("3_cap")
+pipe_i_texture = ExtResource("4_i")
+pipe_i_texture_watered = ExtResource("5_i_w")
+pipe_l_texture = ExtResource("6_l")
+pipe_l_texture_watered = ExtResource("7_l_w")
+pipe_t_texture = ExtResource("8_t")
+pipe_t_texture_watered = ExtResource("9_t_w")
+pipe_x_texture = ExtResource("10_x")
+pipe_x_texture_watered = ExtResource("11_x_w")
+source_texture = ExtResource("12_source")
+target_texture = ExtResource("13_target")
+target_texture_watered = ExtResource("14_target_w")
+cross_slices = Array[Resource("res://Resources/Classes/PipeSliceConfig.gd")]([
+  SubResource("Resource_Cross_0"),
+  SubResource("Resource_Cross_1"),
+  SubResource("Resource_Cross_2"),
+  SubResource("Resource_Cross_3"),
+  SubResource("Resource_Cross_4"),
+  SubResource("Resource_Cross_5"),
+  SubResource("Resource_Cross_6"),
+  SubResource("Resource_Cross_7"),
+  SubResource("Resource_Cross_8"),
+  SubResource("Resource_Cross_9"),
+  SubResource("Resource_Cross_10"),
+  SubResource("Resource_Cross_11"),
+  SubResource("Resource_Cross_12"),
+  SubResource("Resource_Cross_13"),
+  SubResource("Resource_Cross_14"),
+  SubResource("Resource_Cross_15")
+])
+t_slices = Array[Resource("res://Resources/Classes/PipeSliceConfig.gd")]([
+  SubResource("Resource_T_0"),
+  SubResource("Resource_T_1"),
+  SubResource("Resource_T_2"),
+  SubResource("Resource_T_3"),
+  SubResource("Resource_T_4"),
+  SubResource("Resource_T_5"),
+  SubResource("Resource_T_6"),
+  SubResource("Resource_T_7")
+])
+l_slices = Array[Resource("res://Resources/Classes/PipeSliceConfig.gd")]([
+  SubResource("Resource_L_0"),
+  SubResource("Resource_L_1"),
+  SubResource("Resource_L_2"),
+  SubResource("Resource_L_3")
+])
+i_slices = Array[Resource("res://Resources/Classes/PipeSliceConfig.gd")]([
+  SubResource("Resource_I_0"),
+  SubResource("Resource_I_1"),
+  SubResource("Resource_I_2"),
+  SubResource("Resource_I_3")
+])
+
+

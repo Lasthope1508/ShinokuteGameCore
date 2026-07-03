@@ -1,0 +1,41 @@
+﻿{
+    "bgm":  {
+                "output":  "res://Audio/Music/cyberpunk_theme/Gameplay.ogg",
+                "codec":  "ogg_vorbis",
+                "sample_rate":  44100,
+                "channels":  1,
+                "vorbis_quality":  0,
+                "silence_trim":  {
+                                     "stop_periods":  1,
+                                     "stop_duration":  0.12,
+                                     "stop_threshold_db":  -55
+                                 },
+                "source_order":  [
+                                     "Neon_Surge_Loop_1.wav",
+                                     "Neon_Surge_Loop_1_Alt.wav",
+                                     "Neon_Surge_Loop_2.wav",
+                                     "Neon_Surge_Loop_2_Alt.wav"
+                                 ]
+            },
+    "sfx":  {
+                "output_root":  "res://Audio/Sfx/cyberpunk_theme",
+                "codec":  "ogg_vorbis",
+                "sample_rate":  44100,
+                "channels":  2,
+                "vorbis_quality":  4,
+                "event_source_map":  {
+                                         "reset":  "sfx_button.wav",
+                                         "target_reached":  "sfx_levelup.wav",
+                                         "energy_enter_tile":  "sfx_populateSlot.wav",
+                                         "win":  "sfx_clear.wav",
+                                         "gameover":  "sfx_gameover.wav",
+                                         "ui_button":  "sfx_button.wav",
+                                         "disconnect":  "sfx_fail.wav",
+                                         "invalid_rotate":  "sfx_invalid.wav",
+                                         "energy_connect_segment":  "sfx_combo.wav",
+                                         "ui_popup":  "sfx_popup.wav",
+                                         "pipe_rotate":  "sfx_pick.wav",
+                                         "timeout":  "sfx_timeout.wav"
+                                     }
+            }
+}

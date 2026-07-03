@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AssetBudgetConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Resources/Classes/AssetBudgetConfig.gd" id="1_budget"]
+
+[resource]
+script = ExtResource("1_budget")
+web_pck_mb = 30.0
+android_aab_mb = 80.0
+texture_total_mb = 25.0
+generated_ui_mode_mb = 10.0
+single_texture_mb = 1.2
+vfx_atlas_mb = 1.5
+bgm_mb = 3.0
+sfx_total_mb = 2.0
+texture_import_compress_mode = 1
+texture_import_lossy_quality = 0.55
+bgm_publish_vorbis_quality = 0.0
+forbidden_export_markers = PackedStringArray("debug/", "Tests/", "docs/", "component_refs/", "style_trial_", "_raw.png", "raw.png", "preview_sheet", "backup_cyberpunk_assets_before", "Audio/Music/Gameplay", "Audio/Sfx/default", "fruit_theme", "garden_theme", "wood_theme", "chaos", "energy_sheets_ai")
+runtime_manifest_path = "res://docs/runtime_asset_manifest.json"

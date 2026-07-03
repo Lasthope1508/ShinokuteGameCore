@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberflow Visual Audit Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030308;
+            --panel-bg: rgba(6, 6, 20, 0.65);
+            --neon-green: #39ff14;
+            --neon-dim: rgba(57, 255, 20, 0.2);
+            --neon-dark: #125505;
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --border-glow: 0 0 10px rgba(57, 255, 20, 0.4);
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 40, 20, 0.2) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(10, 20, 30, 0.2) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        header {
+            max-width: 1400px;
+            margin: 0 auto 2.5rem auto;
+            text-align: center;
+            border-bottom: 2px solid var(--neon-dark);
+            padding-bottom: 1.5rem;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .controls {
+            max-width: 1400px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .filter-btn {
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-dark);
+            color: var(--text-dim);
+            padding: 0.6rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover {
+            color: #fff;
+            border-color: var(--neon-green);
+            box-shadow: var(--border-glow);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: rgba(57, 255, 20, 0.1);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: var(--border-glow), inset 0 0 8px rgba(57, 255, 20, 0.2);
+        }
+
+        .legend-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-dark);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            box-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .slice-card {
+            background: var(--panel-bg);
+            border: 1px solid rgba(57, 255, 20, 0.15);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .slice-card:hover {
+            border-color: var(--neon-green);
+            box-shadow: var(--border-glow), var(--card-shadow);
+            transform: translateY(-5px);
+        }
+
+        .slice-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .image-wrapper {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            transition: transform 0.3s ease;
+        }
+
+        .info-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slice-id {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slice-type-badge {
+            font-size: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            background: rgba(57, 255, 20, 0.15);
+            color: var(--neon-green);
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            border: 1px solid var(--neon-dim);
+        }
+
+        .slice-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            height: 2.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .flow-details {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mask-val {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+        }
+
+        .mask-val span {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* Compass layout for energy direction */
+        .compass {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Active directional indicators */
+        .dir-indicator {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .dir-indicator.active {
+            background: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            text-shadow: none;
+        }
+
+        .dir-indicator.n { top: 12px; }
+        .dir-indicator.e { right: 12px; }
+        .dir-indicator.s { bottom: 12px; }
+        .dir-indicator.w { left: 12px; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .controls { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CYBERFLOW VISUAL AUDIT</h1>
+        <div class="subtitle">Single Source of Truth (SSOT) Slice Analyzer</div>
+    </header>
+
+    <div class="controls">
+        <div class="filter-group">
+            <button class="filter-btn active" onclick="filterSlices('all')">ALL PIPES</button>
+            <button class="filter-btn" onclick="filterSlices('cross')">CROSS (16)</button>
+            <button class="filter-btn" onclick="filterSlices('t')">T-PIPE (32)</button>
+            <button class="filter-btn" onclick="filterSlices('l')">L-PIPE (16)</button>
+            <button class="filter-btn" onclick="filterSlices('i')">I-PIPE (8)</button>
+        </div>
+        <div class="legend-card">
+            <div class="legend-item"><div class="legend-dot"></div> ACTIVE FLOW DIRECTION</div>
+            <div class="legend-item">N=North (Bắc)</div>
+            <div class="legend-item">E=East (Đông)</div>
+            <div class="legend-item">S=South (Nam)</div>
+            <div class="legend-item">W=West (Tây)</div>
+        </div>
+    </div>
+
+    <div class="grid" id="grid">
+        <!-- Rendered by JS -->
+    </div>
+
+    <script>
+        const baseSlices = [
+            // CROSS slices (No rotation needed as it's fully symmetrical)
+            { type: 'cross', id: 'cross_slice_0', mask: 0, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_0.png', desc: 'X-pipe unwatered', rot: 0 },
+            { type: 'cross', id: 'cross_slice_7', mask: 1, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_7.png', desc: 'X-pipe chỉ sáng đầu Bắc (Top)', rot: 0 },
+            { type: 'cross', id: 'cross_slice_8', mask: 2, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_8.png', desc: 'X-pipe chỉ sáng đầu Đông (Right)', rot: 0 },
+            { type: 'cross', id: 'cross_slice_9', mask: 4, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_9.png', desc: 'X-pipe chỉ sáng đầu Nam (Bottom)', rot: 0 },
+            { type: 'cross', id: 'cross_slice_10', mask: 8, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_10.png', desc: 'X-pipe chỉ sáng đầu Tây (Left)', rot: 0 },
+            { type: 'cross', id: 'cross_slice_4', mask: 3, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_4.png', desc: 'X-pipe sáng đầu Bắc & Đông', rot: 0 },
+            { type: 'cross', id: 'cross_slice_5', mask: 9, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_5.png', desc: 'X-pipe sáng đầu Bắc & Tây', rot: 0 },
+            { type: 'cross', id: 'cross_slice_3', mask: 6, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_3.png', desc: 'X-pipe sáng đầu Đông & Nam', rot: 0 },
+            { type: 'cross', id: 'cross_slice_6', mask: 12, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_6.png', desc: 'X-pipe sáng đầu Nam & Tây', rot: 0 },
+            { type: 'cross', id: 'cross_slice_1', mask: 5, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_1.png', desc: 'X-pipe sáng đầu Bắc & Nam', rot: 0 },
+            { type: 'cross', id: 'cross_slice_2', mask: 10, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_2.png', desc: 'X-pipe sáng đầu Đông & Tây', rot: 0 },
+            { type: 'cross', id: 'cross_slice_13', mask: 7, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_13.png', desc: 'X-pipe sáng đầu Bắc, Đông, Nam', rot: 0 },
+            { type: 'cross', id: 'cross_slice_12', mask: 11, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_12.png', desc: 'X-pipe sáng đầu Bắc, Đông, Tây', rot: 0 },
+            { type: 'cross', id: 'cross_slice_15', mask: 13, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_15.png', desc: 'X-pipe sáng đầu Bắc, Nam, Tây', rot: 0 },
+            { type: 'cross', id: 'cross_slice_14', mask: 14, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_14.png', desc: 'X-pipe sáng đầu Đông, Nam, Tây', rot: 0 },
+            { type: 'cross', id: 'cross_slice_11', mask: 15, path: 'Assets/Themes/cyberpunk_theme/cross_slices/cross_slice_11.png', desc: 'X-pipe watered toàn bộ (Bắc-Đông-Nam-Tây)', rot: 0 },
+            
+            // I slices
+            { type: 'i', id: 'i_slice_0', mask: 0, path: 'Assets/Themes/cyberpunk_theme/i_slices/i_slice_0.png', desc: 'I-pipe unwatered' },
+            { type: 'i', id: 'i_slice_2', mask: 4, path: 'Assets/Themes/cyberpunk_theme/i_slices/i_slice_2.png', desc: 'I-pipe chỉ sáng đầu Nam (Bottom)' },
+            { type: 'i', id: 'i_slice_3', mask: 1, path: 'Assets/Themes/cyberpunk_theme/i_slices/i_slice_3.png', desc: 'I-pipe chỉ sáng đầu Bắc (Top)' },
+            { type: 'i', id: 'i_slice_1', mask: 5, path: 'Assets/Themes/cyberpunk_theme/i_slices/i_slice_1.png', desc: 'I-pipe watered toàn bộ (Bắc-Nam)' },
+            
+            // L slices
+            { type: 'l', id: 'l_slice_0', mask: 0, path: 'Assets/Themes/cyberpunk_theme/l_slices/l_slice_0.png', desc: 'L-pipe unwatered (tối cong)', rot: 0 },
+            { type: 'l', id: 'l_slice_2', mask: 1, path: 'Assets/Themes/cyberpunk_theme/l_slices/l_slice_2.png', desc: 'L-pipe chỉ sáng đầu Bắc (Top)', rot: 0 },
+            { type: 'l', id: 'l_slice_3', mask: 2, path: 'Assets/Themes/cyberpunk_theme/l_slices/l_slice_3.png', desc: 'L-pipe chỉ sáng đầu Đông (Right)', rot: 0 },
+            { type: 'l', id: 'l_slice_1', mask: 3, path: 'Assets/Themes/cyberpunk_theme/l_slices/l_slice_1.png', desc: 'L-pipe watered toàn bộ (Bắc-Đông)', rot: 0 },
+            
+            // T slices
+            { type: 't', id: 't_slice_0', mask: 0, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_0.png', desc: 'T-pipe unwatered' },
+            { type: 't', id: 't_slice_1', mask: 5, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_1.png', desc: 'T-pipe sáng đầu Bắc & Nam' },
+            { type: 't', id: 't_slice_2', mask: 3, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_2.png', desc: 'T-pipe sáng đầu Đông & Bắc' },
+            { type: 't', id: 't_slice_3', mask: 6, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_3.png', desc: 'T-pipe sáng đầu Đông & Nam' },
+            { type: 't', id: 't_slice_4', mask: 1, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_4.png', desc: 'T-pipe chỉ sáng đầu Bắc (Top)' },
+            { type: 't', id: 't_slice_5', mask: 4, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_5.png', desc: 'T-pipe chỉ sáng đầu Nam (Bottom)' },
+            { type: 't', id: 't_slice_6', mask: 2, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_6.png', desc: 'T-pipe chỉ sáng đầu Đông (East)' },
+            { type: 't', id: 't_slice_7', mask: 7, path: 'Assets/Themes/cyberpunk_theme/t_slices/t_slice_7.png', desc: 'T-pipe watered toàn bộ (Bắc-Đông-Nam)' }
+        ];
+
+        function getDirectionsText(mask) {
+            if (mask === 0) return "tối đen hoàn toàn";
+            let dirs = [];
+            if (mask & 1) dirs.push("Bắc");
+            if (mask & 2) dirs.push("Đông");
+            if (mask & 4) dirs.push("Nam");
+            if (mask & 8) dirs.push("Tây");
+            return dirs.join("-");
+        }
+
+        // Generate all variations including rotations
+        const allVariations = [];
+
+        baseSlices.forEach(item => {
+            if (item.type === 'cross') {
+                allVariations.push(item);
+            } else if (item.type === 'i') {
+                // I-pipe has 2 rotation angles (0: Vertical, 90: Horizontal)
+                [0, 90].forEach(rot => {
+                    const rotSteps = rot / 90;
+                    let rotatedMask = 0;
+                    for (let i = 0; i < 4; i++) {
+                        if (item.mask & (1 << i)) {
+                            let rotatedDir = (i + rotSteps) % 4;
+                            rotatedMask |= (1 << rotatedDir);
+                        }
+                    }
+                    let dirText = getDirectionsText(rotatedMask);
+                    let descText = `I-pipe sáng đầu ${dirText} (Xoay ${rot}°)`;
+                    if (rotatedMask === 0) {
+                        descText = `I-pipe unwatered (tối đen hoàn toàn) (Xoay ${rot}°)`;
+                    }
+                    allVariations.push({
+                        ...item,
+                        id: `${item.id} @ ${rot}°`,
+                        desc: descText,
+                        mask: rotatedMask,
+                        rot: rot
+                    });
+                });
+            } else {
+                // L and T pipes have 4 rotation angles (0, 90, 180, 270)
+                [0, 90, 180, 270].forEach(rot => {
+                    const rotSteps = rot / 90;
+                    let rotatedMask = 0;
+                    for (let i = 0; i < 4; i++) {
+                        if (item.mask & (1 << i)) {
+                            let rotatedDir = (i + rotSteps) % 4;
+                            rotatedMask |= (1 << rotatedDir);
+                        }
+                    }
+                    let dirText = getDirectionsText(rotatedMask);
+                    let descText = `${item.type.toUpperCase()}-pipe sáng đầu ${dirText} (Xoay ${rot}°)`;
+                    if (rotatedMask === 0) {
+                        descText = `${item.type.toUpperCase()}-pipe unwatered (tối đen hoàn toàn) (Xoay ${rot}°)`;
+                    }
+                    allVariations.push({
+                        ...item,
+                        id: `${item.id} @ ${rot}°`,
+                        desc: descText,
+                        mask: rotatedMask,
+                        rot: rot
+                    });
+                });
+            }
+        });
+
+        function renderSlices(data) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            
+            data.forEach(item => {
+                const nActive = (item.mask & 1) ? 'active' : '';
+                const eActive = (item.mask & 2) ? 'active' : '';
+                const sActive = (item.mask & 4) ? 'active' : '';
+                const wActive = (item.mask & 8) ? 'active' : '';
+                
+                const card = document.createElement('div');
+                card.className = `slice-card`;
+                card.dataset.type = item.type;
+                
+                card.innerHTML = `
+                    <div class="image-wrapper">
+                        <img src="${item.path}" alt="${item.id}" style="transform: rotate(${item.rot}deg);" onerror="this.src='https://placehold.co/400x400/060614/39ff14?text=Missing+Slice'">
+                        <!-- North Indicator -->
+                        <div class="dir-indicator n ${nActive}">N</div>
+                        <!-- East Indicator -->
+                        <div class="dir-indicator e ${eActive}">E</div>
+                        <!-- South Indicator -->
+                        <div class="dir-indicator s ${sActive}">S</div>
+                        <!-- West Indicator -->
+                        <div class="dir-indicator w ${wActive}">W</div>
+                    </div>
+                    <div class="info-pane">
+                        <div class="slice-id">
+                            ${item.id}
+                            <span class="slice-type-badge">${item.type.toUpperCase()}</span>
+                        </div>
+                        <div class="slice-desc">${item.desc}</div>
+                        <div class="flow-details">
+                            <div class="mask-val">Mask: <span>${item.mask}</span></div>
+                            <div class="mask-val">Binary: <span>${item.mask.toString(2).padStart(4, '0')}</span></div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterSlices(type) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            
+            if (type === 'all') {
+                renderSlices(allVariations);
+            } else {
+                const filtered = allVariations.filter(item => item.type === type);
+                renderSlices(filtered);
+            }
+        }
+
+        // Initial render
+        renderSlices(allVariations);
+    </script>
+</body>
+</html>

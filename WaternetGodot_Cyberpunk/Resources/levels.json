@@ -1,0 +1,47 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "width": 3,
+      "height": 3,
+      "source": {"x": 0, "y": 0, "ports": [false, true, false, false]},
+      "target": {"x": 2, "y": 2, "ports": [false, false, false, true]},
+      "grid": [
+        {"type": "Cap", "ports": [false, true, false, false], "rotation": 90},
+        {"type": "I", "ports": [false, true, false, true], "rotation": 90},
+        {"type": "L", "ports": [false, false, true, true], "rotation": 0},
+        {"type": "I", "ports": [true, false, true, false], "rotation": 0},
+        {"type": "X", "ports": [true, true, true, true], "rotation": 0},
+        {"type": "I", "ports": [true, false, true, false], "rotation": 90},
+        {"type": "L", "ports": [true, true, false, false], "rotation": 180},
+        {"type": "I", "ports": [false, true, false, true], "rotation": 0},
+        {"type": "Cap", "ports": [false, false, false, true], "rotation": 270}
+      ]
+    },
+    {
+      "id": 2,
+      "width": 4,
+      "height": 4,
+      "source": {"x": 0, "y": 0, "ports": [false, true, false, false]},
+      "target": {"x": 3, "y": 3, "ports": [false, false, false, true]},
+      "grid": [
+        {"type": "Cap", "ports": [false, true, false, false], "rotation": 90},
+        {"type": "L", "ports": [false, true, true, false], "rotation": 90},
+        {"type": "I", "ports": [true, false, true, false], "rotation": 0},
+        {"type": "L", "ports": [false, false, true, true], "rotation": 180},
+        {"type": "L", "ports": [true, true, false, false], "rotation": 0},
+        {"type": "T", "ports": [true, true, true, false], "rotation": 90},
+        {"type": "I", "ports": [false, true, false, true], "rotation": 0},
+        {"type": "L", "ports": [true, false, false, true], "rotation": 270},
+        {"type": "I", "ports": [true, false, true, false], "rotation": 90},
+        {"type": "X", "ports": [true, true, true, true], "rotation": 0},
+        {"type": "T", "ports": [true, false, true, true], "rotation": 180},
+        {"type": "I", "ports": [false, true, false, true], "rotation": 0},
+        {"type": "L", "ports": [true, true, false, false], "rotation": 90},
+        {"type": "I", "ports": [true, false, true, false], "rotation": 0},
+        {"type": "L", "ports": [false, true, true, false], "rotation": 180},
+        {"type": "Cap", "ports": [false, false, false, true], "rotation": 270}
+      ]
+    }
+  ]
+}

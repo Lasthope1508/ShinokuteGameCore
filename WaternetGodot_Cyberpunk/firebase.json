@@ -1,0 +1,32 @@
+{
+  "hosting": {
+    "public": "Export",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "*.aab",
+      "*.zip",
+      "*.log",
+      "*.import",
+      "*.pck.tmp",
+      "godot_*",
+      "*_pack*"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cross-Origin-Opener-Policy",
+            "value": "same-origin"
+          },
+          {
+            "key": "Cross-Origin-Embedder-Policy",
+            "value": "require-corp"
+          }
+        ]
+      }
+    ]
+  }
+}

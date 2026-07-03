@@ -1,0 +1,95 @@
+{
+  "purpose": "Cyber gameplay UI 9Router reference pack for style synchronization.",
+  "uploaded_at": "2026-07-01",
+  "style_anchor": "cyber pipe puzzle, fake3D cockpit layer, black/green gameplay tone, cyan electric accent, beveled glossy depth, mobile game readability",
+  "items": [
+    {
+      "name": "current_cyber_gameplay.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\current_cyber_gameplay.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/current_cyber_gameplay.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/current_cyber_gameplay.png",
+      "content_type": "image/png",
+      "bytes": 369351
+    },
+    {
+      "name": "cyber_cell_bg.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_cell_bg.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_cell_bg.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_cell_bg.png",
+      "content_type": "image/png",
+      "bytes": 95968
+    },
+    {
+      "name": "cyber_lightning_preview.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_lightning_preview.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_lightning_preview.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_lightning_preview.png",
+      "content_type": "image/png",
+      "bytes": 60353
+    },
+    {
+      "name": "cyber_pipe_i.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_pipe_i.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_pipe_i.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_pipe_i.png",
+      "content_type": "image/png",
+      "bytes": 183607
+    },
+    {
+      "name": "cyber_pipe_l.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_pipe_l.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_pipe_l.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_pipe_l.png",
+      "content_type": "image/png",
+      "bytes": 148196
+    },
+    {
+      "name": "cyber_pipe_t.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_pipe_t.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_pipe_t.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_pipe_t.png",
+      "content_type": "image/png",
+      "bytes": 255524
+    },
+    {
+      "name": "cyber_pipe_x.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_pipe_x.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_pipe_x.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_pipe_x.png",
+      "content_type": "image/png",
+      "bytes": 309097
+    },
+    {
+      "name": "cyber_source.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_source.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_source.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_source.png",
+      "content_type": "image/png",
+      "bytes": 300147
+    },
+    {
+      "name": "cyber_target.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\cyber_target.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/cyber_target.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/cyber_target.png",
+      "content_type": "image/png",
+      "bytes": 298664
+    },
+    {
+      "name": "owner_reference_layout.jpg",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\owner_reference_layout.jpg",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/owner_reference_layout.jpg",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/owner_reference_layout.jpg",
+      "content_type": "image/jpeg",
+      "bytes": 49949
+    },
+    {
+      "name": "project_logo.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\reference_pack\\project_logo.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-ref/project_logo.png",
+      "url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-ref/project_logo.png",
+      "content_type": "image/png",
+      "bytes": 355543
+    }
+  ]
+}
