@@ -42,7 +42,10 @@ func _ready() -> void:
 	_update_theme()
 	
 	if SaveManager.get_username() == "":
-		_show_username_prompt()
+		if OS.has_feature("web"):
+			SaveManager.set_username("Player_" + str(randi() % 9000 + 1000))
+		else:
+			_show_username_prompt()
 
 
 func _show_username_prompt() -> void:

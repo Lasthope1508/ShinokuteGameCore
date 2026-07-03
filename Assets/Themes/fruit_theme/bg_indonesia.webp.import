@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/bg_indonesia.webp-7af73d43fecd264a0a518039015
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

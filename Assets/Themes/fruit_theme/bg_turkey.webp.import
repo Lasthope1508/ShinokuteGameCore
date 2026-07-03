@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/bg_turkey.webp-d59c987b8d3394d7e93af714abe4d6
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

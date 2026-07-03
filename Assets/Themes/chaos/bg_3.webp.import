@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/bg_3.webp-75d2e09225210fce13c889c5dbf4f45a.ct
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

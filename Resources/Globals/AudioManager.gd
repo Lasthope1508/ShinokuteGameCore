@@ -10,8 +10,6 @@ const BUS_MASTER := "Master"
 const BUS_MUSIC := "Music"
 const BUS_SFX := "SFX"
 
-const MUSIC_PATH := "res://Audio/Music/music_loop.ogg"
-
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _music_player: AudioStreamPlayer
 

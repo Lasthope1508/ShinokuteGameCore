@@ -15,15 +15,23 @@ blender_mcp_addon.py
 mcp_interaction_server.gd
 
 # Temporary/Cache folders
-Export/
-scratch/
+Export/*
+!Export/.gdignore
+scratch/*
+!scratch/.gdignore
 chrome_profile_bloxchain/
-debug/
+debug/*
+!debug/.gdignore
 photoroom-cdp-background-removal/
+photoroom_chrome_profile/
 reskin_dashboard/assets/
 reskin_dashboard/game/
+**/__pycache__/
 .firebase/
-.agents/
+.agents/*
+!.agents/.gdignore
+.claude/*
+!.claude/.gdignore
 node_modules/
 **/node_modules/
 
@@ -31,6 +39,8 @@ node_modules/
 # Build logs & docs
 *.txt
 *.json
+!docs/
+!docs/*.json
 !project.godot
 !firebase.json
 !firestore.indexes.json

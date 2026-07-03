@@ -1,0 +1,2617 @@
+﻿{
+    "version":  1,
+    "project":  "BloxChain",
+    "main_scene":  "res://Scenes/Main/Main.tscn",
+    "scene_roots":  [
+                        "res://Scenes/Main/Main.tscn",
+                        "res://Scenes/MainMenu/MainMenu.tscn",
+                        "res://Scenes/Game/Game.tscn"
+                    ],
+    "runtime_resource_roots":  [
+                                   "res://Scenes/",
+                                   "res://Resources/",
+                                   "res://Scripts/",
+                                   "res://Assets/",
+                                   "res://Audio/",
+                                   "res://addons/kenney_particle_pack/",
+                                   "res://effects/2d_explosion/source/",
+                                   "res://effects/2d_vortex/source/"
+                               ],
+    "runtime_assets":  [
+                           {
+                               "path":  "res://addons/kenney_particle_pack/circle_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/circle_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/circle_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/circle_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/circle_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/dirt_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/dirt_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/dirt_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/fire_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/fire_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flame_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flame_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flame_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flame_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flame_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flame_06.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/flare_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/light_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/light_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/light_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/magic_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/magic_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/magic_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/magic_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/magic_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/muzzle_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/muzzle_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/muzzle_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/muzzle_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/muzzle_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/flame_05_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/flame_06_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/muzzle_01_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/muzzle_02_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/muzzle_03_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/muzzle_04_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/muzzle_05_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/spark_05_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/spark_06_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_01_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_02_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_03_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_04_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_05_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_06_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/rotated/trace_07_rotated.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/scorch_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/scorch_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/scorch_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/scratch_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/slash_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/slash_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/slash_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/slash_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_06.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_07.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_08.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_09.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/smoke_10.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_06.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/spark_07.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_06.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_07.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_08.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/star_09.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/symbol_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/symbol_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_05.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_06.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/trace_07.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/twirl_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/twirl_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/twirl_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/window_01.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/window_02.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/window_03.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://addons/kenney_particle_pack/window_04.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/au.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/ca.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/de.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/fr.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/gb.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/jp.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/kr.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/sg.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/un.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/us.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Flags/vn.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Fonts/Alegreya-ExtraBold.ttf",
+                               "role":  "font",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "font",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Fonts/Poppins-Bold.ttf",
+                               "role":  "font",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "font",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/audioOff.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/audioOn.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/cross.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/leaderboard.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/menuList.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/musicOff.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/musicOn.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/pause.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/return.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Icons/trophy.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Shaders/background_blur_silhouette.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Shaders/block_pulse.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Shaders/circular_mask.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Shaders/playboard_clean.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Shaders/rainbow_outline.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Shaders/video_tint.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/block.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/bloxchain_logo.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/cell_empty.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/greeting_bg.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/logo.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/mascot_avatar.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_bg.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_1.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_2.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_3.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_4.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_5.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_6.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_7.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/obstacle_block_8.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/particle_circle.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/piece_slot.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/playboard.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/quadrant_bg_dark.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/quadrant_bg_light.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/shinokute_logo.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Sprites/tutorial_cursor.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/System/Icon.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/chaos/bg_0.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/chaos/bg_1.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/chaos/bg_2.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/chaos/bg_3.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/chaos/bg_4.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_argentina.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_australia.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_belgium.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_brazil.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_cambodia.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_canada.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_chile.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_china.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_egypt.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_france.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_germany.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_greece.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_iceland.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_india.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_indonesia.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_ireland.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_italy.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_japan.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_jordan.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_malaysia.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_mexico.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_morocco.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_netherlands.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_new_zealand.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_norway.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_peru.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_russia.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_saudi_arabia.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_singapore.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_south_africa.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_south_korea.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_spain.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_sweden.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_switzerland.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_thailand.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_turkey.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_uae.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_uk.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_usa.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/bg_vietnam.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_0.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_1.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_2.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_3.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_4.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_5.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_6.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/blocks/block_7.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/cell_empty.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/logo.webp",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Assets/Themes/fruit_theme/piece_slot.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Music/Danger.ogg",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "vorbis_music",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Music/Death race mode.ogg",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "vorbis_music",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Music/Gameplay.ogg",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "vorbis_music",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/Meteor.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_button.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_clear.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_combo.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_drop.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_fail.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_gameover.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_invalid.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_levelup.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_obstacle_fall.ogg",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "vorbis_music",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_obstacle_fall.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_obstacle_hit.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_pick.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_populateSlot.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_popup.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/SFX/sfx_timeout.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_button.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_clear.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_combo.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_drop.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_fail.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_invalid.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Audio/Themes/fruit_theme/sfx_pick.wav",
+                               "role":  "audio",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "wav_sfx",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://default_bus_layout.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/explosion.gd",
+                               "role":  "vfx",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/explosion.tscn",
+                               "role":  "vfx",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion_mat.tres",
+                               "role":  "vfx",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion_particles.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion_particles.tres",
+                               "role":  "vfx",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion_red.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion_red_circle.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/explosion_trace.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_explosion/source/materials/smoke.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_vortex/source/2d_vortex.gdshader",
+                               "role":  "shader",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_vortex/source/2d_vortex_material.tres",
+                               "role":  "vfx",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://effects/2d_vortex/source/vortex.tscn",
+                               "role":  "vfx",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://icon.png",
+                               "role":  "texture",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "texture_mobile_web",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Classes/PieceShape.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Classes/ThemeConfig.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/default_theme.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/brick_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/candy_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/fruit_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/gold_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/ice_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/lava_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/neon_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Data/Themes/soul_theme/theme_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Globals/AdManager.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Globals/AudioManager.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Globals/GameState.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Globals/SaveManager.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Globals/SceneRouter.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Globals/ThemeManager.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Resources/Theme/main_theme.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Common/ElasticOverlay.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Common/ElasticOverlay.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Common/FadeTransition.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Common/FadeTransition.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/Cell.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/Cell.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/Grid.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/Grid.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/LineClearParticles.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/LineClearParticles.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/LinksLayer.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/Quadrant.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Grid/Quadrant.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/HUD/HUD.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/HUD/HUD.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/HUD/ScorePopup.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/HUD/ScorePopup.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/HUD/ScoreProgressBar.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/HUD/ScoreProgressBar.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/GameOverOverlay.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/GameOverOverlay.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/LeaderboardOverlay.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/LeaderboardOverlay.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/SettingsOverlay.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/SettingsOverlay.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/StartOptionOverlay.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/StartOptionOverlay.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/UsernamePromptOverlay.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Overlays/UsernamePromptOverlay.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Piece/Block.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Piece/Block.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Piece/Piece.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/Piece/Piece.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/PieceTray/PieceSlot.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/PieceTray/PieceSlot.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/PieceTray/PieceTray.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Component/PieceTray/PieceTray.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Game.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Game/Game.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Main/Main.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/Main/Main.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/MainMenu/MainMenu.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scenes/MainMenu/MainMenu.tscn",
+                               "role":  "scene",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scripts/GridSolver.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scripts/LeaderboardManager.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scripts/mcp_interaction_server.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scripts/ObstacleLibrary.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
+                               "path":  "res://Scripts/PieceLibrary.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           }
+                       ],
+    "non_runtime_policies":  [
+                                 {
+                                     "path":  "res://Export/",
+                                     "role":  "build_output",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://Export_clean/",
+                                     "role":  "build_output",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://scratch/",
+                                     "role":  "workbench",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://debug/",
+                                     "role":  "debug_only",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://.claude/",
+                                     "role":  "agent_config",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://.agents/",
+                                     "role":  "agent_config",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://Assets/Sprites/source/bloxchain_logo_raw.png",
+                                     "role":  "source_art",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://effects/2d_eyeball/",
+                                     "role":  "vfx_workbench",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://effects/2d_trail/",
+                                     "role":  "vfx_workbench",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://effects/2d_water/",
+                                     "role":  "vfx_workbench",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://effects/3d_*",
+                                     "role":  "vfx_workbench",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 }
+                             ],
+    "export_forbidden_markers":  [
+                                     "debug/",
+                                     "Tests/",
+                                     "docs/",
+                                     "scratch/",
+                                     ".claude/",
+                                     ".agents/",
+                                     ".bak",
+                                     "_raw.png",
+                                     "Export/"
+                                 ],
+    "budgets":  {
+                    "web_pck_mb":  80,
+                    "android_aab_mb":  140,
+                    "total_texture_mb":  80,
+                    "bgm_mb":  12,
+                    "sfx_mb":  20,
+                    "vfx_atlas_mb":  10,
+                    "single_texture_mb":  6
+                },
+    "package_ready_gates":  [
+                                "full_tests_passed",
+                                "import_passed",
+                                "web_export_rebuilt",
+                                "android_export_rebuilt",
+                                "pck_forbidden_scan_clean",
+                                "aab_forbidden_scan_clean",
+                                "web_gameplay_smoke_passed",
+                                "budget_compared",
+                                "checklist_updated"
+                            ]
+}

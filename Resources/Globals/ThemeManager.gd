@@ -43,28 +43,17 @@ var shared_milestone_backgrounds: Array[Texture2D] = []
 signal theme_changed(new_theme_name: String, theme_config: ThemeConfig)
 
 func _ready() -> void:
-	# Load greeting_bg.png directly from disk to bypass Godot import caching
-	if FileAccess.file_exists("res://Assets/Sprites/greeting_bg.png"):
-		var img = Image.load_from_file("res://Assets/Sprites/greeting_bg.png")
-		if img:
-			shared_background_texture = ImageTexture.create_from_image(img)
+	shared_background_texture = load("res://Assets/Sprites/greeting_bg.png") as Texture2D
 	if not shared_background_texture:
 		shared_background_texture = preload("res://Assets/Sprites/greeting_bg.png")
 		
-	# Load shared SSOT background assets from fruit theme configuration
 	var fruit_config = load("res://Resources/Data/Themes/fruit_theme/theme_config.tres")
 	if fruit_config:
 		var raw_bgs = fruit_config.get("milestone_backgrounds")
 		shared_milestone_backgrounds.clear()
 		for bg in raw_bgs:
-			if bg and bg.resource_path.begins_with("res://"):
-				var path = bg.resource_path
-				if FileAccess.file_exists(path):
-					var img = Image.load_from_file(path)
-					if img:
-						shared_milestone_backgrounds.append(ImageTexture.create_from_image(img))
-						continue
-			shared_milestone_backgrounds.append(bg)
+			if bg is Texture2D:
+				shared_milestone_backgrounds.append(bg)
 
 	active_skin = "brick"
 	active_theme_name = DEFAULT_THEME
@@ -642,4 +631,3 @@ func get_streak_pitch(streak_val: int) -> float:
 		var remainder = index % STREAK_DIATONIC_STEPS.size()
 		semitones = STREAK_DIATONIC_STEPS[remainder] + octaves * 12
 	return min(MAX_STREAK_PITCH, pow(2.0, semitones / 12.0))
-

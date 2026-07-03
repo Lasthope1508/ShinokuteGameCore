@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/bg_mexico.webp-c974d477866045fd4f04db4e82bd28
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

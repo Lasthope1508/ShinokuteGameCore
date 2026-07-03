@@ -13,8 +13,9 @@ signal ad_opened(ad_type: String)
 signal ad_closed(ad_type: String, reward_earned: bool)
 
 # HTML5 Web Platforms
-enum WebPlatform { GAMEDISTRIBUTION, CRAZYGAMES, GAMEMONETIZE }
-@export var web_platform: WebPlatform = WebPlatform.GAMEDISTRIBUTION
+enum WebPlatform { GAMEDISTRIBUTION, CRAZYGAMES, GAMEMONETIZE, UNDETECTED }
+@export var web_platform: WebPlatform = WebPlatform.UNDETECTED
+var _crazy_sdk_initialized: bool = false
 
 # Active AdMob Ad Unit IDs for Android (assigned dynamically at runtime)
 var banner_id: String = ""
@@ -110,72 +111,62 @@ func _get_android_installer() -> String:
 	if not pm:
 		return ""
 	var package_name = context.getPackageName()
-	if package_name:
-		var installer = pm.getInstallerPackageName(package_name)
-		if installer:
-			return installer
-	return ""
+	
+	# Use getInstallSourceInfo if available (API 30+), fallback to getInstallerPackageName
+	var installer = ""
+	if pm.has_method("getInstallSourceInfo"):
+		var info = pm.getInstallSourceInfo(package_name)
+		if info:
+			installer = info.getInstallingPackageName()
+	else:
+		installer = pm.getInstallerPackageName(package_name)
+		
+	return installer if installer else ""
 
 func _connect_admob_signals() -> void:
 	if not _android_admob:
 		return
-	
-	# Connect Rewarded signals defensively
-	var rewarded_signals = {
-		"rewarded_video_ad_loaded": "_on_android_rewarded_loaded",
-		"rewarded_loaded": "_on_android_rewarded_loaded",
-		"rewarded_video_ad_failed_to_load": "_on_android_rewarded_failed",
-		"rewarded_failed_to_load": "_on_android_rewarded_failed",
-		"rewarded_video_ad_opened": "_on_android_rewarded_opened",
-		"rewarded_opened": "_on_android_rewarded_opened",
-		"rewarded_video_ad_closed": "_on_android_rewarded_closed",
-		"rewarded_closed": "_on_android_rewarded_closed",
-		"rewarded_video_ad_completed": "_on_android_rewarded_completed",
-		"rewarded_user_earned_reward": "_on_android_rewarded_earned"
-	}
-	
-	for sig in rewarded_signals:
-		if _android_admob.has_signal(sig):
-			_android_admob.connect(sig, Callable(self, rewarded_signals[sig]))
-			print("[AdManager] Connected AdMob signal: ", sig)
-	
-	# Connect Interstitial signals defensively
-	var interstitial_signals = {
-		"interstitial_loaded": "_on_android_interstitial_loaded",
-		"interstitial_failed_to_load": "_on_android_interstitial_failed",
-		"interstitial_opened": "_on_android_interstitial_opened",
-		"interstitial_closed": "_on_android_interstitial_closed"
-	}
-	
-	for sig in interstitial_signals:
-		if _android_admob.has_signal(sig):
-			_android_admob.connect(sig, Callable(self, interstitial_signals[sig]))
-			print("[AdManager] Connected AdMob signal: ", sig)
+		
+	# Safe connection utility
+	var safe_connect = func(sig_name: String, method_name: String):
+		if _android_admob.has_signal(sig_name):
+			if not _android_admob.is_connected(sig_name, Callable(self, method_name)):
+				_android_admob.connect(sig_name, Callable(self, method_name))
+				print("[AdManager] Connected signal: ", sig_name)
+		else:
+			print("[AdManager] AdMob singleton missing signal: ", sig_name)
 
-	# Connect Banner signals defensively
-	var banner_signals = {
-		"banner_loaded": "_on_android_banner_loaded",
-		"banner_failed_to_load": "_on_android_banner_failed"
-	}
+	safe_connect.call("banner_loaded", "_on_android_banner_loaded")
+	safe_connect.call("banner_failed_to_load", "_on_android_banner_failed_to_load")
+	safe_connect.call("banner_opened", "_on_android_banner_opened")
+	safe_connect.call("banner_closed", "_on_android_banner_closed")
 	
-	for sig in banner_signals:
-		if _android_admob.has_signal(sig):
-			_android_admob.connect(sig, Callable(self, banner_signals[sig]))
-			print("[AdManager] Connected AdMob signal: ", sig)
+	safe_connect.call("interstitial_loaded", "_on_android_interstitial_loaded")
+	safe_connect.call("interstitial_failed_to_load", "_on_android_interstitial_failed_to_load")
+	safe_connect.call("interstitial_opened", "_on_android_interstitial_opened")
+	safe_connect.call("interstitial_closed", "_on_android_interstitial_closed")
+	
+	safe_connect.call("rewarded_video_loaded", "_on_android_rewarded_loaded")
+	safe_connect.call("rewarded_video_failed_to_load", "_on_android_rewarded_failed_to_load")
+	safe_connect.call("rewarded_video_opened", "_on_android_rewarded_opened")
+	safe_connect.call("rewarded_video_closed", "_on_android_rewarded_closed")
+	safe_connect.call("rewarded", "_on_android_rewarded_user")
 
 func _load_android_ads() -> void:
-	_load_android_rewarded()
+	if not _android_admob:
+		return
+	print("[AdManager] Preloading Android ads...")
+	if banner_id != "" and _android_admob.has_method("load_banner"):
+		_android_admob.load_banner(banner_id, 1) # 1 = BOTTOM
 	_load_android_interstitial()
+	_load_android_rewarded()
 
 func _load_android_rewarded() -> void:
-	if _android_admob:
-		if _android_admob.has_method("load_rewarded"):
-			_android_admob.load_rewarded(rewarded_id)
-		elif _android_admob.has_method("load_rewarded_video"):
-			_android_admob.load_rewarded_video(rewarded_id)
+	if _android_admob and rewarded_id != "" and _android_admob.has_method("load_rewarded_video"):
+		_android_admob.load_rewarded_video(rewarded_id)
 
 func _load_android_interstitial() -> void:
-	if _android_admob and _android_admob.has_method("load_interstitial"):
+	if _android_admob and interstitial_id != "" and _android_admob.has_method("load_interstitial"):
 		_android_admob.load_interstitial(interstitial_id)
 
 # iOS AdMob Initialization
@@ -193,25 +184,50 @@ func _init_web_ads() -> void:
 		JavaScriptBridge.get_interface("window").onAdEvent = _web_ad_callback
 		print("[AdManager] window.onAdEvent registered.")
 		
-		# Auto-detect platform
-		var has_crazy = JavaScriptBridge.eval("typeof CrazyGames !== 'undefined'")
-		var has_monetize = JavaScriptBridge.eval("typeof sdk !== 'undefined' || typeof SDK_OPTIONS !== 'undefined'")
-		if has_crazy:
-			web_platform = WebPlatform.CRAZYGAMES
-		elif has_monetize:
-			web_platform = WebPlatform.GAMEMONETIZE
-		else:
-			web_platform = WebPlatform.GAMEDISTRIBUTION
-		print("[AdManager] Auto-detected web platform: ", WebPlatform.keys()[web_platform])
-		
+		web_platform = WebPlatform.UNDETECTED
 		set_process(true)
 	else:
 		print("[AdManager] JavaScriptBridge not available.")
 
 func _process(_delta: float) -> void:
-	if not OS.has_feature("web") or web_platform != WebPlatform.CRAZYGAMES:
+	if not OS.has_feature("web"):
 		set_process(false)
 		return
+		
+	if web_platform == WebPlatform.UNDETECTED:
+		var has_crazy = JavaScriptBridge.eval("typeof CrazyGames !== 'undefined'")
+		var has_monetize = JavaScriptBridge.eval("typeof sdk !== 'undefined' || typeof SDK_OPTIONS !== 'undefined'")
+		var hostname = JavaScriptBridge.eval("window.location.hostname")
+		var is_crazy_host = hostname != null and (hostname.contains("crazygames") or hostname.contains("localhost"))
+		var is_monetize_host = hostname != null and hostname.contains("gamemonetize")
+		
+		if has_crazy or is_crazy_host:
+			web_platform = WebPlatform.CRAZYGAMES
+			print("[AdManager] Auto-detected web platform: CRAZYGAMES")
+			_last_scene_name = ""
+		elif has_monetize or is_monetize_host:
+			web_platform = WebPlatform.GAMEMONETIZE
+			print("[AdManager] Auto-detected web platform: GAMEMONETIZE")
+			set_process(false)
+			return
+		else:
+			# Fallback to GameDistribution if we are not on CrazyGames or GameMonetize after a while
+			# For now, just continue waiting
+			return
+			
+	if web_platform != WebPlatform.CRAZYGAMES:
+		set_process(false)
+		return
+		
+	# Wait until SDK init completes in JS
+	if not _crazy_sdk_initialized:
+		var is_init = JavaScriptBridge.eval("!!window.crazySDKInitialized")
+		print("[AdManager] raw is_init: ", is_init, " type: ", typeof(is_init))
+		if is_init:
+			_crazy_sdk_initialized = true
+			print("[AdManager] CrazyGames SDK initialized successfully.")
+		else:
+			return
 		
 	var current_scene = get_tree().current_scene
 	if current_scene:
@@ -222,7 +238,10 @@ func _process(_delta: float) -> void:
 
 func _on_scene_changed(from_scene: String, to_scene: String) -> void:
 	print("[AdManager] Scene changed from ", from_scene, " to ", to_scene)
-	if to_scene == "Game":
+	if to_scene == "MainMenu":
+		JavaScriptBridge.eval("if (typeof CrazyGames !== 'undefined') CrazyGames.SDK.game.sdkGameLoadingStop();")
+		print("[AdManager] CrazyGames sdkGameLoadingStop() called automatically.")
+	elif to_scene == "Game":
 		JavaScriptBridge.eval("if (typeof CrazyGames !== 'undefined') CrazyGames.SDK.game.gameplayStart();")
 		print("[AdManager] CrazyGames gameplayStart() called automatically.")
 	elif from_scene == "Game":
