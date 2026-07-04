@@ -405,6 +405,9 @@
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
+      "edge_qa_status": "approved_dark_light_checkerboard",
+      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_icon_photoroom.png",
+      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_icon_photoroom.png",
       "photoroom_port": 9904,
       "alpha_extrema": [
         0,
@@ -603,6 +606,9 @@
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
+      "edge_qa_status": "approved_dark_light_checkerboard",
+      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_icon_photoroom.png",
+      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_icon_photoroom.png",
       "photoroom_port": 9904,
       "alpha_extrema": [
         0,
@@ -801,6 +807,9 @@
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
+      "edge_qa_status": "approved_dark_light_checkerboard",
+      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_icon_photoroom.png",
+      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_icon_photoroom.png",
       "photoroom_port": 9904,
       "alpha_extrema": [
         0,
@@ -1002,6 +1011,9 @@
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
+      "edge_qa_status": "approved_dark_light_checkerboard",
+      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_icon_photoroom.png",
+      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_icon_photoroom.png",
       "photoroom_port": 9904,
       "alpha_extrema": [
         0,

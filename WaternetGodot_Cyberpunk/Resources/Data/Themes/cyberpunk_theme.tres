@@ -740,6 +740,39 @@ ui_modal_content_gap = 8.0
 ui_modal_content_margin_x = 28
 ui_modal_content_margin_top = 40
 ui_modal_content_margin_bottom = 20
+ui_result_modal_width_ratio = 0.46
+ui_result_modal_height_ratio = 0.17
+ui_result_modal_landscape_width_ratio = 0.24
+ui_result_modal_landscape_height_ratio = 0.22
+ui_result_modal_action_button_width = 180.0
+ui_result_modal_action_button_height = 42.0
+ui_result_modal_content_gap = 8.0
+ui_result_modal_content_margin_x = 24
+ui_result_modal_content_margin_top = 22
+ui_result_modal_content_margin_bottom = 20
+ui_result_modal_title_font_size = 26
+ui_result_modal_moves_font_size = 17
+ui_result_modal_button_font_size = 19
+ui_result_modal_outline_size_by_mode = {
+"dark": 2,
+"light": 1
+}
+ui_result_modal_text_color_by_mode = {
+"dark": Color(0.94, 0.98, 1, 1),
+"light": Color(0.02, 0.06, 0.08, 1)
+}
+ui_result_modal_outline_color_by_mode = {
+"dark": Color(0, 0.02, 0.04, 0.95),
+"light": Color(0.82, 1, 1, 0.82)
+}
+ui_result_modal_button_text_color_by_mode = {
+"dark": Color(0.22, 1, 0.08, 1),
+"light": Color(0, 0.42, 0.34, 1)
+}
+ui_result_modal_button_bg_by_mode = {
+"dark": Color(0.01, 0.02, 0.05, 0.96),
+"light": Color(0.88, 1, 0.98, 0.92)
+}
 ui_profile_popup_content_margin_x = 30
 ui_profile_popup_content_margin_top = 58
 ui_profile_popup_content_margin_bottom = 30

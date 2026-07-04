@@ -168,12 +168,14 @@ Do not start B3 asset generation until background direction is approved.
 - [x] GameScene wraps generated object PNGs in `AtlasTexture` regions from SSOT `alpha_bbox`; full-source exceptions are explicitly marked by `runtime_region = "full_source"`.
 - [x] Owner-approved floating menu/replay button placement uses icon-baked PhotoRoom PNGs in runtime; visual draw source is the per-mode `alpha_bbox` crop so PhotoRoom padding cannot shift optical center.
 - [x] Settings modal uses generated `modal_frame` as the visual shell; `SettingsOverlay` is a non-container `Panel` so anchored close/content controls cannot expand into a full-row or full-panel icon.
-- [x] Store modal portrait/landscape size ratios in ThemeConfig and place modal rect from viewport ratios.
+- [x] Store settings/leaderboard modal portrait/landscape size ratios in ThemeConfig and place modal rect from viewport ratios.
 - [x] Settings modal option rows are text-only, centered, clipped inside the modal frame, and sized from `ThemeConfig` modal action/margin/gap tokens; no per-button icon or hardcoded offset is allowed.
 - [x] Settings modal contains `MasterAudioBtn`, `MusicBtn`, and `SfxBtn` as separate audio controls; Master Audio is visible, not hidden behind old main-menu volume state.
 - [x] Modal frame currently uses SSOT `runtime_stretch_mode = "scale"` until a real 9-slice/sliced modal frame pass is implemented.
 - [x] Leaderboard/Profile popup uses generated `modal_frame`, non-container root, corner close button, and GameScene injects active theme/mode before display.
-- [x] Solved/win popup uses generated `modal_frame`, non-container root, and modal rect from the same ThemeConfig portrait/landscape ratios as settings and leaderboard.
+- [x] Solved/win popup uses generated `modal_frame`, non-container root, and role-specific compact result ratios/margins/action width/action height from `ThemeConfig.ui_result_modal_*`; it must never reuse generic `ui_modal_*` dimensions or full-width modal buttons.
+- [x] Solved/win popup text and `NEXT LEVEL` button style use `ThemeConfig.ui_result_modal_*` mode-specific text/background tokens through `_style_result_modal_action_buttons()`; `_style_modal_action_buttons()` is generic only and must not reference result modal tokens.
+- [x] `Tests/test_result_modal_runtime_style.gd` verifies the actual runtime `NextBtn` stylebox/font color for light mode so source-level token presence cannot hide a wrong code path.
 - [x] Store top tray stat slot ratios and font size in ThemeConfig so logo clearance and readout typography scale without per-scene magic numbers.
 - [x] Store HUD margins in theme SSOT with `ui_hud_margin_*`.
 - [x] Store landscape top spacing in `game_landscape_top_margin` to prevent tray/button overlap with board.

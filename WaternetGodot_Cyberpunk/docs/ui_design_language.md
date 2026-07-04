@@ -94,6 +94,24 @@ ThemeConfig owns:
 - `ui_modal_content_margin_x`
 - `ui_modal_content_margin_top`
 - `ui_modal_content_margin_bottom`
+- `ui_result_modal_width_ratio`
+- `ui_result_modal_height_ratio`
+- `ui_result_modal_landscape_width_ratio`
+- `ui_result_modal_landscape_height_ratio`
+- `ui_result_modal_action_button_width`
+- `ui_result_modal_action_button_height`
+- `ui_result_modal_content_gap`
+- `ui_result_modal_content_margin_x`
+- `ui_result_modal_content_margin_top`
+- `ui_result_modal_content_margin_bottom`
+- `ui_result_modal_title_font_size`
+- `ui_result_modal_moves_font_size`
+- `ui_result_modal_button_font_size`
+- `ui_result_modal_outline_size_by_mode`
+- `ui_result_modal_text_color_by_mode`
+- `ui_result_modal_outline_color_by_mode`
+- `ui_result_modal_button_text_color_by_mode`
+- `ui_result_modal_button_bg_by_mode`
 
 ## Implementation Contract
 
@@ -101,6 +119,9 @@ ThemeConfig owns:
 - Runtime sizing and styling must read ThemeConfig.
 - Tests must guard node structure and token presence before visual polish begins.
 - Settings modal option buttons are text-only centered rows. Icons belong to floating controls or generated art, not option rows.
+- Modal dimensions and styles are role contracts, not a shared bucket. Settings/profile/leaderboard may use generic modal tokens, but solved/result panels must use `ui_result_modal_*` compact tokens and centered, non-fill action buttons.
+- Modal code paths are also SSOT. `_style_modal_action_buttons()` owns generic settings/modal rows only; `_style_result_modal_action_buttons()` owns solved/result text, width, font size, and mode-specific button colors. Generic modal functions must not reference `ui_result_modal_*`.
+- Result modal regressions must be checked at runtime, not only by source text. `Tests/test_result_modal_runtime_style.gd` verifies actual `NextBtn` stylebox and font color against active `ui_generated_asset_mode`.
 
 ## Asset Region SSOT
 

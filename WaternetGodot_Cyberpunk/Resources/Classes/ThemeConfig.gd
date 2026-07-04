@@ -242,6 +242,36 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_modal_content_margin_x: int = 28
 @export var ui_modal_content_margin_top: int = 40
 @export var ui_modal_content_margin_bottom: int = 20
+@export var ui_result_modal_width_ratio: float = 0.46
+@export var ui_result_modal_height_ratio: float = 0.17
+@export var ui_result_modal_landscape_width_ratio: float = 0.24
+@export var ui_result_modal_landscape_height_ratio: float = 0.22
+@export var ui_result_modal_action_button_width: float = 180.0
+@export var ui_result_modal_action_button_height: float = 42.0
+@export var ui_result_modal_content_gap: float = 8.0
+@export var ui_result_modal_content_margin_x: int = 24
+@export var ui_result_modal_content_margin_top: int = 22
+@export var ui_result_modal_content_margin_bottom: int = 20
+@export var ui_result_modal_title_font_size: int = 26
+@export var ui_result_modal_moves_font_size: int = 17
+@export var ui_result_modal_button_font_size: int = 19
+@export var ui_result_modal_outline_size_by_mode: Dictionary = {"dark": 2, "light": 1}
+@export var ui_result_modal_text_color_by_mode: Dictionary = {
+	"dark": Color(0.94, 0.98, 1.0, 1.0),
+	"light": Color(0.02, 0.06, 0.08, 1.0)
+}
+@export var ui_result_modal_outline_color_by_mode: Dictionary = {
+	"dark": Color(0.0, 0.02, 0.04, 0.95),
+	"light": Color(0.82, 1.0, 1.0, 0.82)
+}
+@export var ui_result_modal_button_text_color_by_mode: Dictionary = {
+	"dark": Color(0.22, 1.0, 0.08, 1.0),
+	"light": Color(0.0, 0.42, 0.34, 1.0)
+}
+@export var ui_result_modal_button_bg_by_mode: Dictionary = {
+	"dark": Color(0.01, 0.02, 0.05, 0.96),
+	"light": Color(0.88, 1.0, 0.98, 0.92)
+}
 @export var ui_profile_popup_content_margin_x: int = 30
 @export var ui_profile_popup_content_margin_top: int = 58
 @export var ui_profile_popup_content_margin_bottom: int = 30

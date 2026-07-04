@@ -140,8 +140,6 @@ func _on_theme_changed(name: String, config: ThemeConfig) -> void:
 	if config == null:
 		return
 	_apply_saved_ui_mode(config)
-	if popup_title:
-		popup_title.add_theme_color_override("font_color", config.text_color)
 	_apply_top_tray_theme(config)
 	_apply_generated_ui_assets(config)
 		
@@ -622,10 +620,15 @@ func _apply_top_tray_theme(theme: ThemeConfig, viewport_size_override: Vector2 =
 	if solved_popup:
 		var solved_margin := solved_popup.get_node_or_null("MarginContainer") as MarginContainer
 		if solved_margin:
-			solved_margin.add_theme_constant_override("margin_left", theme.ui_modal_content_margin_x)
-			solved_margin.add_theme_constant_override("margin_top", theme.ui_modal_content_margin_top)
-			solved_margin.add_theme_constant_override("margin_right", theme.ui_modal_content_margin_x)
-			solved_margin.add_theme_constant_override("margin_bottom", theme.ui_modal_content_margin_bottom)
+			solved_margin.add_theme_constant_override("margin_left", theme.ui_result_modal_content_margin_x)
+			solved_margin.add_theme_constant_override("margin_top", theme.ui_result_modal_content_margin_top)
+			solved_margin.add_theme_constant_override("margin_right", theme.ui_result_modal_content_margin_x)
+			solved_margin.add_theme_constant_override("margin_bottom", theme.ui_result_modal_content_margin_bottom)
+		var solved_content := solved_popup.get_node_or_null("MarginContainer/VBoxContainer")
+		if solved_content:
+			solved_content.add_theme_constant_override("separation", int(theme.ui_result_modal_content_gap))
+			_style_result_modal_action_buttons(solved_content, theme)
+		_apply_result_modal_text_style(theme)
 	if stats_readout:
 		stats_readout.anchor_left = 0.0
 		stats_readout.anchor_top = 0.0
@@ -651,7 +654,16 @@ func _apply_generated_ui_assets(theme: ThemeConfig) -> void:
 	_set_generated_rect_texture(bottom_reserve_layer, "GeneratedBottomReserveLayer", theme.get_ui_generated_asset_texture(mode, "bottom_reserve_layer"), true, theme, "bottom_reserve_layer")
 	_set_generated_rect_texture(settings_overlay, "GeneratedModalFrame", theme.get_ui_generated_asset_texture(mode, "modal_frame"), true, theme, "modal_frame")
 	_set_generated_rect_texture(solved_popup, "GeneratedSolvedModalFrame", theme.get_ui_generated_asset_texture(mode, "modal_frame"), true, theme, "modal_frame")
+	_apply_result_modal_style(theme)
 	_apply_bottom_timer_theme(theme)
+
+func _apply_result_modal_style(theme: ThemeConfig) -> void:
+	if theme == null:
+		return
+	var solved_content := solved_popup.get_node_or_null("MarginContainer/VBoxContainer") if solved_popup != null else null
+	if solved_content:
+		_style_result_modal_action_buttons(solved_content, theme)
+	_apply_result_modal_text_style(theme)
 
 func _apply_generated_top_tray_art_stack(theme: ThemeConfig, mode: String) -> void:
 	if theme == null or top_tray_layer == null:
@@ -832,13 +844,44 @@ func _apply_modal_theme(theme: ThemeConfig, viewport_size: Vector2) -> void:
 	var modal_width: float = viewport_size.x * width_ratio
 	var modal_height: float = viewport_size.y * height_ratio
 	_apply_modal_rect(settings_overlay, modal_width, modal_height)
-	_apply_modal_rect(solved_popup, modal_width, modal_height)
+	_apply_result_modal_theme(theme, viewport_size)
 	if settings_close_btn:
 		var close_padding := theme.ui_modal_close_button_padding
 		settings_close_btn.offset_left = -theme.ui_modal_close_button_size - close_padding
 		settings_close_btn.offset_top = close_padding
 		settings_close_btn.offset_right = -close_padding
 		settings_close_btn.offset_bottom = close_padding + theme.ui_modal_close_button_size
+
+func _apply_result_modal_theme(theme: ThemeConfig, viewport_size: Vector2) -> void:
+	if theme == null:
+		return
+	var width_ratio := theme.ui_result_modal_landscape_width_ratio if viewport_size.x > viewport_size.y else theme.ui_result_modal_width_ratio
+	var height_ratio := theme.ui_result_modal_landscape_height_ratio if viewport_size.x > viewport_size.y else theme.ui_result_modal_height_ratio
+	_apply_modal_rect(solved_popup, viewport_size.x * width_ratio, viewport_size.y * height_ratio)
+
+func _apply_result_modal_text_style(theme: ThemeConfig) -> void:
+	if theme == null:
+		return
+	var text_color := _get_result_modal_mode_color(theme, theme.ui_result_modal_text_color_by_mode, theme.text_color)
+	var outline_color := _get_result_modal_mode_color(theme, theme.ui_result_modal_outline_color_by_mode, Color(0.0, 0.0, 0.0, 0.8))
+	var outline_size := int(theme.ui_result_modal_outline_size_by_mode.get(String(theme.ui_generated_asset_mode), 1))
+	if popup_title:
+		popup_title.add_theme_color_override("font_color", text_color)
+		popup_title.add_theme_color_override("font_outline_color", outline_color)
+		popup_title.add_theme_constant_override("outline_size", outline_size)
+		popup_title.add_theme_font_size_override("font_size", theme.ui_result_modal_title_font_size)
+	if popup_moves:
+		popup_moves.add_theme_color_override("font_color", text_color)
+		popup_moves.add_theme_color_override("font_outline_color", outline_color)
+		popup_moves.add_theme_constant_override("outline_size", outline_size)
+		popup_moves.add_theme_font_size_override("font_size", theme.ui_result_modal_moves_font_size)
+
+func _get_result_modal_mode_color(theme: ThemeConfig, source: Dictionary, fallback: Color) -> Color:
+	if theme == null:
+		return fallback
+	var mode := String(theme.ui_generated_asset_mode)
+	var value = source.get(mode, fallback)
+	return value if value is Color else fallback
 
 func _apply_modal_rect(control: Control, modal_width: float, modal_height: float) -> void:
 	if control == null:
@@ -1327,6 +1370,29 @@ func _style_modal_action_buttons(group: Node, theme: ThemeConfig) -> void:
 			button.add_theme_color_override("icon_pressed_color", theme.accent_color)
 			for state in ["normal", "hover", "pressed", "focus", "disabled"]:
 				button.add_theme_stylebox_override(state, _make_button_style(theme, state))
+
+func _style_result_modal_action_buttons(group: Node, theme: ThemeConfig) -> void:
+	if group == null:
+		return
+	for child in group.get_children():
+		if child is Button:
+			var button: Button = child as Button
+			button.custom_minimum_size = Vector2(theme.ui_result_modal_action_button_width, theme.ui_result_modal_action_button_height)
+			button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			button.icon = null
+			button.expand_icon = false
+			button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+			button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			button.clip_contents = true
+			var text_color := _get_result_modal_mode_color(theme, theme.ui_result_modal_button_text_color_by_mode, theme.text_color)
+			var bg_color := _get_result_modal_mode_color(theme, theme.ui_result_modal_button_bg_by_mode, theme.button_normal_bg)
+			button.add_theme_font_size_override("font_size", theme.ui_result_modal_button_font_size)
+			button.add_theme_color_override("font_color", text_color)
+			button.add_theme_color_override("icon_normal_color", text_color)
+			button.add_theme_color_override("icon_hover_color", theme.accent_color)
+			button.add_theme_color_override("icon_pressed_color", theme.accent_color)
+			for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+				button.add_theme_stylebox_override(state, _make_button_style(theme, state, bg_color))
 
 func _make_button_style(theme: ThemeConfig, state: String, bg_override: Color = Color.TRANSPARENT) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
