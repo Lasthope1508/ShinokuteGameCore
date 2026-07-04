@@ -39,14 +39,26 @@
 
 ## Required Verification Before Claiming Package-Ready
 
-Current verified export evidence from 2026-07-03:
+Current verified export evidence from 2026-07-04:
 
-- Latest Web preload fix pass: `Export/glyphflow_arrays.pck` = 13.56 MB, required runtime preload scripts present, forbidden scan clean.
-- Web WASM: `Export/glyphflow_arrays.wasm` = 33.74 MB, engine/runtime baseline.
-- Web no-cache smoke: `MainMenu -> Play -> Level 1 -> click tile`; board rendered, `MOVES` changed to `1`, browser console clean.
-- Android AAB: previous `Export/glyphflow_arrays.aab` = 57.39 MB, forbidden scan clean before the latest `export_presets.cfg` preload-script fix. Rebuild Android before any package-ready claim.
-- Full Godot test sweep from previous package pass: `TOTAL:71 ALL_OK:True`. Rerun full sweep after gameplay, export, or preset changes.
-- Required audit script from previous package pass: `godot_publish_audit.ps1` returned `GODOT_PUBLISH_AUDIT_OK`. Rerun after both fresh exports.
+- Godot MCP evidence: `get_project_info` confirmed project `Glyphflow Arrays`, path `C:\w\water\WaternetGodot_Cyberpunk`, Godot `4.3.stable.official.77dcf97d8`.
+- Full Godot test sweep: `79/79 pass`.
+- Import/export note: Godot import may remove the `[audio]` project setting; restore `buses/default_bus_layout="res://default_bus_layout.tres"` before testing/exporting. Do not commit release keystore passwords in `export_presets.cfg`.
+- Web export: `Godot_v4.3-stable_win64_console.exe --headless --path "C:\w\water\WaternetGodot_Cyberpunk" --export-release Web "Export\glyphflow_arrays.html"`; exit `0`.
+- Android export: `Godot_v4.3-stable_win64_console.exe --headless --path "C:\w\water\WaternetGodot_Cyberpunk" --install-android-build-template --export-release Android "Export\glyphflow_arrays.aab"`; exit `0`. Gradle daemon may keep the wrapper alive after `export: end`; stop it with `android\build\gradlew.bat --stop` under the configured JDK.
+- Generated artifacts:
+  - `Export/glyphflow_arrays.html`: 4,929 bytes.
+  - `Export/glyphflow_arrays.js`: 331,495 bytes.
+  - `Export/glyphflow_arrays.wasm`: 35,376,909 bytes.
+  - `Export/glyphflow_arrays.pck`: 15,207,584 bytes (14.50 MB).
+  - `Export/glyphflow_arrays.aab`: 61,207,533 bytes (58.37 MB).
+- Forbidden scan: `godot_publish_audit.ps1` returned `GODOT_PUBLISH_AUDIT_OK` for `Export\glyphflow_arrays.pck` and `Export\glyphflow_arrays.aab`.
+- Android signing/package check: `jarsigner.exe -verify -certs Export\glyphflow_arrays.aab` exit `0`.
+- Web no-cache smoke: served `Export/` from `http://127.0.0.1:49410`, opened `glyphflow_arrays.html?v=build-20260704`, gameplay board rendered, clicked one tile, `MOVES` changed to `2`, browser console errors/warnings `[]`.
+- Budget comparison:
+  - Web PCK: 14.50 MB / 30 MB: pass.
+  - Android AAB: 58.37 MB / 80 MB: pass.
+- Blockers: none for current generated Web/AAB artifacts.
 
 Clear generated export cache:
 
