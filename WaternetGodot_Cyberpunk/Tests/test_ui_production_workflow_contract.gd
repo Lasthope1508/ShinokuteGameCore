@@ -31,6 +31,11 @@ func _init() -> void:
 		"Godot integration happens only after the PhotoRoom output and owner-approved object placement exist.",
 		"Text integration is a separate step after object placement approval.",
 		"Only after object placement is approved, add or tune text.",
+		"MUST READ BEFORE RESKIN",
+		"../../Shared/ShinokuteGameCore/docs/reskin_core_skin_boundary.md",
+		"Core = behavior",
+		"Game skin = game-specific art",
+		"Function skin = game-specific presentation for a shared feature",
 		"No fallback",
 		"SSOT",
 		"Owner approved screenshot"

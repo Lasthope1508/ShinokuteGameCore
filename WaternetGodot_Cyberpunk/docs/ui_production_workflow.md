@@ -4,6 +4,10 @@ Purpose: define the canonical UI production process for this project and future 
 
 ## Rule
 
+MUST READ BEFORE RESKIN: `../../Shared/ShinokuteGameCore/docs/reskin_core_skin_boundary.md`.
+
+Reskin ownership rule: Core = behavior; Game skin = game-specific art; Function skin = game-specific presentation for a shared feature. No fallback unless owner approves the exact fallback for this project.
+
 Do not design professional game UI by hand-tweaking Godot controls first.
 
 The correct order is:

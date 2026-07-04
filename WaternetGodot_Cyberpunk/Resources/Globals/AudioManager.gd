@@ -46,10 +46,17 @@ func _input(event: InputEvent) -> void:
 	_unlock_web_audio_after_user_gesture()
 
 func _exit_tree() -> void:
-	stop_music()
+	if _music_player != null and is_instance_valid(_music_player):
+		_music_player.stop()
+		_music_player.stream = null
+		_music_player.free()
+		_music_player = null
 	for player in _sfx_pool:
-		player.stop()
-		player.stream = null
+		if player != null and is_instance_valid(player):
+			player.stop()
+			player.stream = null
+			player.free()
+	_sfx_pool.clear()
 
 func _on_theme_changed(_name: String, _config: Variant) -> void:
 	if _music_player and _music_player.playing and _current_music_mode != "":
@@ -108,6 +115,9 @@ func _get_music_path(mode: String) -> String:
 
 # Starts the looped music track. Set Loop in the import dock if the file doesn't loop.
 func play_music() -> void:
+	if _is_headless_runtime():
+		_publish_web_debug_state()
+		return
 	if _music_player.playing:
 		_publish_web_debug_state()
 		return
@@ -144,6 +154,9 @@ func set_music_mode(mode: String) -> void:
 
 
 func _transition_to_music(path: String) -> void:
+	if _is_headless_runtime():
+		_publish_web_debug_state()
+		return
 	if not ResourceLoader.exists(path):
 		push_warning("AudioManager: music file not found at " + path)
 		_publish_web_debug_state()
@@ -305,6 +318,10 @@ func _publish_web_debug_state() -> void:
 		return
 	var json := JSON.stringify(get_debug_state()).json_escape()
 	JavaScriptBridge.eval("document.documentElement.dataset.%s=\"%s\";" % [WEB_AUDIO_DEBUG_DATASET_KEY, json], true)
+
+
+func _is_headless_runtime() -> bool:
+	return DisplayServer.get_name() == "headless"
 
 
 func _get_sfx(sfx_name: String) -> AudioStream:
