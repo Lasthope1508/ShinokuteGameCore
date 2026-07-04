@@ -1,0 +1,3 @@
+[submodule "Shared/ShinokuteGameCore"]
+	path = Shared/ShinokuteGameCore
+	url = https://github.com/Lasthope1508/ShinokuteGameCore.git
