@@ -5,10 +5,10 @@ signal username_required
 signal profile_ready(username: String)
 signal leaderboard_loaded(tab: String, scores: Array, mode: String)
 
-const LocalSaveStoreScript := preload("res://addons/shinokute_game_core/core/local_save_store.gd")
-const PlayerProfileScript := preload("res://addons/shinokute_game_core/core/player_profile.gd")
-const LeaderboardClientScript := preload("res://addons/shinokute_game_core/core/leaderboard_client.gd")
-const GeoServiceScript := preload("res://addons/shinokute_game_core/core/geo_service.gd")
+const LocalSaveStoreScript := preload("local_save_store.gd")
+const PlayerProfileScript := preload("player_profile.gd")
+const LeaderboardClientScript := preload("leaderboard_client.gd")
+const GeoServiceScript := preload("geo_service.gd")
 
 var config: Resource
 var save_store: Node
