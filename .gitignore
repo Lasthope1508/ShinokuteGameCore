@@ -1,0 +1,8 @@
+.godot/
+Export/
+export/
+*.tmp
+*.log
+*.zip
+*.7z
+*.import.tmp
