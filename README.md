@@ -4,6 +4,10 @@ Shared Godot addon for modules every Shinokute casual game needs: player profile
 
 This repo is the canonical home for reusable cross-game code. Individual games should configure the addon through `GameCoreConfig.tres` and should not copy/paste leaderboard or profile logic into gameplay scenes.
 
+## Required Reskin Reading
+
+Every agent must read `docs/reskin_core_skin_boundary.md` before reskinning any Shinokute game. Core owns behavior; each game owns game skin and function skin.
+
 ## Modules
 
 - `GameCoreConfig`: SSOT for game id, Firebase endpoint, score sort, collection names, username policy, and leaderboard display labels.

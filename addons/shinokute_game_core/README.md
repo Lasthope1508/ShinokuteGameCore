@@ -1,5 +1,7 @@
 # Shinokute Game Core Addon
 
+Before using this addon in a reskin, read `../../docs/reskin_core_skin_boundary.md`. Core owns behavior; each game owns game skin and function skin.
+
 ## Install
 
 Copy or submodule `addons/shinokute_game_core` into a Godot 4.3 game project.
