@@ -2,6 +2,8 @@
 
 Every agent must read this document before reskinning any Shinokute game.
 
+For web test links or official web publishing, also read `docs/godot_web_publish_runbook.md`. Do not deploy from memory.
+
 ## Canonical Split
 
 Core = behavior.
@@ -30,12 +32,13 @@ Function skin owns how a core feature appears in a game: username popup frame, s
 
 1. Read this boundary document.
 2. Read the game's local reskin checklist and publish checklist.
-3. Identify core feature behavior already owned by `ShinokuteGameCore`.
-4. Keep or move reusable behavior to core only after adding core tests.
-5. Keep all game skin and function skin inside the game repo.
-6. Create or update the game SSOT resource for coordinates, colors, fonts, asset paths, VFX parameters, and layout bounds.
-7. Add contract tests proving the game reads skin values from SSOT, not scattered constants.
-8. Run Godot import, contract tests, packaging tests, and a smoke launch before claiming the game works.
+3. Read `docs/godot_web_publish_runbook.md` before any owner test link or official web publish.
+4. Identify core feature behavior already owned by `ShinokuteGameCore`.
+5. Keep or move reusable behavior to core only after adding core tests.
+6. Keep all game skin and function skin inside the game repo.
+7. Create or update the game SSOT resource for coordinates, colors, fonts, asset paths, VFX parameters, and layout bounds.
+8. Add contract tests proving the game reads skin values from SSOT, not scattered constants.
+9. Run Godot import, contract tests, packaging tests, and a smoke launch before claiming the game works.
 
 ## Examples
 
