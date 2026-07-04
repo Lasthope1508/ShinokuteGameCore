@@ -13,6 +13,18 @@ This repo is the canonical home for reusable cross-game code. Individual games s
 - `GeoService`: geolocation request/cache handling without hardcoded country fallback.
 - `UsernamePromptOverlay`: reusable first-run prompt scene.
 
+## Migration Roadmap
+
+Next shared candidates live in `docs/shared_core_migration_candidates.md`.
+
+Priority order:
+- `AudioCore`: canonical buses, SFX pool, BGM player, saved toggles, HTML5 unlock/debug.
+- `PublishCore`: export/package gates, runtime manifest schema, mobile/HTML5 checks.
+- `SceneTransitionCore`: fade transition scene and scene router helper.
+- `OverlayCore`: elastic modal lifecycle and shared popup behavior.
+- `AdCore`: platform bridge signal contract.
+- `ThemeTokenCore` and `VfxCatalogCore`: only after at least two games share the same resource schema.
+
 ## Tests
 
 Run all contracts:
