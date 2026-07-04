@@ -186,7 +186,7 @@ func _draw() -> void:
 					
 				draw_rect(cell_rect, cell_border_color, false, border_w)
 				
-	# PASS 2 & 3: Draw Pipes / Hoses / Water Pumps
+	# PASS 2 & 3: Draw conduits and energy endpoints
 	if has_textures:
 		for y in range(grid.height):
 			for x in range(grid.width):

@@ -26,7 +26,7 @@ In **Glyphflow Arrays**, you play as a cyber-network calibration engineer in a h
 
 ## 🎨 3. Design System & Mascot Brand Visuals
 
-Glyphflow Arrays implements a strict **Single Source of Truth (SSOT)** style design system. The visual skin is loaded from a central [ThemeConfig.gd](file:///C:/Users/Admin/Desktop/Godot%20Casual%20Games/WaternetGodot/Resources/Classes/ThemeConfig.gd) configuration.
+Glyphflow Arrays implements a strict **Single Source of Truth (SSOT)** style design system. The visual skin is loaded from the canonical `res://Resources/Classes/ThemeConfig.gd` configuration.
 
 ### Visual Architecture:
 -   **Anthropomorphized Mascot**: The game is represented by a cute cybernetic mascot character (`logo.png`) that is integrated into the boot splash and welcome screen.
@@ -52,7 +52,7 @@ Glyphflow Arrays implements a strict **Single Source of Truth (SSOT)** style des
 
 ---
 
-## 🎨 5. Specific Theme Design Rules (Waternet Pipe Rules)
+## 🎨 5. Specific Theme Design Rules (Glyphflow Energy Pipe Rules)
 
 Để tránh lỗi không đồng bộ thị giác và mù hướng UX khi tích hợp các Theme mới, mọi asset thuộc Theme trong dự án phải tuân thủ nghiêm ngặt các quy chuẩn hình học sau:
 
@@ -71,6 +71,6 @@ Glyphflow Arrays implements a strict **Single Source of Truth (SSOT)** style des
 ### 5.2 Chỉ Hướng Cho Nguồn & Đích (UX Directional Clues)
 *   **Source Node (`source.png`):** CẤM thiết kế đối xứng tâm. Bắt buộc phải là hình ảnh vòi nước/cổng phát chỉ rõ hướng nước phun ra chĩa về phía bên **Phải (Đông)** ở góc 0.
 *   **Target Node (`target.png`):** Bắt buộc phải có phễu đón/cổng nhận nước mở hướng về phía bên **Trái (Tây)** ở góc 0 để hứng dòng nước chảy.
-*   **Chỉ thị dòng chảy:** Water Flow Overlay vẽ bằng vector đè lên phải có màu tương phản mạnh với màu nền của ống (ví dụ: ống đồng thau thì nước chảy màu vàng sáng óng ánh).
+*   **Chỉ thị dòng chảy:** Energy Flow Overlay vẽ bằng vector đè lên phải có màu tương phản mạnh với màu nền của ống (ví dụ: ống đồng thau thì nước chảy màu vàng sáng óng ánh).
 
 

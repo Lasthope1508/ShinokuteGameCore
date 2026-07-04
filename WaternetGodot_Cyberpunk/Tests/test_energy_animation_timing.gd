@@ -46,8 +46,8 @@ func _init() -> void:
 		passed = passed and _assert_equal(scene._get_energy_frame_index_for_age(theme.energy_default_frame_duration * 3.1, "I"), 3, "Age should advance through configured frame duration")
 		passed = passed and _assert_equal(scene._get_energy_frame_index_for_age(99.0, "I"), theme.energy_sheet_frame_count - 1, "Large age should clamp to final frame")
 
-	passed = passed and _assert_equal(scene.callv("_get_energy_frame_index", [Vector2i(1, 0), true, "I"]), 0, "Watered tile frame should read FlowVisualState age")
-	passed = passed and _assert_equal(scene.callv("_get_energy_frame_index", [Vector2i(2, 0), true, "I"]), 3, "Watered tile should advance by FlowVisualState age")
+	passed = passed and _assert_equal(scene.callv("_get_energy_frame_index", [Vector2i(1, 0), true, "I"]), 0, "Energized tile frame should read FlowVisualState age")
+	passed = passed and _assert_equal(scene.callv("_get_energy_frame_index", [Vector2i(2, 0), true, "I"]), 3, "Energized tile should advance by FlowVisualState age")
 	passed = passed and _assert_equal(scene.callv("_get_energy_frame_index", [Vector2i(3, 0), true, "I"]), theme.energy_sheet_frame_count - 1, "Settled tile should clamp to final frame")
 	passed = passed and _assert_equal(scene.callv("_get_energy_frame_index", [Vector2i(2, 0), false, "I"]), 0, "Dry tile should stay on frame 0")
 
