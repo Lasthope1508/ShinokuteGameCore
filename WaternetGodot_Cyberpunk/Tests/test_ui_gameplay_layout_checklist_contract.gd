@@ -84,7 +84,7 @@ func _init() -> void:
 		"Generated UI object assets are the primary visuals; legacy Godot panel/button styleboxes are transparent hitboxes only when matching generated assets exist.",
 		"Store generated UI object alpha bounding boxes in `ThemeConfig.ui_generated_asset_geometry[*].alpha_bbox` so runtime places the real object area, not transparent canvas padding.",
 		"GameScene wraps generated object PNGs in `AtlasTexture` regions from SSOT `alpha_bbox`; full-source exceptions are explicitly marked by `runtime_region = \"full_source\"`.",
-		"Owner-approved floating menu/replay button placement uses full PhotoRoom PNG source in runtime, matching the drag editor preview; their `alpha_bbox` is audit metadata only.",
+		"Owner-approved floating menu/replay button placement uses icon-baked PhotoRoom PNGs in runtime; visual draw source is the per-mode `alpha_bbox` crop so PhotoRoom padding cannot shift optical center.",
 		"Wire `bottom_reserve_layer` as a semantic HUD node and place it from SSOT bottom reserve ratios.",
 		"Render only one generated top tray shell; `StatsCapsule` is a transparent layout control, and `LogoCore` renders the real project logo from the owner-approved `logo_core` region.",
 		"Store optional `GeneratedStatsCapsule` and `GeneratedLogoSocket` as library assets, but keep them inactive in current cyber top tray stack.",
@@ -114,13 +114,13 @@ func _init() -> void:
 		"Re-place all PhotoRoom object assets through SSOT before any text pass resumes.",
 		"Top tray object-placement pass: current cyber `ui_top_tray_art_stack` renders `GeneratedTopTrayLayer` only; menu button, replay button, and bottom reserve are attached from SSOT-controlled PhotoRoom assets.",
 		"Top tray art stack rule: active top tray art components share the full `TopTrayLayer` rect; `ui_top_tray_regions` is for menu/replay/readout/logo control ownership only.",
-		"Floating button shell/icon split: generated menu/replay button PNGs are shells; symbols come from `ThemeConfig.ui_top_tray_button_icon_paths` and explicit `_icon` regions in `ThemeConfig.ui_top_tray_regions`.",
+		"Floating button icon-baked contract: generated menu/replay button PNGs include their settings/replay symbols; `ThemeConfig.ui_top_tray_button_icon_source = \"baked_texture\"` disables runtime `GeneratedButtonIcon` overlays.",
 		"Owner visual approved menu, replay, and logo top tray placement before text pass starts.",
-		"Owner approved `total_play_time_readout = Vector4(0.6687, 0.3494, 0.1843, 0.1843)` for elapsed level time.",
-		"Top tray elapsed time uses SSOT `ThemeConfig.ui_top_tray_time_*` typography: Poppins Bold, energy-green text, dark outline, cyan-green shadow.",
-		"Runtime freezes elapsed top tray time when the level is solved, so it records total time from level start to finish.",
+		"Owner approved `total_play_time_readout = Vector4(0.6687, 0.3494, 0.1843, 0.1843)` for the top-right stat region.",
+		"Top-right stat region uses SSOT `ThemeConfig.ui_top_tray_time_*` typography plus `ThemeConfig.ui_top_tray_moves_font_size`: Poppins Bold, energy-green text, dark outline, cyan-green shadow.",
+		"Elapsed time no longer renders in the top tray; it renders as the bottom tray sprite timer and freezes when the level is solved.",
 		"Runtime treats `total_play_time_readout` as a hard clipping region: `TotalPlayTimeLabel.clip_contents = true`, and font fitting subtracts padding, outline, and shadow bleed.",
-		"`TotalPlayTimeLabel` layout is two rows: elapsed time on top, current round moves on bottom, right-aligned inside the owner region.",
+		"`TotalPlayTimeLabel` is the top-right moves readout while the node name remains for scene compatibility: one-line `MOVES N`, right-aligned and font-fitted inside the owner region.",
 		"`LeftStatsLabel` uses `left_stats_readout`: username on top, best wave on bottom, left-aligned and clipped/fitted by the same SSOT typography rules.",
 		"UI screen order for future agents: design all objects first, place all objects second, add text last.",
 		"Use PhotoRoom for every non-background transparent cutout; chroma-key cleanup is debug-only preview."
@@ -235,24 +235,18 @@ func _init() -> void:
 		passed = passed and _assert_true(generation_manifest.contains(required_text), "Component generation manifest should include stats capsule metadata %s" % required_text)
 
 	for required_text in [
-		"floating_menu_button_default_alpha.png",
-		"floating_menu_button_pressed_alpha.png",
-		"floating_menu_button_disabled_alpha.png",
-		"floating_menu_button_modal_blocked_alpha.png",
-		"top_tray.floating_menu_button",
+		"floating_menu_button_default_icon_photoroom.png",
+		"top_tray.floating_menu_button_default.icon_baked",
 		"fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
-		"Godot renders menu icon centered"
+		"icon_baked_into_button_texture; no runtime GeneratedButtonIcon overlay"
 	]:
 		passed = passed and _assert_true(generation_manifest.contains(required_text), "Component generation manifest should include floating menu metadata %s" % required_text)
 
 	for required_text in [
-		"floating_replay_button_default_alpha.png",
-		"floating_replay_button_pressed_alpha.png",
-		"floating_replay_button_disabled_alpha.png",
-		"floating_replay_button_modal_blocked_alpha.png",
-		"top_tray.floating_replay_button",
+		"floating_replay_button_default_icon_photoroom.png",
+		"top_tray.floating_replay_button_default.icon_baked",
 		"fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
-		"Godot renders replay icon centered"
+		"icon_baked_into_button_texture; no runtime GeneratedButtonIcon overlay"
 	]:
 		passed = passed and _assert_true(generation_manifest.contains(required_text), "Component generation manifest should include floating replay metadata %s" % required_text)
 

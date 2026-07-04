@@ -230,7 +230,8 @@ func _init() -> void:
 				if key == "top_tray_layer":
 					passed = passed and _assert_true(item.has("source_size"), "top_tray_layer geometry should store full source canvas size")
 				if key == "floating_menu_button_default" or key == "floating_replay_button_default":
-					passed = passed and _assert_equal(String(item.get("runtime_region", "")), "full_source", "%s should render the full PhotoRoom PNG that owner approved in the drag editor" % key)
+					passed = passed and _assert_equal(String(item.get("runtime_region", "")), "alpha_bbox", "%s should render the PhotoRoom-trimmed baked-icon PNG from its alpha bbox" % key)
+					passed = passed and _assert_equal(String(item.get("icon_policy", "")), "baked_texture", "%s should own its icon inside the generated button texture" % key)
 				if key == "modal_frame":
 					passed = passed and _assert_true(item.has("runtime_stretch_mode"), "modal_frame geometry should store runtime stretch mode")
 					passed = passed and _assert_equal(String(item.get("runtime_stretch_mode", "")), "scale", "modal_frame should scale until 9-slice slicing is implemented")

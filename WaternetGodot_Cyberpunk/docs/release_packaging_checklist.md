@@ -19,6 +19,7 @@
 ## Source Packaging Contract
 
 - Required reading before packaging: `docs/mobile_html5_asset_optimization_checklist.md`.
+- Required reading before any Web audio rebuild: `docs/audio_pipeline.md`, section `Web Audio Incident 2026-07-03`.
 - Asset optimization checklist must pass before any package-ready claim.
 - Runtime theme registration must stay cyber-only.
 - Production export must exclude tests, docs, MCP/debug addons, raw/reference assets, style trials, old theme assets, and old branding assets.
@@ -28,6 +29,11 @@
 - Scratch/reference workbench folders must stay outside the production project, not just export-excluded, because Godot import scans them before export.
 - Root test artifacts such as `test_out*`, `Tests/*` generated screenshots, and `Scenes/Gameplay/DebugGameplay*` must not ship.
 - Web `include_filter` must not use broad wildcards such as `*.png`; broad includes can pack debug/old texture assets and poison UID resolution.
+- Resource-filter exports must explicitly include every runtime preload script used by exported scenes, including gameplay model/solver/VFX scripts. Missing `.gd` preloads can pass menu load and fail only when entering gameplay.
+- `export_presets.cfg` must be UTF-8 without BOM. A BOM at byte 0 (`EF BB BF`) makes Godot 4.3 ignore presets and report `Invalid export preset name: Web`.
+- Web verification must use a no-cache or cache-busted local server, click through `MainMenu -> Play -> Level 1`, confirm the gameplay board renders, perform one tile interaction, and confirm no browser console errors. Loading the HTML shell, splash, title screen, menu, or level select alone is not a valid playability check.
+- Cache-busting only the `.html` URL is not enough for Godot Web. The HTML loads a fixed `.pck` filename unless the export basename changes. For owner test links after gameplay/audio changes, either export a versioned basename such as `glyphflow_arrays_audiofix.html` or ensure Firebase sends `Cache-Control: no-cache, no-store, must-revalidate` for `.html`, `.pck`, `.js`, and `.wasm`.
+- Web audio publish gate: after opening the deployed game and making one real input, `glyphflowAudioDebug.web_audio_unlock_attempted` must become `true` and `web_audio_unlock_input_count` must be at least `1`. If owner still hears no sound after that, stop and investigate output/browser/device state instead of converting audio again.
 - Before release export, clear generated Godot import/export caches so stale deleted resources or old `.import` settings cannot be packed.
 - Before Firebase deploy, clean `Export/` or ensure Firebase ignores non-Web artifacts such as AAB, ZIP, log, `.import`, and pack audit files.
 
@@ -35,11 +41,12 @@
 
 Current verified export evidence from 2026-07-03:
 
-- Web PCK: `Export/glyphflow_arrays.pck` = 13.51 MB, forbidden scan clean.
+- Latest Web preload fix pass: `Export/glyphflow_arrays.pck` = 13.56 MB, required runtime preload scripts present, forbidden scan clean.
 - Web WASM: `Export/glyphflow_arrays.wasm` = 33.74 MB, engine/runtime baseline.
-- Android AAB: `Export/glyphflow_arrays.aab` = 57.39 MB, forbidden scan clean.
-- Full Godot test sweep: `TOTAL:71 ALL_OK:True`.
-- Required audit script: `godot_publish_audit.ps1` returned `GODOT_PUBLISH_AUDIT_OK`.
+- Web no-cache smoke: `MainMenu -> Play -> Level 1 -> click tile`; board rendered, `MOVES` changed to `1`, browser console clean.
+- Android AAB: previous `Export/glyphflow_arrays.aab` = 57.39 MB, forbidden scan clean before the latest `export_presets.cfg` preload-script fix. Rebuild Android before any package-ready claim.
+- Full Godot test sweep from previous package pass: `TOTAL:71 ALL_OK:True`. Rerun full sweep after gameplay, export, or preset changes.
+- Required audit script from previous package pass: `godot_publish_audit.ps1` returned `GODOT_PUBLISH_AUDIT_OK`. Rerun after both fresh exports.
 
 Clear generated export cache:
 
@@ -84,6 +91,19 @@ Run Web export:
 ```powershell
 $godot='C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
 & $godot --headless --path 'C:\Users\Admin\Desktop\Godot Casual Games\WaternetGodot_Cyberpunk' --export-release 'Web' 'Export/glyphflow_arrays.html'
+```
+
+Run Web playability smoke on a no-cache local server:
+
+```powershell
+# Required manual/browser check after export:
+# 1. Serve Export/ from a new no-cache port or use a fresh cache-busting query.
+# 2. Open glyphflow_arrays.html.
+# 3. Click Play.
+# 4. Click Level 1.
+# 5. Confirm gameplay board renders.
+# 6. Click one tile and confirm MOVES changes.
+# 7. Confirm browser console has no errors or warnings.
 ```
 
 Audit exported Web pack:

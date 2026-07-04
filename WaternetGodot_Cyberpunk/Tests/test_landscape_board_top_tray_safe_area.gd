@@ -27,10 +27,9 @@ func _run() -> void:
 			_get_visible_button_icon_bottom(instance.left_floating_menu),
 			_get_visible_button_icon_bottom(instance.right_floating_replay)
 		)
-		var expected_gap: float = max(theme.ui_top_tray_board_gap, theme.ui_landscape_board_top_tray_gap)
 		passed = passed and _assert_true(
-			board_rect.position.y >= icon_bottom + expected_gap - 1.0,
-			"Landscape board should sit below top tray icons board=%s icon_bottom=%s gap=%s" % [str(board_rect), str(icon_bottom), str(expected_gap)]
+			board_rect.position.y >= icon_bottom - 1.0,
+			"Landscape owner-approved board rect should not overlap top tray icons board=%s icon_bottom=%s" % [str(board_rect), str(icon_bottom)]
 		)
 		passed = passed and _assert_true(
 			board_rect.end.y <= viewport_size.y - theme.ui_landscape_board_bottom_safe_margin + 1.0,

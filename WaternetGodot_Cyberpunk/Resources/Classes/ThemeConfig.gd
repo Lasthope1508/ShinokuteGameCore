@@ -79,6 +79,7 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_top_tray_icon_button_size: float = 42.0
 @export var ui_top_tray_button_icon_scale: float = 0.48
 @export var ui_top_tray_button_icon_color: Color = Color(1.0, 1.0, 1.0, 0.96)
+@export var ui_top_tray_button_icon_source: String = "runtime_overlay"
 @export var ui_top_tray_button_icon_paths: Dictionary = {
 	"left_floating_menu": "res://Assets/Icons/menuList.png",
 	"right_floating_replay": "res://Assets/Icons/return.png"
@@ -99,6 +100,7 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_top_tray_time_shadow_color: Color = Color(0.1, 1.0, 0.82, 0.44)
 @export var ui_top_tray_time_outline_size: int = 4
 @export var ui_top_tray_time_fit_padding_ratio: float = 0.12
+@export var ui_top_tray_moves_font_size: int = 30
 @export var ui_top_tray_logo_center_y_ratio: float = 0.43
 @export var ui_project_logo_alpha_bbox: Vector4 = Vector4(0, 0, 423, 485)
 @export var ui_top_tray_regions: Dictionary = {
@@ -180,8 +182,8 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_playboard_region_sets: Dictionary = {
 	"light": {
 		"landscape": {
-			"board_backplate_rect": Vector4(0.319277, 0.210843, 0.350699, 0.623465),
-			"playboard_rect": Vector4(0.329825, 0.229594, 0.329604, 0.585963)
+			"board_backplate_rect": Vector4(0.319277, 0.241667, 0.350699, 0.623465),
+			"playboard_rect": Vector4(0.329825, 0.259722, 0.329604, 0.585963)
 		}
 	}
 }
@@ -191,8 +193,8 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_playboard_region_pixel_rect_sets: Dictionary = {
 	"light": {
 		"landscape": {
-			"board_backplate_rect": Vector4(409, 152, 449, 449),
-			"playboard_rect": Vector4(422, 165, 422, 422)
+			"board_backplate_rect": Vector4(409, 174, 449, 449),
+			"playboard_rect": Vector4(422, 187, 422, 422)
 		}
 	}
 }
@@ -201,6 +203,13 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_bottom_reserve_bottom_margin_ratio: float = 0.018
 @export var ui_bottom_reserve_min_height: float = 72.0
 @export var ui_bottom_reserve_max_height: float = 138.0
+@export var ui_bottom_timer_enabled: bool = false
+@export var ui_bottom_timer_atlas_path: String = ""
+@export var ui_bottom_timer_glyph_order: String = "0123456789:."
+@export var ui_bottom_timer_glyph_rects: Dictionary = {}
+@export var ui_bottom_timer_region: Vector4 = Vector4(0.27, 0.16, 0.46, 0.68)
+@export var ui_bottom_timer_spacing_ratio: float = 0.035
+@export var ui_bottom_timer_pixel_height_ratio: float = 0.9
 @export var ui_top_tray_bg_color: Color = Color(0.04, 0.12, 0.14, 0.92)
 @export var ui_top_tray_border_color: Color = Color(0.2, 0.9, 1.0, 0.88)
 @export var ui_top_tray_shadow_color: Color = Color(0.0, 0.0, 0.0, 0.55)
@@ -222,17 +231,17 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_generated_asset_paths: Dictionary = {}
 @export var ui_generated_asset_geometry: Dictionary = {}
 @export var ui_board_shadow_color: Color = Color(0.0, 0.0, 0.0, 0.38)
-@export var ui_modal_width_ratio: float = 0.58
-@export var ui_modal_height_ratio: float = 0.42
-@export var ui_modal_landscape_width_ratio: float = 0.32
-@export var ui_modal_landscape_height_ratio: float = 0.46
+@export var ui_modal_width_ratio: float = 0.72
+@export var ui_modal_height_ratio: float = 0.56
+@export var ui_modal_landscape_width_ratio: float = 0.44
+@export var ui_modal_landscape_height_ratio: float = 0.76
 @export var ui_modal_close_button_size: float = 44.0
 @export var ui_modal_close_button_padding: float = 8.0
-@export var ui_modal_action_button_height: float = 54.0
-@export var ui_modal_content_gap: float = 16.0
+@export var ui_modal_action_button_height: float = 42.0
+@export var ui_modal_content_gap: float = 8.0
 @export var ui_modal_content_margin_x: int = 28
-@export var ui_modal_content_margin_top: int = 52
-@export var ui_modal_content_margin_bottom: int = 28
+@export var ui_modal_content_margin_top: int = 40
+@export var ui_modal_content_margin_bottom: int = 20
 @export var ui_profile_popup_content_margin_x: int = 30
 @export var ui_profile_popup_content_margin_top: int = 58
 @export var ui_profile_popup_content_margin_bottom: int = 30
@@ -423,6 +432,19 @@ func get_ui_generated_asset_texture(mode: String, asset_key: String) -> Texture2
 		return null
 	var image := Image.new()
 	var error := image.load(path)
+	if error != OK:
+		return null
+	return ImageTexture.create_from_image(image)
+
+func get_bottom_timer_atlas_texture() -> Texture2D:
+	if ui_bottom_timer_atlas_path.is_empty():
+		return null
+	if ResourceLoader.exists(ui_bottom_timer_atlas_path):
+		return load(ui_bottom_timer_atlas_path)
+	if not FileAccess.file_exists(ui_bottom_timer_atlas_path):
+		return null
+	var image := Image.new()
+	var error := image.load(ui_bottom_timer_atlas_path)
 	if error != OK:
 		return null
 	return ImageTexture.create_from_image(image)

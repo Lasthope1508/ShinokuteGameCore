@@ -31,6 +31,10 @@ AudioManager="*res://Resources/Globals/AudioManager.gd"
 SceneRouter="*res://Resources/Globals/SceneRouter.gd"
 LeaderboardManager="*res://Scripts/LeaderboardManager.gd"
 
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+
 [display]
 
 window/size/viewport_width=720

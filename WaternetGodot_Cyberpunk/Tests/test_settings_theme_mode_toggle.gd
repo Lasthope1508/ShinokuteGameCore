@@ -40,7 +40,7 @@ func _run() -> void:
 			instance._apply_generated_ui_assets(theme)
 			instance._apply_top_tray_theme(theme, Vector2(1280, 720))
 			instance._recalculate_layout_for_safe_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)))
-			passed = passed and _assert_rect_close(instance.get_board_rect(), Rect2(422.176, 165.30768, 421.89312, 421.89312), 1.0, "Light landscape board rect should be active after toggle")
+			passed = passed and _assert_rect_close(instance.get_board_rect(), Rect2(422.176, 186.99984, 421.89312, 421.89312), 1.0, "Light landscape board rect should be active after toggle")
 			instance._on_settings_theme_mode_btn_pressed()
 			await process_frame
 			passed = passed and _assert_equal(theme.ui_generated_asset_mode, "dark", "Theme mode toggle should switch light to dark")

@@ -121,6 +121,8 @@ Rules:
 - Do not use demo crop pixels directly as production assets.
 - Do not wire generated assets into Godot until owner approves each component visually.
 - Do not use chroma-key cleanup as final production background removal for UI objects.
+- Do not use a full-canvas alpha bbox as an excuse to reject PhotoRoom. Check on checkerboard first; if alpha exists, extraction must clone the PhotoRoom output and isolate objects by mask.
+- For multi-object sprite sheets, never slice by a guessed grid. Clone the PhotoRoom sheet per object, mask out the other objects, trim the remaining object, and then build a canonical atlas from those object files.
 - Do not add text before all object assets for that screen are placed and approved.
 
 SSOT:

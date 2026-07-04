@@ -1,0 +1,823 @@
+{
+  "purpose": "Owner-review candidate for cyber bottom tray 3D timer digit sprite sheet.",
+  "status": "pending_owner_visual_approval",
+  "pipeline": "9Router design -> PhotoRoom cutout -> alpha trim -> owner sprite approval -> SSOT/runtime integration",
+  "model": "cx/gpt-5.5-image",
+  "key_source": "NINEROUTER_KEY",
+  "mode": "dark",
+  "glyphs_requested": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    ":",
+    "."
+  ],
+  "reference_urls": [
+    "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-components/dark/board_region_ref.png",
+    "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-components/dark/bottom_reserve_ref.png",
+    "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-components/dark/full_demo_ref.png",
+    "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-components/dark/top_tray_ref.png"
+  ],
+  "raw_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\bottom_timer_digits_dark_raw.png",
+  "photoroom_untrimmed_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\bottom_timer_digits_dark_photoroom_untrimmed.png",
+  "trimmed_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\bottom_timer_digits_dark_photoroom_trimmed.png",
+  "approval_preview_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\debug\\bottom_timer_digits_dark_approval_preview.png",
+  "raw_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-candidates/bottom_timer_digits/bottom_timer_digits_dark_raw.png",
+  "trimmed_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-candidates/bottom_timer_digits/bottom_timer_digits_dark_photoroom_trimmed.png",
+  "approval_preview_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-candidates/bottom_timer_digits/bottom_timer_digits_dark_approval_preview.png",
+  "trim": {
+    "source_size": [
+      2172,
+      724
+    ],
+    "trim_rect": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "alpha_bbox_in_trimmed": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "trimmed_size": [
+      2172,
+      724
+    ]
+  },
+  "photoroom_port": 9904,
+  "sha256": {
+    "raw": "9E3D1D8CB4A685852DBC05D495B84231A604A9919BE1947C3EF04CECCDEA3BE0",
+    "trimmed": "2D60ADDC7A11FEAC182A3071C3FF625752966A9D412DD921F226C733B06074D3",
+    "preview": "20E46CB7F9700AF74889A84C5133919F23651449144BB3D65FE26C9F87F5E1D5",
+    "atlas": "94F830C6508FE8D8A6D93B0213A7C30BF3F52FC0548D0DD9E3B5ABA33B44A9C7",
+    "glyph_preview": "2CF084D5B37A3E832A2BA78C041BD7643B2AFA7C5192E26D40B20C4771F9711B"
+  },
+  "notes": [
+    "Preview only; do not wire into Godot before owner approves the glyph design.",
+    "If approved, next pass must create canonical equal-cell atlas or per-glyph cutouts and store slice geometry in ThemeConfig SSOT."
+  ],
+  "atlas_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\bottom_timer_digits_dark_atlas_equal_cells.png",
+  "glyph_preview_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\debug\\bottom_timer_digits_dark_glyph_grid_preview.png",
+  "atlas_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-candidates/bottom_timer_digits/bottom_timer_digits_dark_atlas_equal_cells.png",
+  "glyph_preview_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-candidates/bottom_timer_digits/bottom_timer_digits_dark_glyph_grid_preview.png",
+  "atlas": {
+    "glyphs": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      ":",
+      "."
+    ],
+    "cell_size": [
+      313,
+      274
+    ],
+    "frames": {
+      "0": {
+        "cell": [
+          0,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          0,
+          171,
+          273,
+          550
+        ],
+        "photoroom_bbox": [
+          45,
+          63,
+          209,
+          315
+        ],
+        "draw_offset": [
+          74,
+          11
+        ],
+        "draw_size": [
+          164,
+          252
+        ]
+      },
+      "1": {
+        "cell": [
+          313,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          216,
+          171,
+          434,
+          550
+        ],
+        "photoroom_bbox": [
+          64,
+          64,
+          218,
+          315
+        ],
+        "draw_offset": [
+          79,
+          11
+        ],
+        "draw_size": [
+          154,
+          251
+        ]
+      },
+      "2": {
+        "cell": [
+          626,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          366,
+          171,
+          654,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          288,
+          315
+        ],
+        "draw_offset": [
+          12,
+          11
+        ],
+        "draw_size": [
+          288,
+          252
+        ]
+      },
+      "3": {
+        "cell": [
+          939,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          560,
+          171,
+          843,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          283,
+          315
+        ],
+        "draw_offset": [
+          15,
+          11
+        ],
+        "draw_size": [
+          283,
+          252
+        ]
+      },
+      "4": {
+        "cell": [
+          1252,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          748,
+          175,
+          1039,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          291,
+          310
+        ],
+        "draw_offset": [
+          11,
+          13
+        ],
+        "draw_size": [
+          291,
+          247
+        ]
+      },
+      "5": {
+        "cell": [
+          1565,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          946,
+          171,
+          1236,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          290,
+          315
+        ],
+        "draw_offset": [
+          11,
+          11
+        ],
+        "draw_size": [
+          290,
+          252
+        ]
+      },
+      "6": {
+        "cell": [
+          1878,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          1143,
+          171,
+          1433,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          290,
+          315
+        ],
+        "draw_offset": [
+          11,
+          11
+        ],
+        "draw_size": [
+          290,
+          252
+        ]
+      },
+      "7": {
+        "cell": [
+          2191,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          1337,
+          171,
+          1624,
+          549
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          287,
+          315
+        ],
+        "draw_offset": [
+          13,
+          11
+        ],
+        "draw_size": [
+          287,
+          252
+        ]
+      },
+      "8": {
+        "cell": [
+          2504,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          1531,
+          171,
+          1822,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          291,
+          315
+        ],
+        "draw_offset": [
+          11,
+          11
+        ],
+        "draw_size": [
+          291,
+          252
+        ]
+      },
+      "9": {
+        "cell": [
+          2817,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          1727,
+          171,
+          2016,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          63,
+          289,
+          315
+        ],
+        "draw_offset": [
+          12,
+          11
+        ],
+        "draw_size": [
+          289,
+          252
+        ]
+      },
+      ":": {
+        "cell": [
+          3130,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          1928,
+          217,
+          2127,
+          515
+        ],
+        "photoroom_bbox": [
+          0,
+          28,
+          199,
+          269
+        ],
+        "draw_offset": [
+          57,
+          16
+        ],
+        "draw_size": [
+          199,
+          241
+        ]
+      },
+      ".": {
+        "cell": [
+          3443,
+          0,
+          313,
+          274
+        ],
+        "source_crop": [
+          2024,
+          354,
+          2172,
+          550
+        ],
+        "photoroom_bbox": [
+          0,
+          23,
+          130,
+          131
+        ],
+        "draw_offset": [
+          91,
+          83
+        ],
+        "draw_size": [
+          130,
+          108
+        ]
+      }
+    },
+    "atlas_size": [
+      3756,
+      274
+    ],
+    "source": "per_glyph_photoroom_cutouts"
+  },
+  "object_extraction": {
+    "status": "pending_owner_visual_approval",
+    "source_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\bottom_timer_digits_dark_photoroom_untrimmed.png",
+    "method": "clone_photoroom_sheet_per_glyph_mask_other_objects_then_trim",
+    "grid_slicing": "forbidden",
+    "preview_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\debug\\bottom_timer_digits_dark_objects_from_sheet_preview.png",
+    "glyphs": [
+      {
+        "mask_rect": [
+          27,
+          217,
+          200,
+          287
+        ],
+        "trim_rect": [
+          45,
+          235,
+          164,
+          251
+        ],
+        "size": [
+          164,
+          251
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_0.png",
+        "glyph": "0",
+        "column_run": [
+          45,
+          209
+        ]
+      },
+      {
+        "mask_rect": [
+          262,
+          217,
+          126,
+          287
+        ],
+        "trim_rect": [
+          280,
+          234,
+          90,
+          252
+        ],
+        "size": [
+          90,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_1.png",
+        "glyph": "1",
+        "column_run": [
+          280,
+          370
+        ]
+      },
+      {
+        "mask_rect": [
+          412,
+          217,
+          196,
+          287
+        ],
+        "trim_rect": [
+          430,
+          234,
+          160,
+          252
+        ],
+        "size": [
+          160,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_2.png",
+        "glyph": "2",
+        "column_run": [
+          430,
+          590
+        ]
+      },
+      {
+        "mask_rect": [
+          606,
+          217,
+          191,
+          287
+        ],
+        "trim_rect": [
+          624,
+          234,
+          155,
+          252
+        ],
+        "size": [
+          155,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_3.png",
+        "glyph": "3",
+        "column_run": [
+          624,
+          779
+        ]
+      },
+      {
+        "mask_rect": [
+          794,
+          222,
+          199,
+          281
+        ],
+        "trim_rect": [
+          812,
+          239,
+          163,
+          247
+        ],
+        "size": [
+          163,
+          247
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_4.png",
+        "glyph": "4",
+        "column_run": [
+          812,
+          975
+        ]
+      },
+      {
+        "mask_rect": [
+          992,
+          217,
+          198,
+          287
+        ],
+        "trim_rect": [
+          1009,
+          234,
+          163,
+          252
+        ],
+        "size": [
+          163,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_5.png",
+        "glyph": "5",
+        "column_run": [
+          1010,
+          1172
+        ]
+      },
+      {
+        "mask_rect": [
+          1188,
+          217,
+          200,
+          287
+        ],
+        "trim_rect": [
+          1206,
+          234,
+          164,
+          252
+        ],
+        "size": [
+          164,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_6.png",
+        "glyph": "6",
+        "column_run": [
+          1206,
+          1370
+        ]
+      },
+      {
+        "mask_rect": [
+          1383,
+          217,
+          196,
+          286
+        ],
+        "trim_rect": [
+          1401,
+          234,
+          160,
+          252
+        ],
+        "size": [
+          160,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_7.png",
+        "glyph": "7",
+        "column_run": [
+          1401,
+          1561
+        ]
+      },
+      {
+        "mask_rect": [
+          1577,
+          217,
+          199,
+          287
+        ],
+        "trim_rect": [
+          1595,
+          234,
+          163,
+          252
+        ],
+        "size": [
+          163,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_8.png",
+        "glyph": "8",
+        "column_run": [
+          1595,
+          1758
+        ]
+      },
+      {
+        "mask_rect": [
+          1773,
+          217,
+          198,
+          287
+        ],
+        "trim_rect": [
+          1791,
+          234,
+          162,
+          252
+        ],
+        "size": [
+          162,
+          252
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_9.png",
+        "glyph": "9",
+        "column_run": [
+          1791,
+          1953
+        ]
+      },
+      {
+        "mask_rect": [
+          1974,
+          263,
+          107,
+          206
+        ],
+        "trim_rect": [
+          1991,
+          281,
+          72,
+          170
+        ],
+        "size": [
+          72,
+          170
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_colon.png",
+        "glyph": ":",
+        "column_run": [
+          1992,
+          2063
+        ]
+      },
+      {
+        "mask_rect": [
+          2070,
+          400,
+          102,
+          104
+        ],
+        "trim_rect": [
+          2088,
+          417,
+          66,
+          69
+        ],
+        "size": [
+          66,
+          69
+        ],
+        "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\candidates\\bottom_timer_digits\\objects_from_sheet\\timer_digit_dot.png",
+        "glyph": ".",
+        "column_run": [
+          2088,
+          2154
+        ]
+      }
+    ]
+  },
+  "production_trial": {
+    "status": "pending_owner_visual_approval",
+    "method": "compose_variable_rect_atlas_from_trimmed_photoroom_sheet_clones",
+    "grid_slicing": "forbidden",
+    "atlas_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\bottom_timer_digits\\timer_digits_dark_atlas.png",
+    "preview_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\debug\\bottom_timer_digits_dark_production_atlas_preview.png",
+    "glyph_order": "0123456789:.",
+    "glyph_rects": {
+      "0": [
+        18,
+        8,
+        164,
+        251
+      ],
+      "1": [
+        200,
+        8,
+        90,
+        252
+      ],
+      "2": [
+        308,
+        8,
+        160,
+        252
+      ],
+      "3": [
+        486,
+        8,
+        155,
+        252
+      ],
+      "4": [
+        659,
+        10,
+        163,
+        247
+      ],
+      "5": [
+        840,
+        8,
+        163,
+        252
+      ],
+      "6": [
+        1021,
+        8,
+        164,
+        252
+      ],
+      "7": [
+        1203,
+        8,
+        160,
+        252
+      ],
+      "8": [
+        1381,
+        8,
+        163,
+        252
+      ],
+      "9": [
+        1562,
+        8,
+        162,
+        252
+      ],
+      ":": [
+        1742,
+        49,
+        72,
+        170
+      ],
+      ".": [
+        1832,
+        99,
+        66,
+        69
+      ]
+    },
+    "atlas_size": [
+      1916,
+      268
+    ],
+    "padding": [
+      18,
+      8
+    ]
+  }
+}

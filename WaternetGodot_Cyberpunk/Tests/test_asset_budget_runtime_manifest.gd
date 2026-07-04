@@ -91,6 +91,8 @@ func _assert_manifest_contains_theme_runtime_paths(theme: ThemeConfig, path_inde
 			var mode_paths: Dictionary = generated_paths[mode]
 			for asset_key in mode_paths:
 				passed = passed and _assert_true(path_index.has(String(mode_paths[asset_key])), "Manifest should include generated UI %s %s" % [mode, asset_key])
+	if _has_property(theme, "ui_bottom_timer_atlas_path"):
+		passed = passed and _assert_true(path_index.has(String(theme.get("ui_bottom_timer_atlas_path"))), "Manifest should include bottom timer digit atlas")
 	if _has_property(theme, "energy_sheet_manifest_path"):
 		passed = passed and _assert_true(path_index.has(String(theme.get("energy_sheet_manifest_path"))), "Manifest should include energy sheet manifest")
 	return passed

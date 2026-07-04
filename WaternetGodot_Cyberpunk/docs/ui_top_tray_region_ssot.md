@@ -62,7 +62,7 @@ Dark source canvas: `Vector2(2032, 774)`. Light source canvas: `Vector2(1829, 86
 |---|---:|---|
 | `left_floating_menu` | `Vector4(0.0544, 0.7751, 0.0688, 0.2167)` | purple settings/menu button pod, mirrored from replay |
 | `left_floating_menu_icon` | `Vector4(0.0862, 0.84, 0.0331, 0.0868)` | optical settings/menu symbol placement inside the button pod |
-| `left_stats_readout` | `Vector4(0.147, 0.3494, 0.1843, 0.1843)` | left stat/readout panel, mirrored against the right time/moves panel |
+| `left_stats_readout` | `Vector4(0.147, 0.3494, 0.1843, 0.1843)` | left stat/readout panel, mirrored against the right moves panel |
 | `logo_core` | `Vector4(0.3908, 0.3076, 0.2122, 0.3988)` | real project logo inside the center socket |
 | `right_floating_replay` | `Vector4(0.8768, 0.7751, 0.0688, 0.2167)` | yellow replay button pod |
 | `right_floating_replay_icon` | `Vector4(0.9043, 0.84, 0.0331, 0.0868)` | optical replay symbol placement inside the button pod |
@@ -101,22 +101,22 @@ Owner-approved light values are stored in `ThemeConfig.ui_top_tray_region_sets.l
 
 ## Button Icon Ownership
 
-Generated floating button PNGs are button shells only. Runtime overlays the actual symbols from `ThemeConfig.ui_top_tray_button_icon_paths`:
+Current cyber generated floating button PNGs include their symbols. `ThemeConfig.ui_top_tray_button_icon_source = "baked_texture"` disables runtime `GeneratedButtonIcon` overlays:
 
-| Button region | Icon region | Icon path |
+| Button region | Baked asset key | Runtime overlay |
 |---|---|---|
-| `left_floating_menu` | `left_floating_menu_icon` | `res://Assets/Icons/menuList.png` |
-| `right_floating_replay` | `right_floating_replay_icon` | `res://Assets/Icons/return.png` |
+| `left_floating_menu` | `floating_menu_button_default` | none |
+| `right_floating_replay` | `floating_replay_button_default` | none |
 
-Icon placement comes from explicit `_icon` regions in the active mode region set, not from centered runtime scaling. `ThemeConfig.ui_top_tray_button_icon_scale` is legacy-reserved and must not drive current cyber placement. Do not bake these symbols into the generated shell unless the shell set is regenerated and the SSOT contract is updated.
+The `_icon` regions remain only as owner-placement audit history. They must not drive current cyber runtime placement while the baked texture policy is active. `ThemeConfig.ui_top_tray_button_icon_paths` and `ui_top_tray_button_icon_scale` are legacy-reserved for themes that still choose `runtime_overlay`.
 
-Owner-approved dark portrait button placement was made in the drag editor against the full PhotoRoom PNGs. Therefore `floating_menu_button_default` and `floating_replay_button_default` must set `runtime_region = "full_source"`. Their `alpha_bbox` values remain audit metadata only; using those bboxes for runtime crop makes Godot diverge from the approved editor preview.
+Owner-approved button placement still comes from `left_floating_menu` and `right_floating_replay`. Button visual crop comes from `ThemeConfig.ui_generated_asset_geometry[*].runtime_region = "alpha_bbox"`. Do not hand-tune `_icon` regions to compensate for any visual drift; regenerate the baked button asset and update geometry SSOT.
 
 ## Text Ownership
 
 Current active top tray text has exactly one owner path:
 
-- `TotalPlayTimeLabel`: elapsed duration on the first row, round move count on the second row, right-aligned. Elapsed time freezes when the level is solved.
+- `TotalPlayTimeLabel`: top-right moves readout only, one-line `MOVES N`, right-aligned and font-fitted inside `total_play_time_readout`. The node name remains for scene compatibility.
 - `LeftStatsLabel`: player username on the first row, best wave on the second row, left-aligned inside `left_stats_readout`.
 
 Future stat text owner paths remain reserved but inactive until the text pass:
@@ -125,7 +125,7 @@ Future stat text owner paths remain reserved but inactive until the text pass:
 
 Legacy `LevelLabel`, `MovesLabel`, and `BestLabel` nodes under `StatsReadout` are forbidden. `StatsCapsule/StatsReadout` may remain as transparent structure only; it must not own text.
 
-`TotalPlayTimeLabel` typography is owned by `ThemeConfig.ui_top_tray_time_*` fields and `ThemeConfig.ui_top_tray_moves_label_prefix`. Current cyber uses `res://Assets/Fonts/Poppins-Bold.ttf`, energy-green text, dark outline, and cyan-green shadow for readability on the generated tray.
+`TotalPlayTimeLabel` typography is owned by `ThemeConfig.ui_top_tray_time_*` fields and `ThemeConfig.ui_top_tray_moves_label_prefix`. Current cyber uses `res://Assets/Fonts/Poppins-Bold.ttf`, energy-green text, dark outline, and cyan-green shadow for readability on the generated tray. Elapsed time belongs to the bottom tray sprite timer, not this top-right text node.
 
 `total_play_time_readout` is a hard visual limit, not a loose anchor. Runtime must enable `clip_contents` on `TotalPlayTimeLabel` and fit the font against the owner region after subtracting `ui_top_tray_time_fit_padding_ratio`, outline, and shadow bleed.
 

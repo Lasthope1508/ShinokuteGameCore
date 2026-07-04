@@ -213,7 +213,8 @@ Audit:
 - [x] light `floating_menu_button_disabled`: call 9Router.
 - [x] light `floating_menu_button_modal_blocked`: call 9Router.
 - [x] all menu button states: create temporary alpha previews, upload R2, record metadata.
-- [ ] owner visual approval for dark/light `floating_menu_button` states.
+- [x] default dark/light `floating_menu_button` regenerated as PhotoRoom-cleaned baked-icon assets.
+- [ ] non-default menu button states must be regenerated with baked icons before runtime use.
 
 Refs:
 
@@ -222,8 +223,8 @@ Refs:
 
 Prompt additions:
 
-- Purple floating button base only.
-- Godot renders menu icon.
+- Purple floating settings button with centered gear/settings icon baked into the PNG.
+- Runtime must not create `GeneratedButtonIcon` overlay for current cyber buttons.
 - Keep same silhouette and size across all states.
 - Pressed state lower/deeper shadow, disabled state dim/desaturated, modal-blocked state muted shield-like glow.
 
@@ -242,8 +243,8 @@ Generated outputs:
 
 Audit:
 
-- All outputs are button-shell assets with no baked menu icon, no text, no logo, and no mascot.
-- Model used flat magenta background; current alpha files are temporary connected-edge chroma-key previews until PhotoRoom production cutouts replace them.
+- Current runtime default outputs are baked-icon PhotoRoom assets with no text, no logo, and no mascot.
+- Older shell-only state outputs are source/archive candidates only until regenerated with baked icons.
 
 ### 6. Floating Replay Button
 
@@ -256,7 +257,8 @@ Audit:
 - [x] light `floating_replay_button_disabled`: call 9Router.
 - [x] light `floating_replay_button_modal_blocked`: call 9Router.
 - [x] all replay button states: create temporary alpha previews, upload R2, record metadata.
-- [ ] owner visual approval for dark/light `floating_replay_button` states.
+- [x] default dark/light `floating_replay_button` regenerated as PhotoRoom-cleaned baked-icon assets.
+- [ ] non-default replay button states must be regenerated with baked icons before runtime use.
 
 Refs:
 
@@ -265,8 +267,8 @@ Refs:
 
 Prompt additions:
 
-- Yellow floating button base only.
-- Godot renders replay icon.
+- Yellow floating replay button with centered replay arrow icon baked into the PNG.
+- Runtime must not create `GeneratedButtonIcon` overlay for current cyber buttons.
 - Keep same silhouette and size across all states.
 
 Generated outputs:

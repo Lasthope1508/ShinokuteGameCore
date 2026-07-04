@@ -412,6 +412,7 @@ ui_top_tray_logo_size = 80.0
 ui_top_tray_icon_button_size = 50.0
 ui_top_tray_button_icon_scale = 0.48
 ui_top_tray_button_icon_color = Color(1, 1, 1, 0.96)
+ui_top_tray_button_icon_source = "baked_texture"
 ui_top_tray_button_icon_paths = {
 "left_floating_menu": "res://Assets/Icons/menuList.png",
 "right_floating_replay": "res://Assets/Icons/return.png"
@@ -432,6 +433,7 @@ ui_top_tray_time_outline_color = Color(0, 0.03, 0.02, 0.96)
 ui_top_tray_time_shadow_color = Color(0.1, 1, 0.82, 0.44)
 ui_top_tray_time_outline_size = 4
 ui_top_tray_time_fit_padding_ratio = 0.12
+ui_top_tray_moves_font_size = 30
 ui_top_tray_logo_center_y_ratio = 0.68
 ui_project_logo_alpha_bbox = Vector4(0, 0, 423, 485)
 ui_top_tray_regions = {
@@ -513,12 +515,12 @@ ui_top_tray_board_gap = 24.0
 ui_playboard_region_sets = {
 "dark": {
 "portrait": {
-"board_backplate_rect": Vector4(0, 0.208, 1, 0.56525),
-"playboard_rect": Vector4(0.027778, 0.225, 0.944444, 0.53125)
+"board_backplate_rect": Vector4(0, 0.207812, 1, 0.54375),
+"playboard_rect": Vector4(0.027778, 0.225, 0.944444, 0.509375)
 },
 "landscape": {
-"board_backplate_rect": Vector4(0.30432, 0.195833, 0.39136, 0.695581),
-"playboard_rect": Vector4(0.31609, 0.216667, 0.36782, 0.653742)
+"board_backplate_rect": Vector4(0.304688, 0.208333, 0.391406, 0.6625),
+"playboard_rect": Vector4(0.316406, 0.229167, 0.367969, 0.620833)
 }
 },
 "light": {
@@ -527,8 +529,8 @@ ui_playboard_region_sets = {
 "playboard_rect": Vector4(0.027778, 0.225, 0.944444, 0.53125)
 },
 "landscape": {
-"board_backplate_rect": Vector4(0.319277, 0.210843, 0.350699, 0.623465),
-"playboard_rect": Vector4(0.329825, 0.229594, 0.329604, 0.585963)
+"board_backplate_rect": Vector4(0.319277, 0.241667, 0.350699, 0.623465),
+"playboard_rect": Vector4(0.329825, 0.259722, 0.329604, 0.585963)
 }
 }
 }
@@ -539,12 +541,12 @@ ui_playboard_region_source_sizes = {
 ui_playboard_region_pixel_rect_sets = {
 "dark": {
 "portrait": {
-"board_backplate_rect": Vector4(0, 266, 720, 724),
-"playboard_rect": Vector4(20, 288, 680, 680)
+"board_backplate_rect": Vector4(0, 266, 720, 696),
+"playboard_rect": Vector4(20, 288, 680, 652)
 },
 "landscape": {
-"board_backplate_rect": Vector4(390, 141, 501, 501),
-"playboard_rect": Vector4(405, 156, 471, 471)
+"board_backplate_rect": Vector4(390, 150, 501, 477),
+"playboard_rect": Vector4(405, 165, 471, 447)
 }
 },
 "light": {
@@ -553,8 +555,8 @@ ui_playboard_region_pixel_rect_sets = {
 "playboard_rect": Vector4(20, 288, 680, 680)
 },
 "landscape": {
-"board_backplate_rect": Vector4(409, 152, 449, 449),
-"playboard_rect": Vector4(422, 165, 422, 422)
+"board_backplate_rect": Vector4(409, 174, 449, 449),
+"playboard_rect": Vector4(422, 187, 422, 422)
 }
 }
 }
@@ -563,6 +565,26 @@ ui_bottom_reserve_height_ratio = 0.105
 ui_bottom_reserve_bottom_margin_ratio = 0.026
 ui_bottom_reserve_min_height = 72.0
 ui_bottom_reserve_max_height = 132.0
+ui_bottom_timer_enabled = true
+ui_bottom_timer_atlas_path = "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_timer_digits/timer_digits_dark_atlas.png"
+ui_bottom_timer_glyph_order = "0123456789:."
+ui_bottom_timer_glyph_rects = {
+"0": Vector4(18, 8, 164, 251),
+"1": Vector4(200, 8, 90, 252),
+"2": Vector4(308, 8, 160, 252),
+"3": Vector4(486, 8, 155, 252),
+"4": Vector4(659, 10, 163, 247),
+"5": Vector4(840, 8, 163, 252),
+"6": Vector4(1021, 8, 164, 252),
+"7": Vector4(1203, 8, 160, 252),
+"8": Vector4(1381, 8, 163, 252),
+"9": Vector4(1562, 8, 162, 252),
+":": Vector4(1742, 49, 72, 170),
+".": Vector4(1832, 99, 66, 69)
+}
+ui_bottom_timer_region = Vector4(0.27, 0.16, 0.46, 0.68)
+ui_bottom_timer_spacing_ratio = 0.035
+ui_bottom_timer_pixel_height_ratio = 0.9
 ui_top_tray_bg_color = Color(0.075, 0.055, 0.18, 0.72)
 ui_top_tray_border_color = Color(0.22, 1, 0.9, 0.92)
 ui_top_tray_shadow_color = Color(0, 0, 0, 0.58)
@@ -591,8 +613,8 @@ ui_generated_asset_paths = {
 "board_backplate": "res://Assets/UI/cyberpunk_theme/generated/production/dark/board_backplate_photoroom.png",
 "bottom_reserve_layer": "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_tray_layer_photoroom.png",
 "bottom_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_tray_layer_photoroom.png",
-"floating_menu_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_photoroom.png",
-"floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_photoroom.png",
+"floating_menu_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_icon_photoroom.png",
+"floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_icon_photoroom.png",
 "logo_socket": "res://Assets/UI/cyberpunk_theme/generated/production/dark/logo_socket_photoroom.png",
 "modal_frame": "res://Assets/UI/cyberpunk_theme/generated/production/dark/modal_frame_photoroom.png",
 "stats_capsule": "res://Assets/UI/cyberpunk_theme/generated/production/dark/stats_capsule_photoroom.png",
@@ -604,8 +626,8 @@ ui_generated_asset_paths = {
 "board_backplate": "res://Assets/UI/cyberpunk_theme/generated/production/light/board_backplate_photoroom.png",
 "bottom_reserve_layer": "res://Assets/UI/cyberpunk_theme/generated/production/light/bottom_tray_layer_photoroom.png",
 "bottom_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/light/bottom_tray_layer_photoroom.png",
-"floating_menu_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_photoroom.png",
-"floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_photoroom.png",
+"floating_menu_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_icon_photoroom.png",
+"floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_icon_photoroom.png",
 "logo_socket": "res://Assets/UI/cyberpunk_theme/generated/production/light/logo_socket_photoroom.png",
 "modal_frame": "res://Assets/UI/cyberpunk_theme/generated/production/light/modal_frame_photoroom.png",
 "stats_capsule": "res://Assets/UI/cyberpunk_theme/generated/production/light/stats_capsule_photoroom.png",
@@ -647,20 +669,22 @@ ui_generated_asset_geometry = {
 },
 "floating_menu_button_default": {
 "alpha_bbox": {
-"dark": Vector4(0, 136, 1098, 1118),
-"light": Vector4(0, 168, 1075, 1086)
+"dark": Vector4(0, 36, 1123, 1133),
+"light": Vector4(0, 36, 1060, 1079)
 },
-"anchor": "top_tray.floating_menu_button",
-"runtime_region": "full_source",
+"anchor": "top_tray.floating_menu_button.icon_baked",
+"icon_policy": "baked_texture",
+"runtime_region": "alpha_bbox",
 "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered"
 },
 "floating_replay_button_default": {
 "alpha_bbox": {
-"dark": Vector4(0, 94, 1165, 1160),
-"light": Vector4(0, 181, 1052, 1073)
+"dark": Vector4(0, 36, 1097, 1126),
+"light": Vector4(0, 36, 1057, 1087)
 },
-"anchor": "top_tray.floating_replay_button",
-"runtime_region": "full_source",
+"anchor": "top_tray.floating_replay_button.icon_baked",
+"icon_policy": "baked_texture",
+"runtime_region": "alpha_bbox",
 "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered"
 },
 "logo_socket": {
@@ -705,17 +729,17 @@ ui_generated_asset_geometry = {
 }
 }
 ui_board_shadow_color = Color(0, 0, 0, 0.16)
-ui_modal_width_ratio = 0.58
-ui_modal_height_ratio = 0.42
-ui_modal_landscape_width_ratio = 0.34
-ui_modal_landscape_height_ratio = 0.50
+ui_modal_width_ratio = 0.72
+ui_modal_height_ratio = 0.56
+ui_modal_landscape_width_ratio = 0.44
+ui_modal_landscape_height_ratio = 0.76
 ui_modal_close_button_size = 44.0
 ui_modal_close_button_padding = 8.0
-ui_modal_action_button_height = 54.0
-ui_modal_content_gap = 16.0
+ui_modal_action_button_height = 42.0
+ui_modal_content_gap = 8.0
 ui_modal_content_margin_x = 28
-ui_modal_content_margin_top = 52
-ui_modal_content_margin_bottom = 28
+ui_modal_content_margin_top = 40
+ui_modal_content_margin_bottom = 20
 ui_profile_popup_content_margin_x = 30
 ui_profile_popup_content_margin_top = 58
 ui_profile_popup_content_margin_bottom = 30

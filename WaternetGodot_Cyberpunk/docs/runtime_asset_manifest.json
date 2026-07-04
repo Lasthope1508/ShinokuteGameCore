@@ -82,7 +82,19 @@
       "semantic_keys": ["bottom_reserve_layer", "bottom_tray_layer"]
     },
     {
-      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_photoroom.png",
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_timer_digits/timer_digits_dark_atlas.png",
+      "role": "runtime",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true,
+      "semantic_keys": ["bottom_timer_digits", "ui_bottom_timer_atlas_path"]
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_icon_photoroom.png",
       "role": "runtime",
       "theme": "cyberpunk_theme",
       "mode": "dark",
@@ -93,7 +105,7 @@
       "owner_approved": true
     },
     {
-      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_photoroom.png",
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_icon_photoroom.png",
       "role": "runtime",
       "theme": "cyberpunk_theme",
       "mode": "dark",
@@ -193,7 +205,7 @@
       "semantic_keys": ["bottom_reserve_layer", "bottom_tray_layer"]
     },
     {
-      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_photoroom.png",
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_icon_photoroom.png",
       "role": "runtime",
       "theme": "cyberpunk_theme",
       "mode": "light",
@@ -204,7 +216,7 @@
       "owner_approved": true
     },
     {
-      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_photoroom.png",
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_icon_photoroom.png",
       "role": "runtime",
       "theme": "cyberpunk_theme",
       "mode": "light",
@@ -487,6 +499,116 @@
       "runtime_required": true,
       "export_policy": "include",
       "compression_policy": "vorbis_sfx_mobile_ready",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/connection_solver.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/flow_visual_state.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/level_data.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/level_generator.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/pipe_grid.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/pipe_vfx_layer.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/pipe_visual_mapping.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/vfx_anchor.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/vfx_route.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Scripts/vfx_transition_state.gd",
+      "role": "runtime_preload_script",
+      "theme": "cyberpunk_theme",
+      "mode": "shared",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "gdscript_export_compile",
       "owner_approved": true
     }
   ],

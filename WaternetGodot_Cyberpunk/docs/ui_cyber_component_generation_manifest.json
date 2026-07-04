@@ -1,6 +1,6 @@
 {
   "purpose": "Generated cyber UI production component candidates. Object assets only, not poster art.",
-  "updated_at": "2026-07-02",
+  "updated_at": "2026-07-03",
   "call_queue": "docs/ui_cyber_9router_component_call_queue.md",
   "generation_policy": "Every production GUI component must be generated from the canonical call queue with R2 references for style synchronization. No fallback model/provider. No ad hoc prompts. Pipeline: 9Router design -> owner approval -> PhotoRoom cutout -> SSOT object placement -> text pass.",
   "items": [
@@ -388,51 +388,50 @@
     {
       "mode": "dark",
       "component_key": "floating_menu_button_default",
-      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_photoroom.png",
-      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_raw.png",
-      "r2_key": "images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_photoroom.png",
-      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_photoroom.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_icon_photoroom.png",
+      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_icon_raw.png",
+      "photoroom_untrimmed_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_icon_photoroom_untrimmed.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_icon_photoroom.png",
+      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_icon_photoroom.png",
+      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_icon_photoroom.png",
       "content_type": "image/png",
-      "bytes": 1761769,
-      "sha256": "38E83FC710C58A4EF41754423A4F0FD371B823C8A9D688DA60AE6203CD8CCF02",
+      "bytes": 1591820,
+      "sha256": "44C22039F509A9B9DEAD4E8805C3F3EB7F8F7CAD7AECADB2A0968C8C5162E02A",
       "pixel_size": [
-        1254,
-        1254
+        1159,
+        1169
       ],
       "asset_stage": "photoroom_production_cutout_candidate",
-      "background_removal": "chroma_key_magenta",
-      "anchor": "top_tray.floating_menu_button",
-      "state": "default",
-      "draw_rect": "SSOT pending after owner approval; shared canonical floating button rect",
-      "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
-      "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
-      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
-      "source_refs": [
-        "docs/ui_cyber_dark_light_component_refs_r2.json",
-        "docs/ui_cyber_9router_component_call_queue.md",
-        "top_tray_layer_alpha candidate",
-        "stats_capsule_alpha candidate"
-      ],
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
-      "edge_qa_status": "approved_dark_light_checkerboard",
-      "text_pass_gate": "blocked_until_all_screen_objects_are_photoroom_cleaned_and_ssot_placed",
-      "preview_alpha_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_alpha.png",
-      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_menu_button_default_photoroom.png",
-      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_menu_button_default_photoroom.png",
+      "photoroom_port": 9904,
       "alpha_extrema": [
         0,
         255
       ],
       "alpha_bbox": [
         0,
-        136,
-        1098,
-        1118
+        36,
+        1123,
+        1169
       ],
-      "preview_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_alpha.png",
-      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_photoroom.png"
+      "anchor": "top_tray.floating_menu_button_default.icon_baked",
+      "runtime_region": "alpha_bbox",
+      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "icon_policy": "icon_baked_into_button_texture; no runtime GeneratedButtonIcon overlay",
+      "source_refs": [
+        "docs/ui_cyber_component_generation_manifest.json",
+        "docs/9router_ui_generation_runbook.md"
+      ],
+      "reference_urls": [
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/top_tray_layer_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/board_backplate_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/floating_menu_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/menuList.png"
+      ],
+      "prompt": "Create one isolated production mobile game UI button asset object, not poster art and not a full screen mockup.\nAsset: floating_menu_button_default.\nMode: dark cyber. Purple floating settings button, yellow floating replay button, black/deep-green gameplay tone, cyan electric bevel glow.\nButton action: settings.\nRequired symbol: centered gear/settings icon, readable at small mobile size, no hamburger/menu text.\nThe icon must be baked into the button art and optically centered in the button body.\nKeep the button shell style, bevel depth, material, glow, and silhouette synchronized with the reference button and top tray.\nObject only. No text, no logo, no character, no gameplay pipe, no board screenshot, no extra UI pieces.\nCentered single button, fully visible, square canvas, generous empty margin.\nOutput PNG on flat pure #ff00ff removable background for PhotoRoom cleanup.\nReference image URLs for style synchronization:\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/top_tray_layer_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_menu_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/board_backplate_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/floating_menu_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/menuList.png"
     },
     {
       "mode": "dark",
@@ -456,6 +455,7 @@
       "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "full_source",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -505,6 +505,7 @@
       "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "full_source",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -554,6 +555,7 @@
       "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "full_source",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -584,51 +586,50 @@
     {
       "mode": "light",
       "component_key": "floating_menu_button_default",
-      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_photoroom.png",
-      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_raw.png",
-      "r2_key": "images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_photoroom.png",
-      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_photoroom.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_icon_photoroom.png",
+      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_icon_raw.png",
+      "photoroom_untrimmed_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_icon_photoroom_untrimmed.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_icon_photoroom.png",
+      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_icon_photoroom.png",
+      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_icon_photoroom.png",
       "content_type": "image/png",
-      "bytes": 1345775,
-      "sha256": "6C139663ADBBFD49E09735356C43923896F91CA1FE8A36D4B2E8ADD3A2941601",
+      "bytes": 1058645,
+      "sha256": "CA0983528768B27226BA3FA92C5BB18E3101281FD9F7CD21445C131CE26CD96F",
       "pixel_size": [
-        1254,
-        1254
+        1096,
+        1115
       ],
       "asset_stage": "photoroom_production_cutout_candidate",
-      "background_removal": "chroma_key_magenta",
-      "anchor": "top_tray.floating_menu_button",
-      "state": "default",
-      "draw_rect": "SSOT pending after owner approval; shared canonical floating button rect",
-      "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
-      "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
-      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
-      "source_refs": [
-        "docs/ui_cyber_dark_light_component_refs_r2.json",
-        "docs/ui_cyber_9router_component_call_queue.md",
-        "top_tray_layer_alpha candidate",
-        "stats_capsule_alpha candidate"
-      ],
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
-      "edge_qa_status": "approved_dark_light_checkerboard",
-      "text_pass_gate": "blocked_until_all_screen_objects_are_photoroom_cleaned_and_ssot_placed",
-      "preview_alpha_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_alpha.png",
-      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_menu_button_default_photoroom.png",
-      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_menu_button_default_photoroom.png",
+      "photoroom_port": 9904,
       "alpha_extrema": [
         0,
         255
       ],
       "alpha_bbox": [
         0,
-        168,
-        1075,
-        1086
+        36,
+        1060,
+        1115
       ],
-      "preview_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_alpha.png",
-      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_photoroom.png"
+      "anchor": "top_tray.floating_menu_button_default.icon_baked",
+      "runtime_region": "alpha_bbox",
+      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "icon_policy": "icon_baked_into_button_texture; no runtime GeneratedButtonIcon overlay",
+      "source_refs": [
+        "docs/ui_cyber_component_generation_manifest.json",
+        "docs/9router_ui_generation_runbook.md"
+      ],
+      "reference_urls": [
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/top_tray_layer_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/board_backplate_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/floating_menu_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/menuList.png"
+      ],
+      "prompt": "Create one isolated production mobile game UI button asset object, not poster art and not a full screen mockup.\nAsset: floating_menu_button_default.\nMode: bright cyber light. Pale graphite/white-lit material, purple floating settings button, yellow floating replay button, cyan electric bevel glow.\nButton action: settings.\nRequired symbol: centered gear/settings icon, readable at small mobile size, no hamburger/menu text.\nThe icon must be baked into the button art and optically centered in the button body.\nKeep the button shell style, bevel depth, material, glow, and silhouette synchronized with the reference button and top tray.\nObject only. No text, no logo, no character, no gameplay pipe, no board screenshot, no extra UI pieces.\nCentered single button, fully visible, square canvas, generous empty margin.\nOutput PNG on flat pure #ff00ff removable background for PhotoRoom cleanup.\nReference image URLs for style synchronization:\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/top_tray_layer_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_menu_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/board_backplate_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/floating_menu_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/menuList.png"
     },
     {
       "mode": "light",
@@ -652,6 +653,7 @@
       "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "alpha_bbox",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -701,6 +703,7 @@
       "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "alpha_bbox",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -750,6 +753,7 @@
       "content_padding": "14px transparent crop padding; Godot renders menu icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "alpha_bbox",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -780,52 +784,50 @@
     {
       "mode": "dark",
       "component_key": "floating_replay_button_default",
-      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_photoroom.png",
-      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_raw.png",
-      "r2_key": "images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_photoroom.png",
-      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_photoroom.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_icon_photoroom.png",
+      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_icon_raw.png",
+      "photoroom_untrimmed_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_icon_photoroom_untrimmed.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_icon_photoroom.png",
+      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_icon_photoroom.png",
+      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_icon_photoroom.png",
       "content_type": "image/png",
-      "bytes": 2187432,
-      "sha256": "B84998BBCB35DDADD606D6660A7A0C79024D36193B7E8C0A77342A203F36061A",
+      "bytes": 1413855,
+      "sha256": "48ADD249917BE83B20A7F5DCF9956E75AB5AEF380A3D4A69C10557E966F8FC79",
       "pixel_size": [
-        1254,
-        1254
+        1133,
+        1162
       ],
       "asset_stage": "photoroom_production_cutout_candidate",
-      "background_removal": "connected_edge_chroma_key_magenta",
-      "anchor": "top_tray.floating_replay_button",
-      "state": "default",
-      "draw_rect": "SSOT pending after owner approval; shared canonical floating button rect",
-      "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
-      "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
-      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
-      "source_refs": [
-        "docs/ui_cyber_dark_light_component_refs_r2.json",
-        "docs/ui_cyber_9router_component_call_queue.md",
-        "top_tray_layer_alpha candidate",
-        "stats_capsule_alpha candidate",
-        "floating_menu_button_default_alpha candidate"
-      ],
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
-      "edge_qa_status": "approved_dark_light_checkerboard",
-      "text_pass_gate": "blocked_until_all_screen_objects_are_photoroom_cleaned_and_ssot_placed",
-      "preview_alpha_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_alpha.png",
-      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\dark\\floating_replay_button_default_photoroom.png",
-      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_photoroom.png",
+      "photoroom_port": 9904,
       "alpha_extrema": [
         0,
         255
       ],
       "alpha_bbox": [
         0,
-        94,
-        1165,
-        1160
+        36,
+        1097,
+        1162
       ],
-      "preview_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_alpha.png",
-      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_photoroom.png"
+      "anchor": "top_tray.floating_replay_button_default.icon_baked",
+      "runtime_region": "alpha_bbox",
+      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "icon_policy": "icon_baked_into_button_texture; no runtime GeneratedButtonIcon overlay",
+      "source_refs": [
+        "docs/ui_cyber_component_generation_manifest.json",
+        "docs/9router_ui_generation_runbook.md"
+      ],
+      "reference_urls": [
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/top_tray_layer_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/board_backplate_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/floating_replay_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/return.png"
+      ],
+      "prompt": "Create one isolated production mobile game UI button asset object, not poster art and not a full screen mockup.\nAsset: floating_replay_button_default.\nMode: dark cyber. Purple floating settings button, yellow floating replay button, black/deep-green gameplay tone, cyan electric bevel glow.\nButton action: replay.\nRequired symbol: centered clockwise replay arrow icon, readable at small mobile size.\nThe icon must be baked into the button art and optically centered in the button body.\nKeep the button shell style, bevel depth, material, glow, and silhouette synchronized with the reference button and top tray.\nObject only. No text, no logo, no character, no gameplay pipe, no board screenshot, no extra UI pieces.\nCentered single button, fully visible, square canvas, generous empty margin.\nOutput PNG on flat pure #ff00ff removable background for PhotoRoom cleanup.\nReference image URLs for style synchronization:\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/top_tray_layer_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/floating_replay_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/dark/board_backplate_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/floating_replay_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/dark/return.png"
     },
     {
       "mode": "dark",
@@ -849,6 +851,7 @@
       "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "full_source",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -899,6 +902,7 @@
       "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "full_source",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -949,6 +953,7 @@
       "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "full_source",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -980,52 +985,50 @@
     {
       "mode": "light",
       "component_key": "floating_replay_button_default",
-      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_photoroom.png",
-      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_raw.png",
-      "r2_key": "images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_photoroom.png",
-      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_photoroom.png",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_icon_photoroom.png",
+      "raw_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_icon_raw.png",
+      "photoroom_untrimmed_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_icon_photoroom_untrimmed.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_icon_photoroom.png",
+      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_icon_photoroom.png",
+      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_icon_photoroom.png",
       "content_type": "image/png",
-      "bytes": 1323283,
-      "sha256": "14523626B1AF923894E5FAA55EE6BE6C77256610DBC2F2D0556A748EE6E77AC0",
+      "bytes": 1113244,
+      "sha256": "A0E5F5A2BC6F2C641BB35E2CB90DD7D4996B0F04AF2D45CB3A3FB9A7424B2DC6",
       "pixel_size": [
-        1254,
-        1254
+        1093,
+        1123
       ],
       "asset_stage": "photoroom_production_cutout_candidate",
-      "background_removal": "connected_edge_chroma_key_magenta",
-      "anchor": "top_tray.floating_replay_button",
-      "state": "default",
-      "draw_rect": "SSOT pending after owner approval; shared canonical floating button rect",
-      "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
-      "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
-      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
-      "source_refs": [
-        "docs/ui_cyber_dark_light_component_refs_r2.json",
-        "docs/ui_cyber_9router_component_call_queue.md",
-        "top_tray_layer_alpha candidate",
-        "stats_capsule_alpha candidate",
-        "floating_menu_button_default_alpha candidate"
-      ],
       "acceptance_status": "pending_owner_visual_approval",
       "background_removal_method": "photoroom",
       "production_background_removal_method": "photoroom",
-      "edge_qa_status": "approved_dark_light_checkerboard",
-      "text_pass_gate": "blocked_until_all_screen_objects_are_photoroom_cleaned_and_ssot_placed",
-      "preview_alpha_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_alpha.png",
-      "production_local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\Assets\\UI\\cyberpunk_theme\\generated\\production\\light\\floating_replay_button_default_photoroom.png",
-      "production_res_path": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_photoroom.png",
+      "photoroom_port": 9904,
       "alpha_extrema": [
         0,
         255
       ],
       "alpha_bbox": [
         0,
-        181,
-        1052,
-        1073
+        36,
+        1057,
+        1123
       ],
-      "preview_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_alpha.png",
-      "production_r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_photoroom.png"
+      "anchor": "top_tray.floating_replay_button_default.icon_baked",
+      "runtime_region": "alpha_bbox",
+      "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "icon_policy": "icon_baked_into_button_texture; no runtime GeneratedButtonIcon overlay",
+      "source_refs": [
+        "docs/ui_cyber_component_generation_manifest.json",
+        "docs/9router_ui_generation_runbook.md"
+      ],
+      "reference_urls": [
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/top_tray_layer_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/board_backplate_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/floating_replay_button_default_photoroom.png",
+        "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/return.png"
+      ],
+      "prompt": "Create one isolated production mobile game UI button asset object, not poster art and not a full screen mockup.\nAsset: floating_replay_button_default.\nMode: bright cyber light. Pale graphite/white-lit material, purple floating settings button, yellow floating replay button, cyan electric bevel glow.\nButton action: replay.\nRequired symbol: centered clockwise replay arrow icon, readable at small mobile size.\nThe icon must be baked into the button art and optically centered in the button body.\nKeep the button shell style, bevel depth, material, glow, and silhouette synchronized with the reference button and top tray.\nObject only. No text, no logo, no character, no gameplay pipe, no board screenshot, no extra UI pieces.\nCentered single button, fully visible, square canvas, generous empty margin.\nOutput PNG on flat pure #ff00ff removable background for PhotoRoom cleanup.\nReference image URLs for style synchronization:\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/top_tray_layer_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/floating_replay_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/light/board_backplate_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/floating_replay_button_default_photoroom.png\nhttps://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/refs/light/return.png"
     },
     {
       "mode": "light",
@@ -1049,6 +1052,7 @@
       "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "alpha_bbox",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -1099,6 +1103,7 @@
       "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "alpha_bbox",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -1149,6 +1154,7 @@
       "content_padding": "24px transparent crop padding; Godot renders replay icon centered",
       "safe_overdraw": "contained glow/aura inside cropped alpha bounds",
       "scale_policy": "fit_inside_canonical_floating_button_rect_preserve_aspect_centered",
+      "runtime_region": "alpha_bbox",
       "source_refs": [
         "docs/ui_cyber_dark_light_component_refs_r2.json",
         "docs/ui_cyber_9router_component_call_queue.md",
@@ -1576,6 +1582,18 @@
       "notes": "Canonical approved bottom tray layer. Runtime bottom_reserve_layer aliases this asset until scene naming is migrated.",
       "anchor": "bottom_tray.layer",
       "scale_policy": "fit_width_inside_bottom_region_preserve_aspect_centered"
+    },
+    {
+      "mode": "debug",
+      "component_key": "top_tray_icon_baked_buttons_preview",
+      "local_path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\WaternetGodot_Cyberpunk\\debug\\top_tray_icon_baked_buttons_preview.png",
+      "r2_key": "images/glyph-arrows-cyber-ui-production/debug/top_tray_icon_baked_buttons_preview.png",
+      "r2_url": "https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/debug/top_tray_icon_baked_buttons_preview.png",
+      "content_type": "image/png",
+      "bytes": 311382,
+      "sha256": "2555BD53363D06BED5A37F26F1AEF36DD1F630E6433D68D02F87AB8388CC2FDD",
+      "asset_stage": "preview",
+      "acceptance_status": "debug_preview"
     }
   ],
   "production_cutout_policy": "Non-background UI objects must use PhotoRoom production cutouts after owner design approval. Chroma-key outputs are temporary previews only and cannot unlock final UI approval or text pass.",

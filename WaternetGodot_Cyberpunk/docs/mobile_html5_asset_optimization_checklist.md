@@ -28,7 +28,7 @@ Measured on 2026-07-03 from this workspace:
 | `Export/glyphflow_arrays.pck` | 13.51 MB after import recompression | Under 30.0 MB Web PCK budget. |
 | `Export/glyphflow_arrays.wasm` | 33.74 MB | Keep as engine/runtime budget baseline; do not chase art fixes here first. |
 | `Export/glyphflow_arrays.aab` | 57.39 MB after import recompression | Under 80.0 MB Android AAB budget. |
-| `Audio/Music/cyberpunk_theme/Gameplay.ogg` | 2.58 MB | Publish profile is Vorbis q0, 44.1kHz mono; keep under `AssetBudgetConfig.bgm_mb`. |
+| `Audio/Music/cyberpunk_theme/Gameplay.ogg` | 2.96 MiB / 3,102,013 bytes | Publish profile is Vorbis q0, 44.1kHz mono; keep under `AssetBudgetConfig.bgm_mb`. |
 | `Assets/VFX/lightning_boltarc_01_spritesheet.png` | 3.89 MB | Verify frame dimensions, frame count, import compression, and whether all frames ship. |
 | `Assets/Themes/cyberpunk_theme/cell_tiles/dark_floorplate_b.png` | 2.58 MB | Create runtime-size derivative only after visual audit. |
 | `Assets/Themes/cyberpunk_theme/cell_tiles/light_floorplate_a.png` | 2.08 MB | Create runtime-size derivative only after visual audit. |
@@ -86,12 +86,28 @@ Before export:
 1. Inspect `export_presets.cfg`.
 2. Remove broad include filters.
 3. Use explicit include paths only for runtime assets.
-4. Add explicit exclude paths for raw/reference/debug/doc/test folders.
-5. Clear `.godot/editor/filesystem_cache8` and `.godot/exported`.
-6. Re-export Web and Android.
-7. Search exported payloads for forbidden runtime payload names.
+4. Include exact runtime preload `.gd` scripts in `export_files` when using resource-filter exports; do not rely on scene packing to discover scripts loaded through `preload()`.
+5. Add explicit exclude paths for raw/reference/debug/doc/test folders.
+6. Clear `.godot/editor/filesystem_cache8` and `.godot/exported`.
+7. Re-export Web and Android.
+8. Search exported payloads for forbidden runtime payload names.
 
 The export preset is invalid if a path ships only because a broad wildcard included it.
+
+Current required runtime preload scripts for selected-resource exports:
+
+- `res://Scripts/connection_solver.gd`
+- `res://Scripts/flow_visual_state.gd`
+- `res://Scripts/level_data.gd`
+- `res://Scripts/level_generator.gd`
+- `res://Scripts/pipe_grid.gd`
+- `res://Scripts/pipe_vfx_layer.gd`
+- `res://Scripts/pipe_visual_mapping.gd`
+- `res://Scripts/vfx_anchor.gd`
+- `res://Scripts/vfx_route.gd`
+- `res://Scripts/vfx_transition_state.gd`
+
+`Tests/test_export_packaging_contract.gd` must fail if any required runtime preload script is missing from release `export_files`.
 
 ## Import Compression Gate
 
@@ -160,7 +176,8 @@ Current publish profile for Cyber BGM:
 - `ThemeConfig.bgm_mobile_channels = 1`
 - `ThemeConfig.bgm_vorbis_quality = 0`
 - `AssetBudgetConfig.bgm_publish_vorbis_quality = 0.0`
-- Current `Gameplay.ogg` size is 2.58 MB for 479.78 seconds.
+- Current clean `Gameplay.ogg` size is 2.96 MiB / 3,102,013 bytes for 479.78 seconds.
+- Archived bad DTS BGM builds must not be restored. If browser probe can play a fresh OGG but game stays silent, verify `project.godot` loads `default_bus_layout.tres` and selected-resource exports include it before changing WebAudio code.
 
 Do not create alternate BGM fallbacks.
 
@@ -185,9 +202,11 @@ HTML5 checklist:
 
 - Ensure `.wasm`, `.pck`, `.js`, and `.html` are served compressed by Firebase Hosting.
 - Ensure immutable cache headers for versioned export files.
+- If export filenames are fixed instead of versioned, Firebase must serve `.html`, `.pck`, `.js`, and `.wasm` with `Cache-Control: no-cache, no-store, must-revalidate`; otherwise a cache-busted HTML URL can still run a stale `.pck`.
 - Do not deploy Android artifacts, logs, `.import`, pack audit files, or screenshots to Firebase public root.
 - Test first load in a fresh browser profile or cache-disabled browser.
 - Record load time, total transferred bytes, and console errors.
+- After every Web rebuild, run gameplay smoke from a no-cache or cache-busted URL: `MainMenu -> Play -> Level 1 -> click one tile`. Menu-only verification is invalid.
 
 ## Android Bundle Budget
 
@@ -353,7 +372,7 @@ Package-ready means all are true:
 - Forbidden runtime payload scan passes for Web and Android.
 - Texture and audio budget report is attached to release notes or checklist output.
 - Any budget violation has owner-approved reason.
-- Web export loads with no missing asset errors.
+- Web export loads from a no-cache or cache-busted URL with no missing asset errors; a real playability check reaches Level 1 gameplay from `MainMenu -> Play -> Level 1`, performs one tile interaction, and leaves browser console clean.
 - Android AAB contains manifest and native libraries.
 - Full Godot test sweep passes.
 - `docs/release_packaging_checklist.md` and this document were both followed in the same packaging pass.
@@ -370,9 +389,12 @@ Package-ready means all are true:
 - [x] Web export rebuilt with selected runtime resources: `Export/glyphflow_arrays.pck` = 43.61 MB, forbidden scan clean.
 - [x] Android export rebuilt with selected runtime resources: `Export/glyphflow_arrays.aab` = 87.63 MB, forbidden scan clean.
 - [x] Mobile publish import policy added: runtime heavy PNGs and energy sheets use lossy import q0.55 from `AssetBudgetConfig`.
-- [x] BGM publish profile optimized: 479.78s nonstop loop, Vorbis q0, 44.1kHz mono, 2.58 MB.
+- [x] BGM publish profile optimized: 479.78s nonstop loop, Vorbis q0, 44.1kHz mono, 2.96 MiB / 3,102,013 bytes.
 - [x] Web and Android exports rebuilt after import recompression: `Export/glyphflow_arrays.pck` = 13.51 MB, `Export/glyphflow_arrays.aab` = 57.39 MB.
 - [x] Owner budget gate passed: Web PCK budget is 30.0 MB and Android AAB budget is 80.0 MB.
 - [x] Runtime texture derivative gate evaluated; no derivative pass required because import recompression brought exports under budget without changing owner-approved coordinates.
 - [x] Web and Android exports rebuilt and size-audited after export strategy cleanup and import recompression.
 - [x] Full Godot test sweep passed: `TOTAL:71 ALL_OK:True`.
+- [x] Runtime preload script export contract added after Web gameplay failure; Web selected-resource export must include gameplay model/solver/VFX preload scripts.
+- [x] Latest Web rebuild after preload fix verified from a no-cache URL through `MainMenu -> Play -> Level 1 -> click tile`; gameplay rendered, `MOVES` changed to `1`, and browser console stayed clean.
+- [ ] Android AAB must be rebuilt and re-audited after the latest `export_presets.cfg` preload-script fix before any package-ready claim.

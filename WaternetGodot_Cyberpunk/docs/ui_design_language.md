@@ -91,12 +91,16 @@ ThemeConfig owns:
 - `ui_modal_close_button_size`
 - `ui_modal_action_button_height`
 - `ui_modal_content_gap`
+- `ui_modal_content_margin_x`
+- `ui_modal_content_margin_top`
+- `ui_modal_content_margin_bottom`
 
 ## Implementation Contract
 
 - Scene nodes may define semantic structure.
 - Runtime sizing and styling must read ThemeConfig.
 - Tests must guard node structure and token presence before visual polish begins.
+- Settings modal option buttons are text-only centered rows. Icons belong to floating controls or generated art, not option rows.
 
 ## Asset Region SSOT
 

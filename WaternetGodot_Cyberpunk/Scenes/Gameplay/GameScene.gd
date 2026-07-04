@@ -8,6 +8,7 @@ const FlowVisualStateScript = preload("res://Scripts/flow_visual_state.gd")
 const PipeVfxLayerScript = preload("res://Scripts/pipe_vfx_layer.gd")
 const VfxTransitionStateScript = preload("res://Scripts/vfx_transition_state.gd")
 const LevelGeneratorScript = preload("res://Scripts/level_generator.gd")
+const BottomTimerDigitsScript = preload("res://Scripts/bottom_timer_digits.gd")
 const PROFILE_POPUP_SCENE_PATH := "res://Scenes/Common/ProfilePopup.tscn"
 const PROJECT_LOGO_PATH := "res://Assets/Icons/logo.png"
 const UI_MODE_SAVE_KEY := "cyber_ui_generated_asset_mode"
@@ -62,12 +63,14 @@ var level_finished_time_sec := -1.0
 @onready var left_floating_menu: Button = $HUD/MarginContainer/VBoxContainer/TopTrayRoot/TopTrayLayer/LeftFloatingMenu
 @onready var right_floating_replay: Button = $HUD/MarginContainer/VBoxContainer/TopTrayRoot/TopTrayLayer/RightFloatingReplay
 @onready var bottom_reserve_layer: Panel = $HUD/BottomReserveLayer
+var bottom_timer_digits: Control
 @onready var stats_readout: Control = $HUD/MarginContainer/VBoxContainer/TopTrayRoot/TopTrayLayer/StatsCapsule/StatsReadout
 @onready var solved_popup: Panel = $HUD/SolvedPopup
 @onready var popup_title: Label = $HUD/SolvedPopup/MarginContainer/VBoxContainer/PopupTitle
 @onready var popup_moves: Label = $HUD/SolvedPopup/MarginContainer/VBoxContainer/PopupMoves
 @onready var next_btn: Button = $HUD/SolvedPopup/MarginContainer/VBoxContainer/NextBtn
 @onready var settings_overlay: Panel = $HUD/SettingsOverlay
+@onready var settings_master_audio_btn: Button = $HUD/SettingsOverlay/MarginContainer/VBoxContainer/MasterAudioBtn
 @onready var settings_music_btn: Button = $HUD/SettingsOverlay/MarginContainer/VBoxContainer/MusicBtn
 @onready var settings_sfx_btn: Button = $HUD/SettingsOverlay/MarginContainer/VBoxContainer/SfxBtn
 @onready var settings_theme_mode_btn: Button = $HUD/SettingsOverlay/MarginContainer/VBoxContainer/ThemeModeBtn
@@ -485,6 +488,7 @@ func _refresh_ui_for_generated_mode(theme: ThemeConfig) -> void:
 
 func _update_hud() -> void:
 	_update_left_stats_label()
+	_update_top_right_stats_label()
 	_update_total_play_time_label()
 
 func _apply_top_tray_theme(theme: ThemeConfig, viewport_size_override: Vector2 = Vector2.ZERO) -> void:
@@ -590,7 +594,7 @@ func _apply_top_tray_theme(theme: ThemeConfig, viewport_size_override: Vector2 =
 		total_play_time_label.clip_contents = true
 		_apply_top_tray_region(total_play_time_label, theme, "total_play_time_readout", Vector2(tray_width, tray_height))
 		_style_total_play_time_label(total_play_time_label, theme)
-		_update_total_play_time_label()
+		_update_top_right_stats_label()
 		total_play_time_label.move_to_front()
 	var icon_size := theme.ui_top_tray_icon_button_size
 	_style_single_button(left_floating_menu, theme, icon_size, theme.ui_top_tray_menu_color, _has_generated_ui_asset(theme, "floating_menu_button_default"))
@@ -599,10 +603,10 @@ func _apply_top_tray_theme(theme: ThemeConfig, viewport_size_override: Vector2 =
 	_apply_top_tray_region(right_floating_replay, theme, "right_floating_replay", Vector2(tray_width, tray_height))
 	if left_floating_menu:
 		left_floating_menu.move_to_front()
-		_apply_top_tray_button_icon(left_floating_menu, theme, "left_floating_menu", Vector2(tray_width, tray_height))
+		_apply_top_tray_button_icon_policy(left_floating_menu, theme, "left_floating_menu", Vector2(tray_width, tray_height))
 	if right_floating_replay:
 		right_floating_replay.move_to_front()
-		_apply_top_tray_button_icon(right_floating_replay, theme, "right_floating_replay", Vector2(tray_width, tray_height))
+		_apply_top_tray_button_icon_policy(right_floating_replay, theme, "right_floating_replay", Vector2(tray_width, tray_height))
 	if settings_overlay:
 		var modal_margin := settings_overlay.get_node_or_null("MarginContainer") as MarginContainer
 		if modal_margin:
@@ -647,6 +651,7 @@ func _apply_generated_ui_assets(theme: ThemeConfig) -> void:
 	_set_generated_rect_texture(bottom_reserve_layer, "GeneratedBottomReserveLayer", theme.get_ui_generated_asset_texture(mode, "bottom_reserve_layer"), true, theme, "bottom_reserve_layer")
 	_set_generated_rect_texture(settings_overlay, "GeneratedModalFrame", theme.get_ui_generated_asset_texture(mode, "modal_frame"), true, theme, "modal_frame")
 	_set_generated_rect_texture(solved_popup, "GeneratedSolvedModalFrame", theme.get_ui_generated_asset_texture(mode, "modal_frame"), true, theme, "modal_frame")
+	_apply_bottom_timer_theme(theme)
 
 func _apply_generated_top_tray_art_stack(theme: ThemeConfig, mode: String) -> void:
 	if theme == null or top_tray_layer == null:
@@ -770,6 +775,54 @@ func _apply_bottom_reserve_theme(theme: ThemeConfig, viewport_size: Vector2) -> 
 			1,
 			8
 		))
+	_apply_bottom_timer_theme(theme)
+
+func _apply_bottom_timer_theme(theme: ThemeConfig) -> void:
+	if bottom_reserve_layer == null or theme == null:
+		return
+	var timer := _ensure_bottom_timer_digits()
+	if timer == null:
+		return
+	timer.visible = theme.ui_bottom_timer_enabled
+	if not theme.ui_bottom_timer_enabled:
+		return
+	var atlas := theme.get_bottom_timer_atlas_texture()
+	if atlas == null:
+		push_error("Bottom timer atlas missing from ThemeConfig.ui_bottom_timer_atlas_path: %s" % theme.ui_bottom_timer_atlas_path)
+		timer.visible = false
+		return
+	timer.call("configure", atlas, theme.ui_bottom_timer_glyph_rects, theme.ui_bottom_timer_spacing_ratio, theme.ui_bottom_timer_pixel_height_ratio)
+	_apply_bottom_timer_region(timer, theme.ui_bottom_timer_region)
+	timer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	timer.move_to_front()
+
+func _ensure_bottom_timer_digits() -> Control:
+	if bottom_reserve_layer == null:
+		return null
+	if bottom_timer_digits != null and is_instance_valid(bottom_timer_digits):
+		return bottom_timer_digits
+	var existing := bottom_reserve_layer.get_node_or_null("BottomTimerDigits") as Control
+	if existing != null:
+		bottom_timer_digits = existing
+		return bottom_timer_digits
+	var timer := BottomTimerDigitsScript.new() as Control
+	timer.name = "BottomTimerDigits"
+	timer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bottom_reserve_layer.add_child(timer)
+	bottom_timer_digits = timer
+	return bottom_timer_digits
+
+func _apply_bottom_timer_region(timer: Control, region: Vector4) -> void:
+	if timer == null:
+		return
+	timer.anchor_left = region.x
+	timer.anchor_top = region.y
+	timer.anchor_right = region.x + region.z
+	timer.anchor_bottom = region.y + region.w
+	timer.offset_left = 0.0
+	timer.offset_top = 0.0
+	timer.offset_right = 0.0
+	timer.offset_bottom = 0.0
 
 func _apply_modal_theme(theme: ThemeConfig, viewport_size: Vector2) -> void:
 	if theme == null:
@@ -823,7 +876,7 @@ func _get_generated_ui_region_texture(theme: ThemeConfig, asset_key: String, tex
 	if theme == null or asset_key.is_empty():
 		return texture
 	var geometry := theme.get_ui_generated_asset_geometry(asset_key)
-	if String(geometry.get("runtime_region", "alpha_bbox")) == "full_source":
+	if _get_generated_ui_runtime_region(theme, geometry) == "full_source":
 		return texture
 	var bboxes: Dictionary = geometry.get("alpha_bbox", {})
 	var bbox = bboxes.get(String(theme.ui_generated_asset_mode), null)
@@ -836,6 +889,14 @@ func _get_generated_ui_region_texture(theme: ThemeConfig, asset_key: String, tex
 	atlas.atlas = texture
 	atlas.region = rect
 	return atlas
+
+func _get_generated_ui_runtime_region(theme: ThemeConfig, geometry: Dictionary) -> String:
+	var runtime_region := String(geometry.get("runtime_region", "alpha_bbox"))
+	var by_mode: Dictionary = geometry.get("runtime_region_by_mode", {})
+	var mode := String(theme.ui_generated_asset_mode)
+	if by_mode.has(mode):
+		return String(by_mode[mode])
+	return runtime_region
 
 func _get_generated_ui_stretch_mode(theme: ThemeConfig, asset_key: String = "") -> int:
 	if theme == null:
@@ -874,6 +935,22 @@ func _remove_generated_ui_texture_rect(parent: Control, rect_name: String) -> vo
 	if existing != null:
 		existing.queue_free()
 	generated_ui_rects.erase(rect_name)
+
+func _apply_top_tray_button_icon_policy(button: Button, theme: ThemeConfig, region_key: String, tray_size: Vector2) -> void:
+	if theme == null or button == null:
+		return
+	if String(theme.ui_top_tray_button_icon_source) == "baked_texture":
+		_clear_top_tray_button_icon(button)
+		return
+	_apply_top_tray_button_icon(button, theme, region_key, tray_size)
+
+func _clear_top_tray_button_icon(button: Button) -> void:
+	if button == null:
+		return
+	button.icon = null
+	var existing := button.get_node_or_null("GeneratedButtonIcon")
+	if existing != null:
+		existing.queue_free()
 
 func _apply_top_tray_button_icon(button: Button, theme: ThemeConfig, region_key: String, tray_size: Vector2) -> void:
 	if button == null or theme == null:
@@ -1033,7 +1110,7 @@ func _style_total_play_time_label(label: Label, theme: ThemeConfig) -> void:
 	label.add_theme_constant_override("shadow_offset_x", 0)
 	label.add_theme_constant_override("shadow_offset_y", 2)
 	label.add_theme_constant_override("line_spacing", 0)
-	_fit_time_label_to_region(label, theme)
+	_fit_time_label_to_region(label, theme, theme.ui_top_tray_moves_font_size)
 
 func _style_left_stats_label(label: Label, theme: ThemeConfig) -> void:
 	if label == null or theme == null:
@@ -1073,6 +1150,22 @@ func _format_left_stats_text(username: String, best_wave: int) -> String:
 		display_name = default_username
 	return "%s\n%s %d" % [display_name.to_upper(), prefix, max(1, best_wave)]
 
+func _update_top_right_stats_label() -> void:
+	if total_play_time_label == null:
+		return
+	var theme := _get_active_theme()
+	if theme == null:
+		return
+	total_play_time_label.visible = true
+	total_play_time_label.text = _format_top_right_stats_text(moves, theme)
+	_fit_time_label_to_region(total_play_time_label, theme, theme.ui_top_tray_moves_font_size)
+
+func _format_top_right_stats_text(current_moves: int, theme: ThemeConfig = null) -> String:
+	var prefix := "MOVES"
+	if theme != null:
+		prefix = theme.ui_top_tray_moves_label_prefix
+	return "%s %d" % [prefix, max(0, current_moves)]
+
 func _get_top_tray_username(theme: ThemeConfig) -> String:
 	var save_manager = _get_autoload("SaveManager")
 	if save_manager != null and save_manager.has_method("get_username"):
@@ -1098,16 +1191,24 @@ func _mark_level_finished(now: float = -1.0) -> void:
 	_update_total_play_time_label(level_finished_time_sec)
 
 func _update_total_play_time_label(now: float = -1.0) -> void:
-	if total_play_time_label == null:
-		return
 	var theme := _get_active_theme()
 	if theme == null:
 		return
 	var sample_time := _resolve_sample_time(now)
 	var end_time := level_finished_time_sec if level_finished_time_sec >= 0.0 else sample_time
 	var elapsed_seconds: int = max(0, int(floor(end_time - level_start_time_sec)))
-	total_play_time_label.text = "%s\n%s %d" % [_format_duration_seconds(elapsed_seconds), theme.ui_top_tray_moves_label_prefix, moves]
-	_fit_time_label_to_region(total_play_time_label, theme)
+	var time_text := _format_duration_seconds(elapsed_seconds)
+	_update_bottom_timer_digits(time_text, theme)
+
+func _update_bottom_timer_digits(time_text: String, theme: ThemeConfig) -> void:
+	if theme == null or not theme.ui_bottom_timer_enabled:
+		return
+	var timer := _ensure_bottom_timer_digits()
+	if timer == null:
+		return
+	if not timer.visible:
+		_apply_bottom_timer_theme(theme)
+	timer.call("set_time_text", time_text)
 
 func _resolve_sample_time(now: float = -1.0) -> float:
 	if now >= 0.0:
@@ -1123,7 +1224,7 @@ func _format_duration_seconds(total_seconds: int) -> String:
 		return "%d:%02d:%02d" % [hours, minutes, remaining_seconds]
 	return "%02d:%02d" % [minutes, remaining_seconds]
 
-func _fit_time_label_to_region(label: Label, theme: ThemeConfig) -> void:
+func _fit_time_label_to_region(label: Label, theme: ThemeConfig, max_font_size: int = -1) -> void:
 	if label == null or theme == null:
 		return
 	var rect_height: float = max(1.0, label.offset_bottom - label.offset_top)
@@ -1134,7 +1235,7 @@ func _fit_time_label_to_region(label: Label, theme: ThemeConfig) -> void:
 	var outline_size: int = max(0, theme.ui_top_tray_time_outline_size)
 	var line_height_ratio: float = max(0.1, theme.ui_top_tray_stat_line_height_ratio)
 	var lines := String(label.text).split("\n")
-	var final_size := theme.ui_top_tray_stat_font_size
+	var final_size := max_font_size if max_font_size > 0 else theme.ui_top_tray_stat_font_size
 	var font: Font = label.get_theme_font("font")
 	while final_size > theme.ui_top_tray_stat_min_font_size:
 		var visual_height: float = float(final_size) * line_height_ratio * float(max(1, lines.size())) + float(outline_size * 2)
@@ -1214,6 +1315,12 @@ func _style_modal_action_buttons(group: Node, theme: ThemeConfig) -> void:
 		if child is Button:
 			var button: Button = child as Button
 			button.custom_minimum_size = Vector2(0.0, theme.ui_modal_action_button_height)
+			button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			button.icon = null
+			button.expand_icon = false
+			button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+			button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			button.clip_contents = true
 			button.add_theme_color_override("font_color", theme.text_color)
 			button.add_theme_color_override("icon_normal_color", theme.text_color)
 			button.add_theme_color_override("icon_hover_color", theme.accent_color)
@@ -1647,6 +1754,14 @@ func _on_settings_close_btn_pressed() -> void:
 	if settings_overlay:
 		settings_overlay.visible = false
 
+func _on_settings_master_audio_btn_pressed() -> void:
+	var audio_manager = _get_autoload("AudioManager")
+	if audio_manager:
+		audio_manager.toggle_master_mute()
+		if not audio_manager.is_master_muted():
+			audio_manager.play_sfx("ui_button")
+	_update_settings_buttons()
+
 func _on_settings_music_btn_pressed() -> void:
 	var audio_manager = _get_autoload("AudioManager")
 	if audio_manager:
@@ -1737,6 +1852,8 @@ func _play_ui_sfx(event_name: String) -> void:
 
 func _update_settings_buttons() -> void:
 	var audio_manager = _get_autoload("AudioManager")
+	if audio_manager != null and settings_master_audio_btn:
+		settings_master_audio_btn.text = "MASTER AUDIO OFF" if audio_manager.is_master_muted() else "MASTER AUDIO ON"
 	if audio_manager != null and settings_music_btn:
 		settings_music_btn.text = "MUSIC OFF" if audio_manager.is_music_muted() else "MUSIC ON"
 	if audio_manager != null and settings_sfx_btn:

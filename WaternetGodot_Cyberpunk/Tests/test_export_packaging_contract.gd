@@ -6,12 +6,14 @@ func _init() -> void:
 	var theme_manager := FileAccess.get_file_as_string("res://Resources/Globals/ThemeManager.gd")
 	var mcp_runtime := FileAccess.get_file_as_string("res://addons/godot_mcp_runtime/mcp_runtime_autoload.gd")
 	var mcp_legacy := FileAccess.get_file_as_string("res://Scripts/mcp_interaction_server.gd")
+	var firebase_config := FileAccess.get_file_as_string("res://firebase.json")
 	passed = passed and _assert_true(not export_presets.is_empty(), "export_presets.cfg should exist")
 	for required_text in [
 		"custom_features=\"production\"",
 		"export_path=\"Export/glyphflow_arrays.html\"",
 		"export_path=\"Export/glyphflow_arrays.aab\"",
 		"include_filter=\"Resources/levels.json,Assets/Themes/cyberpunk_theme/energy_sheets/manifest.json,Audio/Music/cyberpunk_theme/manifest.json\"",
+		"res://Assets/UI/cyberpunk_theme/generated/production/dark/bottom_timer_digits/timer_digits_dark_atlas.png",
 		"package/unique_name=\"com.shinokutestudio.glyphflowarrays\"",
 		"package/name=\"Glyphflow Arrays\"",
 		"keystore/release=\"C:/Users/Admin/.gemini/antigravity/secrets/glyphflow_arrays.keystore\"",
@@ -73,6 +75,20 @@ func _init() -> void:
 		for broad_include in ["*.png", "*.jpg", "*.jpeg", "*.webp", "*.wav", "*.ogg", "*.tres", "Assets/**"]:
 			passed = passed and _assert_true(not include_line.contains(broad_include), "Release include_filter should not use broad marker %s" % broad_include)
 	passed = passed and _assert_true(not export_presets.contains("include_filter=\"*.webp,*.png,*.wav,*.tres,*.ogg\""), "Web include filter should not wildcard-pack debug/old texture assets")
+	for required_runtime_script in [
+		"res://Scripts/connection_solver.gd",
+		"res://Scripts/flow_visual_state.gd",
+		"res://Scripts/level_data.gd",
+		"res://Scripts/level_generator.gd",
+		"res://Scripts/bottom_timer_digits.gd",
+		"res://Scripts/pipe_grid.gd",
+		"res://Scripts/pipe_vfx_layer.gd",
+		"res://Scripts/pipe_visual_mapping.gd",
+		"res://Scripts/vfx_anchor.gd",
+		"res://Scripts/vfx_route.gd",
+		"res://Scripts/vfx_transition_state.gd"
+	]:
+		passed = passed and _assert_true(export_presets.contains("\"%s\"" % required_runtime_script), "Release export_files should include runtime preload script %s" % required_runtime_script)
 	passed = passed and _assert_true(not export_presets.contains("package/name=\"BloxChain\""), "Android package label should not use old BloxChain name")
 	passed = passed and _assert_true(not export_presets.contains("bloxchain.keystore"), "Android release signing should not use old bloxchain keystore")
 	passed = passed and _assert_true(not export_presets.contains("keystore/release_user=\"bloxchain\""), "Android release signing should not use old bloxchain alias")
@@ -81,6 +97,10 @@ func _init() -> void:
 	passed = passed and _assert_true(theme_manager.contains("\"cyberpunk_theme\": \"res://Resources/Data/Themes/cyberpunk_theme.tres\""), "ThemeManager should register only cyberpunk theme")
 	passed = passed and _assert_true(mcp_runtime.contains("OS.has_feature(\"production\")"), "MCP runtime should be disabled in production exports")
 	passed = passed and _assert_true(mcp_legacy.contains("OS.has_feature(\"production\")"), "Legacy MCP server should be disabled in production exports")
+	for web_runtime_ext in ["**/*.html", "**/*.pck", "**/*.js", "**/*.wasm"]:
+		passed = passed and _assert_true(firebase_config.contains("\"source\": \"%s\"" % web_runtime_ext), "Firebase hosting should declare cache headers for %s" % web_runtime_ext)
+	passed = passed and _assert_true(firebase_config.contains("\"Cache-Control\""), "Firebase hosting should set Cache-Control for Web runtime files")
+	passed = passed and _assert_true(firebase_config.contains("no-cache, no-store, must-revalidate"), "Firebase hosting should not serve stale fixed-name Godot Web runtime files")
 
 	if passed:
 		print("test_export_packaging_contract: PASS")

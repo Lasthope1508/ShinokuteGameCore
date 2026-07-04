@@ -166,9 +166,11 @@ Do not start B3 asset generation until background direction is approved.
 - [x] Runtime top tray region placement uses the settled control size when available and falls back to `TopTrayRoot.custom_minimum_size` so SSOT placement works before Godot containers finish layout.
 - [x] Top tray region coordinate SSOT: `docs/ui_top_tray_region_ssot.md`.
 - [x] GameScene wraps generated object PNGs in `AtlasTexture` regions from SSOT `alpha_bbox`; full-source exceptions are explicitly marked by `runtime_region = "full_source"`.
-- [x] Owner-approved floating menu/replay button placement uses full PhotoRoom PNG source in runtime, matching the drag editor preview; their `alpha_bbox` is audit metadata only.
+- [x] Owner-approved floating menu/replay button placement uses icon-baked PhotoRoom PNGs in runtime; visual draw source is the per-mode `alpha_bbox` crop so PhotoRoom padding cannot shift optical center.
 - [x] Settings modal uses generated `modal_frame` as the visual shell; `SettingsOverlay` is a non-container `Panel` so anchored close/content controls cannot expand into a full-row or full-panel icon.
 - [x] Store modal portrait/landscape size ratios in ThemeConfig and place modal rect from viewport ratios.
+- [x] Settings modal option rows are text-only, centered, clipped inside the modal frame, and sized from `ThemeConfig` modal action/margin/gap tokens; no per-button icon or hardcoded offset is allowed.
+- [x] Settings modal contains `MasterAudioBtn`, `MusicBtn`, and `SfxBtn` as separate audio controls; Master Audio is visible, not hidden behind old main-menu volume state.
 - [x] Modal frame currently uses SSOT `runtime_stretch_mode = "scale"` until a real 9-slice/sliced modal frame pass is implemented.
 - [x] Leaderboard/Profile popup uses generated `modal_frame`, non-container root, corner close button, and GameScene injects active theme/mode before display.
 - [x] Solved/win popup uses generated `modal_frame`, non-container root, and modal rect from the same ThemeConfig portrait/landscape ratios as settings and leaderboard.
@@ -189,17 +191,17 @@ Current production caveat:
 - [x] Re-place all PhotoRoom object assets through SSOT before any text pass resumes.
 - [x] Top tray object-placement pass: current cyber `ui_top_tray_art_stack` renders `GeneratedTopTrayLayer` only; menu button, replay button, and bottom reserve are attached from SSOT-controlled PhotoRoom assets.
 - [x] Top tray art stack rule: active top tray art components share the full `TopTrayLayer` rect; `ui_top_tray_regions` is for menu/replay/readout/logo control ownership only.
-- [x] Floating button shell/icon split: generated menu/replay button PNGs are shells; symbols come from `ThemeConfig.ui_top_tray_button_icon_paths` and explicit `_icon` regions in `ThemeConfig.ui_top_tray_regions`.
+- [x] Floating button icon-baked contract: generated menu/replay button PNGs include their settings/replay symbols; `ThemeConfig.ui_top_tray_button_icon_source = "baked_texture"` disables runtime `GeneratedButtonIcon` overlays.
 - [x] Top tray placement editors must use clean production object assets as the coordinate basis, never runtime screenshots with baked stat text or gameplay UI overlays.
 - [x] Top tray mode split: dark and light use `ThemeConfig.ui_top_tray_region_sets` because their generated top tray source canvases have different aspect ratios.
 - [x] Owner-provided light portrait top tray coordinates stored in `ThemeConfig.ui_top_tray_region_sets.light`; dark final coordinates remain the legacy fallback in `ThemeConfig.ui_top_tray_regions`.
-- [x] Floating button icon regions must align to the visible shell alpha center or owner-approved `_icon` region; never auto-center icons against the full square button PNG canvas.
+- [x] Floating button icon regions are historical audit data only for current cyber; runtime uses baked-icon PhotoRoom PNGs so icon center cannot drift from shell center.
 - [x] Owner visual approved menu, replay, and logo top tray placement before text pass starts.
-- [x] Owner approved `total_play_time_readout = Vector4(0.6687, 0.3494, 0.1843, 0.1843)` for elapsed level time.
-- [x] Top tray elapsed time uses SSOT `ThemeConfig.ui_top_tray_time_*` typography: Poppins Bold, energy-green text, dark outline, cyan-green shadow.
-- [x] Runtime freezes elapsed top tray time when the level is solved, so it records total time from level start to finish.
+- [x] Owner approved `total_play_time_readout = Vector4(0.6687, 0.3494, 0.1843, 0.1843)` for the top-right stat region.
+- [x] Top-right stat region uses SSOT `ThemeConfig.ui_top_tray_time_*` typography plus `ThemeConfig.ui_top_tray_moves_font_size`: Poppins Bold, energy-green text, dark outline, cyan-green shadow.
+- [x] Elapsed time no longer renders in the top tray; it renders as the bottom tray sprite timer and freezes when the level is solved.
 - [x] Runtime treats `total_play_time_readout` as a hard clipping region: `TotalPlayTimeLabel.clip_contents = true`, and font fitting subtracts padding, outline, and shadow bleed.
-- [x] `TotalPlayTimeLabel` layout is two rows: elapsed time on top, current round moves on bottom, right-aligned inside the owner region.
+- [x] `TotalPlayTimeLabel` is the top-right moves readout while the node name remains for scene compatibility: one-line `MOVES N`, right-aligned and font-fitted inside the owner region.
 - [x] `LeftStatsLabel` uses `left_stats_readout`: username on top, best wave on bottom, left-aligned and clipped/fitted by the same SSOT typography rules.
 - [x] Create light landscape playboard context editor with approved top tray and bottom tray fixed, and only `board_backplate_rect` draggable/resizable over the middle gameplay area.
 - [x] Editor separates owner-adjusted `board_backplate_rect` from derived inner `playboard_rect`; do not mix art placement and gameplay grid placement in one ambiguous box.
@@ -208,13 +210,16 @@ Current production caveat:
 - [x] Owner approved light landscape `board_backplate_rect = Vector4(0.319277, 0.210843, 0.350699, 0.623465)`.
 - [x] Owner approved light landscape `playboard_rect = Vector4(0.329825, 0.229594, 0.329604, 0.585963)`.
 - [x] Owner approved light top tray icon regions: `left_floating_menu_icon = Vector4(0.163958, 0.849153, 0.035616, 0.092832)`, `right_floating_replay_icon = Vector4(0.798786, 0.850601, 0.036816, 0.091968)`.
+- [x] Fix floating button icon drift through regenerated icon-baked PhotoRoom assets, not coordinate drift: both dark/light `floating_menu_button_default` and `floating_replay_button_default` use `runtime_region = "alpha_bbox"` and no runtime icon overlay.
 - [x] Store light landscape playboard placement in `ThemeConfig.ui_playboard_region_sets.light.landscape`; runtime falls back to dynamic layout when a mode/orientation is absent.
 - [x] Generate owner drag editors for all gameplay playboard contexts: `debug/ui_dark_portrait_playboard_editor.html`, `debug/ui_dark_landscape_playboard_editor.html`, `debug/ui_light_portrait_playboard_editor.html`, and `debug/ui_light_landscape_playboard_editor.html`.
 - [x] Add `debug/ui_playboard_editor_index.html` as the owner handoff page for dark/light portrait/landscape playboard coordinate picking.
 - [x] Owner approved all four playboard contexts on 2026-07-03; store dark/light portrait/landscape `board_backplate_rect` and `playboard_rect` in `ThemeConfig.ui_playboard_region_sets`.
 - [x] Store playboard source sizes for portrait `Vector2(720, 1280)` and landscape `Vector2(1280, 720)`, plus pixel audit rects in `ThemeConfig.ui_playboard_region_pixel_rect_sets`.
-- [x] Packaging audit nudged dark landscape `board_backplate_rect` and `playboard_rect` down by 13px to satisfy `ui_landscape_board_top_tray_gap = 24` against visible top tray icons while preserving approved size and x placement.
+- [x] Baked-button audit nudged dark/light landscape `board_backplate_rect` and `playboard_rect` down to satisfy `ui_landscape_board_top_tray_gap = 24` against full baked floating buttons while preserving approved size and x placement.
 - [x] Keep playboard editor visual simple: only the yellow `board_backplate_rect` is visible/draggable; hidden `playboard_rect` scales with it and remains in exported SSOT output.
+- [x] Owner reported dark playboard visually touching bottom tray. Dark portrait reduces `board_backplate_rect`/`playboard_rect` height; dark landscape keeps the approved size and moves upward only: backplate pixels `Vector4(390, 150, 501, 477)`, playboard pixels `Vector4(405, 165, 471, 447)`. Light mode remains unchanged.
+- [x] Landscape safe-area contract: explicit owner-approved `ui_playboard_region_sets` coordinates override fallback gap spacing; tests must verify no top tray/bottom tray overlap, not force the fallback 24px gap onto approved art placement.
 - [x] Brighten cyber dry pipes through theme-owned values only: `pipe_dry_modulate = Color(0.32, 0.34, 0.34, 1)` and `pipe_shadow_alpha = 0.22`; do not edit pipe PNGs for this pass.
 - [x] Generate first-pass 9Router owner-review candidates for dark/light empty gameplay cell tiles; candidates live in `debug/gameplay_tile_candidates/`.
 - [x] Owner rejected first-pass gameplay tile candidates as boring/button-like; do not reuse this direction for production tile art.
@@ -234,6 +239,10 @@ Current production caveat:
 - [x] Settings modal includes a `ThemeModeBtn` runtime toggle for `ThemeConfig.ui_generated_asset_mode`; supported modes come from `ThemeConfig.ui_generated_asset_paths`, not per-scene hardcoded mode lists.
 - [x] Theme mode choice persists through `SaveManager` key `cyber_ui_generated_asset_mode`; runtime switches refresh generated UI assets, top tray regions, playboard SSOT layout, HUD labels, modal frame, and VFX layer without mutating owner-approved coordinates.
 - [x] Add `test_settings_theme_mode_toggle.gd` to lock settings button wiring and dark/light playboard switch behavior.
+- [x] Bottom tray fake3D time counter uses sprite digits, not font text. `ThemeConfig.ui_bottom_timer_*` owns enable flag, atlas path, glyph order, per-glyph atlas rects, normalized bottom-tray region, spacing, and draw height ratio.
+- [x] `BottomTimerDigits` renders glyphs with `draw_texture_rect_region` from the PhotoRoom/9Router variable-rect atlas; no grid slicing, no runtime font substitute, and no hardcoded atlas rects in scene code.
+- [x] `TotalPlayTimeLabel` stays visible as the top-right moves readout when `ui_bottom_timer_enabled = true`; it must not duplicate elapsed time from `BottomReserveLayer/BottomTimerDigits`.
+- [x] Runtime export manifest and `export_presets.cfg` must include `timer_digits_dark_atlas.png` plus `Scripts/bottom_timer_digits.gd`, otherwise HTML5/Android packages lose the bottom timer.
 - [x] Save PhotoRoom QA data into canonical manifest: `docs/ui_cyber_component_generation_manifest.json`.
 - [x] Keep PhotoRoom dark/light/checkerboard QA sheet as remote R2 evidence only, not as local production `debug/` asset.
 - [x] Upload PhotoRoom QA sheet to R2: `https://6893f1e40b.image-hosting.uk/images/glyph-arrows-cyber-ui-production/debug/photoroom_cutout_edge_qa_preview.png`.
@@ -290,6 +299,8 @@ Style sync requirements:
 - [ ] Generate top tray layer assets through 9Router if needed.
 - [x] Use PhotoRoom for every non-background transparent cutout; chroma-key cleanup is debug-only preview.
 - [x] Store asset sizes, anchors, draw rects, padding, and slice rules in SSOT.
+- [x] PhotoRoom cutouts are trusted production alpha sources. A full-canvas alpha bbox is not proof of bad PhotoRoom output; inspect checkerboard alpha and fix object extraction rules instead.
+- [x] Multi-object sheets must be extracted by cloning the PhotoRoom sheet per object, masking all other objects, trimming the remaining object, and recording object bounds in SSOT. Equal-grid slicing is forbidden for owner-approved generated sheets.
 - [ ] Verify all fake3D layer assets use the same reference pack and style anchor as B3.
 
 ## B5. Visual Audit Loop

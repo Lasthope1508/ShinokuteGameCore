@@ -213,6 +213,7 @@ Rules:
 - Use transparent PNG when possible.
 - If transparent PNG is not clean, generate on a flat removable background and run PhotoRoom.
 - PhotoRoom is mandatory for every non-background transparent production object.
+- Do not blame PhotoRoom when a cutout has a full-canvas alpha bbox. Full bbox can come from valid glow/edge alpha touching the canvas. Inspect the cutout on checkerboard and verify alpha, then fix extraction geometry if needed.
 - Chroma-key cleanup is debug-only preview work and must not be recorded as production alpha.
 - Production asset paths must point to PhotoRoom cutouts, not chroma-key outputs.
 - Object must be centered, fully visible, uncropped, and easy to slice/place in Godot.
@@ -239,6 +240,14 @@ After generation:
 - QA PhotoRoom edges on dark, light, and checkerboard backgrounds
 - record local PhotoRoom path, R2 URL, pixel size, anchor, draw rect, padding, SSOT key, `background_removal_method = photoroom`, and `edge_qa_status`
 - reject if output reads as poster/mockup instead of object asset
+
+Sprite-sheet extraction rule:
+
+- If 9Router produces an approved multi-object sheet, run PhotoRoom on the full approved sheet first.
+- Then clone the PhotoRoom sheet once per wanted object/glyph, mask every other object out from that clone, and trim the remaining object.
+- Compose a canonical atlas only from the trimmed PhotoRoom-derived object files.
+- Do not slice by equal grid guesses, fixed cell counts, or hand-counted columns. Object bounds must come from the PhotoRoom sheet alpha/object mask and be recorded in SSOT.
+- Do not regenerate each glyph/object independently unless the owner rejects the sheet style; independent regeneration can drift style and scale.
 
 Minimal call loop for queued components:
 

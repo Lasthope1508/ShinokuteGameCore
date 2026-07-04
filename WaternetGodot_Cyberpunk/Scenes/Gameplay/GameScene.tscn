@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://gamescenestandalone"]
+[gd_scene load_steps=7 format=3 uid="uid://gamescenestandalone"]
 
 [ext_resource type="Script" path="res://Scenes/Gameplay/GameScene.gd" id="1_game"]
 [ext_resource type="Theme" uid="uid://b21theme" path="res://Resources/Theme/main_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" path="res://Assets/Icons/logo.png" id="3_logo"]
 [ext_resource type="Texture2D" path="res://Assets/Icons/return.png" id="4_return"]
 [ext_resource type="Texture2D" path="res://Assets/Icons/menuList.png" id="5_menu"]
-[ext_resource type="Texture2D" path="res://Assets/Icons/leaderboard.png" id="6_leaderboard"]
 [ext_resource type="Texture2D" path="res://Assets/Icons/cross.png" id="7_close"]
 
 [node name="GameScene" type="Node2D"]
@@ -241,6 +240,11 @@ theme_override_font_sizes/font_size = 30
 text = "SETTINGS"
 horizontal_alignment = 1
 
+[node name="MasterAudioBtn" type="Button" parent="HUD/SettingsOverlay/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "MASTER AUDIO"
+
 [node name="MusicBtn" type="Button" parent="HUD/SettingsOverlay/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
@@ -260,7 +264,6 @@ text = "THEME"
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 text = "LEADERBOARD"
-icon = ExtResource("6_leaderboard")
 
 [node name="RestartBtn" type="Button" parent="HUD/SettingsOverlay/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 54)
@@ -299,6 +302,7 @@ mouse_filter = 1
 [connection signal="pressed" from="HUD/MarginContainer/VBoxContainer/TopTrayRoot/TopTrayLayer/LeftFloatingMenu" to="." method="_on_settings_btn_pressed"]
 [connection signal="pressed" from="HUD/MarginContainer/VBoxContainer/TopTrayRoot/TopTrayLayer/RightFloatingReplay" to="." method="_on_reset_btn_pressed"]
 [connection signal="pressed" from="HUD/SolvedPopup/MarginContainer/VBoxContainer/NextBtn" to="." method="_on_next_btn_pressed"]
+[connection signal="pressed" from="HUD/SettingsOverlay/MarginContainer/VBoxContainer/MasterAudioBtn" to="." method="_on_settings_master_audio_btn_pressed"]
 [connection signal="pressed" from="HUD/SettingsOverlay/MarginContainer/VBoxContainer/MusicBtn" to="." method="_on_settings_music_btn_pressed"]
 [connection signal="pressed" from="HUD/SettingsOverlay/MarginContainer/VBoxContainer/SfxBtn" to="." method="_on_settings_sfx_btn_pressed"]
 [connection signal="pressed" from="HUD/SettingsOverlay/MarginContainer/VBoxContainer/ThemeModeBtn" to="." method="_on_settings_theme_mode_btn_pressed"]

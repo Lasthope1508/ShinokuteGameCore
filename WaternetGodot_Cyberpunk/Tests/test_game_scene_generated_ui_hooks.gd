@@ -19,9 +19,10 @@ func _run() -> void:
 		"get_ui_generated_asset_texture",
 		"ui_generated_asset_mode",
 		"ui_top_tray_art_stack",
+		"ui_top_tray_button_icon_source",
 		"ui_top_tray_button_icon_paths",
 		"_set_generated_top_tray_stack_texture",
-		"_apply_top_tray_button_icon",
+		"_apply_top_tray_button_icon_policy",
 		"_set_generated_top_tray_regions_texture",
 		"_get_top_tray_regions_rect",
 		"top_tray_layer",
@@ -32,7 +33,12 @@ func _run() -> void:
 		"_format_left_stats_text",
 		"total_play_time_label",
 		"_update_total_play_time_label",
+		"_update_top_right_stats_label",
+		"_format_top_right_stats_text",
 		"_format_duration_seconds",
+		"_apply_bottom_timer_theme",
+		"_update_bottom_timer_digits",
+		"BottomTimerDigits",
 		"floating_menu_button_default",
 		"floating_replay_button_default",
 		"bottom_reserve_layer",
@@ -100,9 +106,10 @@ func _run() -> void:
 		var top_tray_asset = instance.top_tray_layer.get_node_or_null("GeneratedTopTrayLayer") as TextureRect
 		var menu_asset = instance.left_floating_menu.get_node_or_null("GeneratedMenuButton") as TextureRect
 		var replay_asset = instance.right_floating_replay.get_node_or_null("GeneratedReplayButton") as TextureRect
+		var ui_asset_mode := String(theme.ui_generated_asset_mode)
 		passed = passed and _assert_true(top_tray_asset.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "Top tray generated object should fit/center, not cover/crop")
-		passed = passed and _assert_true(menu_asset != null and not (menu_asset.texture is AtlasTexture), "Menu button shell should render owner-approved full PhotoRoom PNG, not alpha_bbox crop")
-		passed = passed and _assert_true(replay_asset != null and not (replay_asset.texture is AtlasTexture), "Replay button shell should render owner-approved full PhotoRoom PNG, not alpha_bbox crop")
+		passed = passed and _assert_true(menu_asset != null and _texture_uses_path(menu_asset.texture, theme.get_ui_generated_asset_path(ui_asset_mode, "floating_menu_button_default")), "Menu button should render owner-approved baked icon PhotoRoom PNG")
+		passed = passed and _assert_true(replay_asset != null and _texture_uses_path(replay_asset.texture, theme.get_ui_generated_asset_path(ui_asset_mode, "floating_replay_button_default")), "Replay button should render owner-approved baked icon PhotoRoom PNG")
 		passed = passed and _assert_true(modal_asset.stretch_mode == TextureRect.STRETCH_SCALE, "Modal frame should fill the modal rect until 9-slice slicing is implemented")
 		passed = passed and _assert_true(instance._has_generated_ui_asset(theme, "top_tray_layer"), "Top tray generated asset path should be visible to GameScene")
 		instance._apply_top_tray_theme(theme)
@@ -135,19 +142,25 @@ func _run() -> void:
 			passed = passed and _assert_true(instance.left_stats_label.text.contains("\n" + String(theme.ui_top_tray_best_wave_label_prefix)), "Left stats should include SSOT best wave prefix on second line")
 			passed = passed and _assert_left_stats_label_style(instance.left_stats_label, theme, "Left stats should use cyber info style")
 			passed = passed and _assert_true(instance.left_stats_label.clip_contents, "Left stats should clip to owner region")
-			passed = passed and _assert_true(instance.total_play_time_label.visible, "Top tray should render total play time after owner placement approval")
-			passed = passed and _assert_true(instance.total_play_time_label.text.contains("\n" + String(theme.ui_top_tray_moves_label_prefix)), "Total play time should include SSOT moves prefix on second line")
-			passed = passed and _assert_time_label_style(instance.total_play_time_label, theme, "Total play time should use cyber time style")
-			passed = passed and _assert_true(instance.total_play_time_label.clip_contents, "Total play time should clip to owner region")
+			passed = passed and _assert_true(instance.total_play_time_label.visible, "Top-right readout should show remaining round stats when bottom sprite timer is enabled")
+			passed = passed and _assert_true(instance.total_play_time_label.text == "%s 0" % String(theme.ui_top_tray_moves_label_prefix), "Top-right readout should show moves only after timer moves to bottom tray")
+			passed = passed and _assert_true(_has_property(theme, "ui_top_tray_moves_font_size"), "Theme should own top-right moves font size")
+			if _has_property(theme, "ui_top_tray_moves_font_size"):
+				passed = passed and _assert_true(int(theme.ui_top_tray_moves_font_size) > int(theme.ui_top_tray_stat_font_size), "Top-right moves font cap should be larger than shared stat font")
+			passed = passed and _assert_true(source.contains("_fit_time_label_to_region(total_play_time_label, theme, theme.ui_top_tray_moves_font_size)"), "Top-right moves fitter should use the dedicated SSOT font cap")
+			passed = passed and _assert_true(instance.bottom_reserve_layer.get_node_or_null("BottomTimerDigits") != null, "Bottom tray should render sprite timer after owner timer approval")
+			passed = passed and _assert_time_label_style(instance.total_play_time_label, theme, "Top-right moves should use cyber time style")
+			passed = passed and _assert_true(instance.total_play_time_label.clip_contents, "Top-right moves should clip to owner region")
 			passed = passed and _assert_true(instance.left_floating_menu.text.is_empty(), "Menu should be icon-only")
 			passed = passed and _assert_true(instance.right_floating_replay.text.is_empty(), "Replay should be icon-only")
-			passed = passed and _assert_button_icon(instance.left_floating_menu, "res://Assets/Icons/menuList.png", "Menu button should render settings/menu symbol overlay")
-			passed = passed and _assert_button_icon(instance.right_floating_replay, "res://Assets/Icons/return.png", "Replay button should render replay symbol overlay")
+			passed = passed and _assert_true(theme.ui_top_tray_button_icon_source == "baked_texture", "Cyber floating button icons should be baked into generated button textures")
+			passed = passed and _assert_baked_button_texture(instance.left_floating_menu, "GeneratedMenuButton", theme.get_ui_generated_asset_path(String(theme.ui_generated_asset_mode), "floating_menu_button_default"), "Menu button should render baked settings symbol texture")
+			passed = passed and _assert_baked_button_texture(instance.right_floating_replay, "GeneratedReplayButton", theme.get_ui_generated_asset_path(String(theme.ui_generated_asset_mode), "floating_replay_button_default"), "Replay button should render baked replay symbol texture")
 			passed = passed and _assert_true(theme.ui_top_tray_art_stack == ["top_tray_layer"], "Current cyber top tray stack should use top_tray_layer only")
 			passed = passed and _assert_region_rect(instance.left_floating_menu, regions.get("left_floating_menu", Vector4.ZERO), region_basis, "Menu button should use top tray left_floating_menu region")
 			passed = passed and _assert_region_rect(instance.right_floating_replay, regions.get("right_floating_replay", Vector4.ZERO), region_basis, "Replay button should use top tray right_floating_replay region")
-			passed = passed and _assert_child_region_rect(instance.left_floating_menu.get_node_or_null("GeneratedButtonIcon") as Control, instance.left_floating_menu, regions.get("left_floating_menu_icon", Vector4.ZERO), region_basis, "Menu icon should use top tray left_floating_menu_icon region")
-			passed = passed and _assert_child_region_rect(instance.right_floating_replay.get_node_or_null("GeneratedButtonIcon") as Control, instance.right_floating_replay, regions.get("right_floating_replay_icon", Vector4.ZERO), region_basis, "Replay icon should use top tray right_floating_replay_icon region")
+			passed = passed and _assert_true(instance.left_floating_menu.get_node_or_null("GeneratedButtonIcon") == null, "Menu button should not create runtime icon overlay")
+			passed = passed and _assert_true(instance.right_floating_replay.get_node_or_null("GeneratedButtonIcon") == null, "Replay button should not create runtime icon overlay")
 			passed = passed and _assert_region_rect(instance.logo_core, regions.get("logo_core", Vector4.ZERO), region_basis, "Logo should use top tray logo_core region")
 			passed = passed and _assert_region_rect(instance.left_stats_label, regions.get("left_stats_readout", Vector4.ZERO), region_basis, "Left stats should use top tray left_stats_readout region")
 			passed = passed and _assert_region_rect(instance.total_play_time_label, regions.get("total_play_time_readout", Vector4.ZERO), region_basis, "Total play time should use top tray total_play_time_readout region")
@@ -333,27 +346,37 @@ func _assert_full_parent_rect(control: Control, message: String) -> bool:
 		return false
 	return true
 
-func _assert_button_icon(button: Button, expected_path: String, message: String) -> bool:
+func _assert_baked_button_texture(button: Button, rect_name: String, expected_path: String, message: String) -> bool:
 	if button == null:
 		push_error("%s: expected button" % message)
 		return false
-	var icon_rect := button.get_node_or_null("GeneratedButtonIcon") as TextureRect
-	if icon_rect == null:
-		push_error("%s: expected GeneratedButtonIcon TextureRect" % message)
+	var texture_rect := button.get_node_or_null(rect_name) as TextureRect
+	if texture_rect == null:
+		push_error("%s: expected %s TextureRect" % [message, rect_name])
 		return false
-	if icon_rect.texture == null:
-		push_error("%s: expected icon texture" % message)
+	if texture_rect.texture == null:
+		push_error("%s: expected baked button texture" % message)
 		return false
-	if icon_rect.texture.resource_path != expected_path:
-		push_error("%s: expected %s, got %s" % [message, expected_path, icon_rect.texture.resource_path])
+	if not _texture_uses_path(texture_rect.texture, expected_path):
+		push_error("%s: expected %s, got %s" % [message, expected_path, texture_rect.texture.resource_path])
 		return false
-	if not icon_rect.visible:
-		push_error("%s: expected visible icon" % message)
+	if not texture_rect.visible:
+		push_error("%s: expected visible baked button texture" % message)
 		return false
-	if icon_rect.size.x <= 0.0 or icon_rect.size.y <= 0.0:
-		push_error("%s: expected non-empty icon rect" % message)
+	if button.get_node_or_null("GeneratedButtonIcon") != null:
+		push_error("%s: runtime icon overlay should not exist" % message)
 		return false
 	return true
+
+func _texture_uses_path(texture: Texture2D, expected_path: String) -> bool:
+	if texture == null:
+		return false
+	if texture.resource_path == expected_path:
+		return true
+	if texture is AtlasTexture:
+		var atlas := texture as AtlasTexture
+		return atlas.atlas != null and atlas.atlas.resource_path == expected_path
+	return false
 
 func _assert_time_label_style(label: Label, theme: ThemeConfig, message: String) -> bool:
 	if label == null:
