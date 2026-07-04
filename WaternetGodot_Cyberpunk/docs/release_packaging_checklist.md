@@ -19,6 +19,7 @@
 ## Source Packaging Contract
 
 - Required reading before packaging: `docs/mobile_html5_asset_optimization_checklist.md`.
+- Required reading before owner web test links or official web publish: `C:/Users/Admin/Desktop/ShinokuteGameCore/docs/godot_web_publish_runbook.md`.
 - Required reading before any Web audio rebuild: `docs/audio_pipeline.md`, section `Web Audio Incident 2026-07-03`.
 - Asset optimization checklist must pass before any package-ready claim.
 - Runtime theme registration must stay cyber-only.
