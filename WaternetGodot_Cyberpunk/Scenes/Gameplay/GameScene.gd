@@ -9,7 +9,7 @@ const PipeVfxLayerScript = preload("res://Scripts/pipe_vfx_layer.gd")
 const VfxTransitionStateScript = preload("res://Scripts/vfx_transition_state.gd")
 const LevelGeneratorScript = preload("res://Scripts/level_generator.gd")
 const BottomTimerDigitsScript = preload("res://Scripts/bottom_timer_digits.gd")
-const PROFILE_POPUP_SCENE_PATH := "res://Scenes/Common/ProfilePopup.tscn"
+const LEADERBOARD_POPUP_SCENE_PATH := "res://Scenes/Common/LeaderboardPopup.tscn"
 const PROJECT_LOGO_PATH := "res://Assets/Icons/logo.png"
 const UI_MODE_SAVE_KEY := "cyber_ui_generated_asset_mode"
 
@@ -106,6 +106,7 @@ func _ready() -> void:
 		_apply_saved_ui_mode(_get_active_theme())
 	
 	_recalculate_layout()
+	_prime_vfx_visual_state()
 	_update_hud()
 	_apply_top_tray_theme(_get_active_theme())
 	_apply_generated_ui_assets(_get_active_theme())
@@ -136,7 +137,7 @@ func _process(_delta: float) -> void:
 		queue_redraw()
 
 
-func _on_theme_changed(name: String, config: ThemeConfig) -> void:
+func _on_theme_changed(_theme_name: String, config: ThemeConfig) -> void:
 	if config == null:
 		return
 	_apply_saved_ui_mode(config)
@@ -1871,11 +1872,13 @@ func _on_leaderboard_btn_pressed() -> void:
 	leaderboard_overlay_root.visible = true
 	for child in leaderboard_overlay_root.get_children():
 		child.queue_free()
-	var profile_popup_scene: PackedScene = load(PROFILE_POPUP_SCENE_PATH) as PackedScene
-	if profile_popup_scene == null:
+	var leaderboard_popup_scene: PackedScene = load(LEADERBOARD_POPUP_SCENE_PATH) as PackedScene
+	if leaderboard_popup_scene == null:
 		return
-	var popup := profile_popup_scene.instantiate()
+	var popup := leaderboard_popup_scene.instantiate()
 	leaderboard_overlay_root.add_child(popup)
+	if popup.has_signal("dismissed"):
+		popup.connect("dismissed", Callable(self, "_on_leaderboard_popup_dismissed"))
 	_configure_leaderboard_popup(popup, _get_active_theme())
 
 func _configure_leaderboard_popup(popup: Node, theme: ThemeConfig) -> void:
@@ -1904,6 +1907,11 @@ func _close_leaderboard_overlay() -> void:
 	leaderboard_overlay_root.visible = false
 	for child in leaderboard_overlay_root.get_children():
 		child.queue_free()
+
+func _on_leaderboard_popup_dismissed() -> void:
+	if leaderboard_overlay_root == null:
+		return
+	leaderboard_overlay_root.visible = false
 
 func _is_modal_overlay_visible() -> bool:
 	var settings_visible := settings_overlay != null and settings_overlay.visible
@@ -1964,6 +1972,13 @@ func _update_flow_visual_state(now: float = -1.0) -> void:
 	if sample_time < 0.0:
 		sample_time = Time.get_ticks_msec() / 1000.0
 	flow_visual_state = FlowVisualStateScript.build(grid, energy_flow_start_times, sample_time)
+
+func _prime_vfx_visual_state() -> void:
+	if grid == null or solver == null:
+		_sync_vfx_layer()
+		return
+	_update_flow_visual_state()
+	_sync_vfx_layer()
 
 func _ensure_vfx_layer() -> void:
 	if pipe_vfx_layer != null:

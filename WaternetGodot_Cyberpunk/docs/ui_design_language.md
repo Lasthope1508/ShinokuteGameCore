@@ -118,10 +118,35 @@ ThemeConfig owns:
 - Scene nodes may define semantic structure.
 - Runtime sizing and styling must read ThemeConfig.
 - Tests must guard node structure and token presence before visual polish begins.
+- Text layout is role-based. Every runtime text element must use `ThemeConfig.ui_text_roles` and `res://Scripts/ui_text_layout.gd` unless it has a documented reason to use a stricter specialized fitter.
 - Settings modal option buttons are text-only centered rows. Icons belong to floating controls or generated art, not option rows.
 - Modal dimensions and styles are role contracts, not a shared bucket. Settings/profile/leaderboard may use generic modal tokens, but solved/result panels must use `ui_result_modal_*` compact tokens and centered, non-fill action buttons.
 - Modal code paths are also SSOT. `_style_modal_action_buttons()` owns generic settings/modal rows only; `_style_result_modal_action_buttons()` owns solved/result text, width, font size, and mode-specific button colors. Generic modal functions must not reference `ui_result_modal_*`.
 - Result modal regressions must be checked at runtime, not only by source text. `Tests/test_result_modal_runtime_style.gd` verifies actual `NextBtn` stylebox and font color against active `ui_generated_asset_mode`.
+
+## Text Layout Gate
+
+Text must never be tuned by dragging labels or guessing margins. Each text element needs a role, an owner rect, and a measured fit.
+
+Canonical roles live in `ThemeConfig.ui_text_roles`. The canonical helper is `res://Scripts/ui_text_layout.gd`.
+
+Every text role must state:
+
+- maximum font size and minimum font size.
+- horizontal and vertical alignment.
+- size flag policy such as `expand_fill` or `shrink_center`.
+- overflow policy: ellipsis, clip, or wrap.
+- max lines.
+- padding ratio used by font fitting.
+- owner rect source.
+
+Approval contract:
+
+- The owner rect must be approved before text styling starts.
+- Text must fill or shrink inside its owner rect according to role.
+- Dynamic rows such as leaderboard empty states and score rows must fill the list width, not size from the string.
+- Empty, loading, error, populated, long username, long score, and translated-length samples must be covered.
+- If any text overflows, appears off-center, makes a box too large, or makes a box too small, fix the text role or owner rect in SSOT. Do not patch node offsets.
 
 ## Asset Region SSOT
 

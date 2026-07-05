@@ -29,9 +29,9 @@ Purpose: canonical parameter list for pipe-connection puzzle VFX. Current implem
 
 ## source_emission
 
-- Trigger: source tile has active output directions.
+- Trigger: source tile is powered by definition. It pulses once on entry and keeps a weak local idle pulse if the source is blocked and has no active output directions, so first launch never looks like VFX is missing just because random rotation starts disconnected.
 - Anchor: source energy center.
-- Parameters: `vfx_source_emission_color`, `vfx_source_emission_duration`, `vfx_source_emission_radius_ratio`, `vfx_source_emission_ring_width_ratio`.
+- Parameters: `vfx_source_emission_color`, `vfx_source_emission_duration`, `vfx_source_emission_radius_ratio`, `vfx_source_emission_ring_width_ratio`, `vfx_source_idle_enabled`, `vfx_source_idle_period`, `vfx_source_idle_alpha_min_ratio`, `vfx_source_idle_alpha_pulse_ratio`, `vfx_source_idle_radius_pulse_ratio`.
 
 ## target_pulse
 

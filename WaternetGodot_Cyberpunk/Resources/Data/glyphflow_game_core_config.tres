@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="GameCoreConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/game_core_config.gd" id="1_core_config"]
+
+[resource]
+script = ExtResource("1_core_config")
+game_id = "glyphflow_arrays"
+display_name = "Glyphflow Arrays"
+firebase_project_id = "foodapp-7ff6b"
+firestore_api_key = "AIzaSyCn3QkPRiv1vq6jZ-TBfTDF9bDhEMYTpr0"
+geolocation_url = "https://foodapp-7ff6b.web.app/api/location"
+username_min_length = 3
+username_max_length = 16
+allow_skip_username = true
+require_username_on_first_launch = true
+default_username_prefix = "Player"
+leaderboard_limit = 15
+leaderboard_collections = {
+"classic": "glyphflow_arrays_leaderboard",
+"default": "glyphflow_arrays_leaderboard"
+}
+score_labels = {
+"classic": "moves",
+"default": "moves"
+}
+score_sort_directions = {
+"classic": "ASCENDING",
+"default": "ASCENDING"
+}

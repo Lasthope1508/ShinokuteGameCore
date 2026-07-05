@@ -28,6 +28,85 @@ var _cell_bg_texture_cache: Dictionary = {}
 
 @export_group("Typography")
 @export var custom_font: Font
+@export var ui_text_roles: Dictionary = {
+	"modal_title": {
+		"font_size": 28,
+		"min_font_size": 16,
+		"horizontal_alignment": "center",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.08,
+		"max_lines": 1
+	},
+	"modal_body_center": {
+		"font_size": 18,
+		"min_font_size": 12,
+		"horizontal_alignment": "center",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.08,
+		"max_lines": 2
+	},
+	"leaderboard_empty_state": {
+		"font_size": 18,
+		"min_font_size": 12,
+		"horizontal_alignment": "center",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.08,
+		"max_lines": 1
+	},
+	"leaderboard_title": {
+		"font_size": 24,
+		"min_font_size": 16,
+		"horizontal_alignment": "center",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.10,
+		"max_lines": 1
+	},
+	"leaderboard_status": {
+		"font_size": 15,
+		"min_font_size": 11,
+		"horizontal_alignment": "center",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.08,
+		"max_lines": 1
+	},
+	"leaderboard_score_row": {
+		"font_size": 18,
+		"min_font_size": 11,
+		"horizontal_alignment": "left",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.05,
+		"max_lines": 1
+	},
+	"modal_action_button": {
+		"font_size": 20,
+		"min_font_size": 12,
+		"horizontal_alignment": "center",
+		"vertical_alignment": "center",
+		"size_flags_horizontal": "expand_fill",
+		"overflow": "ellipsis",
+		"fit": "shrink_to_fit",
+		"padding_ratio": 0.10,
+		"max_lines": 1
+	}
+}
 
 @export_group("Layout Specs")
 @export var menu_margin_x: float = 40.0
@@ -280,6 +359,12 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_profile_popup_list_gap: int = 10
 @export var ui_profile_popup_save_button_width: float = 80.0
 @export var ui_profile_popup_score_font_size: int = 18
+@export var ui_leaderboard_popup_content_margin_x: int = 34
+@export var ui_leaderboard_popup_content_margin_top: int = 92
+@export var ui_leaderboard_popup_content_margin_bottom: int = 34
+@export var ui_leaderboard_popup_title_font_size: int = 24
+@export var ui_leaderboard_popup_status_font_size: int = 15
+@export var ui_leaderboard_popup_list_gap: int = 10
 @export var pipe_line_width_ratio: float = 0.06
 @export var pipe_center_dot_ratio: float = 0.07
 @export var arrow_tip_ratio: float = 0.42
@@ -374,6 +459,11 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var vfx_source_emission_duration: float = 0.42
 @export var vfx_source_emission_radius_ratio: float = 0.24
 @export var vfx_source_emission_ring_width_ratio: float = 0.032
+@export var vfx_source_idle_enabled: bool = true
+@export var vfx_source_idle_period: float = 0.75
+@export var vfx_source_idle_alpha_min_ratio: float = 0.32
+@export var vfx_source_idle_alpha_pulse_ratio: float = 0.55
+@export var vfx_source_idle_radius_pulse_ratio: float = 0.28
 @export var vfx_idle_hum_color: Color = Color(0.22, 1.0, 0.08, 0.34)
 @export var vfx_idle_hum_delay: float = 0.72
 @export var vfx_idle_hum_alpha: float = 0.34

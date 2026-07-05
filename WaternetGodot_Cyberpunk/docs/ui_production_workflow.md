@@ -8,6 +8,8 @@ MUST READ BEFORE RESKIN: `../../Shared/ShinokuteGameCore/docs/reskin_core_skin_b
 
 Reskin ownership rule: Core = behavior; Game skin = game-specific art; Function skin = game-specific presentation for a shared feature. No fallback unless owner approves the exact fallback for this project.
 
+MUST READ BEFORE ANY GODOT WORK: `res://docs/godot_working_guide.md`. This is the single canonical Godot process document; do not split new Godot notes into side docs.
+
 Do not design professional game UI by hand-tweaking Godot controls first.
 
 The correct order is:
@@ -20,6 +22,7 @@ The correct order is:
 6. Place every approved object asset in Godot through SSOT geometry.
 7. Audit object placement on portrait and landscape screenshots.
 8. Only after object placement is approved, add or tune text.
+9. Run the Text Layout Gate before claiming any UI scale or reskin pass is complete.
 
 ## B1. Responsive Frame
 
@@ -189,6 +192,28 @@ Loop:
 7. Repeat until owner approves.
 
 Never claim UI is done from tests alone.
+
+## B7. Text Layout Gate
+
+Text is the last production step, but it is not an eyeballing step. Every text node must pass through the canonical text layout gate before visual approval.
+
+Required for every label, button text, readout, empty state, and dynamic row:
+
+1. Define the owner rect before styling text. The owner rect can be an approved region such as `left_stats_readout`, `total_play_time_readout`, a modal content rect, or a list row rect.
+2. Assign one canonical text role from `ThemeConfig.ui_text_roles`.
+3. Apply text through `res://Scripts/ui_text_layout.gd`, not one-off `Label.new()` styling.
+4. The text role must define font size, minimum font size, alignment, vertical alignment, padding, overflow behavior, max lines, and fit policy.
+5. Runtime code must measure text with font metrics and shrink from max to min font size before allowing ellipsis or clipping.
+6. Dynamic text states must be tested with normal, empty, long, numeric-growth, and translated-length samples.
+7. Portrait, small portrait, landscape, and modal-open states must run through tests and visible debug review.
+
+Forbidden:
+
+- Text without an owner rect.
+- Runtime labels or buttons that skip `UiTextLayout`.
+- Manual offset fixes for text drift.
+- Text that decides its own width from string length inside a layout container.
+- Modal/popup text that is approved in one theme or orientation only.
 
 ## Completion Gate
 

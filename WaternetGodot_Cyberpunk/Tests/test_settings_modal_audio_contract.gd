@@ -60,6 +60,12 @@ func _run() -> void:
 		instance.settings_overlay.visible = true
 		instance._update_settings_buttons()
 		await process_frame
+		instance._on_settings_close_btn_pressed()
+		await process_frame
+		passed = passed and _assert_true(not instance.settings_overlay.visible, "Settings close button handler should hide settings overlay")
+		instance._on_settings_btn_pressed()
+		await process_frame
+		passed = passed and _assert_true(instance.settings_overlay.visible, "Settings button handler should reopen settings overlay after close")
 		var master_button := instance.get_node_or_null("HUD/SettingsOverlay/MarginContainer/VBoxContainer/MasterAudioBtn") as Button
 		passed = passed and _assert_true(master_button != null, "Settings should expose Master Audio button")
 		if master_button != null:
@@ -72,6 +78,20 @@ func _run() -> void:
 			instance._on_settings_master_audio_btn_pressed()
 			await process_frame
 			passed = passed and _assert_true(master_button.text == "MASTER AUDIO ON", "Master Audio button should show ON after global audio restore")
+		instance._on_leaderboard_btn_pressed()
+		await process_frame
+		passed = passed and _assert_true(not instance.settings_overlay.visible, "Opening leaderboard from settings should hide settings overlay")
+		passed = passed and _assert_true(instance.leaderboard_overlay_root.visible, "Leaderboard overlay root should show after leaderboard button")
+		passed = passed and _assert_true(instance.leaderboard_overlay_root.get_child_count() == 1, "Leaderboard overlay root should contain popup")
+		if instance.leaderboard_overlay_root.get_child_count() == 1:
+			var leaderboard_popup: Node = instance.leaderboard_overlay_root.get_child(0)
+			if leaderboard_popup.has_method("_on_close_btn_pressed"):
+				leaderboard_popup._on_close_btn_pressed()
+				await process_frame
+				passed = passed and _assert_true(not instance.leaderboard_overlay_root.visible, "Closing leaderboard popup should hide full-screen overlay root")
+		instance._on_settings_btn_pressed()
+		await process_frame
+		passed = passed and _assert_true(instance.settings_overlay.visible, "Settings should open after leaderboard popup closes")
 		var overlay_rect: Rect2 = instance.settings_overlay.get_global_rect()
 		var option_paths := [
 			"HUD/SettingsOverlay/MarginContainer/VBoxContainer/MasterAudioBtn",

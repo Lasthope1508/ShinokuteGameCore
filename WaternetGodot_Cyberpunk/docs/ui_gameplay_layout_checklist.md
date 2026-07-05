@@ -205,6 +205,8 @@ Current production caveat:
 - [x] Runtime treats `total_play_time_readout` as a hard clipping region: `TotalPlayTimeLabel.clip_contents = true`, and font fitting subtracts padding, outline, and shadow bleed.
 - [x] `TotalPlayTimeLabel` is the top-right moves readout while the node name remains for scene compatibility: one-line `MOVES N`, right-aligned and font-fitted inside the owner region.
 - [x] `LeftStatsLabel` uses `left_stats_readout`: username on top, best wave on bottom, left-aligned and clipped/fitted by the same SSOT typography rules.
+- [x] Text Layout Gate added: every new/scaled UI text needs owner rect, `ThemeConfig.ui_text_roles` role, `UiTextLayout` application or documented specialized fitter, overflow policy, and long/empty/runtime tests before visual approval.
+- [x] Leaderboard empty state and score rows use `UiTextLayout.apply_label_role`; rows fill the list owner width and cannot size themselves from text.
 - [x] Create light landscape playboard context editor with approved top tray and bottom tray fixed, and only `board_backplate_rect` draggable/resizable over the middle gameplay area.
 - [x] Editor separates owner-adjusted `board_backplate_rect` from derived inner `playboard_rect`; do not mix art placement and gameplay grid placement in one ambiguous box.
 - [x] Extend playboard context editor so light landscape menu/replay icon regions are draggable/resizable in the same scene; icon boxes have no text labels and output top-tray-source coordinates.

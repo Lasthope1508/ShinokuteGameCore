@@ -7,11 +7,13 @@ extends Control
 @onready var presents_label: Label = $MarginContainer/VBoxContainer/PresentsLabel
 
 func _ready() -> void:
-	var theme := ThemeManager.active_theme if has_node("/root/ThemeManager") else null
-	if theme == null:
+	var theme_config: ThemeConfig = null
+	if has_node("/root/ThemeManager"):
+		theme_config = ThemeManager.active_theme
+	if theme_config == null:
 		push_error("Splash requires ThemeManager.active_theme for SSOT UI timing and layout")
 		return
-	_apply_theme(theme)
+	_apply_theme(theme_config)
 
 	# Hide elements initially for fade-in animation
 	studio_name.modulate.a = 0.0
@@ -23,9 +25,9 @@ func _ready() -> void:
 
 	# Start splash animation sequence
 	var tw = create_tween()
-	var fade_in_duration := theme.ui_splash_fade_in_duration
-	var hold_duration := theme.ui_splash_hold_duration
-	var fade_out_duration := theme.ui_splash_fade_out_duration
+	var fade_in_duration := theme_config.ui_splash_fade_in_duration
+	var hold_duration := theme_config.ui_splash_hold_duration
+	var fade_out_duration := theme_config.ui_splash_fade_out_duration
 	tw.tween_property(studio_name, "modulate:a", 1.0, fade_in_duration)
 	tw.parallel().tween_property(presents_label, "modulate:a", 1.0, fade_in_duration)
 	tw.tween_interval(hold_duration)
@@ -40,19 +42,19 @@ func _ready() -> void:
 			get_tree().change_scene_to_file("res://Scenes/Main/MainMenu.tscn")
 	)
 
-func _apply_theme(theme: ThemeConfig) -> void:
+func _apply_theme(theme_config: ThemeConfig) -> void:
 	if background:
-		background.color = theme.panel_bg_color
+		background.color = theme_config.panel_bg_color
 	if margin_container:
-		margin_container.add_theme_constant_override("margin_left", int(theme.menu_margin_x))
-		margin_container.add_theme_constant_override("margin_top", int(theme.menu_margin_y))
-		margin_container.add_theme_constant_override("margin_right", int(theme.menu_margin_x))
-		margin_container.add_theme_constant_override("margin_bottom", int(theme.menu_margin_y))
+		margin_container.add_theme_constant_override("margin_left", int(theme_config.menu_margin_x))
+		margin_container.add_theme_constant_override("margin_top", int(theme_config.menu_margin_y))
+		margin_container.add_theme_constant_override("margin_right", int(theme_config.menu_margin_x))
+		margin_container.add_theme_constant_override("margin_bottom", int(theme_config.menu_margin_y))
 	if vbox_container:
-		vbox_container.add_theme_constant_override("separation", theme.ui_splash_gap)
+		vbox_container.add_theme_constant_override("separation", theme_config.ui_splash_gap)
 	if studio_name:
-		studio_name.add_theme_color_override("font_color", theme.accent_color)
-		studio_name.add_theme_font_size_override("font_size", theme.ui_splash_studio_font_size)
+		studio_name.add_theme_color_override("font_color", theme_config.accent_color)
+		studio_name.add_theme_font_size_override("font_size", theme_config.ui_splash_studio_font_size)
 	if presents_label:
-		presents_label.add_theme_color_override("font_color", theme.alert_color)
-		presents_label.add_theme_font_size_override("font_size", theme.ui_splash_presents_font_size)
+		presents_label.add_theme_color_override("font_color", theme_config.alert_color)
+		presents_label.add_theme_font_size_override("font_size", theme_config.ui_splash_presents_font_size)

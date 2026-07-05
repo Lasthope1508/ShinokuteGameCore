@@ -31,12 +31,21 @@ func _init() -> void:
 			"age": 2.0,
 			"flow_mask": 2,
 			"order": 2
+		},
+		Vector2i(3, 0): {
+			"cell_pos": Vector2i(3, 0),
+			"input_dir": -1,
+			"output_dirs": [],
+			"age": 2.0,
+			"flow_mask": 0,
+			"order": 0
 		}
 	}
 	var geometries := {
 		Vector2i(0, 0): theme.source_geometry,
 		Vector2i(1, 0): theme.pipe_i_geometry,
-		Vector2i(2, 0): theme.source_geometry
+		Vector2i(2, 0): theme.pipe_i_geometry,
+		Vector2i(3, 0): theme.source_geometry
 	}
 
 	passed = passed and _assert_true(layer.has_method("get_source_emissions"), "PipeVfxLayer should expose source emission data")
@@ -44,6 +53,11 @@ func _init() -> void:
 	passed = passed and _assert_true(_has_property(theme, "vfx_source_emission_duration"), "Theme should own source emission duration")
 	passed = passed and _assert_true(_has_property(theme, "vfx_source_emission_radius_ratio"), "Theme should own source emission radius ratio")
 	passed = passed and _assert_true(_has_property(theme, "vfx_source_emission_ring_width_ratio"), "Theme should own source emission ring width ratio")
+	passed = passed and _assert_true(_has_property(theme, "vfx_source_idle_enabled"), "Theme should own source idle enabled")
+	passed = passed and _assert_true(_has_property(theme, "vfx_source_idle_period"), "Theme should own source idle period")
+	passed = passed and _assert_true(_has_property(theme, "vfx_source_idle_alpha_min_ratio"), "Theme should own source idle alpha minimum")
+	passed = passed and _assert_true(_has_property(theme, "vfx_source_idle_alpha_pulse_ratio"), "Theme should own source idle alpha pulse")
+	passed = passed and _assert_true(_has_property(theme, "vfx_source_idle_radius_pulse_ratio"), "Theme should own source idle radius pulse")
 
 	layer.set_visual_context(flow_state, geometries, Vector2(10, 20), 100.0)
 	if layer.has_method("apply_theme_config"):
@@ -51,8 +65,8 @@ func _init() -> void:
 
 	if layer.has_method("get_source_emissions"):
 		var emissions: Array = layer.get_source_emissions()
-		passed = passed and _assert_equal(emissions.size(), 1, "Only newly active source should create emission pulse")
-		if emissions.size() == 1:
+		passed = passed and _assert_equal(emissions.size(), 2, "Source should pulse when newly active and keep idling when blocked")
+		if emissions.size() == 2:
 			var emission: Dictionary = emissions[0]
 			passed = passed and _assert_equal(emission.get("cell_pos", Vector2i(-1, -1)), Vector2i(0, 0), "Emission should belong to source tile")
 			passed = passed and _assert_vec2_close(emission.get("position", Vector2.ZERO), Vector2(60, 70), "Emission position should use source energy center")
@@ -61,6 +75,10 @@ func _init() -> void:
 			passed = passed and _assert_true(float(emission.get("radius", 0.0)) > 0.0, "Emission radius should be positive")
 			passed = passed and _assert_true(float(emission.get("ring_width", 0.0)) > 0.0, "Emission ring width should be positive")
 			passed = passed and _assert_true(float(emission.get("alpha", 0.0)) > 0.0 and float(emission.get("alpha", 0.0)) <= 1.0, "Emission alpha should be normalized")
+			var blocked_source: Dictionary = emissions[1]
+			passed = passed and _assert_equal(blocked_source.get("cell_pos", Vector2i(-1, -1)), Vector2i(3, 0), "Blocked source should still emit local idle source pulse")
+			passed = passed and _assert_vec2_close(blocked_source.get("position", Vector2.ZERO), Vector2(360, 70), "Blocked source emission should stay centered on source tile")
+			passed = passed and _assert_equal(blocked_source.get("output_dirs", []), [], "Blocked source should preserve empty canonical output dirs")
 
 	layer.free()
 

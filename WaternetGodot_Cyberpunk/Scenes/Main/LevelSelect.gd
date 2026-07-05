@@ -25,7 +25,7 @@ func _ready() -> void:
 	if has_node("/root/AudioManager"):
 		AudioManager.play_music()
 
-func _on_theme_changed(name: String, config: ThemeConfig) -> void:
+func _on_theme_changed(_theme_name: String, config: ThemeConfig) -> void:
 	$Background.color = config.panel_bg_color
 	if title_label:
 		title_label.add_theme_color_override("font_color", config.text_color)
@@ -79,9 +79,9 @@ func _populate_levels_grid() -> void:
 		max_unlocked = SaveManager.get_setting("max_unlocked_level_id", 1)
 	
 	# Determine page bounds
-	var theme: ThemeConfig = ThemeManager.active_theme
+	var theme_config: ThemeConfig = ThemeManager.active_theme
 	if levels_per_page <= 0:
-		levels_per_page = theme.levels_per_page
+		levels_per_page = theme_config.levels_per_page
 	var start_lvl = current_page * levels_per_page + 1
 	var end_lvl = start_lvl + levels_per_page - 1
 	
@@ -95,9 +95,9 @@ func _populate_levels_grid() -> void:
 	next_page_btn.disabled = next_page_first_lvl > max_unlocked
 	
 	# Populate buttons for this page
-	var btn_size = theme.level_button_size
-	var btn_font_size = theme.ui_level_select_button_font_size
-	var locked_alpha = theme.ui_level_select_locked_alpha
+	var btn_size = theme_config.level_button_size
+	var btn_font_size = theme_config.ui_level_select_button_font_size
+	var locked_alpha = theme_config.ui_level_select_locked_alpha
 	for lvl_id in range(start_lvl, end_lvl + 1):
 		var btn = Button.new()
 		btn.text = str(lvl_id)

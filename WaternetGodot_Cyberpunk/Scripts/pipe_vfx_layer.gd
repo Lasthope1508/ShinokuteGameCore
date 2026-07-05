@@ -53,6 +53,11 @@ var source_emission_color := Color(0.22, 1.0, 0.08, 0.78)
 var source_emission_duration := 0.42
 var source_emission_radius_ratio := 0.24
 var source_emission_ring_width := 3.2
+var source_idle_enabled := true
+var source_idle_period := 0.75
+var source_idle_alpha_min_ratio := 0.32
+var source_idle_alpha_pulse_ratio := 0.55
+var source_idle_radius_pulse_ratio := 0.28
 var idle_hum_color := Color(0.22, 1.0, 0.08, 0.34)
 var idle_hum_delay := 0.72
 var idle_hum_alpha := 0.34
@@ -186,6 +191,11 @@ func apply_theme_config(theme: Resource, current_cell_size: float) -> void:
 	source_emission_duration = max(0.01, float(theme.get("vfx_source_emission_duration")))
 	source_emission_radius_ratio = max(0.0, float(theme.get("vfx_source_emission_radius_ratio")))
 	source_emission_ring_width = max(1.0, current_cell_size * float(theme.get("vfx_source_emission_ring_width_ratio")))
+	source_idle_enabled = bool(theme.get("vfx_source_idle_enabled"))
+	source_idle_period = max(0.01, float(theme.get("vfx_source_idle_period")))
+	source_idle_alpha_min_ratio = clampf(float(theme.get("vfx_source_idle_alpha_min_ratio")), 0.0, 1.0)
+	source_idle_alpha_pulse_ratio = clampf(float(theme.get("vfx_source_idle_alpha_pulse_ratio")), 0.0, 1.0)
+	source_idle_radius_pulse_ratio = max(0.0, float(theme.get("vfx_source_idle_radius_pulse_ratio")))
 	idle_hum_color = theme.get("vfx_idle_hum_color")
 	idle_hum_delay = max(0.0, float(theme.get("vfx_idle_hum_delay")))
 	idle_hum_alpha = clampf(float(theme.get("vfx_idle_hum_alpha")), 0.0, 1.0)
@@ -255,7 +265,7 @@ func has_active_motion(now: float = -1.0) -> bool:
 			return true
 		if trail_draw_enabled and not output_dirs.is_empty() and age <= trail_duration:
 			return true
-		if asset_key == "source" and not output_dirs.is_empty() and age <= source_emission_duration:
+		if asset_key == "source" and (age <= source_emission_duration or source_idle_enabled):
 			return true
 		if asset_key == "target" and input_dir >= 0 and age <= target_pulse_duration:
 			return true
@@ -598,15 +608,18 @@ func get_source_emissions() -> Array:
 			continue
 		var entry: Dictionary = flow_state[cell_pos]
 		var output_dirs: Array = entry.get("output_dirs", [])
-		if output_dirs.is_empty():
-			continue
 		var age: float = float(entry.get("age", 0.0))
-		if age > source_emission_duration:
+		if age > source_emission_duration and not source_idle_enabled:
 			continue
 		var anchors := VfxAnchorScript.get_anchor_points(geometry, grid_offset, cell_size, cell_pos)
 		var progress: float = clampf(age / source_emission_duration, 0.0, 1.0)
 		var alpha: float = 1.0 - progress
 		var radius: float = cell_size * source_emission_radius_ratio * (0.65 + progress * 0.75)
+		if age > source_emission_duration:
+			var phase: float = fposmod(age / source_idle_period, 1.0) * TAU
+			var pulse: float = (sin(phase) + 1.0) * 0.5
+			alpha = clampf(source_idle_alpha_min_ratio + source_idle_alpha_pulse_ratio * pulse, 0.0, 1.0)
+			radius = cell_size * source_emission_radius_ratio * (0.9 + source_idle_radius_pulse_ratio * pulse)
 		emissions.append({
 			"cell_pos": cell_pos,
 			"output_dirs": output_dirs.duplicate(),

@@ -781,6 +781,12 @@ ui_profile_popup_field_gap = 15
 ui_profile_popup_list_gap = 10
 ui_profile_popup_save_button_width = 80.0
 ui_profile_popup_score_font_size = 18
+ui_leaderboard_popup_content_margin_x = 34
+ui_leaderboard_popup_content_margin_top = 92
+ui_leaderboard_popup_content_margin_bottom = 34
+ui_leaderboard_popup_title_font_size = 24
+ui_leaderboard_popup_status_font_size = 15
+ui_leaderboard_popup_list_gap = 10
 fake_3d_enabled = true
 texture_native_size = Vector2(512, 512)
 cell_inset_ratio = 0.035
@@ -894,6 +900,11 @@ vfx_source_emission_color = Color(0.22, 1, 0.08, 0.78)
 vfx_source_emission_duration = 0.42
 vfx_source_emission_radius_ratio = 0.24
 vfx_source_emission_ring_width_ratio = 0.032
+vfx_source_idle_enabled = true
+vfx_source_idle_period = 0.75
+vfx_source_idle_alpha_min_ratio = 0.32
+vfx_source_idle_alpha_pulse_ratio = 0.55
+vfx_source_idle_radius_pulse_ratio = 0.28
 vfx_idle_hum_color = Color(0.22, 1, 0.08, 0.34)
 vfx_idle_hum_delay = 0.72
 vfx_idle_hum_alpha = 0.34
@@ -1001,5 +1012,3 @@ i_slices = Array[Resource("res://Resources/Classes/PipeSliceConfig.gd")]([
   SubResource("Resource_I_2"),
   SubResource("Resource_I_3")
 ])
-
-

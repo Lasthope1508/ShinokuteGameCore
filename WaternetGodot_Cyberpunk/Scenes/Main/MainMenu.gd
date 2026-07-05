@@ -19,7 +19,7 @@ func _ready() -> void:
 	if has_node("/root/AudioManager"):
 		AudioManager.play_music()
 
-func _on_theme_changed(name: String, config: ThemeConfig) -> void:
+func _on_theme_changed(_theme_name: String, config: ThemeConfig) -> void:
 	if title_label:
 		title_label.text = "GLYPHFLOW ARRAYS"
 		title_label.add_theme_color_override("font_color", config.text_color)
@@ -74,8 +74,7 @@ func _on_play_btn_pressed() -> void:
 		get_tree().change_scene_to_file("res://Scenes/Main/LevelSelect.tscn")
 
 func _on_leaderboard_btn_pressed() -> void:
-	# Spawn Profile/Leaderboard popup
-	var popup_scene = load("res://Scenes/Common/ProfilePopup.tscn")
+	var popup_scene = load("res://Scenes/Common/LeaderboardPopup.tscn")
 	if popup_scene:
 		var inst = popup_scene.instantiate()
 		add_child(inst)

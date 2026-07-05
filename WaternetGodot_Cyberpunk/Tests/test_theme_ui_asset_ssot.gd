@@ -106,7 +106,13 @@ func _init() -> void:
 		"ui_profile_popup_title_font_size",
 		"ui_profile_popup_field_gap",
 		"ui_profile_popup_list_gap",
-		"ui_profile_popup_save_button_width"
+		"ui_profile_popup_save_button_width",
+		"ui_leaderboard_popup_content_margin_x",
+		"ui_leaderboard_popup_content_margin_top",
+		"ui_leaderboard_popup_content_margin_bottom",
+		"ui_leaderboard_popup_title_font_size",
+		"ui_leaderboard_popup_status_font_size",
+		"ui_leaderboard_popup_list_gap"
 	]:
 		passed = passed and _assert_true(_has_property(theme, screen_property), "Theme should own %s" % screen_property)
 	passed = passed and _assert_true(_has_property(theme, "ui_level_select_button_font_size"), "Theme should own level select button font size")
