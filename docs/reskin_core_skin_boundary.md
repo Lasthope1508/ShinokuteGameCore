@@ -28,6 +28,28 @@ Function skin owns how a core feature appears in a game: username popup frame, s
 - Do not reskin by manually scattering constants through scenes. Add SSOT resources, tests, and docs first.
 - Do not rename legacy folders during a reskin unless a separate path migration plan updates imports, export presets, debug tools, docs, and hosting scripts.
 
+## Function Skin Existing Asset Gate
+
+Before creating a new visual frame, field shell, capsule, badge, or button shell for a shared feature, inventory the existing approved game assets first.
+
+Required order for every production reskin:
+
+1. Read the game's runtime asset manifest and generated UI/component manifest.
+2. Read the game's theme/skin SSOT for existing asset keys, geometry, owner rects, padding, and scale policy.
+3. Inspect the target scene for an existing semantic owner box before adding nodes.
+4. Use an existing asset through the game SSOT when a matching blank box or shell exists.
+5. Put text/input controls inside that asset-owned box and make the native control background transparent when the asset owns the frame.
+6. Add a contract test proving the chosen control uses an existing asset key, owner rect, and theme token.
+7. Generate a new 9Router/artist asset only when no approved existing asset matches the role, and only after adding it to the game's component queue and getting owner approval.
+
+Forbidden:
+
+- Do not draw a new procedural frame, `StyleBoxFlat`, default control background, or hand-coded border when an approved generated asset already exists for that role.
+- Do not let username fields, settings values, leaderboard rows, or profile text float without an asset-backed owner box.
+- Do not pick a random image path in code. The chosen asset must be represented by a game SSOT key.
+- Do not fix missing boxes with offsets, padding guesses, or default layout containers.
+- Do not add new function-skin art to `ShinokuteGameCore`; the game owns that presentation.
+
 ## Required Reskin Flow
 
 1. Read this boundary document.
