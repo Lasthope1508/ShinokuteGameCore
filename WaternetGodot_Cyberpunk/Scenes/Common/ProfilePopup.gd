@@ -2,6 +2,8 @@ extends Panel
 
 const GAME_CORE_CONFIG_PATH := "res://Resources/Data/glyphflow_game_core_config.tres"
 
+signal dismissed
+
 @onready var username_edit: LineEdit = $MarginContainer/VBoxContainer/HBoxEdit/UsernameEdit
 @onready var margin_container: MarginContainer = $MarginContainer
 @onready var vbox_container: VBoxContainer = $MarginContainer/VBoxContainer
@@ -17,8 +19,8 @@ func _ready() -> void:
 	_core_config = load(GAME_CORE_CONFIG_PATH)
 	if has_node("/root/ThemeManager"):
 		apply_generated_ui_theme(ThemeManager.active_theme)
-	if has_node("/root/SaveManager"):
-		username_edit.text = SaveManager.get_username()
+	if has_node("/root/GameCoreManager"):
+		username_edit.text = GameCoreManager.get_username()
 	status_label.text = "ENTER PLAYER NAME"
 
 func _on_save_btn_pressed() -> void:
@@ -27,9 +29,12 @@ func _on_save_btn_pressed() -> void:
 	if not errors.is_empty():
 		status_label.text = String(errors[0]).to_upper()
 		return
-	if has_node("/root/SaveManager"):
-		SaveManager.set_username(new_name)
+	if not has_node("/root/GameCoreManager") or not GameCoreManager.commit_username(new_name):
+		status_label.text = "PROFILE SERVICE UNAVAILABLE"
+		return
 	status_label.text = "PROFILE SAVED"
+	dismissed.emit()
+	queue_free()
 
 func _validate_username(username: String) -> Array:
 	if _core_config != null and _core_config.has_method("validate_username"):
@@ -39,6 +44,7 @@ func _validate_username(username: String) -> Array:
 	return []
 
 func _on_close_btn_pressed() -> void:
+	dismissed.emit()
 	queue_free()
 
 func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:

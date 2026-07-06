@@ -86,7 +86,14 @@ func _init() -> void:
 		"res://Scripts/pipe_visual_mapping.gd",
 		"res://Scripts/vfx_anchor.gd",
 		"res://Scripts/vfx_route.gd",
-		"res://Scripts/vfx_transition_state.gd"
+		"res://Scripts/vfx_transition_state.gd",
+		"res://Scripts/ui_modal_presenter.gd",
+		"res://Resources/Globals/GameCoreManager.gd",
+		"res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/game_core.gd",
+		"res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/local_save_store.gd",
+		"res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/player_profile.gd",
+		"res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/leaderboard_client.gd",
+		"res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/geo_service.gd"
 	]:
 		passed = passed and _assert_true(export_presets.contains("\"%s\"" % required_runtime_script), "Release export_files should include runtime preload script %s" % required_runtime_script)
 	passed = passed and _assert_true(not export_presets.contains("package/name=\"BloxChain\""), "Android package label should not use old BloxChain name")

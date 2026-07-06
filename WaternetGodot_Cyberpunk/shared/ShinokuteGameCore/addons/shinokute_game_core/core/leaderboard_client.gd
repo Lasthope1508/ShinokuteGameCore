@@ -63,6 +63,8 @@ func submit_score(score: int, mode: String = "classic") -> int:
 		return ERR_UNAVAILABLE
 	if score <= 0:
 		return ERR_INVALID_PARAMETER
+	if _username_for_submit().is_empty():
+		return ERR_UNAVAILABLE
 	if _submit_request == null:
 		_submit_request = HTTPRequest.new()
 		_submit_request.accept_gzip = false
@@ -141,9 +143,6 @@ func _docs_url() -> String:
 
 func _username_for_submit() -> String:
 	var username: String = save_store.get_username().strip_edges()
-	if username.is_empty():
-		username = "Player_%s" % save_store.get_device_uuid().substr(0, 5)
-		save_store.set_username(username)
 	return username
 
 func _region_filter(field: String, value: String) -> Dictionary:

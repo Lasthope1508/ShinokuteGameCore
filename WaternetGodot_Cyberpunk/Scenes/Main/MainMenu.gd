@@ -1,5 +1,9 @@
 extends Control
 
+const UiModalPresenter = preload("res://Scripts/ui_modal_presenter.gd")
+const LEADERBOARD_POPUP_SCENE_PATH := "res://Scenes/Common/LeaderboardPopup.tscn"
+const PROFILE_POPUP_SCENE_PATH := "res://Scenes/Common/ProfilePopup.tscn"
+
 @onready var title_label: Label = $MarginContainer/VBoxContainer/TitleLabel
 @onready var subtitle_label: Label = $MarginContainer/VBoxContainer/SubtitleLabel
 @onready var vbox_container: VBoxContainer = $MarginContainer/VBoxContainer
@@ -8,7 +12,10 @@ extends Control
 @onready var leader_btn: Button = $MarginContainer/VBoxContainer/LeaderboardBtn
 @onready var mute_btn: Button = $MarginContainer/VBoxContainer/HBoxVolume/MuteBtn
 
+var modal_overlay_root: Control
+
 func _ready() -> void:
+	modal_overlay_root = _ensure_modal_overlay_root()
 	# Register theme change signal
 	ThemeManager.theme_changed.connect(_on_theme_changed)
 	_on_theme_changed(ThemeManager.active_theme_name, ThemeManager.active_theme)
@@ -18,6 +25,10 @@ func _ready() -> void:
 	
 	if has_node("/root/AudioManager"):
 		AudioManager.play_music()
+	if has_node("/root/GameCoreManager"):
+		if not GameCoreManager.username_required.is_connected(_on_username_required):
+			GameCoreManager.username_required.connect(_on_username_required)
+		GameCoreManager.ensure_profile_ready()
 
 func _on_theme_changed(_theme_name: String, config: ThemeConfig) -> void:
 	if title_label:
@@ -74,12 +85,59 @@ func _on_play_btn_pressed() -> void:
 		get_tree().change_scene_to_file("res://Scenes/Main/LevelSelect.tscn")
 
 func _on_leaderboard_btn_pressed() -> void:
-	var popup_scene = load("res://Scenes/Common/LeaderboardPopup.tscn")
-	if popup_scene:
-		var inst = popup_scene.instantiate()
-		add_child(inst)
-		if inst.has_method("apply_generated_ui_theme"):
-			inst.apply_generated_ui_theme(ThemeManager.active_theme)
+	show_leaderboard_modal()
+
+func show_leaderboard_modal() -> void:
+	var popup_scene: PackedScene = load(LEADERBOARD_POPUP_SCENE_PATH) as PackedScene
+	if popup_scene == null:
+		return
+	_clear_modal_overlay()
+	var popup := popup_scene.instantiate()
+	if popup.has_signal("dismissed"):
+		popup.connect("dismissed", Callable(self, "_on_modal_dismissed"))
+	UiModalPresenter.show_leaderboard_modal(modal_overlay_root, popup, ThemeManager.active_theme)
+
+func show_profile_modal() -> void:
+	var popup_scene: PackedScene = load(PROFILE_POPUP_SCENE_PATH) as PackedScene
+	if popup_scene == null:
+		return
+	_clear_modal_overlay()
+	var popup := popup_scene.instantiate()
+	if popup.has_signal("dismissed"):
+		popup.connect("dismissed", Callable(self, "_on_modal_dismissed"))
+	UiModalPresenter.present_centered_modal(modal_overlay_root, popup, ThemeManager.active_theme)
+
+func _on_username_required() -> void:
+	show_profile_modal()
+
+func _on_modal_dismissed() -> void:
+	UiModalPresenter.hide_modal_root(modal_overlay_root)
+
+func _clear_modal_overlay() -> void:
+	if modal_overlay_root == null:
+		modal_overlay_root = _ensure_modal_overlay_root()
+	for child in modal_overlay_root.get_children():
+		child.queue_free()
+	modal_overlay_root.visible = false
+
+func _ensure_modal_overlay_root() -> Control:
+	var existing := get_node_or_null("ModalOverlayRoot")
+	if existing is Control:
+		return existing as Control
+	var root := Control.new()
+	root.name = "ModalOverlayRoot"
+	root.visible = false
+	root.mouse_filter = Control.MOUSE_FILTER_STOP
+	root.anchor_left = 0.0
+	root.anchor_top = 0.0
+	root.anchor_right = 1.0
+	root.anchor_bottom = 1.0
+	root.offset_left = 0.0
+	root.offset_top = 0.0
+	root.offset_right = 0.0
+	root.offset_bottom = 0.0
+	add_child(root)
+	return root
 
 func _on_mute_btn_pressed() -> void:
 	if has_node("/root/AudioManager"):

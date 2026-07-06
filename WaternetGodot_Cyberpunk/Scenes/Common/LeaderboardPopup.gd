@@ -15,11 +15,13 @@ signal dismissed
 func _ready() -> void:
 	if has_node("/root/ThemeManager"):
 		apply_generated_ui_theme(ThemeManager.active_theme)
-	if has_node("/root/LeaderboardManager"):
-		if not LeaderboardManager.leaderboard_loaded.is_connected(_on_leaderboard_loaded):
-			LeaderboardManager.leaderboard_loaded.connect(_on_leaderboard_loaded)
+	if has_node("/root/GameCoreManager"):
+		if not GameCoreManager.leaderboard_loaded.is_connected(_on_leaderboard_loaded):
+			GameCoreManager.leaderboard_loaded.connect(_on_leaderboard_loaded)
 		status_label.text = "LOADING LEADERBOARD..."
-		LeaderboardManager.fetch_leaderboard("world", "classic")
+		var err := GameCoreManager.fetch_leaderboard("world", "classic")
+		if err != OK:
+			status_label.text = "LEADERBOARD NOT AVAILABLE"
 	else:
 		status_label.text = "LEADERBOARD NOT AVAILABLE"
 

@@ -9,6 +9,7 @@ const PipeVfxLayerScript = preload("res://Scripts/pipe_vfx_layer.gd")
 const VfxTransitionStateScript = preload("res://Scripts/vfx_transition_state.gd")
 const LevelGeneratorScript = preload("res://Scripts/level_generator.gd")
 const BottomTimerDigitsScript = preload("res://Scripts/bottom_timer_digits.gd")
+const UiModalPresenter = preload("res://Scripts/ui_modal_presenter.gd")
 const LEADERBOARD_POPUP_SCENE_PATH := "res://Scenes/Common/LeaderboardPopup.tscn"
 const PROJECT_LOGO_PATH := "res://Assets/Icons/logo.png"
 const UI_MODE_SAVE_KEY := "cyber_ui_generated_asset_mode"
@@ -1876,37 +1877,17 @@ func _on_leaderboard_btn_pressed() -> void:
 	if leaderboard_popup_scene == null:
 		return
 	var popup := leaderboard_popup_scene.instantiate()
-	leaderboard_overlay_root.add_child(popup)
 	if popup.has_signal("dismissed"):
 		popup.connect("dismissed", Callable(self, "_on_leaderboard_popup_dismissed"))
 	_configure_leaderboard_popup(popup, _get_active_theme())
 
 func _configure_leaderboard_popup(popup: Node, theme: ThemeConfig) -> void:
-	if popup == null or theme == null or not (popup is Control):
-		return
-	var control := popup as Control
-	var viewport_size := get_viewport_rect().size
-	var width_ratio := theme.ui_modal_landscape_width_ratio if viewport_size.x > viewport_size.y else theme.ui_modal_width_ratio
-	var height_ratio := theme.ui_modal_landscape_height_ratio if viewport_size.x > viewport_size.y else theme.ui_modal_height_ratio
-	var modal_width: float = viewport_size.x * width_ratio
-	var modal_height: float = viewport_size.y * height_ratio
-	control.anchor_left = 0.5
-	control.anchor_top = 0.5
-	control.anchor_right = 0.5
-	control.anchor_bottom = 0.5
-	control.offset_left = -modal_width * 0.5
-	control.offset_right = modal_width * 0.5
-	control.offset_top = -modal_height * 0.5
-	control.offset_bottom = modal_height * 0.5
-	if popup.has_method("apply_generated_ui_theme"):
-		popup.apply_generated_ui_theme(theme)
+	UiModalPresenter.show_leaderboard_modal(leaderboard_overlay_root, popup, theme)
 
 func _close_leaderboard_overlay() -> void:
 	if leaderboard_overlay_root == null:
 		return
-	leaderboard_overlay_root.visible = false
-	for child in leaderboard_overlay_root.get_children():
-		child.queue_free()
+	UiModalPresenter.hide_modal_root(leaderboard_overlay_root)
 
 func _on_leaderboard_popup_dismissed() -> void:
 	if leaderboard_overlay_root == null:

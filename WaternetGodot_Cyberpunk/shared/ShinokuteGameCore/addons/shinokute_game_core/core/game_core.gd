@@ -4,6 +4,7 @@ extends Node
 signal username_required
 signal profile_ready(username: String)
 signal leaderboard_loaded(tab: String, scores: Array, mode: String)
+signal score_submitted(success: bool, mode: String)
 
 const LocalSaveStoreScript := preload("local_save_store.gd")
 const PlayerProfileScript := preload("player_profile.gd")
@@ -33,6 +34,7 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 	add_child(leaderboard)
 	leaderboard.configure(config, save_store)
 	leaderboard.leaderboard_loaded.connect(func(tab: String, scores: Array, mode: String): leaderboard_loaded.emit(tab, scores, mode))
+	leaderboard.score_submitted.connect(func(success: bool, mode: String): score_submitted.emit(success, mode))
 
 	geo_service = GeoServiceScript.new()
 	add_child(geo_service)

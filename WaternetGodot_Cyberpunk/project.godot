@@ -29,6 +29,7 @@ GameState="*res://Resources/Globals/GameState.gd"
 ThemeManager="*res://Resources/Globals/ThemeManager.gd"
 AudioManager="*res://Resources/Globals/AudioManager.gd"
 SceneRouter="*res://Resources/Globals/SceneRouter.gd"
+GameCoreManager="*res://Resources/Globals/GameCoreManager.gd"
 LeaderboardManager="*res://Scripts/LeaderboardManager.gd"
 
 [audio]

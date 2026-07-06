@@ -1,13 +1,17 @@
 extends SceneTree
 
 const CONFIG_PATH := "res://Resources/Data/glyphflow_game_core_config.tres"
+const GAME_CORE_MANAGER_PATH := "res://Resources/Globals/GameCoreManager.gd"
 const LEADERBOARD_MANAGER_PATH := "res://Scripts/LeaderboardManager.gd"
+const LEADERBOARD_CLIENT_PATH := "res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/leaderboard_client.gd"
 const EXPORT_PRESETS_PATH := "res://export_presets.cfg"
 
 func _init() -> void:
 	var passed := true
 	var config := load(CONFIG_PATH)
+	var game_core_source := FileAccess.get_file_as_string(GAME_CORE_MANAGER_PATH)
 	var leaderboard_source := FileAccess.get_file_as_string(LEADERBOARD_MANAGER_PATH)
+	var leaderboard_client_source := FileAccess.get_file_as_string(LEADERBOARD_CLIENT_PATH)
 	var export_presets := FileAccess.get_file_as_string(EXPORT_PRESETS_PATH)
 
 	passed = passed and _assert_true(config != null, "Glyphflow GameCoreConfig should load")
@@ -18,10 +22,11 @@ func _init() -> void:
 		passed = passed and _assert_equal(config.get_sort_direction("classic"), "ASCENDING", "classic sort")
 		passed = passed and _assert_true(config.validate_config().is_empty(), "GameCoreConfig should validate")
 
-	passed = passed and _assert_true(leaderboard_source.contains("GAME_CORE_CONFIG_PATH"), "LeaderboardManager should load GameCoreConfig")
-	passed = passed and _assert_true(leaderboard_source.contains("get_collection(mode)"), "LeaderboardManager should read collection from GameCoreConfig")
-	passed = passed and _assert_true(leaderboard_source.contains("get_sort_direction(mode)"), "LeaderboardManager should read sort direction from GameCoreConfig")
-	passed = passed and _assert_true(leaderboard_source.contains("leaderboard_limit"), "LeaderboardManager should read limit from GameCoreConfig")
+	passed = passed and _assert_true(game_core_source.contains("GAME_CORE_CONFIG_PATH"), "GameCoreManager should load GameCoreConfig")
+	passed = passed and _assert_true(leaderboard_source.contains("GameCoreManager"), "LeaderboardManager should delegate to GameCoreManager")
+	passed = passed and _assert_true(leaderboard_client_source.contains("get_collection(mode)"), "LeaderboardClient should read collection from GameCoreConfig")
+	passed = passed and _assert_true(leaderboard_client_source.contains("get_sort_direction(mode)"), "LeaderboardClient should read sort direction from GameCoreConfig")
+	passed = passed and _assert_true(leaderboard_client_source.contains("leaderboard_limit"), "LeaderboardClient should read limit from GameCoreConfig")
 	passed = passed and _assert_true(not leaderboard_source.contains("const FIRESTORE_API_KEY"), "LeaderboardManager should not hardcode API key const")
 	passed = passed and _assert_true(not leaderboard_source.contains("const FIRESTORE_DOCS_URL"), "LeaderboardManager should not hardcode Firestore URL const")
 	passed = passed and _assert_true(not leaderboard_source.contains("const GEOLOCATION_URL"), "LeaderboardManager should not hardcode geolocation URL const")
@@ -49,4 +54,3 @@ func _assert_equal(actual, expected, message: String) -> bool:
 		push_error("%s expected=%s actual=%s" % [message, str(expected), str(actual)])
 		return false
 	return true
-
