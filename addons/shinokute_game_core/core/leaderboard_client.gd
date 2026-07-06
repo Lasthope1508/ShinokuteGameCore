@@ -63,6 +63,8 @@ func submit_score(score: int, mode: String = "classic") -> int:
 		return ERR_UNAVAILABLE
 	if score <= 0:
 		return ERR_INVALID_PARAMETER
+	if _username_for_submit().is_empty():
+		return ERR_UNAVAILABLE
 	if _submit_request == null:
 		_submit_request = HTTPRequest.new()
 		_submit_request.accept_gzip = false
@@ -101,8 +103,13 @@ func _on_submit_request_completed(result: int, response_code: int, _headers: Pac
 	var mode := String(_submit_request.get_meta("mode", "classic"))
 	var score := int(_submit_request.get_meta("score", 0))
 	var success := result == HTTPRequest.RESULT_SUCCESS and (response_code == 200 or response_code == 201 or response_code == 204)
-	if success and score > save_store.get_last_submitted_score(mode):
-		save_store.set_last_submitted_score(score, mode)
+	if success:
+		var last_submitted: int = save_store.get_last_submitted_score(mode)
+		if _is_score_better_or_equal(score, last_submitted, mode):
+			save_store.set_last_submitted_score(score, mode)
+		var pending: int = save_store.get_pending_score(mode)
+		if pending > 0 and _is_score_better_or_equal(score, pending, mode):
+			save_store.clear_pending_score(mode)
 	score_submitted.emit(success, mode)
 
 func _on_query_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -141,10 +148,17 @@ func _docs_url() -> String:
 
 func _username_for_submit() -> String:
 	var username: String = save_store.get_username().strip_edges()
-	if username.is_empty():
-		username = "Player_%s" % save_store.get_device_uuid().substr(0, 5)
-		save_store.set_username(username)
 	return username
+
+func _is_score_better_or_equal(candidate: int, current: int, mode: String) -> bool:
+	if candidate <= 0:
+		return false
+	if current <= 0:
+		return true
+	var direction: String = config.get_sort_direction(mode)
+	if direction == "DESCENDING":
+		return candidate >= current
+	return candidate <= current
 
 func _region_filter(field: String, value: String) -> Dictionary:
 	return {

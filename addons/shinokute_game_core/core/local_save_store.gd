@@ -74,6 +74,17 @@ func set_last_submitted_score(value: int, mode: String = "classic") -> void:
 	_config.set_value(SECTION_PROGRESS, _mode_key("last_submitted_score", mode), value)
 	save_store()
 
+func get_pending_score(mode: String = "classic") -> int:
+	return int(_config.get_value(SECTION_PROGRESS, _mode_key("pending_score", mode), 0))
+
+func set_pending_score(value: int, mode: String = "classic") -> void:
+	_config.set_value(SECTION_PROGRESS, _mode_key("pending_score", mode), value)
+	save_store()
+
+func clear_pending_score(mode: String = "classic") -> void:
+	_config.erase_section_key(SECTION_PROGRESS, _mode_key("pending_score", mode))
+	save_store()
+
 func get_setting(key: String, default_value: Variant = null) -> Variant:
 	return _config.get_value(SECTION_SETTINGS, key, default_value)
 

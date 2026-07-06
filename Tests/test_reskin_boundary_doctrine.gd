@@ -24,6 +24,8 @@ func _init() -> void:
 	_assert_true(doctrine.contains("Do not draw a new procedural frame"), "doctrine should forbid procedural frames when generated assets exist")
 	_assert_true(doctrine.contains("Do not reuse multi-panel tray art as a field shell"), "doctrine should forbid uncropped tray art as field shell")
 	_assert_true(doctrine.contains("contract test proving the chosen control uses an existing asset key"), "doctrine should require tests for function skin asset keys")
+	_assert_true(doctrine.contains("Core owns local best score persistence, pending score persistence, submit retry handoff after username commit, and score comparison by configured sort direction."), "doctrine should make score persistence core-owned")
+	_assert_true(doctrine.contains("Core must not auto-create username fallback during score submit."), "doctrine should forbid username fallback submit")
 	_assert_true(readme.contains("reskin_core_skin_boundary.md"), "root README should link doctrine")
 	_assert_true(addon_readme.contains("reskin_core_skin_boundary.md"), "addon README should link doctrine")
 	_report("test_reskin_boundary_doctrine")

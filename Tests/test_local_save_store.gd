@@ -5,7 +5,11 @@ const StoreScript := preload("res://addons/shinokute_game_core/core/local_save_s
 var _passed := true
 
 func _init() -> void:
+	call_deferred("_run")
+
+func _run() -> void:
 	var store = StoreScript.new()
+	root.add_child(store)
 	store.save_path = "user://shinokute_game_core_test.cfg"
 	store.load_store()
 	store.wipe_all()
@@ -21,9 +25,15 @@ func _init() -> void:
 	_assert_eq(store.get_continent_code(), "AS", "continent code")
 	store.set_best_score(12, "classic")
 	store.set_last_submitted_score(10, "classic")
+	store.set_pending_score(8, "classic")
 	_assert_eq(store.get_best_score("classic"), 12, "best score")
 	_assert_eq(store.get_last_submitted_score("classic"), 10, "last submitted score")
+	_assert_eq(store.get_pending_score("classic"), 8, "pending score")
+	store.clear_pending_score("classic")
+	_assert_eq(store.get_pending_score("classic"), 0, "cleared pending score")
 	store.wipe_all()
+	root.remove_child(store)
+	store.free()
 	_report("test_local_save_store")
 
 func _assert_eq(actual, expected, label: String) -> void:
