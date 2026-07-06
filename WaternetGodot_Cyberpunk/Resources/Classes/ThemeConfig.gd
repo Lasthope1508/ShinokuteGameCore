@@ -316,6 +316,7 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_modal_landscape_height_ratio: float = 0.76
 @export var ui_modal_close_button_size: float = 44.0
 @export var ui_modal_close_button_padding: float = 8.0
+@export var ui_modal_close_icon_color_by_mode: Dictionary = {}
 @export var ui_modal_action_button_height: float = 42.0
 @export var ui_modal_content_gap: float = 8.0
 @export var ui_modal_content_margin_x: int = 28
@@ -351,8 +352,9 @@ var _cell_bg_texture_cache: Dictionary = {}
 	"dark": Color(0.01, 0.02, 0.05, 0.96),
 	"light": Color(0.88, 1.0, 0.98, 0.92)
 }
-@export var ui_profile_popup_content_margin_x: int = 30
-@export var ui_profile_popup_content_margin_top: int = 58
+@export var ui_profile_popup_content_margin_x: int = 54
+@export var ui_profile_popup_content_margin_top: int = 112
+@export var ui_profile_popup_content_margin_top_by_mode: Dictionary = {}
 @export var ui_profile_popup_content_margin_bottom: int = 30
 @export var ui_profile_popup_title_font_size: int = 28
 @export var ui_profile_popup_field_gap: int = 15
@@ -361,7 +363,9 @@ var _cell_bg_texture_cache: Dictionary = {}
 @export var ui_profile_popup_score_font_size: int = 18
 @export var ui_profile_popup_field_min_height: float = 44.0
 @export var ui_profile_popup_field_padding_x: int = 14
-@export var ui_profile_popup_field_frame_asset_key: String = "stats_capsule"
+@export var ui_profile_popup_field_padding_y: int = 6
+@export var ui_profile_popup_name_label_width: float = 62.0
+@export var ui_profile_popup_field_frame_asset_key: String = "profile_username_field_frame"
 @export var ui_leaderboard_popup_content_margin_x: int = 34
 @export var ui_leaderboard_popup_content_margin_top: int = 92
 @export var ui_leaderboard_popup_content_margin_bottom: int = 34

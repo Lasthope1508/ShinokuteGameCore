@@ -83,6 +83,7 @@ func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:
 		frame.visible = true
 	if close_btn:
 		var close_padding := theme_config.ui_modal_close_button_padding
+		_apply_modal_close_icon_color(close_btn, theme_config)
 		close_btn.custom_minimum_size = Vector2(theme_config.ui_modal_close_button_size, theme_config.ui_modal_close_button_size)
 		close_btn.anchor_left = 1.0
 		close_btn.anchor_right = 1.0
@@ -111,7 +112,7 @@ func _ensure_generated_modal_frame() -> TextureRect:
 	frame.offset_top = 0.0
 	frame.offset_right = 0.0
 	frame.offset_bottom = 0.0
-	frame.z_index = -10
+	frame.z_index = 0
 	add_child(frame)
 	move_child(frame, 0)
 	return frame
@@ -139,6 +140,21 @@ func _make_transparent_control_style() -> StyleBoxFlat:
 	style.shadow_size = 0
 	style.shadow_offset = Vector2.ZERO
 	return style
+
+func _apply_modal_close_icon_color(button: Button, theme_config: ThemeConfig) -> void:
+	var color := _get_modal_close_icon_color(theme_config)
+	button.add_theme_color_override("icon_normal_color", color)
+	button.add_theme_color_override("icon_hover_color", color)
+	button.add_theme_color_override("icon_pressed_color", color)
+	button.add_theme_color_override("icon_focus_color", color)
+	button.add_theme_color_override("icon_disabled_color", color)
+
+func _get_modal_close_icon_color(theme_config: ThemeConfig) -> Color:
+	var by_mode: Dictionary = theme_config.ui_modal_close_icon_color_by_mode
+	var mode := String(theme_config.ui_generated_asset_mode)
+	if by_mode.has(mode) and by_mode[mode] is Color:
+		return by_mode[mode]
+	return Color.WHITE
 
 func _get_score_list_owner_size() -> Vector2:
 	if score_list != null and score_list.size.x > 0.0 and score_list.size.y > 0.0:

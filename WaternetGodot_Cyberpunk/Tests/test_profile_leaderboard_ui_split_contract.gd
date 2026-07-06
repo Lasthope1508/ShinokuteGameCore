@@ -50,7 +50,12 @@ func _run() -> void:
 			passed = passed and _assert_true(normal_style != null and normal_style.bg_color.a == 0.0, "Username LineEdit should be transparent so existing field asset owns the box")
 		if username_frame != null:
 			passed = passed and _assert_true(username_frame.texture != null, "Username field frame should render an existing generated asset texture")
-			passed = passed and _assert_true(theme.ui_profile_popup_field_frame_asset_key == "stats_capsule", "Username field should reuse existing stats_capsule empty box")
+			passed = passed and _assert_true(theme.ui_profile_popup_field_frame_asset_key == "profile_username_field_frame", "Username field should use a role-specific single-field frame, not the multi-panel top tray stats_capsule")
+			var field_geometry: Dictionary = theme.get_ui_generated_asset_geometry(theme.ui_profile_popup_field_frame_asset_key)
+			passed = passed and _assert_equal(String(field_geometry.get("anchor", "")), "profile.username_field", "Username field geometry should use a profile-specific anchor")
+			passed = passed and _assert_equal(String(field_geometry.get("runtime_region", "")), "alpha_bbox", "Username field frame should render the trimmed single-field crop")
+			passed = passed and _assert_true(username_frame.expand_mode == TextureRect.EXPAND_IGNORE_SIZE, "Username field frame should obey the owner rect instead of keeping source texture size")
+			passed = passed and _assert_true(username_frame.stretch_mode == TextureRect.STRETCH_SCALE, "Username field frame should scale the single-field crop without aspect-cover cropping")
 		root.remove_child(profile_popup)
 		profile_popup.free()
 
@@ -83,5 +88,11 @@ func _run() -> void:
 func _assert_true(condition: bool, message: String) -> bool:
 	if not condition:
 		push_error("%s: expected true" % message)
+		return false
+	return true
+
+func _assert_equal(actual, expected, message: String) -> bool:
+	if actual != expected:
+		push_error("%s: expected %s, got %s" % [message, str(expected), str(actual)])
 		return false
 	return true

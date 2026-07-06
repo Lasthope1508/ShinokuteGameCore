@@ -55,8 +55,9 @@ func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:
 		return
 	add_theme_stylebox_override("panel", _make_transparent_control_style())
 	if margin_container:
+		var top_margin := _get_profile_popup_content_margin_top(theme_config)
 		margin_container.add_theme_constant_override("margin_left", theme_config.ui_profile_popup_content_margin_x)
-		margin_container.add_theme_constant_override("margin_top", theme_config.ui_profile_popup_content_margin_top)
+		margin_container.add_theme_constant_override("margin_top", top_margin)
 		margin_container.add_theme_constant_override("margin_right", theme_config.ui_profile_popup_content_margin_x)
 		margin_container.add_theme_constant_override("margin_bottom", theme_config.ui_profile_popup_content_margin_bottom)
 	if vbox_container:
@@ -68,15 +69,21 @@ func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:
 		edit_hbox.add_theme_constant_override("separation", theme_config.ui_profile_popup_field_gap)
 		edit_hbox.offset_left = theme_config.ui_profile_popup_field_padding_x
 		edit_hbox.offset_right = -theme_config.ui_profile_popup_field_padding_x
+		edit_hbox.offset_top = theme_config.ui_profile_popup_field_padding_y
+		edit_hbox.offset_bottom = -theme_config.ui_profile_popup_field_padding_y
 	if username_field_root:
 		username_field_root.custom_minimum_size.y = theme_config.ui_profile_popup_field_min_height
+		username_field_root.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	if username_field_frame:
 		username_field_frame.texture = _get_profile_field_frame_texture(theme_config)
-		username_field_frame.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		username_field_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		username_field_frame.stretch_mode = TextureRect.STRETCH_SCALE
 		username_field_frame.visible = username_field_frame.texture != null
 	if name_label:
 		name_label.add_theme_font_size_override("font_size", theme_config.ui_profile_popup_score_font_size)
 		name_label.add_theme_color_override("font_color", theme_config.text_color)
+		name_label.custom_minimum_size.x = theme_config.ui_profile_popup_name_label_width
+		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if username_edit:
 		_apply_username_field_theme(username_edit, theme_config)
@@ -93,6 +100,7 @@ func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:
 		frame.visible = true
 	if close_btn:
 		var close_padding := theme_config.ui_modal_close_button_padding
+		_apply_modal_close_icon_color(close_btn, theme_config)
 		close_btn.custom_minimum_size = Vector2(theme_config.ui_modal_close_button_size, theme_config.ui_modal_close_button_size)
 		close_btn.anchor_left = 1.0
 		close_btn.anchor_right = 1.0
@@ -121,7 +129,7 @@ func _ensure_generated_modal_frame() -> TextureRect:
 	frame.offset_top = 0.0
 	frame.offset_right = 0.0
 	frame.offset_bottom = 0.0
-	frame.z_index = -10
+	frame.z_index = 0
 	add_child(frame)
 	move_child(frame, 0)
 	return frame
@@ -167,3 +175,25 @@ func _get_profile_field_frame_texture(theme_config: ThemeConfig) -> Texture2D:
 	if texture == null:
 		return null
 	return _get_generated_ui_region_texture(theme_config, asset_key, texture)
+
+func _get_profile_popup_content_margin_top(theme_config: ThemeConfig) -> int:
+	var by_mode: Dictionary = theme_config.ui_profile_popup_content_margin_top_by_mode
+	var mode := String(theme_config.ui_generated_asset_mode)
+	if by_mode.has(mode):
+		return int(by_mode[mode])
+	return theme_config.ui_profile_popup_content_margin_top
+
+func _apply_modal_close_icon_color(button: Button, theme_config: ThemeConfig) -> void:
+	var color := _get_modal_close_icon_color(theme_config)
+	button.add_theme_color_override("icon_normal_color", color)
+	button.add_theme_color_override("icon_hover_color", color)
+	button.add_theme_color_override("icon_pressed_color", color)
+	button.add_theme_color_override("icon_focus_color", color)
+	button.add_theme_color_override("icon_disabled_color", color)
+
+func _get_modal_close_icon_color(theme_config: ThemeConfig) -> Color:
+	var by_mode: Dictionary = theme_config.ui_modal_close_icon_color_by_mode
+	var mode := String(theme_config.ui_generated_asset_mode)
+	if by_mode.has(mode) and by_mode[mode] is Color:
+		return by_mode[mode]
+	return Color.WHITE

@@ -11,6 +11,7 @@ const REQUIRED_KEYS := [
 	"floating_replay_button_default",
 	"bottom_reserve_layer",
 	"modal_frame",
+	"profile_username_field_frame",
 	"board_backplate"
 ]
 
@@ -82,6 +83,7 @@ func _init() -> void:
 		"ui_modal_content_margin_x",
 		"ui_modal_content_margin_top",
 		"ui_modal_content_margin_bottom",
+		"ui_modal_close_icon_color_by_mode",
 		"ui_result_modal_width_ratio",
 		"ui_result_modal_height_ratio",
 		"ui_result_modal_landscape_width_ratio",
@@ -102,11 +104,17 @@ func _init() -> void:
 		"ui_result_modal_button_bg_by_mode",
 		"ui_profile_popup_content_margin_x",
 		"ui_profile_popup_content_margin_top",
+		"ui_profile_popup_content_margin_top_by_mode",
 		"ui_profile_popup_content_margin_bottom",
 		"ui_profile_popup_title_font_size",
 		"ui_profile_popup_field_gap",
 		"ui_profile_popup_list_gap",
 		"ui_profile_popup_save_button_width",
+		"ui_profile_popup_field_min_height",
+		"ui_profile_popup_field_padding_x",
+		"ui_profile_popup_field_padding_y",
+		"ui_profile_popup_name_label_width",
+		"ui_profile_popup_field_frame_asset_key",
 		"ui_leaderboard_popup_content_margin_x",
 		"ui_leaderboard_popup_content_margin_top",
 		"ui_leaderboard_popup_content_margin_bottom",
@@ -259,6 +267,9 @@ func _init() -> void:
 				if key == "modal_frame":
 					passed = passed and _assert_true(item.has("runtime_stretch_mode"), "modal_frame geometry should store runtime stretch mode")
 					passed = passed and _assert_equal(String(item.get("runtime_stretch_mode", "")), "scale", "modal_frame should scale until 9-slice slicing is implemented")
+				if key == "profile_username_field_frame":
+					passed = passed and _assert_equal(String(item.get("anchor", "")), "profile.username_field", "Username field frame should be profile-specific, not a top tray stats capsule")
+					passed = passed and _assert_equal(String(item.get("runtime_region", "")), "alpha_bbox", "Username field frame should use a trimmed single-field crop")
 
 	if theme != null and theme.has_method("validate_ui_generated_assets"):
 		var errors: Array = theme.validate_ui_generated_assets()

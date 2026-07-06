@@ -138,6 +138,17 @@
       "owner_approved": true
     },
     {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/profile_username_field_frame_photoroom.png",
+      "role": "runtime_function_skin",
+      "theme": "cyberpunk_theme",
+      "mode": "dark",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "single_panel_crop_from_photoroom_alpha_runtime_asset",
+      "owner_approved": true
+    },
+    {
       "path": "res://Assets/UI/cyberpunk_theme/generated/production/dark/stats_capsule_photoroom.png",
       "role": "runtime_library",
       "theme": "cyberpunk_theme",
@@ -246,6 +257,17 @@
       "runtime_required": true,
       "export_policy": "include",
       "compression_policy": "photoroom_alpha_runtime_candidate",
+      "owner_approved": true
+    },
+    {
+      "path": "res://Assets/UI/cyberpunk_theme/generated/production/light/profile_username_field_frame_photoroom.png",
+      "role": "runtime_function_skin",
+      "theme": "cyberpunk_theme",
+      "mode": "light",
+      "orientation": "shared",
+      "runtime_required": true,
+      "export_policy": "include",
+      "compression_policy": "single_panel_crop_from_photoroom_alpha_runtime_asset",
       "owner_approved": true
     },
     {

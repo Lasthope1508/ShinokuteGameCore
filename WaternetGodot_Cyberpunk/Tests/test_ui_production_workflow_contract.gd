@@ -57,9 +57,10 @@ func _init() -> void:
 	for required_text in [
 		"B7A. Function Skin Existing Asset Gate",
 		"Check `docs/runtime_asset_manifest.json` for approved generated UI assets.",
-		"Use the existing generated asset through a `ThemeConfig` key when a matching blank box exists.",
-		"Drawing new `StyleBoxFlat` frames for production function skin when an approved generated blank box already exists.",
-		"Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = \"stats_capsule\"`."
+		"Use the existing generated asset through a `ThemeConfig` key only when role, ratio, crop, padding, and owner rect match the target control.",
+		"Drawing new `StyleBoxFlat` frames for production function skin when an approved generated role-matching blank box already exists.",
+		"Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = \"profile_username_field_frame\"`.",
+		"Top-tray multi-panel assets such as `stats_capsule` are forbidden for username fields unless a role-specific crop asset and geometry key are created first."
 	]:
 		passed = passed and _assert_true(workflow.contains(required_text), "Workflow should document %s" % required_text)
 
@@ -68,7 +69,9 @@ func _init() -> void:
 		"Before creating a new visual frame, field shell, capsule, badge, or button shell",
 		"inventory the existing approved game assets first",
 		"Use an existing asset through the game SSOT",
+		"role, ratio, crop, padding, and owner rect",
 		"Do not draw a new procedural frame",
+		"Do not reuse multi-panel tray art as a field shell",
 		"contract test proving the chosen control uses an existing asset key"
 	]:
 		passed = passed and _assert_true(shared_boundary.contains(required_text), "Shared reskin boundary should document %s" % required_text)

@@ -617,6 +617,7 @@ ui_generated_asset_paths = {
 "floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/dark/floating_replay_button_default_icon_photoroom.png",
 "logo_socket": "res://Assets/UI/cyberpunk_theme/generated/production/dark/logo_socket_photoroom.png",
 "modal_frame": "res://Assets/UI/cyberpunk_theme/generated/production/dark/modal_frame_photoroom.png",
+"profile_username_field_frame": "res://Assets/UI/cyberpunk_theme/generated/production/dark/profile_username_field_frame_photoroom.png",
 "stats_capsule": "res://Assets/UI/cyberpunk_theme/generated/production/dark/stats_capsule_photoroom.png",
 "top_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/dark/top_tray_layer_photoroom.png"
 },
@@ -630,6 +631,7 @@ ui_generated_asset_paths = {
 "floating_replay_button_default": "res://Assets/UI/cyberpunk_theme/generated/production/light/floating_replay_button_default_icon_photoroom.png",
 "logo_socket": "res://Assets/UI/cyberpunk_theme/generated/production/light/logo_socket_photoroom.png",
 "modal_frame": "res://Assets/UI/cyberpunk_theme/generated/production/light/modal_frame_photoroom.png",
+"profile_username_field_frame": "res://Assets/UI/cyberpunk_theme/generated/production/light/profile_username_field_frame_photoroom.png",
 "stats_capsule": "res://Assets/UI/cyberpunk_theme/generated/production/light/stats_capsule_photoroom.png",
 "top_tray_layer": "res://Assets/UI/cyberpunk_theme/generated/production/light/top_tray_layer_photoroom.png"
 }
@@ -705,6 +707,15 @@ ui_generated_asset_geometry = {
 "runtime_stretch_mode": "scale",
 "scale_policy": "fit_inside_canonical_modal_rect_preserve_aspect_centered_use_9slice_if_needed"
 },
+"profile_username_field_frame": {
+"alpha_bbox": {
+"dark": Vector4(0, 0, 530, 520),
+"light": Vector4(0, 0, 580, 500)
+},
+"anchor": "profile.username_field",
+"runtime_region": "alpha_bbox",
+"scale_policy": "scale_single_field_crop_inside_profile_username_owner_rect"
+},
 "stats_capsule": {
 "alpha_bbox": {
 "dark": Vector4(0, 151, 1885, 642),
@@ -735,6 +746,10 @@ ui_modal_landscape_width_ratio = 0.44
 ui_modal_landscape_height_ratio = 0.76
 ui_modal_close_button_size = 44.0
 ui_modal_close_button_padding = 8.0
+ui_modal_close_icon_color_by_mode = {
+"dark": Color(1, 1, 1, 1),
+"light": Color(0.02, 0.06, 0.08, 1)
+}
 ui_modal_action_button_height = 42.0
 ui_modal_content_gap = 8.0
 ui_modal_content_margin_x = 28
@@ -773,17 +788,23 @@ ui_result_modal_button_bg_by_mode = {
 "dark": Color(0.01, 0.02, 0.05, 0.96),
 "light": Color(0.88, 1, 0.98, 0.92)
 }
-ui_profile_popup_content_margin_x = 30
-ui_profile_popup_content_margin_top = 58
+ui_profile_popup_content_margin_x = 54
+ui_profile_popup_content_margin_top = 112
+ui_profile_popup_content_margin_top_by_mode = {
+"dark": 112,
+"light": 150
+}
 ui_profile_popup_content_margin_bottom = 30
 ui_profile_popup_title_font_size = 28
 ui_profile_popup_field_gap = 15
 ui_profile_popup_list_gap = 10
 ui_profile_popup_save_button_width = 80.0
 ui_profile_popup_score_font_size = 18
-ui_profile_popup_field_min_height = 44.0
-ui_profile_popup_field_padding_x = 14
-ui_profile_popup_field_frame_asset_key = "stats_capsule"
+ui_profile_popup_field_min_height = 62.0
+ui_profile_popup_field_padding_x = 26
+ui_profile_popup_field_padding_y = 10
+ui_profile_popup_name_label_width = 66.0
+ui_profile_popup_field_frame_asset_key = "profile_username_field_frame"
 ui_leaderboard_popup_content_margin_x = 34
 ui_leaderboard_popup_content_margin_top = 92
 ui_leaderboard_popup_content_margin_bottom = 34
