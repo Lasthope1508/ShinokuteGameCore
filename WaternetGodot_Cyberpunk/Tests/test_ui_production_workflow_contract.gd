@@ -5,8 +5,10 @@ func _init() -> void:
 	var workflow := FileAccess.get_file_as_string("res://docs/ui_production_workflow.md")
 	var language := FileAccess.get_file_as_string("res://docs/ui_design_language.md")
 	var agents := FileAccess.get_file_as_string("res://AGENTS.md")
+	var shared_boundary := FileAccess.get_file_as_string("res://shared/ShinokuteGameCore/docs/reskin_core_skin_boundary.md")
 
 	passed = passed and _assert_true(not workflow.is_empty(), "UI production workflow doc should exist")
+	passed = passed and _assert_true(not shared_boundary.is_empty(), "Shared reskin boundary doc should exist")
 	passed = passed and _assert_true(language.contains("docs/ui_production_workflow.md"), "UI design language should point to production workflow")
 	passed = passed and _assert_true(agents.contains("docs/ui_production_workflow.md"), "Project AGENTS gate should require UI workflow for UI work")
 
@@ -60,6 +62,16 @@ func _init() -> void:
 		"Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = \"stats_capsule\"`."
 	]:
 		passed = passed and _assert_true(workflow.contains(required_text), "Workflow should document %s" % required_text)
+
+	for required_text in [
+		"Function Skin Existing Asset Gate",
+		"Before creating a new visual frame, field shell, capsule, badge, or button shell",
+		"inventory the existing approved game assets first",
+		"Use an existing asset through the game SSOT",
+		"Do not draw a new procedural frame",
+		"contract test proving the chosen control uses an existing asset key"
+	]:
+		passed = passed and _assert_true(shared_boundary.contains(required_text), "Shared reskin boundary should document %s" % required_text)
 
 	for required_text in [
 		"Portrait and landscape assets must both exist; do not stretch one orientation into the other.",
