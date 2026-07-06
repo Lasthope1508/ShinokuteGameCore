@@ -41,21 +41,39 @@ theme_override_font_sizes/font_size = 28
 text = "PLAYER PROFILE"
 horizontal_alignment = 1
 
-[node name="HBoxEdit" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="UsernameFieldRoot" type="Control" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+
+[node name="UsernameFieldFrame" type="TextureRect" parent="MarginContainer/VBoxContainer/UsernameFieldRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="HBoxEdit" type="HBoxContainer" parent="MarginContainer/VBoxContainer/UsernameFieldRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 15
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxEdit"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit"]
 layout_mode = 2
 text = "NAME:"
 
-[node name="UsernameEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxEdit"]
+[node name="UsernameEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Enter username..."
 max_length = 16
 
-[node name="SaveBtn" type="Button" parent="MarginContainer/VBoxContainer/HBoxEdit"]
+[node name="SaveBtn" type="Button" parent="MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit"]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "SAVE"
@@ -81,5 +99,5 @@ tooltip_text = "Close"
 icon = ExtResource("3_close")
 expand_icon = true
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxEdit/SaveBtn" to="." method="_on_save_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit/SaveBtn" to="." method="_on_save_btn_pressed"]
 [connection signal="pressed" from="CloseBtn" to="." method="_on_close_btn_pressed"]

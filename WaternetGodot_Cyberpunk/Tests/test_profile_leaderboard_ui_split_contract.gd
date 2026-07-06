@@ -5,6 +5,7 @@ const PROFILE_POPUP_SCENE := "res://Scenes/Common/ProfilePopup.tscn"
 const LEADERBOARD_POPUP_SCRIPT := "res://Scenes/Common/LeaderboardPopup.gd"
 const LEADERBOARD_POPUP_SCENE := "res://Scenes/Common/LeaderboardPopup.tscn"
 const GAME_SCENE_SCRIPT := "res://Scenes/Gameplay/GameScene.gd"
+const THEME_PATH := "res://Resources/Data/Themes/cyberpunk_theme.tres"
 
 func _init() -> void:
 	call_deferred("_run")
@@ -16,9 +17,11 @@ func _run() -> void:
 	var game_scene_source := FileAccess.get_file_as_string(GAME_SCENE_SCRIPT)
 	var profile_scene: PackedScene = load(PROFILE_POPUP_SCENE)
 	var leaderboard_scene: PackedScene = load(LEADERBOARD_POPUP_SCENE)
+	var theme: ThemeConfig = load(THEME_PATH)
 
 	passed = passed and _assert_true(profile_scene != null, "Profile popup scene should load")
 	passed = passed and _assert_true(leaderboard_scene != null, "Leaderboard popup scene should load")
+	passed = passed and _assert_true(theme != null, "Cyber theme should load")
 	passed = passed and _assert_true(not profile_source.contains("fetch_leaderboard"), "Profile popup should not fetch leaderboard")
 	passed = passed and _assert_true(not profile_source.contains("leaderboard_loaded"), "Profile popup should not own leaderboard signal")
 	passed = passed and _assert_true(not profile_source.contains("ScoreList"), "Profile popup should not contain leaderboard rows")
@@ -26,12 +29,28 @@ func _run() -> void:
 	passed = passed and _assert_true(leaderboard_source.contains("ScoreList"), "Leaderboard popup should own score list")
 	passed = passed and _assert_true(game_scene_source.contains("LEADERBOARD_POPUP_SCENE_PATH"), "GameScene should use a dedicated leaderboard popup scene")
 	passed = passed and _assert_true(not game_scene_source.contains("PROFILE_POPUP_SCENE_PATH"), "GameScene leaderboard should not mount profile popup")
+	passed = passed and _assert_true(profile_source.contains("ui_profile_popup_field_min_height"), "Profile username field height should come from ThemeConfig")
+	passed = passed and _assert_true(profile_source.contains("ui_profile_popup_field_frame_asset_key"), "Profile username field frame should choose an existing generated UI asset through ThemeConfig")
+	passed = passed and _assert_true(not profile_source.contains("_make_username_field_style"), "Profile username field should not draw a new procedural frame when generated UI assets exist")
 
-	if profile_scene != null:
+	if profile_scene != null and theme != null:
 		var profile_popup = profile_scene.instantiate()
 		root.add_child(profile_popup)
-		passed = passed and _assert_true(profile_popup.get_node_or_null("MarginContainer/VBoxContainer/HBoxEdit/UsernameEdit") is LineEdit, "Profile popup should own username editor")
+		passed = passed and _assert_true(profile_popup.get_node_or_null("MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit/UsernameEdit") is LineEdit, "Profile popup should own username editor inside field frame")
+		passed = passed and _assert_true(profile_popup.get_node_or_null("MarginContainer/VBoxContainer/UsernameFieldRoot/UsernameFieldFrame") is TextureRect, "Profile popup should own generated asset field frame")
 		passed = passed and _assert_true(profile_popup.get_node_or_null("MarginContainer/VBoxContainer/ScrollContainer/ScoreList") == null, "Profile popup scene should not contain leaderboard score list")
+		if profile_popup.has_method("apply_generated_ui_theme"):
+			profile_popup.apply_generated_ui_theme(theme)
+		await process_frame
+		var username_edit := profile_popup.get_node_or_null("MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit/UsernameEdit") as LineEdit
+		var username_frame := profile_popup.get_node_or_null("MarginContainer/VBoxContainer/UsernameFieldRoot/UsernameFieldFrame") as TextureRect
+		if username_edit != null:
+			var normal_style := username_edit.get_theme_stylebox("normal") as StyleBoxFlat
+			passed = passed and _assert_true(username_edit.custom_minimum_size.y >= theme.ui_profile_popup_field_min_height, "Username field should reserve owner-approved field height")
+			passed = passed and _assert_true(normal_style != null and normal_style.bg_color.a == 0.0, "Username LineEdit should be transparent so existing field asset owns the box")
+		if username_frame != null:
+			passed = passed and _assert_true(username_frame.texture != null, "Username field frame should render an existing generated asset texture")
+			passed = passed and _assert_true(theme.ui_profile_popup_field_frame_asset_key == "stats_capsule", "Username field should reuse existing stats_capsule empty box")
 		root.remove_child(profile_popup)
 		profile_popup.free()
 

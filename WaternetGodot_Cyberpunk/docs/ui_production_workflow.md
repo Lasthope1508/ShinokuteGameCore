@@ -215,6 +215,35 @@ Forbidden:
 - Text that decides its own width from string length inside a layout container.
 - Modal/popup text that is approved in one theme or orientation only.
 
+## B7A. Function Skin Existing Asset Gate
+
+Before adding any new UI control frame, field background, capsule, badge, or button shell in code, the agent must inventory the existing function-skin assets and scene owner boxes.
+
+Required order:
+
+1. Check `docs/runtime_asset_manifest.json` for approved generated UI assets.
+2. Check `ThemeConfig.ui_generated_asset_paths` and `ThemeConfig.ui_generated_asset_geometry` for reusable object keys.
+3. Check the target scene for an existing semantic owner box, such as `UsernameFieldRoot`, modal content rect, stat capsule, or button shell.
+4. Use the existing generated asset through a `ThemeConfig` key when a matching blank box exists.
+5. Make the input/text control transparent and place it inside that asset-owned box.
+6. Add or update a contract test proving the control uses the existing asset key and does not draw a new procedural frame.
+7. Only create a new 9Router asset when no approved asset can serve the role, then add it to the component queue and get owner approval before integration.
+
+Forbidden:
+
+- Drawing new `StyleBoxFlat` frames for production function skin when an approved generated blank box already exists.
+- Making `LineEdit`, `Label`, or `Button` visually own its box through default Godot theme styling.
+- Placing username, leaderboard rows, or settings values as floating text without an asset-backed owner box.
+- Reusing a random asset by path in code. The chosen asset key must live in `ThemeConfig`.
+- Fixing a missing box by offsets, padding guesses, or default containers.
+
+Current cyber decision:
+
+- Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = "stats_capsule"`.
+- `ProfilePopup.UsernameFieldFrame` renders that existing generated blank capsule.
+- `ProfilePopup.UsernameEdit` is transparent and lives inside `UsernameFieldRoot/HBoxEdit`.
+- Future profile/settings fields must follow the same pattern unless owner approves a new dedicated field asset.
+
 ## Completion Gate
 
 UI pass is complete only when:

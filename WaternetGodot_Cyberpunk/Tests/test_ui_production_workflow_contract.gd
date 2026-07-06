@@ -4,9 +4,11 @@ func _init() -> void:
 	var passed := true
 	var workflow := FileAccess.get_file_as_string("res://docs/ui_production_workflow.md")
 	var language := FileAccess.get_file_as_string("res://docs/ui_design_language.md")
+	var agents := FileAccess.get_file_as_string("res://AGENTS.md")
 
 	passed = passed and _assert_true(not workflow.is_empty(), "UI production workflow doc should exist")
 	passed = passed and _assert_true(language.contains("docs/ui_production_workflow.md"), "UI design language should point to production workflow")
+	passed = passed and _assert_true(agents.contains("docs/ui_production_workflow.md"), "Project AGENTS gate should require UI workflow for UI work")
 
 	for required_text in [
 		"Do not design professional game UI by hand-tweaking Godot controls first.",
@@ -47,6 +49,15 @@ func _init() -> void:
 		"docs/ui_cyber_9router_component_call_queue.md",
 		"Every call must include the base R2 reference pack plus the matching mode/component refs.",
 		"Future agents must extend the queue rather than inventing ad hoc prompts."
+	]:
+		passed = passed and _assert_true(workflow.contains(required_text), "Workflow should document %s" % required_text)
+
+	for required_text in [
+		"B7A. Function Skin Existing Asset Gate",
+		"Check `docs/runtime_asset_manifest.json` for approved generated UI assets.",
+		"Use the existing generated asset through a `ThemeConfig` key when a matching blank box exists.",
+		"Drawing new `StyleBoxFlat` frames for production function skin when an approved generated blank box already exists.",
+		"Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = \"stats_capsule\"`."
 	]:
 		passed = passed and _assert_true(workflow.contains(required_text), "Workflow should document %s" % required_text)
 

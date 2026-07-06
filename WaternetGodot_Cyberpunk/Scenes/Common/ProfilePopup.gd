@@ -4,12 +4,15 @@ const GAME_CORE_CONFIG_PATH := "res://Resources/Data/glyphflow_game_core_config.
 
 signal dismissed
 
-@onready var username_edit: LineEdit = $MarginContainer/VBoxContainer/HBoxEdit/UsernameEdit
+@onready var username_field_root: Control = $MarginContainer/VBoxContainer/UsernameFieldRoot
+@onready var username_field_frame: TextureRect = $MarginContainer/VBoxContainer/UsernameFieldRoot/UsernameFieldFrame
+@onready var username_edit: LineEdit = $MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit/UsernameEdit
 @onready var margin_container: MarginContainer = $MarginContainer
 @onready var vbox_container: VBoxContainer = $MarginContainer/VBoxContainer
 @onready var title_label: Label = $MarginContainer/VBoxContainer/TitleLabel
-@onready var edit_hbox: HBoxContainer = $MarginContainer/VBoxContainer/HBoxEdit
-@onready var save_btn: Button = $MarginContainer/VBoxContainer/HBoxEdit/SaveBtn
+@onready var edit_hbox: HBoxContainer = $MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit
+@onready var name_label: Label = $MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit/Label
+@onready var save_btn: Button = $MarginContainer/VBoxContainer/UsernameFieldRoot/HBoxEdit/SaveBtn
 @onready var status_label: Label = $MarginContainer/VBoxContainer/StatusLabel
 @onready var close_btn: Button = $CloseBtn
 
@@ -63,8 +66,23 @@ func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:
 		title_label.add_theme_color_override("font_color", theme_config.text_color)
 	if edit_hbox:
 		edit_hbox.add_theme_constant_override("separation", theme_config.ui_profile_popup_field_gap)
+		edit_hbox.offset_left = theme_config.ui_profile_popup_field_padding_x
+		edit_hbox.offset_right = -theme_config.ui_profile_popup_field_padding_x
+	if username_field_root:
+		username_field_root.custom_minimum_size.y = theme_config.ui_profile_popup_field_min_height
+	if username_field_frame:
+		username_field_frame.texture = _get_profile_field_frame_texture(theme_config)
+		username_field_frame.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		username_field_frame.visible = username_field_frame.texture != null
+	if name_label:
+		name_label.add_theme_font_size_override("font_size", theme_config.ui_profile_popup_score_font_size)
+		name_label.add_theme_color_override("font_color", theme_config.text_color)
+		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	if username_edit:
+		_apply_username_field_theme(username_edit, theme_config)
 	if save_btn:
 		save_btn.custom_minimum_size.x = theme_config.ui_profile_popup_save_button_width
+		save_btn.custom_minimum_size.y = theme_config.ui_profile_popup_field_min_height
 	if status_label:
 		status_label.add_theme_font_size_override("font_size", theme_config.ui_profile_popup_score_font_size)
 	var texture := theme_config.get_ui_generated_asset_texture(String(theme_config.ui_generated_asset_mode), "modal_frame")
@@ -131,3 +149,21 @@ func _make_transparent_control_style() -> StyleBoxFlat:
 	style.shadow_size = 0
 	style.shadow_offset = Vector2.ZERO
 	return style
+
+func _apply_username_field_theme(field: LineEdit, theme_config: ThemeConfig) -> void:
+	field.custom_minimum_size.y = theme_config.ui_profile_popup_field_min_height
+	field.add_theme_color_override("font_color", theme_config.text_color)
+	field.add_theme_color_override("font_placeholder_color", theme_config.text_color.darkened(0.35))
+	field.add_theme_color_override("caret_color", theme_config.accent_color)
+	field.add_theme_font_size_override("font_size", theme_config.ui_profile_popup_score_font_size)
+	for style_name in ["normal", "focus", "read_only"]:
+		field.add_theme_stylebox_override(style_name, _make_transparent_control_style())
+
+func _get_profile_field_frame_texture(theme_config: ThemeConfig) -> Texture2D:
+	var asset_key := theme_config.ui_profile_popup_field_frame_asset_key
+	if asset_key.strip_edges().is_empty():
+		return null
+	var texture := theme_config.get_ui_generated_asset_texture(String(theme_config.ui_generated_asset_mode), asset_key)
+	if texture == null:
+		return null
+	return _get_generated_ui_region_texture(theme_config, asset_key, texture)

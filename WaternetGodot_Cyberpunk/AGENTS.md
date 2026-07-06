@@ -18,6 +18,13 @@ For reskin/core work, also read:
 shared/ShinokuteGameCore/docs/reskin_core_skin_boundary.md
 ```
 
+For UI, function-skin, modal, profile, leaderboard, settings, or text layout work, also read:
+
+```text
+docs/ui_production_workflow.md
+docs/ui_design_language.md
+```
+
 ## Canonical Source Gate
 
 Never assume `main` is the latest playable source.
@@ -72,4 +79,3 @@ For any owner test URL or official web publish:
 7. Report URL, commit, artifact names, and smoke result.
 
 No success claim without fresh verification.
-
