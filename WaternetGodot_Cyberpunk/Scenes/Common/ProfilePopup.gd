@@ -76,6 +76,7 @@ func apply_generated_ui_theme(theme_config: ThemeConfig) -> void:
 		username_field_root.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	if username_field_frame:
 		username_field_frame.texture = _get_profile_field_frame_texture(theme_config)
+		username_field_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		username_field_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		username_field_frame.stretch_mode = TextureRect.STRETCH_SCALE
 		username_field_frame.visible = username_field_frame.texture != null
@@ -160,6 +161,9 @@ func _make_transparent_control_style() -> StyleBoxFlat:
 
 func _apply_username_field_theme(field: LineEdit, theme_config: ThemeConfig) -> void:
 	field.custom_minimum_size.y = theme_config.ui_profile_popup_field_min_height
+	field.focus_mode = Control.FOCUS_ALL
+	field.mouse_filter = Control.MOUSE_FILTER_STOP
+	field.caret_blink = true
 	field.add_theme_color_override("font_color", theme_config.text_color)
 	field.add_theme_color_override("font_placeholder_color", theme_config.text_color.darkened(0.35))
 	field.add_theme_color_override("caret_color", theme_config.accent_color)

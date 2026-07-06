@@ -56,9 +56,6 @@ func skip_username() -> bool:
 func submit_score(score: int, mode: String = "classic") -> int:
 	if core == null:
 		return ERR_UNAVAILABLE
-	if not has_username():
-		ensure_profile_ready()
-		return ERR_UNAVAILABLE
 	return core.submit_score({"mode": mode, "value": score})
 
 func fetch_leaderboard(tab: String, mode: String = "classic") -> int:

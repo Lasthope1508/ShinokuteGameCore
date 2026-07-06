@@ -242,8 +242,26 @@ Current cyber decision:
 - Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = "profile_username_field_frame"`.
 - `ProfilePopup.UsernameFieldFrame` renders a role-specific single-field crop with `TextureRect.STRETCH_SCALE`, not aspect-cover cropping.
 - `ProfilePopup.UsernameEdit` is transparent and lives inside `UsernameFieldRoot/HBoxEdit`.
+- Profile username input art must use `MOUSE_FILTER_IGNORE`; the real `LineEdit` must own focus, enable `caret_blink`, and pass a click/focus contract test.
 - Top-tray multi-panel assets such as `stats_capsule` are forbidden for username fields unless a role-specific crop asset and geometry key are created first.
 - Future profile/settings fields must follow the same pattern unless owner approves a new dedicated field asset.
+
+## B7B. Interactive Shared Feature Gate
+
+Every shared feature skin must verify behavior, not only appearance.
+
+Required for profile, leaderboard, settings, and result modals:
+
+1. Profile username flow must test focus, caret blink, click target, validation, commit, and close/reopen.
+2. Score flow must test local best persistence before username exists, pending leaderboard score persistence, flush after username commit, and sort-direction comparison.
+3. Leaderboard empty/loading/error/populated states must fit inside the modal owner rect.
+4. Portrait and landscape must both be tested for each modal before claiming completion.
+
+Forbidden:
+
+- Dropping score submit in game code because username is missing.
+- Auto-creating username fallback inside leaderboard transport.
+- Letting decorative frame art intercept input meant for a `LineEdit` or `Button`.
 
 ## Completion Gate
 

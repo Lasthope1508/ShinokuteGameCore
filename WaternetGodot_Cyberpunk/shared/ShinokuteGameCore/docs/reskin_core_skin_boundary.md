@@ -71,6 +71,9 @@ Username:
 
 Leaderboard:
 - Core owns Firestore payloads, query construction, sorting contract, and result normalization.
+- Core owns local best score persistence, pending score persistence, submit retry handoff after username commit, and score comparison by configured sort direction.
+- Games must submit canonical score dictionaries even when username is not ready; core must persist local best before remote leaderboard transport.
+- Core must not auto-create username fallback during score submit. If username is missing, keep pending score and emit/request profile readiness.
 - Function skin owns leaderboard tabs, cards, avatars, icons, rank visuals, and screen placement.
 
 Audio:

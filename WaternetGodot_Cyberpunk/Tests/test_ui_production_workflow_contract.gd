@@ -60,7 +60,18 @@ func _init() -> void:
 		"Use the existing generated asset through a `ThemeConfig` key only when role, ratio, crop, padding, and owner rect match the target control.",
 		"Drawing new `StyleBoxFlat` frames for production function skin when an approved generated role-matching blank box already exists.",
 		"Profile username input uses `ThemeConfig.ui_profile_popup_field_frame_asset_key = \"profile_username_field_frame\"`.",
+		"Profile username input art must use `MOUSE_FILTER_IGNORE`; the real `LineEdit` must own focus, enable `caret_blink`, and pass a click/focus contract test.",
 		"Top-tray multi-panel assets such as `stats_capsule` are forbidden for username fields unless a role-specific crop asset and geometry key are created first."
+	]:
+		passed = passed and _assert_true(workflow.contains(required_text), "Workflow should document %s" % required_text)
+
+	for required_text in [
+		"B7B. Interactive Shared Feature Gate",
+		"Profile username flow must test focus, caret blink, click target, validation, commit, and close/reopen.",
+		"Score flow must test local best persistence before username exists, pending leaderboard score persistence, flush after username commit, and sort-direction comparison.",
+		"Dropping score submit in game code because username is missing.",
+		"Auto-creating username fallback inside leaderboard transport.",
+		"Letting decorative frame art intercept input meant for a `LineEdit` or `Button`."
 	]:
 		passed = passed and _assert_true(workflow.contains(required_text), "Workflow should document %s" % required_text)
 
@@ -72,7 +83,9 @@ func _init() -> void:
 		"role, ratio, crop, padding, and owner rect",
 		"Do not draw a new procedural frame",
 		"Do not reuse multi-panel tray art as a field shell",
-		"contract test proving the chosen control uses an existing asset key"
+		"contract test proving the chosen control uses an existing asset key",
+		"Core owns local best score persistence, pending score persistence, submit retry handoff after username commit, and score comparison by configured sort direction.",
+		"Core must not auto-create username fallback during score submit."
 	]:
 		passed = passed and _assert_true(shared_boundary.contains(required_text), "Shared reskin boundary should document %s" % required_text)
 

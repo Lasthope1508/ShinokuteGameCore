@@ -48,8 +48,11 @@ func _run() -> void:
 			var normal_style := username_edit.get_theme_stylebox("normal") as StyleBoxFlat
 			passed = passed and _assert_true(username_edit.custom_minimum_size.y >= theme.ui_profile_popup_field_min_height, "Username field should reserve owner-approved field height")
 			passed = passed and _assert_true(normal_style != null and normal_style.bg_color.a == 0.0, "Username LineEdit should be transparent so existing field asset owns the box")
+			passed = passed and _assert_true(username_edit.caret_blink, "Username LineEdit should show a blinking caret when focused")
+			passed = passed and _assert_true(username_edit.focus_mode == Control.FOCUS_ALL, "Username LineEdit should accept mouse and keyboard focus")
 		if username_frame != null:
 			passed = passed and _assert_true(username_frame.texture != null, "Username field frame should render an existing generated asset texture")
+			passed = passed and _assert_true(username_frame.mouse_filter == Control.MOUSE_FILTER_IGNORE, "Username frame art should not intercept clicks from the LineEdit")
 			passed = passed and _assert_true(theme.ui_profile_popup_field_frame_asset_key == "profile_username_field_frame", "Username field should use a role-specific single-field frame, not the multi-panel top tray stats_capsule")
 			var field_geometry: Dictionary = theme.get_ui_generated_asset_geometry(theme.ui_profile_popup_field_frame_asset_key)
 			passed = passed and _assert_equal(String(field_geometry.get("anchor", "")), "profile.username_field", "Username field geometry should use a profile-specific anchor")

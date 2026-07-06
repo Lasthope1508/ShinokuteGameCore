@@ -23,6 +23,10 @@ func _init() -> void:
 	passed = passed and _assert_true(core_source.contains("glyphflow_game_core_config.tres"), "GameCoreManager should load Glyphflow GameCoreConfig")
 	passed = passed and _assert_true(core_source.contains("user://save.cfg"), "GameCoreManager should use existing game save path")
 	passed = passed and _assert_true(core_source.contains("ensure_profile_ready"), "GameCoreManager should expose first-launch username readiness")
+	passed = passed and _assert_true(not core_source.contains("if not has_username():\n\t\tensure_profile_ready()\n\t\treturn ERR_UNAVAILABLE"), "GameCoreManager should not drop score before shared core can persist local best and pending submit")
+	passed = passed and _assert_true(core_source.contains("return core.submit_score"), "GameCoreManager should delegate score persistence/submission to shared core")
+	passed = passed and _assert_true(leaderboard_client_source.contains("get_sort_direction"), "LeaderboardClient should compare submitted scores by configured score direction")
+	passed = passed and _assert_true(leaderboard_client_source.contains("clear_pending_score"), "LeaderboardClient should clear pending score only after successful submit")
 
 	passed = passed and _assert_true(main_menu_source.contains("UiModalPresenter"), "MainMenu should use canonical modal presenter")
 	passed = passed and _assert_true(main_menu_source.contains("show_leaderboard_modal"), "MainMenu should show leaderboard through the same modal path as settings")
