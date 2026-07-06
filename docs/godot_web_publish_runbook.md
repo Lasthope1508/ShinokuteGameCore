@@ -35,6 +35,35 @@ Each game repo must document these fields in its local release checklist before 
 
 No agent may invent missing Firebase project ids, hosting targets, production URLs, or fallback publish paths. If a required field is missing, stop and add it to the game checklist from existing repo config or ask the owner.
 
+## Git Source Gate
+
+When the owner says "lay tren Git", "lay tren GitHub", "source moi nhat", "dua source moi nhat cua web len", or similar, Git is the source of truth.
+
+Required steps:
+
+1. Resolve the exact repo URL, branch, and remote SHA with `git ls-remote` or the Git provider.
+2. Clone into a short temporary directory such as `C:\sgd-YYYYMMDD-HHMMSS`.
+3. Export, stage, smoke, and deploy from that fresh clone or from artifacts built from that fresh clone.
+4. Record repo URL, branch, and SHA in the publish evidence.
+5. Do not treat an existing local checkout as canonical unless its remote and SHA have been verified in the current pass.
+6. Do not download the live site HTML and call it source.
+7. Do not copy from another game repo or project root to fill missing files.
+
+If a required web wrapper, portal, or Firebase config is not present in Git, say so explicitly. Use only a minimal temporary wrapper when the owner has asked for a live replacement and the wrapper's behavior is clear. Record that exception in the evidence.
+
+## Temporary Workspace Gate
+
+Use a short temp root for publish work that should not modify the user's project checkout:
+
+```powershell
+$root = "C:\sgd-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+New-Item -ItemType Directory -Path $root
+```
+
+Keep generated deploy staging files, `node_modules`, screenshots, smoke scripts, and Firebase public dirs inside that temp root unless the repo intentionally owns them. Before deleting temp output, verify the resolved path starts with `C:\sgd-`. Remove the temp root after deploy and final verification.
+
+Never leave staging folders, Playwright installs, smoke screenshots, or copied export files in a game repo unless the owner explicitly asked to commit those files.
+
 ## Required Firebase Headers
 
 Godot Web loads fixed runtime filenames unless the export basename changes. A cache-busted HTML URL alone does not guarantee a fresh `.pck`, `.js`, or `.wasm`.
@@ -108,6 +137,44 @@ firebase hosting:channel:deploy $channel --only hosting:<target> --expires 7d
 ```
 
 Use `firebase deploy --only hosting` for an owner test only when the owner explicitly asked to replace the live test site or the game checklist names production hosting as the approved test URL.
+
+## Shinokute Play Multi-Game Site
+
+`play.shinokute.com` is a shared production web site, not one game's default Firebase root.
+
+Known live Firebase target:
+
+- Firebase project: `shinokute-studio`
+- Hosting site/target: `shinokute-play`
+- Public domain: `https://play.shinokute.com`
+
+Current route contract:
+
+| Game | Route | Godot runtime route |
+|---|---|---|
+| BloxChain | `/bloxchain/` | `/bloxchain/game/index.html` |
+| Glyphflow Arrays | `/glyph-arrows/` | `/glyph-arrows/game/index.html` |
+
+When replacing this site:
+
+1. Build each game from its own verified Git source and SHA.
+2. Export each game with basename `index` when it will live under a wrapper's `game/index.html`.
+3. Stage only the web runtime files for each game under that game's `game/` directory.
+4. Preserve route ownership. Do not overwrite one game's route with another game's artifacts.
+5. Use a Firebase config with site/target `shinokute-play`, no-store headers for `.html`, `.pck`, `.js`, `.wasm`, and COOP/COEP headers when required.
+6. Deploy with:
+
+```powershell
+firebase deploy --project shinokute-studio --only hosting:shinokute-play
+```
+
+Wrapper and portal ownership:
+
+- If Git contains the portal or wrapper HTML, use the Git version.
+- If Git does not contain the portal or wrapper HTML, do not pull live HTML down as source. Create only a minimal temp wrapper that loads `game/index.html`, and record that Git lacked wrapper source.
+- Do not add marketing pages, layout redesigns, analytics, or extra assets during a runtime replacement.
+
+Smoke checks for wrapper routes must interact with the Godot canvas inside the `game/` frame. A console-clean run that leaves the screenshot on menu, splash, or level select is not a pass. Capture screenshots after each major click when validating a wrapped route.
 
 ## Official Web Publish Workflow
 
@@ -190,18 +257,20 @@ Append this to the game release checklist after every owner test link or officia
 ## Web Publish Evidence YYYY-MM-DD HH:mm
 
 - Mode: Owner test link | Official publish
-- Repo branch/commit:
+- Source repos/branches/commits:
 - Godot project:
 - Firebase project:
 - Hosting target/site:
 - Public dir:
 - URL:
+- Routes:
 - Web export command:
 - Artifact sizes:
   - HTML:
   - JS:
   - WASM:
   - PCK:
+- Live PCK byte size:
 - Tests:
 - PCK forbidden scan:
 - Public dir clean gate:
@@ -210,6 +279,8 @@ Append this to the game release checklist after every owner test link or officia
 - Console result:
 - Web audio unlock result:
 - Owner approval:
+- Wrapper/portal source:
+- Temp cleanup:
 - Blockers:
 ```
 
@@ -223,4 +294,6 @@ Append this to the game release checklist after every owner test link or officia
 | No sound on web | Audio context not unlocked or wrong exported audio file. | Use real user input, check web audio debug state, then inspect exported audio. |
 | Firebase deploy uploads AAB/log/import files | `Export/` used as mixed Web/Android dump. | Use web-only public dir or strict ignore/clean gate. |
 | Agent cannot find target | Publish SSOT missing. | Read `.firebaserc`/`firebase.json`, update release checklist, then continue. |
-
+| Wrong game route changed | Shared site staged artifacts without route ownership. | Rebuild per game from its own Git SHA and stage under the documented route. |
+| Wrapped route smoke says pass but screenshot is still menu | Clicks hit wrapper page or wrong canvas coordinates. | Select the `game/` frame, click the Godot canvas, capture each step, and require gameplay screenshot. |
+| Source was taken from local or live site after owner asked for Git | Canonical source gate skipped. | Fresh clone verified remote SHA, rebuild, redeploy, and record repo URL/branch/SHA. |
