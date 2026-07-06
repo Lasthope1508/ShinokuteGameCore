@@ -13,6 +13,7 @@
                                    "res://Scripts/",
                                    "res://Assets/",
                                    "res://Audio/",
+                                   "res://shared/ShinokuteGameCore/addons/shinokute_game_core/",
                                    "res://addons/kenney_particle_pack/",
                                    "res://effects/2d_explosion/source/",
                                    "res://effects/2d_vortex/source/"
@@ -2003,6 +2004,14 @@
                                "owner_approved":  true
                            },
                            {
+                               "path":  "res://Resources/Data/bloxchain_game_core_config.tres",
+                               "role":  "resource",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
                                "path":  "res://Resources/Data/default_theme.tres",
                                "role":  "resource",
                                "runtime_required":  true,
@@ -2475,6 +2484,14 @@
                                "owner_approved":  true
                            },
                            {
+                               "path":  "res://shared/ShinokuteGameCore/addons/shinokute_game_core/core/game_core_config.gd",
+                               "role":  "script",
+                               "runtime_required":  true,
+                               "export_policy":  "selected_resource",
+                               "compression_policy":  "resource",
+                               "owner_approved":  true
+                           },
+                           {
                                "path":  "res://Scripts/GridSolver.gd",
                                "role":  "script",
                                "runtime_required":  true,
@@ -2484,14 +2501,6 @@
                            },
                            {
                                "path":  "res://Scripts/LeaderboardManager.gd",
-                               "role":  "script",
-                               "runtime_required":  true,
-                               "export_policy":  "selected_resource",
-                               "compression_policy":  "resource",
-                               "owner_approved":  true
-                           },
-                           {
-                               "path":  "res://Scripts/mcp_interaction_server.gd",
                                "role":  "script",
                                "runtime_required":  true,
                                "export_policy":  "selected_resource",
@@ -2549,6 +2558,12 @@
                                  {
                                      "path":  "res://.agents/",
                                      "role":  "agent_config",
+                                     "runtime_required":  false,
+                                     "export_policy":  "forbidden"
+                                 },
+                                 {
+                                     "path":  "res://Scripts/mcp_interaction_server.gd",
+                                     "role":  "local_tool",
                                      "runtime_required":  false,
                                      "export_policy":  "forbidden"
                                  },
