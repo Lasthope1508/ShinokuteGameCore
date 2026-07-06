@@ -176,6 +176,140 @@ Wrapper and portal ownership:
 
 Smoke checks for wrapper routes must interact with the Godot canvas inside the `game/` frame. A console-clean run that leaves the screenshot on menu, splash, or level select is not a pass. Capture screenshots after each major click when validating a wrapped route.
 
+### Route-Only REST Replacement On Shinokute Play
+
+Use this when the owner asks to replace only one Godot runtime on `play.shinokute.com`, and the current portal/wrapper should stay unchanged. This avoids deploying a temp public root that could overwrite the shared portal or another game route.
+
+Required source/build shape:
+
+1. Verify remote source with `git ls-remote`.
+2. Fresh clone into `C:\sgd-YYYYMMDD-HHMMSS`.
+3. Read root `AGENTS.md`, project `AGENTS.md`, release checklist, asset checklist, audio pipeline, and this runbook.
+4. Clear `.godot` import/export caches and `Export/`.
+5. Run Godot import. If Godot removes `[audio]`, restore:
+
+```ini
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+```
+
+6. Run the full `Tests/test_*.gd` sweep. If a timing/performance test fails once, rerun that test to establish whether it is reproducible. Do not deploy until a clean full sweep passes.
+7. Export with basename `index`:
+
+```powershell
+$godot='C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
+& $godot --headless --path $project --export-release 'Web' 'Export/index.html'
+```
+
+8. Export folder must contain exactly the Godot Web runtime files for that game, normally:
+
+```text
+index.apple-touch-icon.png
+index.audio.worklet.js
+index.html
+index.icon.png
+index.js
+index.pck
+index.png
+index.wasm
+```
+
+9. Run PCK forbidden-marker scan and public-dir clean gate before any upload.
+10. Run local no-store smoke from `Export/`: close profile popup if present, click `Play`, click `Level 1`, click one tile, confirm `MOVES` changes, console errors are `0`, and `glyphflowAudioDebug.web_audio_unlock_attempted` is `true`.
+
+REST deploy model:
+
+1. Read current live release:
+
+```text
+GET https://firebasehosting.googleapis.com/v1beta1/sites/shinokute-play/releases?pageSize=1
+```
+
+2. Read the live version file map using paged requests:
+
+```text
+GET https://firebasehosting.googleapis.com/v1beta1/{liveVersion}/files?pageSize=1000
+```
+
+3. Create a new file map by keeping every existing file except the target route prefix, for example `/glyph-arrows/game/`.
+4. Hash each new local export file as SHA256 of gzip level-9 bytes, not raw bytes. Put the new hashes under the route prefix, for example `/glyph-arrows/game/index.pck`.
+5. Create a new Hosting version with the live version config copied exactly. Preserve no-store and COOP/COEP headers:
+
+```json
+{
+  "config": {
+    "headers": [
+      {
+        "glob": "**/*.@(html|js|wasm|pck)",
+        "headers": {
+          "Cache-Control": "no-cache, no-store, must-revalidate"
+        }
+      },
+      {
+        "glob": "**",
+        "headers": {
+          "Cross-Origin-Opener-Policy": "same-origin",
+          "Cross-Origin-Embedder-Policy": "require-corp"
+        }
+      }
+    ],
+    "trailingSlashBehavior": "ADD"
+  },
+  "labels": {
+    "source": "codex",
+    "game": "glyph-arrows",
+    "branch": "codex-water-canonical-names",
+    "commit": "<short-source-sha>"
+  }
+}
+```
+
+6. Call `:populateFiles` with the full merged file map:
+
+```text
+POST https://firebasehosting.googleapis.com/v1beta1/{newVersion}:populateFiles
+```
+
+7. Upload only `uploadRequiredHashes` to `uploadUrl/{hash}` using:
+
+```text
+method: POST
+Authorization: Bearer <firebase access token>
+body: gzip bytes for that hash
+```
+
+Do not use `PUT`. Do not add `Content-Encoding: gzip`; Firebase Hosting expects the gzipped byte stream as the upload body because the hash is over gzip bytes.
+
+8. Finalize and release:
+
+```text
+PATCH https://firebasehosting.googleapis.com/v1beta1/{newVersion}?updateMask=status
+body: {"status":"FINALIZED"}
+
+POST https://firebasehosting.googleapis.com/v1beta1/sites/shinokute-play/releases?versionName={newVersion}
+```
+
+9. If an upload attempt fails after creating a version and before release, delete that `CREATED` version:
+
+```text
+DELETE https://firebasehosting.googleapis.com/v1beta1/{createdVersion}
+```
+
+Route preservation checks:
+
+- Live file count should stay unchanged when replacing a route with the same eight Godot files.
+- The `/index.html` hash must stay identical when the portal is not being changed.
+- The other game route hash, for example `/bloxchain/game/index.pck`, must stay identical.
+- After deploy, verify headers for `/glyph-arrows/game/index.html`, `.js`, `.wasm`, and `.pck`.
+- Smoke the public wrapper route, not only the direct runtime route:
+
+```text
+https://play.shinokute.com/glyph-arrows/?v=<source-sha-or-timestamp>
+```
+
+The pass path is wrapper button -> iframe `/glyph-arrows/game/index.html` -> close profile popup if present -> `Play` -> `Level 1` -> click one tile -> visible `MOVES` increment -> console errors `0` -> web audio unlock debug true.
+
 ## Official Web Publish Workflow
 
 Use this only when the owner asks to publish, release, replace the old public build, update the live site, or publish official web.
