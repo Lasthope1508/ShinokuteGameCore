@@ -23,7 +23,8 @@ def _fit(image: Image.Image, max_size: tuple[int, int]) -> Image.Image:
 
 def main() -> int:
 	font = ImageFont.load_default()
-	canvas = Image.new("RGB", (820, 1080), (24, 30, 38))
+	canvas_height = 28 + sum(box[1] + 66 for _, _, box in ITEMS) + 16
+	canvas = Image.new("RGB", (820, canvas_height), (24, 30, 38))
 	draw = ImageDraw.Draw(canvas)
 	y = 28
 	for label, path, box in ITEMS:
