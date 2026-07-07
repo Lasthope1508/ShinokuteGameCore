@@ -18,6 +18,17 @@ extends Resource
 @export var score_labels: Dictionary = {}
 @export var score_sort_directions: Dictionary = {}
 
+@export var theme_config: Resource
+@export var scene_routes: Dictionary = {}
+@export var overlay_scenes: Dictionary = {}
+@export var ad_placements: Dictionary = {}
+@export var analytics_config: Dictionary = {}
+@export var remote_defaults: Dictionary = {}
+@export var translations: Dictionary = {}
+@export var default_locale: String = "en"
+@export var fallback_locale: String = "en"
+@export var ads_enabled: bool = true
+
 const SORT_ASCENDING := "ASCENDING"
 const SORT_DESCENDING := "DESCENDING"
 

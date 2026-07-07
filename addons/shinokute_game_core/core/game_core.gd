@@ -10,12 +10,30 @@ const LocalSaveStoreScript := preload("local_save_store.gd")
 const PlayerProfileScript := preload("player_profile.gd")
 const LeaderboardClientScript := preload("leaderboard_client.gd")
 const GeoServiceScript := preload("geo_service.gd")
+const GameSessionScript := preload("game_session.gd")
+const ThemeManagerScript := preload("../services/theme_manager.gd")
+const AudioHapticsScript := preload("../services/audio_haptics_manager.gd")
+const AnalyticsScript := preload("../services/analytics_tracker.gd")
+const AdsScript := preload("../services/ads_manager.gd")
+const LocalizationScript := preload("../services/localization_service.gd")
+const RemoteConfigScript := preload("../services/remote_config_service.gd")
+const SceneRouterScript := preload("../ux/scene_router.gd")
+const OverlayManagerScript := preload("../ux/overlay_manager.gd")
 
 var config: Resource
 var save_store: Node
 var profile: Node
 var leaderboard: Node
 var geo_service: Node
+var session: Node
+var theme_manager: Node
+var audio_haptics: Node
+var analytics: Node
+var ads: Node
+var localization: Node
+var remote_config: Node
+var scene_router: Node
+var overlay_manager: Node
 
 func configure(core_config: Resource, save_path: String = "user://shinokute_game_core.cfg") -> void:
 	config = core_config
@@ -40,6 +58,42 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 	geo_service = GeoServiceScript.new()
 	add_child(geo_service)
 	geo_service.configure(save_store, config.geolocation_url)
+
+	theme_manager = ThemeManagerScript.new()
+	add_child(theme_manager)
+	if config.get("theme_config") != null:
+		theme_manager.configure(config.get("theme_config"))
+
+	audio_haptics = AudioHapticsScript.new()
+	add_child(audio_haptics)
+	audio_haptics.configure(theme_manager)
+
+	analytics = AnalyticsScript.new()
+	add_child(analytics)
+	analytics.configure(config.get("analytics_config"))
+
+	ads = AdsScript.new()
+	add_child(ads)
+	ads.configure(config.get("ad_placements"), bool(config.get("ads_enabled")))
+
+	localization = LocalizationScript.new()
+	add_child(localization)
+	localization.configure(String(config.get("default_locale")), config.get("translations"), String(config.get("fallback_locale")))
+
+	remote_config = RemoteConfigScript.new()
+	add_child(remote_config)
+	remote_config.configure_defaults(config.get("remote_defaults"))
+
+	scene_router = SceneRouterScript.new()
+	add_child(scene_router)
+	scene_router.configure(config.get("scene_routes"))
+
+	overlay_manager = OverlayManagerScript.new()
+	add_child(overlay_manager)
+	overlay_manager.configure(config.get("overlay_scenes"))
+
+	session = GameSessionScript.new()
+	add_child(session)
 
 func ensure_profile_ready() -> void:
 	profile.ensure_profile_ready()
@@ -112,3 +166,12 @@ func fetch_leaderboard(tab: String, mode: String = "classic") -> int:
 	if leaderboard == null:
 		return ERR_UNAVAILABLE
 	return leaderboard.fetch_leaderboard(tab, mode)
+
+func configure_rules_adapter(rules_adapter: Node) -> void:
+	if session != null:
+		session.configure(rules_adapter)
+
+func start_run(mode: String = "classic", context: Dictionary = {}) -> int:
+	if session == null:
+		return ERR_UNAVAILABLE
+	return session.start_run(mode, context)
