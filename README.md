@@ -10,6 +10,8 @@ Every agent must read `AGENTS.md` before touching game code for a new reskin.
 
 Every agent must read `docs/reskin_core_skin_boundary.md` before reskinning any Shinokute game. Core owns behavior; each game owns game skin and function skin.
 
+Every agent must read `docs/reskin_runbook.md` and create a game-local checklist from `docs/reskin_checklist_template.md` before production reskin edits.
+
 Every agent must read `docs/godot_web_publish_runbook.md` before giving the owner a web test link or publishing an official Godot Web build.
 
 ## Architecture

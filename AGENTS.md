@@ -13,11 +13,15 @@ Shared systems stay in `addons/shinokute_game_core/`.
 
 1. Inspect `addons/shinokute_game_core/README.md`.
 2. Inspect `README.md` for current module list and test command.
-3. Create or update the game-owned `GameCoreConfig.tres`.
-4. Create or update the game-owned `ShinokuteThemeConfig.tres`.
-5. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
-6. Wire gameplay through `GameCore`, not through copied managers.
-7. Run Shinokute core tests before claiming the reskin is ready.
+3. Read `docs/reskin_core_skin_boundary.md`.
+4. Read `docs/reskin_runbook.md`.
+5. Copy `docs/reskin_checklist_template.md` into the game repo if the game
+   has no local reskin checklist.
+6. Create or update the game-owned `GameCoreConfig.tres`.
+7. Create or update the game-owned `ShinokuteThemeConfig.tres`.
+8. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
+9. Wire gameplay through `GameCore`, not through copied managers.
+10. Run Shinokute core tests before claiming the reskin is ready.
 
 ## Core Layers
 
@@ -74,6 +78,10 @@ core.analytics.track("game_start", {"mode": "classic"})
   Shinokute core.
 - Do not bypass `GameSession` for run lifecycle.
 - Do not bypass `GameRulesAdapter` for game-specific rule logic.
+- Do not continue when text overflows, overlaps, or does not fit its visual
+  owner region.
+- Do not forget game context: menus, popups, buttons, settings, and result
+  screens must still look like the current game, not a generic app UI.
 - Do not report completion without running tests.
 
 ## Reskin Checklist
@@ -93,6 +101,8 @@ core.analytics.track("game_start", {"mode": "classic"})
 - [ ] Tuning values use `remote_config`.
 - [ ] Scores go through `submit_score`.
 - [ ] Leaderboards go through `fetch_leaderboard`.
+- [ ] Text and text-owner regions fit desktop and mobile viewports.
+- [ ] Changed screens still read as game screens.
 
 ## Test Command
 

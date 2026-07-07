@@ -51,17 +51,48 @@ Forbidden:
 - Do not fix missing boxes with offsets, padding guesses, or default layout containers.
 - Do not add new function-skin art to `ShinokuteGameCore`; the game owns that presentation.
 
+## Text Fit And Game Context Gate
+
+Before a screen, popup, HUD row, button, input, leaderboard item, or settings
+control can be called reskinned, text and text-owner regions must fit the game
+screen, art style, and control role.
+
+In every reskin, text and text-owner regions must fit the game screen, art style, and control role before the agent moves to another task.
+
+Required:
+
+1. Identify the owner visual region for each label, value, input, or button
+   caption before placing text.
+2. Use the game SSOT for owner rect, padding, max width, max lines, alignment,
+   font token, and scale policy.
+3. Verify desktop and mobile viewports.
+4. Capture screenshots for changed screens.
+5. Ask whether the result still reads as an actual game screen, not a generic
+   app form pasted over game art.
+
+Forbidden:
+
+- Do not let text overflow outside its owner region.
+- Do not let text overlap art, controls, safe area padding, scores, input
+  fields, or neighboring UI.
+- Do not use hero-scale text inside compact controls.
+- Do not fix overflow with random offsets or one-off font sizes.
+- Do not forget gameplay context: every menu, popup, result, and settings
+  screen must still feel like part of the current game theme.
+
 ## Required Reskin Flow
 
 1. Read this boundary document.
-2. Read the game's local reskin checklist and publish checklist.
-3. Read `docs/godot_web_publish_runbook.md` before any owner test link or official web publish.
-4. Identify core feature behavior already owned by `ShinokuteGameCore`.
-5. Keep or move reusable behavior to core only after adding core tests.
-6. Keep all game skin and function skin inside the game repo.
-7. Create or update the game SSOT resource for coordinates, colors, fonts, asset paths, VFX parameters, and layout bounds.
-8. Add contract tests proving the game reads skin values from SSOT, not scattered constants.
-9. Run Godot import, contract tests, packaging tests, and a smoke launch before claiming the game works.
+2. Read `docs/reskin_runbook.md`.
+3. Read the game's local reskin checklist and publish checklist.
+4. If the game has no local reskin checklist, copy `docs/reskin_checklist_template.md` into the game repo before edits.
+5. Read `docs/godot_web_publish_runbook.md` before any owner test link or official web publish.
+6. Identify core feature behavior already owned by `ShinokuteGameCore`.
+7. Keep or move reusable behavior to core only after adding core tests.
+8. Keep all game skin and function skin inside the game repo.
+9. Create or update the game SSOT resource for coordinates, colors, fonts, asset paths, VFX parameters, text owner regions, and layout bounds.
+10. Add contract tests proving the game reads skin values from SSOT, not scattered constants.
+11. Run Godot import, contract tests, packaging tests, and a smoke launch before claiming the game works.
 
 ## Examples
 
