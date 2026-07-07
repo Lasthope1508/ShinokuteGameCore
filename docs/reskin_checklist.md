@@ -114,6 +114,7 @@ Hard gate:
 - [x] Branding assets recorded in manifest before production integration.
 - [x] Project icon and splash integrated only after owner visual approval.
 - [x] Branding validation passed.
+- [x] Owner final review approved integrated branding on 2026-07-07.
 
 Hard gate:
 - Do not generate, import, or apply branding assets before the written Branding spec is owner-reviewed and the implementation plan exists.
@@ -311,4 +312,4 @@ Fill only if publishing or making an owner test link.
   - Deeper GLB replacement for obstacle/brick/flag is not in approved scope.
   - Mobile/narrow viewport screenshots are not captured because mobile scope is not approved.
 - Owner follow-up needed:
-  - Final owner review of integrated branding.
+  - None for current game-skin plus branding scope. Open a separate gate for deeper GLB replacement, mobile/web validation, publish, or Shinokute integration.

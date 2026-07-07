@@ -4,7 +4,7 @@ Last updated: 2026-07-07
 
 ## Current Gate
 
-Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding icon, splash, logo, and project display name are integrated and validated; final owner review is the active gate.
+Current game-skin scope and branding scope passed, validated, and owner approved. No active creative asset gate is open.
 
 ## Completed Assets
 
@@ -25,6 +25,7 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 - Branding splash owner approved: `assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png`.
 - Branding logo owner approved: `assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png`.
 - Branding contact sheet owner approved: `docs/screenshots/candy_sky_islands_branding_contact_sheet.png`.
+- Integrated branding owner final review approved on 2026-07-07.
 - Asset family screenshots captured:
   - `docs/screenshots/candy_sky_islands_asset_family_gameplay.png`
   - `docs/screenshots/candy_sky_islands_asset_family_hud.png`
@@ -68,10 +69,10 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 
 ## Next Required Gate
 
-Branding complete pending owner final review.
+No active reskin gate.
 
 Recommended next sequence:
 
-1. Owner final review of integrated branding.
-2. If approved, keep branding scope closed.
-3. If not approved, revise only the rejected branding asset group.
+1. Keep current game-skin plus branding scope closed.
+2. Open a separate gate only if owner approves deeper GLB replacement, mobile/web validation, publish, or Shinokute integration.
+3. Do not claim mobile/web/publish readiness until that separate scope is approved and validated.
