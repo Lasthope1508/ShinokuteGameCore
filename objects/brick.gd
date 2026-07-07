@@ -20,7 +20,7 @@ func explode():
 		
 	exploded = true
 	
-	Audio.play("res://sounds/break.ogg") # Play sound
+	Audio.play_event("break") # Play sound
 	
 	particles.restart()
 	

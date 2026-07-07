@@ -7,6 +7,7 @@ var bus = "master"
 
 var available = []  # The available players.
 var queue = []  # The queue of sounds to play.
+var event_paths := {}
 
 func _ready():
 
@@ -24,6 +25,15 @@ func _ready():
 func _on_stream_finished(stream): available.append(stream)
 
 func play(sound_path): queue.append(sound_path)
+
+func configure_events(paths: Dictionary) -> void:
+	event_paths = paths.duplicate()
+
+func play_event(event_name: String) -> void:
+	if not event_paths.has(event_name):
+		push_warning("Audio event not configured: %s" % event_name)
+		return
+	play(event_paths[event_name])
 
 func _process(_delta):
 

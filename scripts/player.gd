@@ -66,7 +66,7 @@ func _physics_process(delta):
 
 	if is_on_floor() and gravity > 2 and !previously_floored:
 		model.scale = Vector3(1.25, 0.75, 1.25)
-		Audio.play("res://sounds/land.ogg")
+		Audio.play_event("land")
 
 	previously_floored = is_on_floor()
 
@@ -142,7 +142,7 @@ func handle_gravity(delta):
 
 func jump():
 
-	Audio.play("res://sounds/jump.ogg")
+	Audio.play_event("jump")
 
 	gravity = -jump_strength
 
