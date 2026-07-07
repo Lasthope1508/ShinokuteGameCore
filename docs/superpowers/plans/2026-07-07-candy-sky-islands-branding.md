@@ -485,7 +485,7 @@ Run:
 
 ```powershell
 $project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
-python - <<'PY'
+@'
 from pathlib import Path
 from PIL import Image
 project = Path(r'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter')
@@ -506,7 +506,7 @@ img = img.resize(target, Image.LANCZOS)
 out.parent.mkdir(parents=True, exist_ok=True)
 img.save(out)
 print(out)
-PY
+'@ | python -
 ```
 
 Expected output:
@@ -515,7 +515,21 @@ Expected output:
 assets\themes\candy_sky_islands\branding\splash_candy_sky_islands.png
 ```
 
-- [ ] **Step 5: Run branding QA**
+- [ ] **Step 5: Run Photoroom or approved alpha fallback for logo**
+
+If `logo_candy_sky_islands.png` is not RGBA with transparent background, run Photoroom on the full generated logo image through Chrome CDP port `9223` and write back to the final logo path:
+
+```powershell
+$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
+$src = "$project\assets\themes\candy_sky_islands\branding\logo_candy_sky_islands_raw.png"
+$out = "$project\assets\themes\candy_sky_islands\branding\logo_candy_sky_islands.png"
+$env:PHOTOROOM_TURNSTILE_TIMEOUT_MS = '60000'
+node C:\Users\Admin\.codex\skills\photoroom-cdp-background-removal\scripts\photoroom_cdp_fetch_segment.js 9223 $src $out
+```
+
+If the Photoroom script is unavailable or blocked, stop and ask the owner before using local alpha fallback.
+
+- [ ] **Step 6: Run branding QA**
 
 Run:
 
@@ -526,7 +540,7 @@ python "$project\tools\qa_branding_assets.py"
 
 Expected: exit code `0`; `assets/themes/candy_sky_islands/branding/branding_qc.json` has `"bad": []`.
 
-- [ ] **Step 6: Create owner review contact sheet**
+- [ ] **Step 7: Create owner review contact sheet**
 
 Run:
 
@@ -541,7 +555,7 @@ Expected output:
 docs\screenshots\candy_sky_islands_branding_contact_sheet.png
 ```
 
-- [ ] **Step 7: Visual inspection**
+- [ ] **Step 8: Visual inspection**
 
 Open and inspect:
 
@@ -559,7 +573,7 @@ Reject before owner review if:
 - Logo text is not exactly `Candy Sky Islands`.
 - Logo alpha is missing.
 
-- [ ] **Step 8: Commit draft branding assets**
+- [ ] **Step 9: Commit draft branding assets**
 
 Run:
 
@@ -677,7 +691,7 @@ Run:
 
 ```powershell
 $project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
-python - <<'PY'
+@'
 from pathlib import Path
 from PIL import Image
 project = Path(r'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter')
@@ -686,7 +700,7 @@ out = project / 'icon.png'
 img = Image.open(src).convert('RGBA').resize((256, 256), Image.LANCZOS)
 img.save(out)
 print(out)
-PY
+'@ | python -
 ```
 
 Expected: `icon.png` is `256x256`.
