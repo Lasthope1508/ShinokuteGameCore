@@ -119,6 +119,32 @@ Hard gate:
 Hard gate:
 - Do not generate, import, or apply branding assets before the written Branding spec is owner-reviewed and the implementation plan exists.
 
+### Checkpoint 5: Deep Reskin
+
+- [x] Owner approved Approach A: deep-but-safe visual reskin.
+- [x] Owner approved stopping before SFX replacement.
+- [x] Deep Reskin design spec written: `docs/superpowers/specs/2026-07-07-candy-sky-islands-deep-reskin-design.md`.
+- [x] Owner reviewed written Deep Reskin spec.
+- [x] Deep Reskin implementation plan written: `docs/superpowers/plans/2026-07-07-candy-sky-islands-deep-reskin.md`.
+- [ ] Deep visual roles represented in SSOT.
+- [ ] Deep manifest contract passes.
+- [ ] Audio inventory includes `break` and `fall`.
+- [ ] Existing SFX paths are routed through SSOT without replacing `.ogg` files.
+- [ ] Collectible visual replacement group owner approved.
+- [ ] Platform visual replacement group owner approved.
+- [ ] Obstacle visual replacement group owner approved.
+- [ ] Goal visual replacement group owner approved.
+- [ ] Props/background visual replacement group owner approved.
+- [ ] Player model wrapper group owner approved if attempted.
+- [ ] Deep visual validation passed.
+- [ ] Stop before SFX replacement confirmed.
+
+Hard gate:
+- Do not generate, replace, or approve new SFX in this checkpoint.
+- Do not create visual replacements for a group until that group has owner approval.
+- Do not use grid slicing.
+- Run Photoroom on the full approved sheet before polygon/outline object extraction.
+
 ## Existing Asset Inventory
 
 Asset manifest:

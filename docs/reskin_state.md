@@ -4,7 +4,7 @@ Last updated: 2026-07-07
 
 ## Current Gate
 
-Current game-skin scope and branding scope passed, validated, and owner approved. No active creative asset gate is open.
+Deep Reskin implementation planning after owner-approved written spec. SFX replacement deferred.
 
 ## Completed Assets
 
@@ -37,7 +37,13 @@ Current game-skin scope and branding scope passed, validated, and owner approved
 
 ## Pending Assets
 
-- Deeper GLB replacement for obstacle/brick/flag only if separately approved.
+- Deep visual SSOT role coverage for old assets.
+- Collectible star-candy model or wrapper replacement if separately approved.
+- Cake/cloud platform model or wrapper replacements if separately approved.
+- Wafer obstacle replacement if separately approved.
+- Candy pennant goal replacement if separately approved.
+- Cloud, grass, dust, particle, skybox, and material cleanup if separately approved.
+- SFX replacement deferred; current SFX may only be inventoried and routed through SSOT in this gate.
 - No branding assets pending.
 
 ## Validation Evidence
@@ -57,6 +63,7 @@ Current game-skin scope and branding scope passed, validated, and owner approved
 - Godot import exited `0` on 2026-07-07 after branding integration.
 - Visible smoke screenshot run passed on 2026-07-07 after branding integration.
 - `git diff --check` passed on 2026-07-07 after branding integration.
+- Deep Reskin plan written on 2026-07-07; implementation validation not run yet.
 - Do not claim current validation pass without rerunning commands.
 
 ## Known Warnings
