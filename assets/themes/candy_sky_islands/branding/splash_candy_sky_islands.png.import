@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://i660sjvhsuu"
-path="res://.godot/imported/splash-screen.png-ae6c8b07e185ee8a074576008d9ccc5a.ctex"
+uid="uid://dvn4ub53rd2hk"
+path="res://.godot/imported/splash_candy_sky_islands.png-aa60443e8196f219a5be756a8e412237.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://splash-screen.png"
-dest_files=["res://.godot/imported/splash-screen.png-ae6c8b07e185ee8a074576008d9ccc5a.ctex"]
+source_file="res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png"
+dest_files=["res://.godot/imported/splash_candy_sky_islands.png-aa60443e8196f219a5be756a8e412237.ctex"]
 
 [params]
 

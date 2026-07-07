@@ -113,7 +113,7 @@ Hard gate:
 - [ ] Polygon outline extraction used if any branding sheet has close or overlapping objects.
 - [x] Branding assets recorded in manifest before production integration.
 - [x] Project icon and splash integrated only after owner visual approval.
-- [ ] Branding validation passed.
+- [x] Branding validation passed.
 
 Hard gate:
 - Do not generate, import, or apply branding assets before the written Branding spec is owner-reviewed and the implementation plan exists.
@@ -267,15 +267,24 @@ Run the detailed commands in `res://docs/validation_runbook.md`.
 Static validation:
 - Command: `Get-ChildItem <project>\tests -Filter 'test_*.gd' | Sort-Object Name | ForEach-Object { Godot_v4.3-stable_win64_console.exe --headless --path <project> --script $_.FullName }`
 - Result: PASS on 2026-07-07 with Godot 4.3 for `test_asset_family_manifest_contract.gd`, `test_asset_family_theme_contract.gd`, `test_candy_theme_config.gd`, `test_reskin_static_contract.gd`, and `test_theme_applier_contract.gd`.
+- Branding result: PASS on 2026-07-07 with Godot 4.3 for all tests, including `test_branding_contract.gd`.
 
 Godot import:
 - Command: see Validation Matrix Phase 2.
 - Result: PASS on 2026-07-07 with Godot 4.3, exit code `0`; existing source warnings remain for invalid UIDs and remapped material parameters.
+- Branding result: PASS on 2026-07-07 with Godot 4.3, exit code `0`; same existing invalid UID and material remap warnings remain.
 
 Smoke run:
 - Command/URL: `Godot_v4.3-stable_win64_console.exe --path <project> --script tools/capture_candy_sky_screenshots.gd`
 - Result: PASS on 2026-07-07 with visible Vulkan Forward+ window. Automated smoke covered scene load, movement, jump, double-jump, camera rotate/zoom, coin HUD update, falling platform state, extracted HUD icon load, and screenshots. Headless screenshot capture was not usable because dummy rendering returned null viewport textures.
 - Screens checked: `docs/screenshots/candy_sky_islands_desktop_gameplay.png`, `docs/screenshots/candy_sky_islands_player_marshmallow_runner.png`, `docs/screenshots/candy_sky_islands_coin_pickup.png`, `docs/screenshots/candy_sky_islands_hud.png`, `docs/screenshots/candy_sky_islands_asset_family_gameplay.png`, `docs/screenshots/candy_sky_islands_asset_family_hud.png`.
+- Branding result: PASS on 2026-07-07 with visible Vulkan Forward+ window.
+
+Branding QA:
+- Command: `python tools/qa_branding_assets.py`
+- Result: PASS on 2026-07-07; `assets/themes/candy_sky_islands/branding/branding_qc.json` has `bad: []`.
+- Production dimensions verified on 2026-07-07: `icon.png` is 256x256; `splash-screen.png` is 2560x1440.
+- Whitespace check: `git diff --check` passed on 2026-07-07.
 
 ## Publish Evidence
 
@@ -299,8 +308,7 @@ Fill only if publishing or making an owner test link.
   - `quantum_starter` is currently untracked in the parent repository.
   - Local available Godot binary is 4.3, while the source README says Godot 4.6.
 - Known gaps:
-  - Splash/icon/logo branding is generated, owner approved, and integrated, but not fully validated.
   - Deeper GLB replacement for obstacle/brick/flag is not in approved scope.
   - Mobile/narrow viewport screenshots are not captured because mobile scope is not approved.
 - Owner follow-up needed:
-  - Integrate approved branding assets, then validate.
+  - Final owner review of integrated branding.

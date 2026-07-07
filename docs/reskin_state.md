@@ -4,7 +4,7 @@ Last updated: 2026-07-07
 
 ## Current Gate
 
-Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding icon, splash, logo, and project display name are integrated; branding validation is the active gate.
+Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding icon, splash, logo, and project display name are integrated and validated; final owner review is the active gate.
 
 ## Completed Assets
 
@@ -37,7 +37,7 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 ## Pending Assets
 
 - Deeper GLB replacement for obstacle/brick/flag only if separately approved.
-- Splash/icon/logo branding assets are pending validation.
+- No branding assets pending.
 
 ## Validation Evidence
 
@@ -49,6 +49,13 @@ Current game-skin scope passed and owner approved; optional branding scope opene
   - `test_theme_applier_contract.gd`
 - Godot import exited `0` on 2026-07-07 with Godot 4.3 after corrected extraction.
 - Visible smoke screenshot run passed on 2026-07-07 after corrected extraction.
+- Branding QA passed on 2026-07-07: `assets/themes/candy_sky_islands/branding/branding_qc.json`.
+- Production icon verified at 256x256 on 2026-07-07.
+- Production splash verified at 2560x1440 on 2026-07-07.
+- Tests passed on 2026-07-07 after branding integration, including `test_branding_contract.gd`.
+- Godot import exited `0` on 2026-07-07 after branding integration.
+- Visible smoke screenshot run passed on 2026-07-07 after branding integration.
+- `git diff --check` passed on 2026-07-07 after branding integration.
 - Do not claim current validation pass without rerunning commands.
 
 ## Known Warnings
@@ -61,10 +68,10 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 
 ## Next Required Gate
 
-Branding validation.
+Branding complete pending owner final review.
 
 Recommended next sequence:
 
-1. Run branding QA, dimensions check, Godot tests/import/smoke, and `git diff --check`.
-2. Record validation evidence.
-3. Complete final owner review report.
+1. Owner final review of integrated branding.
+2. If approved, keep branding scope closed.
+3. If not approved, revise only the rejected branding asset group.
