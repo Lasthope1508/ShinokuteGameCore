@@ -102,8 +102,8 @@ Hard gate:
 - [x] Owner opened optional branding scope on 2026-07-07.
 - [x] Owner approved Branding Option A on 2026-07-07: Marshmallow Runner icon, Candy Sky Islands splash, compact wordmark/logo.
 - [x] Branding design spec written: `docs/superpowers/specs/2026-07-07-candy-sky-islands-branding-design.md`.
-- [ ] Owner reviewed written Branding spec.
-- [ ] Branding implementation plan written.
+- [x] Owner reviewed written Branding spec.
+- [x] Branding implementation plan written: `docs/superpowers/plans/2026-07-07-candy-sky-islands-branding.md`.
 - [ ] App icon generation or creation approved before generation.
 - [ ] Splash generation or creation approved before generation.
 - [ ] Logo generation or creation approved before generation.
@@ -149,7 +149,7 @@ New asset requests approved by owner:
 - Player Root Asset direction approved: Marshmallow Runner.
 - Image generation approved for the Checkpoint 2 player root asset concept only.
 - Generated concept path: `res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png`.
-- Optional branding scope approved for design; image generation for icon/splash/logo is still pending the Branding plan and explicit generation gate.
+- Optional branding scope approved for design; image generation for icon/splash/logo is still pending execution of the Branding implementation plan and explicit generation gate.
 
 ## SSOT Resources
 
@@ -303,4 +303,4 @@ Fill only if publishing or making an owner test link.
   - Deeper GLB replacement for obstacle/brick/flag is not in approved scope.
   - Mobile/narrow viewport screenshots are not captured because mobile scope is not approved.
 - Owner follow-up needed:
-  - Review the written Branding spec before implementation planning.
+  - Choose execution mode for the Branding implementation plan.

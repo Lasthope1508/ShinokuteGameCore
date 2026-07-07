@@ -4,7 +4,7 @@ Last updated: 2026-07-07
 
 ## Current Gate
 
-Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding design Option A approved; written spec review is the active gate.
+Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding design Option A and written spec approved; Branding implementation plan review is the active gate.
 
 ## Completed Assets
 
@@ -57,10 +57,10 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 
 ## Next Required Gate
 
-Branding spec review, then branding implementation plan.
+Branding implementation plan execution choice.
 
 Recommended next sequence:
 
-1. Review `docs/superpowers/specs/2026-07-07-candy-sky-islands-branding-design.md`.
-2. After owner approves the written branding spec, create a branding implementation plan.
-3. After plan approval, generate or create icon, splash, and logo with visual QA before integration.
+1. Review `docs/superpowers/plans/2026-07-07-candy-sky-islands-branding.md`.
+2. Choose subagent-driven or inline execution.
+3. Generate or create icon, splash, and logo only through the plan gates, with visual QA before integration.
