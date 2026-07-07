@@ -1,0 +1,36 @@
+{
+  "assets": {
+    "app_icon_source": {
+      "path": "assets\\themes\\candy_sky_islands\\branding\\app_icon_source.png",
+      "mode": "RGB",
+      "size": [
+        1024,
+        1024
+      ],
+      "nonblank": true
+    },
+    "splash_raw": {
+      "path": "assets\\themes\\candy_sky_islands\\branding\\splash_candy_sky_islands_raw.png",
+      "mode": "RGB",
+      "size": [
+        1672,
+        941
+      ],
+      "nonblank": true
+    },
+    "logo": {
+      "path": "assets\\themes\\candy_sky_islands\\branding\\logo_candy_sky_islands.png",
+      "mode": "RGBA",
+      "size": [
+        1338,
+        780
+      ],
+      "nonblank": true,
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  },
+  "bad": []
+}
