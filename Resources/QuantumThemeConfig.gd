@@ -1,6 +1,8 @@
 extends Resource
 class_name QuantumThemeConfig
 
+const QuantumAssetRole := preload("res://Resources/QuantumAssetRole.gd")
+
 @export var theme_name := ""
 @export var display_name := ""
 
@@ -48,6 +50,28 @@ class_name QuantumThemeConfig
 @export_file("*.png", "*.webp") var branding_splash_path := "res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png"
 @export_file("*.png", "*.webp") var branding_logo_path := "res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png"
 
+@export_group("Deep Reskin Roles")
+@export var player_model_role: QuantumAssetRole
+@export var player_shadow_role: QuantumAssetRole
+@export var player_trail_mesh_role: QuantumAssetRole
+@export var collectible_model_role: QuantumAssetRole
+@export var collectible_particle_role: QuantumAssetRole
+@export var hud_icon_role: QuantumAssetRole
+@export var platform_small_role: QuantumAssetRole
+@export var platform_medium_role: QuantumAssetRole
+@export var platform_falling_role: QuantumAssetRole
+@export var platform_round_role: QuantumAssetRole
+@export var platform_large_unused_role: QuantumAssetRole
+@export var block_coin_unused_role: QuantumAssetRole
+@export var obstacle_brick_role: QuantumAssetRole
+@export var obstacle_brick_particle_role: QuantumAssetRole
+@export var goal_flag_role: QuantumAssetRole
+@export var prop_cloud_role: QuantumAssetRole
+@export var prop_grass_role: QuantumAssetRole
+@export var prop_grass_small_role: QuantumAssetRole
+@export var skybox_role: QuantumAssetRole
+@export var colormap_role: QuantumAssetRole
+
 @export_group("World")
 @export_file("*.png", "*.webp") var skybox_path := "res://sprites/skybox.png"
 @export var platform_material_color := Color("#FFF2C7")
@@ -77,7 +101,33 @@ func validate() -> Array[String]:
 			errors.append("missing asset path: %s" % path)
 	if hud_text_owner_rect.size.x <= 0.0 or hud_text_owner_rect.size.y <= 0.0:
 		errors.append("hud_text_owner_rect must have positive size")
-	for key in ["jump", "land", "coin", "walking"]:
+	for key in ["jump", "land", "coin", "walking", "break", "fall"]:
 		if not audio_event_paths.has(key):
 			errors.append("missing audio event: %s" % key)
+	for role in [
+		player_model_role,
+		player_shadow_role,
+		player_trail_mesh_role,
+		collectible_model_role,
+		collectible_particle_role,
+		hud_icon_role,
+		platform_small_role,
+		platform_medium_role,
+		platform_falling_role,
+		platform_round_role,
+		platform_large_unused_role,
+		block_coin_unused_role,
+		obstacle_brick_role,
+		obstacle_brick_particle_role,
+		goal_flag_role,
+		prop_cloud_role,
+		prop_grass_role,
+		prop_grass_small_role,
+		skybox_role,
+		colormap_role
+	]:
+		if role == null:
+			errors.append("deep reskin role is missing")
+		else:
+			errors.append_array(role.validate_role())
 	return errors

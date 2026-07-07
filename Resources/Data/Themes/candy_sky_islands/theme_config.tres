@@ -1,6 +1,207 @@
-[gd_resource type="Resource" script_class="QuantumThemeConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="QuantumThemeConfig" load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://Resources/QuantumThemeConfig.gd" id="1_theme"]
+[ext_resource type="Script" path="res://Resources/QuantumAssetRole.gd" id="2_role"]
+
+[sub_resource type="Resource" id="Role_player_model"]
+script = ExtResource("2_role")
+role_key = "player.model"
+legacy_path = "res://models/character.glb"
+reference_path = "res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_player_marshmallow_runner.png"
+notes = "Existing rig/model remains; material pass only."
+
+[sub_resource type="Resource" id="Role_player_shadow"]
+script = ExtResource("2_role")
+role_key = "player.shadow"
+legacy_path = "res://sprites/blob_shadow.png"
+reference_path = ""
+replacement_path = ""
+mode = "legacy"
+proof_path = ""
+notes = "Keep shadow until visual replacement is approved."
+
+[sub_resource type="Resource" id="Role_player_trail_mesh"]
+script = ExtResource("2_role")
+role_key = "player.trail.dust"
+legacy_path = "res://meshes/dust.res"
+reference_path = ""
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_coin_pickup.png"
+notes = "Trail color is themed; mesh remains old."
+
+[sub_resource type="Resource" id="Role_collectible_model"]
+script = ExtResource("2_role")
+role_key = "collectible.coin.model"
+legacy_path = "res://models/coin.glb"
+reference_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_coin_pickup.png"
+notes = "Coin model remains old until star-candy model/wrapper is approved."
+
+[sub_resource type="Resource" id="Role_collectible_particle"]
+script = ExtResource("2_role")
+role_key = "collectible.coin.particle"
+legacy_path = "res://sprites/particle.png"
+reference_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_coin_pickup.png"
+notes = "Particle color is themed; texture remains old."
+
+[sub_resource type="Resource" id="Role_hud_icon"]
+script = ExtResource("2_role")
+role_key = "hud.star_candy.icon"
+legacy_path = "res://sprites/coin.png"
+reference_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
+replacement_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_hud.png"
+notes = "HUD icon uses approved extracted star collectible."
+
+[sub_resource type="Resource" id="Role_platform_small"]
+script = ExtResource("2_role")
+role_key = "platform.small"
+legacy_path = "res://models/platform.glb"
+reference_path = "res://assets/themes/candy_sky_islands/platform_small.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
+notes = "Small platform model remains old; material pass only."
+
+[sub_resource type="Resource" id="Role_platform_medium"]
+script = ExtResource("2_role")
+role_key = "platform.medium"
+legacy_path = "res://models/platform-medium.glb"
+reference_path = "res://assets/themes/candy_sky_islands/platform_medium.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
+notes = "Medium platform model remains old; material pass only."
+
+[sub_resource type="Resource" id="Role_platform_falling"]
+script = ExtResource("2_role")
+role_key = "platform.falling"
+legacy_path = "res://models/platform-falling.glb"
+reference_path = "res://assets/themes/candy_sky_islands/platform_long.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
+notes = "Falling behavior remains unchanged."
+
+[sub_resource type="Resource" id="Role_platform_round"]
+script = ExtResource("2_role")
+role_key = "platform.round.large"
+legacy_path = "res://models/platform-grass-large-round.glb"
+reference_path = "res://assets/themes/candy_sky_islands/platform_large.png"
+replacement_path = ""
+mode = "legacy"
+proof_path = ""
+notes = "Round platform remains old until approved replacement."
+
+[sub_resource type="Resource" id="Role_platform_large_unused"]
+script = ExtResource("2_role")
+role_key = "platform.large.unused_candidate"
+legacy_path = "res://models/platform-large.glb"
+reference_path = "res://assets/themes/candy_sky_islands/platform_large.png"
+replacement_path = ""
+mode = "unused_candidate"
+proof_path = ""
+notes = "File exists but no direct scene reference was found in deep inventory."
+
+[sub_resource type="Resource" id="Role_block_coin_unused"]
+script = ExtResource("2_role")
+role_key = "block.coin.unused_candidate"
+legacy_path = "res://models/block-coin.glb"
+reference_path = ""
+replacement_path = ""
+mode = "unused_candidate"
+proof_path = ""
+notes = "File exists but no direct scene reference was found in deep inventory."
+
+[sub_resource type="Resource" id="Role_obstacle_brick"]
+script = ExtResource("2_role")
+role_key = "obstacle.brick"
+legacy_path = "res://models/brick.glb"
+reference_path = "res://assets/themes/candy_sky_islands/wafer_obstacle.png"
+replacement_path = ""
+mode = "material"
+proof_path = ""
+notes = "Brick model remains until candy wafer replacement is approved."
+
+[sub_resource type="Resource" id="Role_obstacle_brick_particle"]
+script = ExtResource("2_role")
+role_key = "obstacle.brick.particle"
+legacy_path = "res://models/brick-particle.glb"
+reference_path = "res://assets/themes/candy_sky_islands/wafer_obstacle.png"
+replacement_path = ""
+mode = "legacy"
+proof_path = ""
+notes = "Break particles remain old; SFX replacement is deferred."
+
+[sub_resource type="Resource" id="Role_goal_flag"]
+script = ExtResource("2_role")
+role_key = "goal.flag"
+legacy_path = "res://models/flag.glb"
+reference_path = "res://assets/themes/candy_sky_islands/goal_flag.png"
+replacement_path = ""
+mode = "material"
+proof_path = ""
+notes = "Flag model remains until candy pennant replacement is approved."
+
+[sub_resource type="Resource" id="Role_prop_cloud"]
+script = ExtResource("2_role")
+role_key = "prop.cloud"
+legacy_path = "res://models/cloud.glb"
+reference_path = "res://assets/themes/candy_sky_islands/cloud_large.png"
+replacement_path = ""
+mode = "material"
+proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
+notes = "Cloud model remains; material pass only."
+
+[sub_resource type="Resource" id="Role_prop_grass"]
+script = ExtResource("2_role")
+role_key = "prop.grass"
+legacy_path = "res://models/grass.glb"
+reference_path = ""
+replacement_path = ""
+mode = "legacy"
+proof_path = ""
+notes = "Grass remains old until prop replacement is approved."
+
+[sub_resource type="Resource" id="Role_prop_grass_small"]
+script = ExtResource("2_role")
+role_key = "prop.grass.small"
+legacy_path = "res://models/grass-small.glb"
+reference_path = ""
+replacement_path = ""
+mode = "legacy"
+proof_path = ""
+notes = "Small grass remains old until prop replacement is approved."
+
+[sub_resource type="Resource" id="Role_skybox"]
+script = ExtResource("2_role")
+role_key = "env.skybox"
+legacy_path = "res://sprites/skybox.png"
+reference_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
+replacement_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
+notes = "Theme path points at approved candy sky panel; scene environment direct reference is tracked for cleanup."
+
+[sub_resource type="Resource" id="Role_colormap"]
+script = ExtResource("2_role")
+role_key = "material.colormap"
+legacy_path = "res://models/Textures/colormap.png"
+reference_path = ""
+replacement_path = ""
+mode = "legacy"
+proof_path = ""
+notes = "Shared material texture remains until material cleanup is approved."
 
 [resource]
 script = ExtResource("1_theme")
@@ -40,6 +241,26 @@ branding_display_name = "Candy Sky Islands"
 branding_icon_source_path = "res://assets/themes/candy_sky_islands/branding/app_icon_source.png"
 branding_splash_path = "res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png"
 branding_logo_path = "res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png"
+player_model_role = SubResource("Role_player_model")
+player_shadow_role = SubResource("Role_player_shadow")
+player_trail_mesh_role = SubResource("Role_player_trail_mesh")
+collectible_model_role = SubResource("Role_collectible_model")
+collectible_particle_role = SubResource("Role_collectible_particle")
+hud_icon_role = SubResource("Role_hud_icon")
+platform_small_role = SubResource("Role_platform_small")
+platform_medium_role = SubResource("Role_platform_medium")
+platform_falling_role = SubResource("Role_platform_falling")
+platform_round_role = SubResource("Role_platform_round")
+platform_large_unused_role = SubResource("Role_platform_large_unused")
+block_coin_unused_role = SubResource("Role_block_coin_unused")
+obstacle_brick_role = SubResource("Role_obstacle_brick")
+obstacle_brick_particle_role = SubResource("Role_obstacle_brick_particle")
+goal_flag_role = SubResource("Role_goal_flag")
+prop_cloud_role = SubResource("Role_prop_cloud")
+prop_grass_role = SubResource("Role_prop_grass")
+prop_grass_small_role = SubResource("Role_prop_grass_small")
+skybox_role = SubResource("Role_skybox")
+colormap_role = SubResource("Role_colormap")
 skybox_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
 platform_material_color = Color(1, 0.94902, 0.780392, 1)
 coin_material_color = Color(1, 0.435294, 0.380392, 1)
@@ -47,7 +268,9 @@ coin_rim_color = Color(0.482353, 0.878431, 0.678431, 1)
 trail_particle_color = Color(0.482353, 0.878431, 0.678431, 1)
 cloud_material_color = Color(1, 1, 1, 1)
 audio_event_paths = {
+"break": "res://sounds/break.ogg",
 "coin": "res://sounds/coin.ogg",
+"fall": "res://sounds/fall.ogg",
 "jump": "res://sounds/jump.ogg",
 "land": "res://sounds/land.ogg",
 "walking": "res://sounds/walking.ogg"
