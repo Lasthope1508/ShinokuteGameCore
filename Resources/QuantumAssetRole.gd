@@ -14,8 +14,6 @@ const ALLOWED_MODES := ["legacy", "material", "replacement", "unused_candidate",
 func active_path() -> String:
 	if mode == "replacement" and not replacement_path.strip_edges().is_empty():
 		return replacement_path
-	if mode == "material" and not reference_path.strip_edges().is_empty():
-		return reference_path
 	return legacy_path
 
 func validate_role() -> Array[String]:

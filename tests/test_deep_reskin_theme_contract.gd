@@ -40,6 +40,11 @@ func _init() -> void:
 				passed = _assert_true(ALLOWED_MODES.has(role.mode), "%s should use an allowed mode, got %s" % [key, role.mode]) and passed
 				passed = _assert_true(not role.legacy_path.strip_edges().is_empty(), "%s should record legacy path" % key) and passed
 				passed = _assert_true(role.validate_role().is_empty(), "%s should validate cleanly" % key) and passed
+		passed = _assert_active_path(theme, "player_model_role", "res://models/character.glb") and passed
+		passed = _assert_active_path(theme, "platform_small_role", "res://models/platform.glb") and passed
+		passed = _assert_active_path(theme, "player_shadow_role", "res://sprites/blob_shadow.png") and passed
+		passed = _assert_active_path(theme, "platform_large_unused_role", "res://models/platform-large.glb") and passed
+		passed = _assert_active_path(theme, "hud_icon_role", "res://assets/themes/candy_sky_islands/star_collectible.png") and passed
 	if passed:
 		print("test_deep_reskin_theme_contract: PASS")
 		quit(0)
@@ -50,5 +55,16 @@ func _init() -> void:
 func _assert_true(value: bool, message: String) -> bool:
 	if not value:
 		push_error(message)
+		return false
+	return true
+
+func _assert_active_path(theme: Resource, role_key: String, expected: String) -> bool:
+	var role = theme.get(role_key)
+	if role == null or not role.has_method("active_path"):
+		push_error("%s should expose active_path()" % role_key)
+		return false
+	var actual: String = role.active_path()
+	if actual != expected:
+		push_error("%s active_path should be %s, got %s" % [role_key, expected, actual])
 		return false
 	return true
