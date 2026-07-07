@@ -37,8 +37,11 @@ func _init() -> void:
 		passed = _assert_file_contains(MANIFEST, key, "Manifest should include %s" % key) and passed
 	passed = _assert_file_contains(CHECKLIST, "### Checkpoint 5: Deep Reskin", "Checklist should include deep reskin checkpoint") and passed
 	passed = _assert_file_contains(CHECKLIST, "Stop before SFX replacement", "Checklist should record SFX stop rule") and passed
+	passed = _assert_file_contains(STATE, "Last updated: 2026-07-08", "State should record current update date") and passed
 	passed = _assert_file_contains(STATE, "Deep Reskin", "State should mention deep reskin gate") and passed
 	passed = _assert_file_contains(STATE, "SFX replacement deferred", "State should record SFX deferral") and passed
+	passed = _assert_file_contains(STATE, "Continue Checkpoint 5", "State should record active Checkpoint 5 next step") and passed
+	passed = _assert_file_not_contains(STATE, "No active reskin gate", "State should not claim there is no active reskin gate") and passed
 	passed = _assert_file_contains_case_insensitive(SPEC, "Stop before SFX Replacement", "Spec should record SFX boundary") and passed
 	passed = _assert_file_contains(PLAN, "Candy Sky Islands Deep Reskin Implementation Plan", "Plan should exist") and passed
 	if passed:
@@ -65,5 +68,15 @@ func _assert_file_contains_case_insensitive(path: String, needle: String, messag
 	var text := FileAccess.get_file_as_string(path)
 	if not text.to_lower().contains(needle.to_lower()):
 		push_error("%s: missing '%s'" % [message, needle])
+		return false
+	return true
+
+func _assert_file_not_contains(path: String, needle: String, message: String) -> bool:
+	if not FileAccess.file_exists(path):
+		push_error("%s: missing %s" % [message, path])
+		return false
+	var text := FileAccess.get_file_as_string(path)
+	if text.contains(needle):
+		push_error("%s: found '%s'" % [message, needle])
 		return false
 	return true

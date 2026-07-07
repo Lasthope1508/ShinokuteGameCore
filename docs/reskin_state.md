@@ -1,6 +1,6 @@
 # Quantum Starter Reskin State
 
-Last updated: 2026-07-07
+Last updated: 2026-07-08
 
 ## Current Gate
 
@@ -76,10 +76,10 @@ Deep Reskin implementation planning after owner-approved written spec. SFX repla
 
 ## Next Required Gate
 
-No active reskin gate.
+Continue Checkpoint 5: Deep Reskin.
 
 Recommended next sequence:
 
-1. Keep current game-skin plus branding scope closed.
-2. Open a separate gate only if owner approves deeper GLB replacement, mobile/web validation, publish, or Shinokute integration.
-3. Do not claim mobile/web/publish readiness until that separate scope is approved and validated.
+1. Complete inventory and SSOT validation for the active Deep Reskin gate.
+2. Keep visual group approvals pending until each group is separately owner approved.
+3. Keep SFX replacement deferred; current SFX may only be inventoried and routed through SSOT in this gate.
