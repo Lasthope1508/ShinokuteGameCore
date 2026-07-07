@@ -4,10 +4,10 @@ Use this checklist before editing production scenes, generating assets, or claim
 
 ## Project
 
-- Game name: Starter Kit 3D Platformer
+- Game name: Candy Sky Islands
 - Repo path: `C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter`
 - Reskin goal: Candy Sky Islands visual reskin for the existing 3D platformer template
-- Owner-approved scope: game-skin first pass for theme palette, SSOT, HUD visual tokens, environment/material direction, and root asset planning
+- Owner-approved scope: game-skin first pass for theme palette, SSOT, HUD visual tokens, environment/material direction, root asset planning, asset family extraction, and app branding
 - Target platforms: desktop smoke first; mobile/web only after export scope is approved
 - License status: code MIT; included 2D sprites, 3D models, and sounds are CC0 per `README.md`
 - Main scene: `res://scenes/main.tscn`
@@ -110,7 +110,7 @@ Hard gate:
 - [x] Generated or created branding PNGs visually inspected.
 - [x] Branding PNGs owner approved.
 - [x] Photoroom full-image or full-sheet background removal completed before any logo/icon object extraction that needs alpha.
-- [ ] Polygon outline extraction used if any branding sheet has close or overlapping objects.
+- [ ] Polygon outline extraction used if any branding sheet has close or overlapping objects. Not applicable for current branding output; logo alpha used Photoroom full-image extraction, no multi-object sheet cut.
 - [x] Branding assets recorded in manifest before production integration.
 - [x] Project icon and splash integrated only after owner visual approval.
 - [x] Branding validation passed.
@@ -132,8 +132,8 @@ Asset manifest:
 
 | Role | Existing asset key/path | Owner rect | Padding | Ratio/crop | Reuse decision |
 |---|---|---|---|---|---|
-| App icon | `res://icon.png` | N/A | N/A | square | Reuse until theme approved |
-| Splash | `res://splash-screen.png` | N/A | N/A | landscape image | Reuse until theme approved |
+| App icon | `res://icon.png` | N/A | N/A | square | Replaced after branding approval |
+| Splash | `res://splash-screen.png` | N/A | N/A | landscape image | Replaced after branding approval |
 | HUD score icon | `res://sprites/coin.png` | N/A | N/A | square icon | Replace only through SSOT |
 | HUD score text | `res://scenes/main.tscn` label `Coins` | `offset_left=144, offset_top=64, offset_right=368, offset_bottom=123` | not recorded in SSOT yet | fixed HUD rect | Move to SSOT before visual edit |
 | Font | `res://fonts/lilita_one_regular.ttf` | N/A | N/A | font asset | Reuse unless theme requires change |
@@ -149,7 +149,7 @@ New asset requests approved by owner:
 - Player Root Asset direction approved: Marshmallow Runner.
 - Image generation approved for the Checkpoint 2 player root asset concept only.
 - Generated concept path: `res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png`.
-- Optional branding scope approved for design; icon/splash/logo draft PNGs generated, visually inspected, owner approved, and pending production integration.
+- Optional branding scope approved; icon/splash/logo draft PNGs generated, visually inspected, owner approved, production integrated, and validation passed.
 
 ## SSOT Resources
 
