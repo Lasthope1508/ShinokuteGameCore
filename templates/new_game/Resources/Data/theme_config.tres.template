@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ShinokuteThemeConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/shinokute_game_core/services/shinokute_theme_config.gd" id="1_theme_config"]
+
+[resource]
+script = ExtResource("1_theme_config")
+theme_id = "example_theme"
+display_name = "Example Theme"
+colors = {"accent": Color(1, 0.45, 0), "text": Color(1, 1, 1)}
+fonts = {"body": "res://Assets/Fonts/body.ttf", "display": "res://Assets/Fonts/display.ttf"}
+asset_paths = {"logo": "res://Assets/Sprites/logo.png", "button": "res://Assets/UI/button.png"}
+audio_events = {"tap": "res://Audio/SFX/tap.wav", "success": "res://Audio/SFX/success.wav"}
+ui_metrics = {
+"button_owner_rect": Vector4(0, 0, 240, 72),
+"button_text_padding": Vector4(20, 8, 20, 8),
+"hud_score_owner_rect": Vector4(0, 0, 180, 48),
+"max_button_label_chars": 18
+}

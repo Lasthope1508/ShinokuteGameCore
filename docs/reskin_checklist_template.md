@@ -19,6 +19,7 @@ Rename it to `docs/reskin_checklist.md` or a game-specific checklist name.
 - [ ] `docs/reskin_core_skin_boundary.md` read.
 - [ ] `docs/reskin_runbook.md` read.
 - [ ] `addons/shinokute_game_core/README.md` read.
+- [ ] `templates/new_game` copied or existing game structure documented.
 - [ ] Game-local publish checklist read if web/mobile publish is in scope.
 
 ## Scope Classification
@@ -113,6 +114,14 @@ Screenshot paths:
 
 ## Tests
 
+Reskin audit command:
+
+- Command:
+- Result:
+- HardcodedValueAudit:
+- TextFitEvidence:
+- ScreenshotEvidence:
+
 Shinokute core tests:
 
 - Command:
@@ -135,6 +144,12 @@ Smoke run:
 - Command/URL:
 - Result:
 - Screens checked:
+
+Screenshot verification checklist:
+
+- Path:
+- Desktop viewport evidence:
+- Mobile viewport evidence:
 
 ## Publish Evidence
 

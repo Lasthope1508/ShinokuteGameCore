@@ -17,11 +17,13 @@ Shared systems stay in `addons/shinokute_game_core/`.
 4. Read `docs/reskin_runbook.md`.
 5. Copy `docs/reskin_checklist_template.md` into the game repo if the game
    has no local reskin checklist.
-6. Create or update the game-owned `GameCoreConfig.tres`.
-7. Create or update the game-owned `ShinokuteThemeConfig.tres`.
-8. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
-9. Wire gameplay through `GameCore`, not through copied managers.
-10. Run Shinokute core tests before claiming the reskin is ready.
+6. Use `templates/new_game` when starting a fresh game.
+7. Create or update the game-owned `GameCoreConfig.tres`.
+8. Create or update the game-owned `ShinokuteThemeConfig.tres`.
+9. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
+10. Wire gameplay through `GameCore`, not through copied managers.
+11. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+12. Run Shinokute core tests before claiming the reskin is ready.
 
 ## Core Layers
 
@@ -103,6 +105,7 @@ core.analytics.track("game_start", {"mode": "classic"})
 - [ ] Leaderboards go through `fetch_leaderboard`.
 - [ ] Text and text-owner regions fit desktop and mobile viewports.
 - [ ] Changed screens still read as game screens.
+- [ ] `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings` passes.
 
 ## Test Command
 

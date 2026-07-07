@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="GameCoreConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/shinokute_game_core/core/game_core_config.gd" id="1_core_config"]
+
+[resource]
+script = ExtResource("1_core_config")
+game_id = "example_game"
+display_name = "Example Game"
+firebase_project_id = "<firebase-project-id>"
+firestore_api_key = "<firebase-web-api-key>"
+geolocation_url = "<geolocation-url>"
+leaderboard_collections = {"classic": "example_game_classic"}
+score_labels = {"classic": "score"}
+score_sort_directions = {"classic": "DESCENDING"}
+scene_routes = {"menu": "res://Scenes/MainMenu.tscn", "game": "res://Scenes/Game.tscn"}
+overlay_scenes = {"settings": "res://Scenes/Overlays/SettingsOverlay.tscn"}
+ad_placements = {"interstitial": {"cooldown_seconds": 60}}
+remote_defaults = {"ads_enabled": true}
+translations = {"en": {"play": "Play"}, "vi": {"play": "Choi"}}
+default_locale = "en"
+fallback_locale = "en"
+ads_enabled = true

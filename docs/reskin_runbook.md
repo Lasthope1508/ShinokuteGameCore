@@ -10,19 +10,23 @@ Each phase has a stop gate. If a gate fails, fix that phase before moving on.
 3. Read `addons/shinokute_game_core/README.md`.
 4. Read the target game's local reskin checklist. If none exists, create one
    from `docs/reskin_checklist_template.md` inside the game repo before edits.
-5. Identify whether the work is:
+5. For a fresh game, copy `templates/new_game` into the target repo and rename
+   example files before gameplay edits.
+6. Identify whether the work is:
    - game skin only,
    - function skin only,
    - rules adapter work,
    - shared core work,
    - publish/release work.
-6. List files expected to change. Keep the list small and update it when scope
+7. List files expected to change. Keep the list small and update it when scope
    changes.
 
 Stop gate:
 - The agent can name which layer owns each requested change.
 - The agent has a game-local checklist file for evidence.
 - No gameplay scene edit begins before the SSOT targets are named.
+- Fresh games use `templates/new_game` or document why an existing game
+  structure already satisfies the same files.
 
 ## Phase 1: Inventory Existing Game Assets
 
@@ -102,9 +106,12 @@ Stop gate:
 
 1. Run Shinokute core tests.
 2. Run the game-local contract tests.
-3. Run Godot import if assets or scenes changed.
-4. Launch the game locally.
-5. Exercise the full loop:
+3. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+4. Treat `HardcodedValueAudit`, `TextFitEvidence`, and `ScreenshotEvidence`
+   findings as blockers.
+5. Run Godot import if assets or scenes changed.
+6. Launch the game locally.
+7. Exercise the full loop:
    - splash/menu,
    - start run,
    - valid move,
@@ -121,6 +128,7 @@ Stop gate:
   signals, or blank screens.
 - Console output is reviewed. Known existing warnings are named; new warnings
   are fixed or documented.
+- `tools/reskin_audit.ps1` passes in warning-as-failure mode.
 - All checklist evidence fields are filled.
 
 ## Phase 6: Publish Gate

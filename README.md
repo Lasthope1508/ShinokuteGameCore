@@ -52,6 +52,16 @@ Each new mobile game should create these game-owned files:
 - `Scripts/<GameName>Rules.gd`: rules adapter implementing `start_run`, `can_make_move`, `apply_move`, `is_game_over`, and `get_result`.
 - Gameplay scenes call `GameCore.start_run`, `GameCore.session.apply_move`, `GameCore.submit_score`, and route/overlay services. They must not copy save, ads, leaderboard, profile, or settings code.
 
+## Reskin Automation Guardrails
+
+- `tools/reskin_audit.ps1`: scans a target game for missing checklist,
+  config, theme, rules adapter, contract test, screenshot evidence, copied
+  managers, and hardcoded values. Run with `-FailOnWarnings` before claiming
+  a reskin is ready.
+- `templates/new_game`: starter files for a new reskin, including config
+  templates, rules adapter template, contract test template, and screenshot
+  verification checklist.
+
 ## Migration Roadmap
 
 Next shared candidates live in `docs/shared_core_migration_candidates.md`.
