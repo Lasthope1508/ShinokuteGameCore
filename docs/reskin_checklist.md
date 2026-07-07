@@ -112,7 +112,7 @@ Hard gate:
 - [x] Photoroom full-image or full-sheet background removal completed before any logo/icon object extraction that needs alpha.
 - [ ] Polygon outline extraction used if any branding sheet has close or overlapping objects.
 - [x] Branding assets recorded in manifest before production integration.
-- [ ] Project icon and splash integrated only after owner visual approval.
+- [x] Project icon and splash integrated only after owner visual approval.
 - [ ] Branding validation passed.
 
 Hard gate:
@@ -299,7 +299,7 @@ Fill only if publishing or making an owner test link.
   - `quantum_starter` is currently untracked in the parent repository.
   - Local available Godot binary is 4.3, while the source README says Godot 4.6.
 - Known gaps:
-  - Splash/icon/logo branding is generated and owner approved, but not integrated or validated.
+  - Splash/icon/logo branding is generated, owner approved, and integrated, but not fully validated.
   - Deeper GLB replacement for obstacle/brick/flag is not in approved scope.
   - Mobile/narrow viewport screenshots are not captured because mobile scope is not approved.
 - Owner follow-up needed:

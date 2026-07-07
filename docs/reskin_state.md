@@ -4,7 +4,7 @@ Last updated: 2026-07-07
 
 ## Current Gate
 
-Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding draft icon, splash, and logo are generated, QA-passed, and owner approved; branding integration is the active gate.
+Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding icon, splash, logo, and project display name are integrated; branding validation is the active gate.
 
 ## Completed Assets
 
@@ -37,7 +37,7 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 ## Pending Assets
 
 - Deeper GLB replacement for obstacle/brick/flag only if separately approved.
-- Splash/icon/logo branding assets are pending production integration and validation.
+- Splash/icon/logo branding assets are pending validation.
 
 ## Validation Evidence
 
@@ -61,10 +61,10 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 
 ## Next Required Gate
 
-Branding integration after owner visual approval.
+Branding validation.
 
 Recommended next sequence:
 
-1. Copy approved icon and splash into project root.
-2. Change project display name to `Candy Sky Islands`.
-3. Run branding validation, Godot tests/import/smoke, and `git diff --check`.
+1. Run branding QA, dimensions check, Godot tests/import/smoke, and `git diff --check`.
+2. Record validation evidence.
+3. Complete final owner review report.

@@ -22,6 +22,7 @@ func _init() -> void:
 	passed = passed and _assert_file_contains(STATE, "Branding", "State should mention branding gate")
 	passed = passed and _assert_file_contains(PROJECT, "config/icon=\"res://icon.png\"", "Project should keep root icon setting")
 	passed = passed and _assert_file_contains(PROJECT, "boot_splash/image=\"res://splash-screen.png\"", "Project should keep root splash setting")
+	passed = passed and _assert_file_contains(PROJECT, "config/name=\"Candy Sky Islands\"", "Project display name should use branding name after integration")
 	if passed:
 		print("test_branding_contract: PASS")
 		quit(0)
