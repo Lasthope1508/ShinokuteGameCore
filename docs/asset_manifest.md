@@ -6,8 +6,8 @@ Every reused, generated, edited, or imported asset in the reskin must be listed 
 
 | Role | Asset Key | Path | Source | Status | Owner Rect | Padding | In-game Size | Proof Screenshot | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| App icon | app.icon | `res://icon.png` | Kenney package | current; branding redesign approved for planning | N/A | N/A | 256x256 project icon | none yet | Replace only after branding plan, generation, visual approval, and validation |
-| Splash image | app.splash | `res://splash-screen.png` | Kenney package | current; branding redesign approved for planning | N/A | N/A | 2560x1440 startup splash | none yet | Replace only after branding plan, generation, visual approval, and validation |
+| App icon | app.icon | `res://icon.png` and `res://assets/themes/candy_sky_islands/branding/app_icon_source.png` | 9Router `cx/gpt-5.5-image` after owner approval | generated, visually approved, pending production copy | N/A | square safe padding | 1024x1024 source, 256x256 production root icon | `res://docs/screenshots/candy_sky_islands_branding_contact_sheet.png` | Marshmallow Runner icon with star-candy cue |
+| Splash image | app.splash | `res://splash-screen.png` and `res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png` | 9Router `cx/gpt-5.5-image` after owner approval | generated, visually approved, pending production copy | logo safe area in upper/center space | 16:9 crop | 2560x1440 startup splash | `res://docs/screenshots/candy_sky_islands_branding_contact_sheet.png` | Candy Sky Islands splash with mascot and collectibles |
 | Skybox | env.skybox | `res://sprites/skybox.png` | Kenney package | current | N/A | N/A | world environment background | none yet | Referenced by `res://scenes/main-environment.tres` |
 | HUD coin icon | hud.coin.icon | `res://sprites/coin.png` | Kenney package | current | N/A | N/A | HUD icon scaled to `0.2` in `main.tscn` | none yet | Text owner rect is separate |
 | HUD coin text | hud.coin.text | `res://scenes/main.tscn` node `HUD/Coins` + `res://Resources/Data/Themes/candy_sky_islands/theme_config.tres` | scene label | themed via SSOT | `x=144,y=64,w=224,h=59` | `Vector4(0,0,0,0)` | top-left HUD text | `res://docs/screenshots/candy_sky_islands_hud.png` | Owner rect, font path, font size, and text color stored in theme config |
@@ -41,7 +41,7 @@ Fill only after Checkpoint 1 approval.
 
 | Role | Asset Key | Path | Source | Status | Owner Rect | Padding | In-game Size | Proof Screenshot | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| Logo | app.logo.main | `res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png` | pending branding plan and generation approval | design-approved, not generated | N/A | N/A | transparent PNG, size pending | none | Exact text: Candy Sky Islands |
+| Logo | app.logo.main | `res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png` | 9Router `cx/gpt-5.5-image` after owner approval; Photoroom full-image alpha | generated, visually approved | text bounds from alpha trim | transparent padding | 1338x780 transparent PNG | `res://docs/screenshots/candy_sky_islands_branding_contact_sheet.png` | Exact text: Candy Sky Islands |
 | Main button shell | ui.button.main | `res://assets/themes/<theme>/button_main.png` | pending owner approval | blocked | not approved | not approved | not approved | none | Only needed if menu UI is added |
 | Panel shell | ui.panel.popup | `res://assets/themes/<theme>/panel_popup.png` | pending owner approval | blocked | not approved | not approved | not approved | none | Only needed if popups are added |
 | HUD score owner | hud.score.owner | `res://assets/themes/<theme>/hud_score_owner.png` | pending owner approval | blocked | not approved | not approved | not approved | none | Needed if HUD frame changes |

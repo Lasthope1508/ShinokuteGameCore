@@ -104,14 +104,14 @@ Hard gate:
 - [x] Branding design spec written: `docs/superpowers/specs/2026-07-07-candy-sky-islands-branding-design.md`.
 - [x] Owner reviewed written Branding spec.
 - [x] Branding implementation plan written: `docs/superpowers/plans/2026-07-07-candy-sky-islands-branding.md`.
-- [ ] App icon generation or creation approved before generation.
-- [ ] Splash generation or creation approved before generation.
-- [ ] Logo generation or creation approved before generation.
-- [ ] Generated or created branding PNGs visually inspected.
-- [ ] Branding PNGs owner approved.
-- [ ] Photoroom full-image or full-sheet background removal completed before any logo/icon object extraction that needs alpha.
+- [x] App icon generation or creation approved before generation.
+- [x] Splash generation or creation approved before generation.
+- [x] Logo generation or creation approved before generation.
+- [x] Generated or created branding PNGs visually inspected.
+- [x] Branding PNGs owner approved.
+- [x] Photoroom full-image or full-sheet background removal completed before any logo/icon object extraction that needs alpha.
 - [ ] Polygon outline extraction used if any branding sheet has close or overlapping objects.
-- [ ] Branding assets recorded in manifest before production integration.
+- [x] Branding assets recorded in manifest before production integration.
 - [ ] Project icon and splash integrated only after owner visual approval.
 - [ ] Branding validation passed.
 
@@ -149,7 +149,7 @@ New asset requests approved by owner:
 - Player Root Asset direction approved: Marshmallow Runner.
 - Image generation approved for the Checkpoint 2 player root asset concept only.
 - Generated concept path: `res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png`.
-- Optional branding scope approved for design; image generation for icon/splash/logo is still pending execution of the Branding implementation plan and explicit generation gate.
+- Optional branding scope approved for design; icon/splash/logo draft PNGs generated, visually inspected, owner approved, and pending production integration.
 
 ## SSOT Resources
 
@@ -299,8 +299,8 @@ Fill only if publishing or making an owner test link.
   - `quantum_starter` is currently untracked in the parent repository.
   - Local available Godot binary is 4.3, while the source README says Godot 4.6.
 - Known gaps:
-  - Splash/icon/logo branding is now in approved design scope, but not generated, approved as final PNGs, integrated, or validated.
+  - Splash/icon/logo branding is generated and owner approved, but not integrated or validated.
   - Deeper GLB replacement for obstacle/brick/flag is not in approved scope.
   - Mobile/narrow viewport screenshots are not captured because mobile scope is not approved.
 - Owner follow-up needed:
-  - Choose execution mode for the Branding implementation plan.
+  - Integrate approved branding assets, then validate.

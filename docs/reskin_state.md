@@ -4,7 +4,7 @@ Last updated: 2026-07-07
 
 ## Current Gate
 
-Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding design Option A and written spec approved; Branding implementation plan review is the active gate.
+Current game-skin scope passed and owner approved; optional branding scope opened by owner. Branding draft icon, splash, and logo are generated, QA-passed, and owner approved; branding integration is the active gate.
 
 ## Completed Assets
 
@@ -21,6 +21,10 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 - Photoroom full-sheet background removal completed through CDP port 9223: `assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png`.
 - Production extraction redone from the Photoroom alpha sheet using owner polygon data; 15 assets passed alpha/edge QA in `assets/themes/candy_sky_islands/asset_family_extraction_qc.json`.
 - Corrected asset contact sheet owner approved on 2026-07-07: `docs/screenshots/candy_sky_islands_corrected_asset_contact_sheet.png`.
+- Branding app icon source owner approved: `assets/themes/candy_sky_islands/branding/app_icon_source.png`.
+- Branding splash owner approved: `assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png`.
+- Branding logo owner approved: `assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png`.
+- Branding contact sheet owner approved: `docs/screenshots/candy_sky_islands_branding_contact_sheet.png`.
 - Asset family screenshots captured:
   - `docs/screenshots/candy_sky_islands_asset_family_gameplay.png`
   - `docs/screenshots/candy_sky_islands_asset_family_hud.png`
@@ -33,7 +37,7 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 ## Pending Assets
 
 - Deeper GLB replacement for obstacle/brick/flag only if separately approved.
-- Splash/icon/logo branding assets are approved for design scope, pending implementation plan, generation, visual approval, integration, and validation.
+- Splash/icon/logo branding assets are pending production integration and validation.
 
 ## Validation Evidence
 
@@ -57,10 +61,10 @@ Current game-skin scope passed and owner approved; optional branding scope opene
 
 ## Next Required Gate
 
-Branding implementation plan execution choice.
+Branding integration after owner visual approval.
 
 Recommended next sequence:
 
-1. Review `docs/superpowers/plans/2026-07-07-candy-sky-islands-branding.md`.
-2. Choose subagent-driven or inline execution.
-3. Generate or create icon, splash, and logo only through the plan gates, with visual QA before integration.
+1. Copy approved icon and splash into project root.
+2. Change project display name to `Candy Sky Islands`.
+3. Run branding validation, Godot tests/import/smoke, and `git diff --check`.
