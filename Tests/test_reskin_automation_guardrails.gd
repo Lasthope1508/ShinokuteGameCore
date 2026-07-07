@@ -7,6 +7,9 @@ const TEMPLATE_THEME_CONFIG_PATH := "res://templates/new_game/Resources/Data/the
 const TEMPLATE_RULES_PATH := "res://templates/new_game/Scripts/ExampleRules.gd"
 const TEMPLATE_CONTRACT_TEST_PATH := "res://templates/new_game/Tests/test_shinokute_reskin_contract.gd"
 const TEMPLATE_SCREENSHOT_CHECKLIST_PATH := "res://templates/new_game/docs/screenshot_verification_checklist.md"
+const TEMPLATE_ASSET_MANIFEST_PATH := "res://templates/new_game/docs/asset_manifest.md"
+const ASSET_GUARDRAILS_PATH := "res://docs/asset_generation_guardrails.md"
+const EXTERNAL_GODOGEN_NOTES_PATH := "res://docs/external_godogen_notes.md"
 const AGENTS_PATH := "res://AGENTS.md"
 const RUNBOOK_PATH := "res://docs/reskin_runbook.md"
 const CHECKLIST_TEMPLATE_PATH := "res://docs/reskin_checklist_template.md"
@@ -22,6 +25,9 @@ func _init() -> void:
 	var rules := FileAccess.get_file_as_string(TEMPLATE_RULES_PATH)
 	var contract_test := FileAccess.get_file_as_string(TEMPLATE_CONTRACT_TEST_PATH)
 	var screenshot_checklist := FileAccess.get_file_as_string(TEMPLATE_SCREENSHOT_CHECKLIST_PATH)
+	var asset_manifest := FileAccess.get_file_as_string(TEMPLATE_ASSET_MANIFEST_PATH)
+	var asset_guardrails := FileAccess.get_file_as_string(ASSET_GUARDRAILS_PATH)
+	var external_notes := FileAccess.get_file_as_string(EXTERNAL_GODOGEN_NOTES_PATH)
 	var agents := FileAccess.get_file_as_string(AGENTS_PATH)
 	var runbook := FileAccess.get_file_as_string(RUNBOOK_PATH)
 	var checklist := FileAccess.get_file_as_string(CHECKLIST_TEMPLATE_PATH)
@@ -50,13 +56,26 @@ func _init() -> void:
 	_assert_true(screenshot_checklist.contains("Desktop viewport"), "screenshot checklist should include desktop viewport")
 	_assert_true(screenshot_checklist.contains("Mobile viewport"), "screenshot checklist should include mobile viewport")
 	_assert_true(screenshot_checklist.contains("Screen still reads as a game screen"), "screenshot checklist should guard game context")
+	_assert_true(asset_manifest.contains("In-game Size"), "asset manifest should track in-game size")
+	_assert_true(asset_manifest.contains("Block Kit"), "asset manifest should support block kit assets")
+	_assert_true(asset_manifest.contains("Owner Rect"), "asset manifest should track owner rect")
+	_assert_true(not asset_guardrails.is_empty(), "asset generation guardrails should exist")
+	_assert_true(asset_guardrails.contains("Build-Block Asset Workflow"), "asset guardrails should include build-block workflow")
+	_assert_true(asset_guardrails.contains("confirm paid generation"), "asset guardrails should require spend confirmation")
+	_assert_true(asset_guardrails.contains("review every generated PNG before downstream conversion"), "asset guardrails should require PNG review")
+	_assert_true(asset_guardrails.contains("proof over claims"), "asset guardrails should require visual proof")
+	_assert_true(not external_notes.is_empty(), "external Godogen notes should exist")
+	_assert_true(external_notes.contains("Do Not Import Into Shinokute Reskin Pipeline"), "external notes should separate unused Godogen ideas")
+	_assert_true(external_notes.contains("Godot C#/.NET scene builder"), "external notes should preserve non-imported Godogen idea")
 
 	_assert_true(agents.contains("tools/reskin_audit.ps1"), "agents guide should require audit tool")
 	_assert_true(agents.contains("templates/new_game"), "agents guide should link new game template")
+	_assert_true(agents.contains("docs/asset_generation_guardrails.md"), "agents guide should link asset generation guardrails")
 	_assert_true(runbook.contains("tools/reskin_audit.ps1"), "runbook should require audit tool")
 	_assert_true(runbook.contains("HardcodedValueAudit"), "runbook should name hardcoded value audit")
 	_assert_true(checklist.contains("Reskin audit command"), "checklist should require audit command evidence")
 	_assert_true(checklist.contains("Screenshot verification checklist"), "checklist should require screenshot checklist evidence")
+	_assert_true(checklist.contains("Asset manifest"), "checklist should require asset manifest evidence")
 	_assert_true(readme.contains("tools/reskin_audit.ps1"), "README should link reskin audit tool")
 	_assert_true(readme.contains("templates/new_game"), "README should link new game template")
 	_report("test_reskin_automation_guardrails")

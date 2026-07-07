@@ -15,15 +15,16 @@ Shared systems stay in `addons/shinokute_game_core/`.
 2. Inspect `README.md` for current module list and test command.
 3. Read `docs/reskin_core_skin_boundary.md`.
 4. Read `docs/reskin_runbook.md`.
-5. Copy `docs/reskin_checklist_template.md` into the game repo if the game
+5. Read `docs/asset_generation_guardrails.md` before generating or editing art.
+6. Copy `docs/reskin_checklist_template.md` into the game repo if the game
    has no local reskin checklist.
-6. Use `templates/new_game` when starting a fresh game.
-7. Create or update the game-owned `GameCoreConfig.tres`.
-8. Create or update the game-owned `ShinokuteThemeConfig.tres`.
-9. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
-10. Wire gameplay through `GameCore`, not through copied managers.
-11. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
-12. Run Shinokute core tests before claiming the reskin is ready.
+7. Use `templates/new_game` when starting a fresh game.
+8. Create or update the game-owned `GameCoreConfig.tres`.
+9. Create or update the game-owned `ShinokuteThemeConfig.tres`.
+10. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
+11. Wire gameplay through `GameCore`, not through copied managers.
+12. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+13. Run Shinokute core tests before claiming the reskin is ready.
 
 ## Core Layers
 
@@ -84,6 +85,9 @@ core.analytics.track("game_start", {"mode": "classic"})
   owner region.
 - Do not forget game context: menus, popups, buttons, settings, and result
   screens must still look like the current game, not a generic app UI.
+- Do not place generated or reused art into production scenes before it exists
+  in the game-local asset manifest with owner rect, padding, and In-game Size.
+- Do not run paid asset generation without owner approval.
 - Do not report completion without running tests.
 
 ## Reskin Checklist
@@ -105,6 +109,7 @@ core.analytics.track("game_start", {"mode": "classic"})
 - [ ] Leaderboards go through `fetch_leaderboard`.
 - [ ] Text and text-owner regions fit desktop and mobile viewports.
 - [ ] Changed screens still read as game screens.
+- [ ] Asset manifest contains Block Kit rows for changed/generated assets.
 - [ ] `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings` passes.
 
 ## Test Command

@@ -12,6 +12,8 @@ Every agent must read `docs/reskin_core_skin_boundary.md` before reskinning any 
 
 Every agent must read `docs/reskin_runbook.md` and create a game-local checklist from `docs/reskin_checklist_template.md` before production reskin edits.
 
+Every agent must read `docs/asset_generation_guardrails.md` before generating or editing game art.
+
 Every agent must read `docs/godot_web_publish_runbook.md` before giving the owner a web test link or publishing an official Godot Web build.
 
 ## Architecture
@@ -61,6 +63,11 @@ Each new mobile game should create these game-owned files:
 - `templates/new_game`: starter files for a new reskin, including config
   templates, rules adapter template, contract test template, and screenshot
   verification checklist.
+- `docs/asset_generation_guardrails.md`: asset manifest, Block Kit, proof over
+  claims, and paid-generation rules inspired by Godogen's useful workflow
+  pieces.
+- `docs/external_godogen_notes.md`: Godogen ideas kept outside the production
+  Shinokute reskin pipeline.
 
 ## Migration Roadmap
 

@@ -8,17 +8,18 @@ Each phase has a stop gate. If a gate fails, fix that phase before moving on.
 1. Read `AGENTS.md`.
 2. Read `docs/reskin_core_skin_boundary.md`.
 3. Read `addons/shinokute_game_core/README.md`.
-4. Read the target game's local reskin checklist. If none exists, create one
+4. Read `docs/asset_generation_guardrails.md` before generating or editing art.
+5. Read the target game's local reskin checklist. If none exists, create one
    from `docs/reskin_checklist_template.md` inside the game repo before edits.
-5. For a fresh game, copy `templates/new_game` into the target repo and rename
+6. For a fresh game, copy `templates/new_game` into the target repo and rename
    example files before gameplay edits.
-6. Identify whether the work is:
+7. Identify whether the work is:
    - game skin only,
    - function skin only,
    - rules adapter work,
    - shared core work,
    - publish/release work.
-7. List files expected to change. Keep the list small and update it when scope
+8. List files expected to change. Keep the list small and update it when scope
    changes.
 
 Stop gate:
@@ -32,17 +33,25 @@ Stop gate:
 
 1. List approved runtime assets, generated UI/component assets, fonts, audio,
    and theme resources already in the game repo.
-2. Identify existing owner regions for text, buttons, panels, inputs,
+2. Create or update the game-local asset manifest from
+   `templates/new_game/docs/asset_manifest.md`.
+3. Identify existing owner regions for text, buttons, panels, inputs,
    leaderboard rows, settings rows, badges, and popups.
-3. Record asset keys, owner rects, padding, aspect ratio, crop policy, and scale
+4. Record asset keys, owner rects, padding, aspect ratio, crop policy, and scale
    policy in the game-local checklist.
-4. Decide whether each function-skin element reuses an approved asset or needs
+5. Decide whether each function-skin element reuses an approved asset or needs
    a new owner-approved asset request.
+6. For a fresh test game, build the Block Kit before real screens:
+   button shell, panel shell, input shell, leaderboard row, settings row,
+   HUD score owner, gameplay tile/block, background, and VFX placeholder.
+7. Capture an asset test scene screenshot after the Block Kit is placed.
 
 Stop gate:
 - No new frame, border, button shell, field shell, badge, or row background is
   created before existing assets are inventoried.
 - Every chosen visual asset has an SSOT key, role, owner rect, and padding.
+- Generated or reused assets have asset manifest rows with In-game Size.
+- Asset test game blocks pass screenshot review before full screen assembly.
 
 ## Phase 2: Build Or Update SSOT Resources
 

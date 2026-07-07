@@ -18,6 +18,7 @@ Rename it to `docs/reskin_checklist.md` or a game-specific checklist name.
 - [ ] `AGENTS.md` read.
 - [ ] `docs/reskin_core_skin_boundary.md` read.
 - [ ] `docs/reskin_runbook.md` read.
+- [ ] `docs/asset_generation_guardrails.md` read.
 - [ ] `addons/shinokute_game_core/README.md` read.
 - [ ] `templates/new_game` copied or existing game structure documented.
 - [ ] Game-local publish checklist read if web/mobile publish is in scope.
@@ -33,6 +34,15 @@ Rename it to `docs/reskin_checklist.md` or a game-specific checklist name.
 Notes:
 
 ## Existing Asset Inventory
+
+Asset manifest:
+
+- Path:
+- [ ] Block Kit rows filled for changed/generated assets.
+- [ ] In-game Size recorded for every accepted asset.
+- [ ] Owner Rect recorded for text-bearing assets.
+- [ ] Paid generation approval recorded before generation.
+- [ ] Generated PNG reviewed before conversion/import.
 
 | Role | Existing asset key/path | Owner rect | Padding | Ratio/crop | Reuse decision |
 |---|---|---|---|---|---|

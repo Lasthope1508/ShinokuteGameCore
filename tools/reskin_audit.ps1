@@ -67,6 +67,18 @@ if (-not $screenshotChecklist) {
   Add-Issue "error" "ScreenshotEvidence" "Missing screenshot verification checklist for desktop/mobile text-fit review."
 }
 
+$assetManifest = Test-AnyFile @("docs/asset_manifest.md", "docs/*asset*manifest*.md")
+if (-not $assetManifest) {
+  Add-Issue "error" "AssetManifest" "Missing game-local asset manifest for Block Kit, owner rect, and In-game Size evidence."
+} else {
+  $assetManifestContent = Get-Content -LiteralPath $assetManifest -Raw
+  foreach ($required in @("Block Kit", "Owner Rect", "In-game Size")) {
+    if ($assetManifestContent -notmatch [regex]::Escape($required)) {
+      Add-Issue "error" "AssetManifest" "Asset manifest missing $required." $assetManifest
+    }
+  }
+}
+
 $coreConfig = Test-AnyFile @("Resources/Data/*game_core_config*.tres", "Resources/Data/*GameCoreConfig*.tres")
 if (-not $coreConfig) {
   Add-Issue "error" "MissingGameCoreConfig" "Missing game-owned GameCoreConfig resource."
