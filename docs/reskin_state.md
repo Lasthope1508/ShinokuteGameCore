@@ -4,7 +4,7 @@ Last updated: 2026-07-08
 
 ## Current Gate
 
-Deep Reskin implementation planning after owner-approved written spec. SFX replacement deferred.
+Deep Reskin collectible visual design approved; implementation pending.
 
 ## Completed Assets
 
@@ -38,12 +38,17 @@ Deep Reskin implementation planning after owner-approved written spec. SFX repla
 ## Pending Assets
 
 - Deep visual SSOT role coverage for old assets.
-- Collectible star-candy model or wrapper replacement if separately approved.
+- Collectible star-candy model or wrapper replacement approved for design only; implementation remains pending.
+  - Owner selected collectible group option C: generate an approved star-candy sheet/model reference only after explicit AI generation approval.
+  - Photoroom must run on the full approved sheet/image first.
+  - Object refs must be extracted by polygon/outline from alpha; no grid slicing and no raw crop first.
+  - Build wrapper around existing `Area3D` collectible behavior after approved refs exist.
 - Cake/cloud platform model or wrapper replacements if separately approved.
 - Wafer obstacle replacement if separately approved.
 - Candy pennant goal replacement if separately approved.
 - Cloud, grass, dust, particle, skybox, and material cleanup if separately approved.
 - SFX replacement deferred; current SFX may only be inventoried and routed through SSOT in this gate.
+- Shinokute core central 3D skills are separate future scope only, not current Quantum reskin implementation.
 - No branding assets pending.
 
 ## Validation Evidence
@@ -81,5 +86,7 @@ Continue Checkpoint 5: Deep Reskin.
 Recommended next sequence:
 
 1. Complete inventory and SSOT validation for the active Deep Reskin gate.
-2. Keep visual group approvals pending until each group is separately owner approved.
-3. Keep SFX replacement deferred; current SFX may only be inventoried and routed through SSOT in this gate.
+2. For the collectible group, request explicit AI generation approval before creating any star-candy sheet/model reference.
+3. Keep remaining visual group approvals pending until each group is separately owner approved.
+4. Keep SFX replacement deferred; current SFX may only be inventoried and routed through SSOT in this gate.
+5. Keep Shinokute core central 3D skills as separate future scope, outside this Quantum reskin gate.

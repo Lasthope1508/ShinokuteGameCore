@@ -130,7 +130,7 @@ Hard gate:
 - [ ] Deep manifest contract passes.
 - [ ] Audio inventory includes `break` and `fall`.
 - [ ] Existing SFX paths are routed through SSOT without replacing `.ogg` files.
-- [ ] Collectible visual replacement group owner approved.
+- [x] Collectible visual replacement group owner approved.
 - [ ] Platform visual replacement group owner approved.
 - [ ] Obstacle visual replacement group owner approved.
 - [ ] Goal visual replacement group owner approved.
@@ -138,6 +138,11 @@ Hard gate:
 - [ ] Player model wrapper group owner approved if attempted.
 - [ ] Deep visual validation passed.
 - [ ] Stop before SFX replacement confirmed.
+
+Note:
+- Collectible option C selected: approved star-candy sheet/model reference first, Photoroom full approved sheet/image first, polygon/outline extraction from alpha, no grid slicing, no raw crop first, then wrapper around existing `Area3D` collectible behavior. AI image generation still requires explicit owner approval before creating any image.
+- SFX replacement remains deferred.
+- Shinokute core central 3D skills are separate future scope only, not current Quantum reskin implementation.
 
 Hard gate:
 - Do not generate, replace, or approve new SFX in this checkpoint.
