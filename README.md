@@ -12,6 +12,8 @@ Every agent must read `docs/reskin_core_skin_boundary.md` before reskinning any 
 
 Every agent must read `docs/reskin_runbook.md` and create a game-local checklist from `docs/reskin_checklist_template.md` before production reskin edits.
 
+Core wiring does not complete production UI. Each production game must create game-owned function-skin UI for enabled shared features such as username, leaderboard, result, settings, menus, ads, profile, and publish prompts.
+
 Every agent must read `docs/asset_generation_guardrails.md` before generating or editing game art.
 
 Every agent must read `docs/godot_web_publish_runbook.md` before giving the owner a web test link or publishing an official Godot Web build.
@@ -28,6 +30,7 @@ Every agent must read `docs/godot_web_publish_runbook.md` before giving the owne
 ## Modules
 
 - `GameCoreConfig`: SSOT for game id, Firebase endpoint, score sort, collection names, username policy, and leaderboard display labels.
+- `ShinokuteProgressionCatalog` and `ShinokuteProgressionLevel`: canonical SSOT schemas for level catalogs, completion/failure policies, data-driven route/layout profiles, environment segments, and difficulty curves.
 - `GameCore`: single entrypoint that wires every core/service/UX module.
 - `GameSession`: start/pause/resume/end run lifecycle, score deltas, and result signal.
 - `GameRulesAdapter`: per-game rules API. New games subclass or wrap this instead of rewriting core flow.
@@ -53,6 +56,7 @@ Each new mobile game should create these game-owned files:
 - `Resources/Data/<game>_theme_config.tres`: colors, fonts, art paths, SFX paths, UI metrics.
 - `Scripts/<GameName>Rules.gd`: rules adapter implementing `start_run`, `can_make_move`, `apply_move`, `is_game_over`, and `get_result`.
 - Gameplay scenes call `GameCore.start_run`, `GameCore.session.apply_move`, `GameCore.submit_score`, and route/overlay services. They must not copy save, ads, leaderboard, profile, or settings code.
+- Each enabled shared core feature gets game-owned UI/function skin, SSOT/theme asset keys, contract tests, and screenshot evidence before that feature is complete.
 
 ## Reskin Automation Guardrails
 

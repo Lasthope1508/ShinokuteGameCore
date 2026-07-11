@@ -16,15 +16,20 @@ Shared systems stay in `addons/shinokute_game_core/`.
 3. Read `docs/reskin_core_skin_boundary.md`.
 4. Read `docs/reskin_runbook.md`.
 5. Read `docs/asset_generation_guardrails.md` before generating or editing art.
-6. Copy `docs/reskin_checklist_template.md` into the game repo if the game
+6. Read `docs/gameplay_progression_ssot.md` before adding or migrating
+   level completion, fail/retry, or difficulty-scaling behavior.
+7. Copy `docs/reskin_checklist_template.md` into the game repo if the game
    has no local reskin checklist.
-7. Use `templates/new_game` when starting a fresh game.
-8. Create or update the game-owned `GameCoreConfig.tres`.
-9. Create or update the game-owned `ShinokuteThemeConfig.tres`.
-10. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
-11. Wire gameplay through `GameCore`, not through copied managers.
-12. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
-13. Run Shinokute core tests before claiming the reskin is ready.
+8. Use `templates/new_game` when starting a fresh game.
+9. Create or update the game-owned `GameCoreConfig.tres`.
+10. Create or update the game-owned `ShinokuteThemeConfig.tres`.
+11. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
+12. Wire gameplay through `GameCore`, not through copied managers.
+13. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+14. Run Shinokute core tests before claiming the reskin is ready.
+15. Run the Core Learning Gate after any reskin uncovers reusable behavior.
+    Use `ShinokuteReskinBoundaryAudit` and
+    `Tests/test_reskin_core_audit_contract.gd` before pushing core changes.
 
 ## Core Layers
 
@@ -77,6 +82,8 @@ core.analytics.track("game_start", {"mode": "classic"})
 - Do not hardcode Firebase project id, Firestore collection, score label,
   score sort direction, geolocation fallback, ad cooldown, text, colors,
   audio paths, or scene paths in gameplay scripts.
+- Do not mark profile, username, leaderboard, settings, ads, menus, result, or publish features complete after code wiring only.
+- Each enabled core feature needs game-owned UI/function skin, backed by game SSOT/theme assets, contract tests, and screenshot evidence.
 - Do not put game-specific board, puzzle, physics, or scoring rules into
   Shinokute core.
 - Do not bypass `GameSession` for run lifecycle.
@@ -89,6 +96,10 @@ core.analytics.track("game_start", {"mode": "classic"})
   in the game-local asset manifest with owner rect, padding, and In-game Size.
 - Do not run paid asset generation without owner approval.
 - Do not report completion without running tests.
+- Do not leave reusable behavior/schema duplicated in a game after it has been
+  identified as core-owned.
+- Do not push core changes that contain game names, game asset paths, stale JS
+  globals, duplicate game-local schema names, or export stale markers.
 
 ## Reskin Checklist
 
@@ -107,10 +118,21 @@ core.analytics.track("game_start", {"mode": "classic"})
 - [ ] Tuning values use `remote_config`.
 - [ ] Scores go through `submit_score`.
 - [ ] Leaderboards go through `fetch_leaderboard`.
+- [ ] Every enabled shared core feature has game-owned UI/function skin.
+- [ ] Shared feature UI uses game SSOT/theme assets and has test/screenshot evidence.
 - [ ] Text and text-owner regions fit desktop and mobile viewports.
 - [ ] Changed screens still read as game screens.
 - [ ] Asset manifest contains Block Kit rows for changed/generated assets.
 - [ ] `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings` passes.
+- [ ] Core Learning Gate completed for reusable behavior discovered by this
+      reskin.
+- [ ] `ShinokuteReskinBoundaryAudit` or the matching test contract was run
+      after core edits.
+- [ ] Platform Input Matrix records PC, mobile touch, iOS/Android Web, HTML5
+      desktop, and Roblox expectations when input/camera/control behavior
+      changes.
+- [ ] Export Audit scanned selected resources and generated packages for stale
+      schema names, debug/source files, and old JS globals.
 
 ## Test Command
 

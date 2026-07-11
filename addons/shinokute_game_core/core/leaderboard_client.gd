@@ -150,15 +150,15 @@ func _username_for_submit() -> String:
 	var username: String = save_store.get_username().strip_edges()
 	return username
 
-func _is_score_better_or_equal(candidate: int, current: int, mode: String) -> bool:
-	if candidate <= 0:
+func _is_score_better_or_equal(new_score: int, current: int, mode: String) -> bool:
+	if new_score <= 0:
 		return false
 	if current <= 0:
 		return true
 	var direction: String = config.get_sort_direction(mode)
 	if direction == "DESCENDING":
-		return candidate >= current
-	return candidate <= current
+		return new_score >= current
+	return new_score <= current
 
 func _region_filter(field: String, value: String) -> Dictionary:
 	return {

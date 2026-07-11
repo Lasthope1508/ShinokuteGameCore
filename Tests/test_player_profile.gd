@@ -34,6 +34,8 @@ func _init() -> void:
 	_assert_true(profile.skip_username(), "skip allowed")
 	_assert_true(store.get_username().begins_with("Player_"), "skip creates default player")
 	store.wipe_all()
+	_cleanup_nodes([store, profile])
+	cfg = null
 	_report("test_player_profile")
 
 func _assert_eq(actual, expected, label: String) -> void:
@@ -45,6 +47,11 @@ func _assert_true(value: bool, label: String) -> void:
 	if not value:
 		_passed = false
 		push_error(label)
+
+func _cleanup_nodes(objects: Array) -> void:
+	for object in objects:
+		if object is Node:
+			object.free()
 
 func _report(name: String) -> void:
 	if _passed:

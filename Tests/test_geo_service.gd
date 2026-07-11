@@ -19,12 +19,18 @@ func _init() -> void:
 	geo.apply_geolocation_response({})
 	_assert_eq(store.get_country_code(), "JP", "empty response does not hardcode fallback")
 	store.wipe_all()
+	_cleanup_nodes([store, geo])
 	_report("test_geo_service")
 
 func _assert_eq(actual, expected, label: String) -> void:
 	if actual != expected:
 		_passed = false
 		push_error("%s: expected %s got %s" % [label, str(expected), str(actual)])
+
+func _cleanup_nodes(objects: Array) -> void:
+	for object in objects:
+		if object is Node:
+			object.free()
 
 func _report(name: String) -> void:
 	if _passed:

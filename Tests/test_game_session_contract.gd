@@ -49,6 +49,7 @@ func _init() -> void:
 	_assert_eq(session.apply_move({"valid": true, "score": 2}), OK, "second move accepted")
 	_assert_true(not session.is_running(), "game over stops session")
 	_assert_eq(_ended[0]["moves"], 3, "result from rules")
+	_cleanup_nodes([base_rules, session, rules])
 	_report("test_game_session_contract")
 
 func _assert_eq(actual, expected, label: String) -> void:
@@ -60,6 +61,11 @@ func _assert_true(value: bool, label: String) -> void:
 	if not value:
 		_passed = false
 		push_error(label)
+
+func _cleanup_nodes(objects: Array) -> void:
+	for object in objects:
+		if object is Node:
+			object.free()
 
 func _report(name: String) -> void:
 	if _passed:

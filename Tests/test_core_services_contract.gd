@@ -56,6 +56,8 @@ func _init() -> void:
 	remote.apply_overrides({"level_time": 45})
 	_assert_true(remote.get_bool("ads_enabled", false), "remote default bool")
 	_assert_eq(remote.get_int("level_time", 0), 45, "remote override int")
+	_cleanup_nodes([theme_manager, audio, analytics, ads, localization, remote])
+	theme = null
 	_report("test_core_services_contract")
 
 func _assert_eq(actual, expected, label: String) -> void:
@@ -67,6 +69,11 @@ func _assert_true(value: bool, label: String) -> void:
 	if not value:
 		_passed = false
 		push_error(label)
+
+func _cleanup_nodes(objects: Array) -> void:
+	for object in objects:
+		if object is Node:
+			object.free()
 
 func _report(name: String) -> void:
 	if _passed:

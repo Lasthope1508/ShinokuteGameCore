@@ -24,7 +24,13 @@ extends Resource
 @export var ad_placements: Dictionary = {}
 @export var analytics_config: Dictionary = {}
 @export var remote_defaults: Dictionary = {}
+@export var settings_defaults: Dictionary = {
+	"sfx_enabled": true,
+	"bgm_enabled": true,
+	"shift_lock_enabled": false
+}
 @export var translations: Dictionary = {}
+@export var progression_catalog: Resource
 @export var default_locale: String = "en"
 @export var fallback_locale: String = "en"
 @export var ads_enabled: bool = true
@@ -53,6 +59,9 @@ func validate_config() -> Array[String]:
 		errors.append("username_min_length must be >= 1")
 	if username_max_length < username_min_length:
 		errors.append("username_max_length must be >= username_min_length")
+	if progression_catalog != null and progression_catalog.has_method("validate"):
+		for error in progression_catalog.validate():
+			errors.append("progression_catalog: %s" % error)
 	return errors
 
 func is_username_required() -> bool:
@@ -80,6 +89,11 @@ func get_sort_direction(mode: String) -> String:
 	if value == SORT_ASCENDING:
 		return SORT_ASCENDING
 	return SORT_DESCENDING
+
+func get_setting_default(key: String, fallback: Variant = null) -> Variant:
+	if settings_defaults.has(key):
+		return settings_defaults[key]
+	return fallback
 
 func validate_username(username: String) -> Array[String]:
 	var errors: Array[String] = []

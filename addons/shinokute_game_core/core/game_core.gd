@@ -12,6 +12,7 @@ const LeaderboardClientScript := preload("leaderboard_client.gd")
 const GeoServiceScript := preload("geo_service.gd")
 const GameSessionScript := preload("game_session.gd")
 const ThemeManagerScript := preload("../services/theme_manager.gd")
+const SettingsScript := preload("../services/settings_manager.gd")
 const AudioHapticsScript := preload("../services/audio_haptics_manager.gd")
 const AnalyticsScript := preload("../services/analytics_tracker.gd")
 const AdsScript := preload("../services/ads_manager.gd")
@@ -27,6 +28,7 @@ var leaderboard: Node
 var geo_service: Node
 var session: Node
 var theme_manager: Node
+var settings: Node
 var audio_haptics: Node
 var analytics: Node
 var ads: Node
@@ -64,9 +66,15 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 	if config.get("theme_config") != null:
 		theme_manager.configure(config.get("theme_config"))
 
+	settings = SettingsScript.new()
+	add_child(settings)
+	settings.configure(config, save_store)
+
 	audio_haptics = AudioHapticsScript.new()
 	add_child(audio_haptics)
 	audio_haptics.configure(theme_manager)
+	_apply_audio_settings()
+	settings.setting_changed.connect(_on_setting_changed)
 
 	analytics = AnalyticsScript.new()
 	add_child(analytics)
@@ -142,15 +150,15 @@ func _best_pending_score(value: int, mode: String) -> int:
 		return value
 	return pending
 
-func _is_score_better(candidate: int, current: int, mode: String) -> bool:
-	if candidate <= 0:
+func _is_score_better(new_score: int, current: int, mode: String) -> bool:
+	if new_score <= 0:
 		return false
 	if current <= 0:
 		return true
 	var direction: String = config.get_sort_direction(mode)
 	if direction == "DESCENDING":
-		return candidate > current
-	return candidate < current
+		return new_score > current
+	return new_score < current
 
 func _configured_modes() -> Array[String]:
 	var modes: Array[String] = []
@@ -175,3 +183,19 @@ func start_run(mode: String = "classic", context: Dictionary = {}) -> int:
 	if session == null:
 		return ERR_UNAVAILABLE
 	return session.start_run(mode, context)
+
+func _on_setting_changed(key: String, value: Variant) -> void:
+	if audio_haptics == null:
+		return
+	if key == SettingsScript.KEY_SFX_ENABLED and audio_haptics.has_method("set_sfx_enabled"):
+		audio_haptics.set_sfx_enabled(bool(value))
+	elif key == SettingsScript.KEY_BGM_ENABLED and audio_haptics.has_method("set_bgm_enabled"):
+		audio_haptics.set_bgm_enabled(bool(value))
+
+func _apply_audio_settings() -> void:
+	if settings == null or audio_haptics == null:
+		return
+	if audio_haptics.has_method("set_sfx_enabled"):
+		audio_haptics.set_sfx_enabled(settings.is_sfx_enabled())
+	if audio_haptics.has_method("set_bgm_enabled"):
+		audio_haptics.set_bgm_enabled(settings.is_bgm_enabled())

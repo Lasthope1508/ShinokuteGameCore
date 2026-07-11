@@ -35,6 +35,8 @@ func _init() -> void:
 	var chaos_query := client.build_query_payload("world", "chaos")
 	_assert_eq(chaos_query["structuredQuery"]["orderBy"][0]["direction"], "DESCENDING", "chaos descending")
 	store.wipe_all()
+	_cleanup_nodes([store, client])
+	cfg = null
 	_report("test_leaderboard_client")
 
 func _assert_eq(actual, expected, label: String) -> void:
@@ -46,6 +48,11 @@ func _assert_true(value: bool, label: String) -> void:
 	if not value:
 		_passed = false
 		push_error(label)
+
+func _cleanup_nodes(objects: Array) -> void:
+	for object in objects:
+		if object is Node:
+			object.free()
 
 func _report(name: String) -> void:
 	if _passed:

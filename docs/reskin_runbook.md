@@ -19,15 +19,27 @@ Each phase has a stop gate. If a gate fails, fix that phase before moving on.
    - rules adapter work,
    - shared core work,
    - publish/release work.
-8. List files expected to change. Keep the list small and update it when scope
+8. Identify the canonical cross-platform layer split:
+   - reusable functions and behavior in `ShinokuteGameCore`,
+   - game adapters/wrappers in the target game,
+   - game-owned UI/function skin in the target game,
+   - platform-specific code only in platform layers/branches/shims,
+   - canonical assets shared by iOS, Android, HTML5, and Roblox through the same SSOT keys.
+9. List files expected to change. Keep the list small and update it when scope
    changes.
+10. Start a Core Learning Gate note for any behavior that may belong in
+    `ShinokuteGameCore`.
 
 Stop gate:
 - The agent can name which layer owns each requested change.
 - The agent has a game-local checklist file for evidence.
 - No gameplay scene edit begins before the SSOT targets are named.
+- No UI/function/asset work begins before the UI skin/layout SSOT, asset checklist, core wiring map, and platform map exist or are updated.
+- The platform map confirms iOS, Android, HTML5, and Roblox use the same canonical asset keys, with platform derivatives recorded only as derivatives.
 - Fresh games use `templates/new_game` or document why an existing game
   structure already satisfies the same files.
+- Potential reusable behavior is tracked for the Core Learning Gate before
+  implementation begins.
 
 ## Phase 1: Inventory Existing Game Assets
 
@@ -37,20 +49,25 @@ Stop gate:
    `templates/new_game/docs/asset_manifest.md`.
 3. Identify existing owner regions for text, buttons, panels, inputs,
    leaderboard rows, settings rows, badges, and popups.
-4. Record asset keys, owner rects, padding, aspect ratio, crop policy, and scale
-   policy in the game-local checklist.
-5. Decide whether each function-skin element reuses an approved asset or needs
+4. Record the canonical platform usage for every accepted asset role:
+   iOS, Android, HTML5, and Roblox all point to the same asset key unless an
+   owner-approved exception is documented.
+5. Record asset keys, owner rects, padding, aspect ratio, crop policy, scale
+   policy, in-game size, and platform derivatives in the game-local checklist.
+6. Decide whether each function-skin element reuses an approved asset or needs
    a new owner-approved asset request.
-6. For a fresh test game, build the Block Kit before real screens:
+7. For a fresh test game, build the Block Kit before real screens:
    button shell, panel shell, input shell, leaderboard row, settings row,
    HUD score owner, gameplay tile/block, background, and VFX placeholder.
-7. Capture an asset test scene screenshot after the Block Kit is placed.
+8. Capture an asset test scene screenshot after the Block Kit is placed.
 
 Stop gate:
 - No new frame, border, button shell, field shell, badge, or row background is
   created before existing assets are inventoried.
 - Every chosen visual asset has an SSOT key, role, owner rect, and padding.
 - Generated or reused assets have asset manifest rows with In-game Size.
+- iOS, Android, HTML5, and Roblox platform usage is recorded for changed
+  assets, and no platform-specific asset fork exists without owner approval.
 - Asset test game blocks pass screenshot review before full screen assembly.
 
 ## Phase 2: Build Or Update SSOT Resources
@@ -59,7 +76,11 @@ Stop gate:
 2. Update the game-owned `ShinokuteThemeConfig.tres`.
 3. Add or update game-specific SSOT resources for board geometry, function-skin
    owner rects, text limits, VFX parameters, audio event names, and route keys.
-4. Add contract tests proving gameplay and UI read these values from SSOT
+4. Add or update the UI skin/layout SSOT for safe areas, responsive anchors,
+   text owner regions, hitboxes, platform viewport behavior, and style tokens.
+5. Add or update the platform map for iOS, Android, HTML5, and Roblox asset
+   consumers and any platform code shims.
+6. Add contract tests proving gameplay and UI read these values from SSOT
    resources rather than hardcoded scene constants.
 
 Stop gate:
@@ -69,6 +90,8 @@ Stop gate:
   metrics.
 - No hardcoded path/color/text/scene route remains in gameplay code when an
   SSOT key exists.
+- Platform-specific code can customize input/export/safe-area/runtime shims, but
+  shared gameplay/function code and canonical assets remain SSOT-driven.
 
 ## Phase 3: Wire Core Runtime
 
@@ -87,6 +110,9 @@ Stop gate:
 - No copied `SaveManager`, `LeaderboardManager`, `AdManager`, `AudioManager`,
   `ThemeManager`, profile, settings, route, or localization logic remains in
   new reskin work.
+- No copied input, camera, mobile control, overlay grouping, profile,
+  leaderboard, settings, audio gate, or publish-gate function logic remains in
+  game scenes when `ShinokuteGameCore` owns the reusable behavior.
 - Game-specific board, puzzle, enemy, physics, and scoring rules live in the
   game rules adapter or game-owned scripts, not in Shinokute core.
 
@@ -115,12 +141,20 @@ Stop gate:
 
 1. Run Shinokute core tests.
 2. Run the game-local contract tests.
-3. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
-4. Treat `HardcodedValueAudit`, `TextFitEvidence`, and `ScreenshotEvidence`
+3. Run the Core Learning Gate:
+   - list what the reskin taught core,
+   - move reusable behavior/schema into `addons/shinokute_game_core`,
+   - leave skin/config/assets/adapters in the game,
+   - run `ShinokuteReskinBoundaryAudit` or
+     `Tests/test_reskin_core_audit_contract.gd`.
+4. Complete the Platform Input Matrix when input/camera/control behavior
+   changes.
+5. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+6. Treat `HardcodedValueAudit`, `TextFitEvidence`, and `ScreenshotEvidence`
    findings as blockers.
-5. Run Godot import if assets or scenes changed.
-6. Launch the game locally.
-7. Exercise the full loop:
+7. Run Godot import if assets or scenes changed.
+8. Launch the game locally.
+9. Exercise the full loop:
    - splash/menu,
    - start run,
    - valid move,
@@ -130,7 +164,7 @@ Stop gate:
    - game over/result,
    - username path,
    - leaderboard path.
-6. Capture screenshots for changed screens.
+10. Capture screenshots for changed screens.
 
 Stop gate:
 - No parse errors, missing resources, missing fonts, missing images, broken
@@ -139,6 +173,24 @@ Stop gate:
   are fixed or documented.
 - `tools/reskin_audit.ps1` passes in warning-as-failure mode.
 - All checklist evidence fields are filled.
+- The Core Learning Gate records every reusable behavior moved to core or left
+  game-owned with rationale.
+- The Platform Input Matrix is filled for any control/camera/input changes.
+
+## Phase 5.5: Export Audit
+
+Use this phase after core/schema/export edits and before any package handoff.
+
+1. Check selected export resources.
+2. Verify new core helper scripts are included.
+3. Verify removed game-local schemas are not selected.
+4. Scan generated PCK/package output for stale schema names, debug/source
+   folders, old JS globals, and authoring-only markers.
+
+Stop gate:
+- No stale selected resources.
+- No removed schema names in package output.
+- No old platform bridge globals in package output.
 
 ## Phase 6: Publish Gate
 
