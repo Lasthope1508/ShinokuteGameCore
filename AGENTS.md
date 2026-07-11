@@ -15,19 +15,21 @@ Shared systems stay in `addons/shinokute_game_core/`.
 2. Inspect `README.md` for current module list and test command.
 3. Read `docs/reskin_core_skin_boundary.md`.
 4. Read `docs/reskin_runbook.md`.
-5. Read `docs/asset_generation_guardrails.md` before generating or editing art.
-6. Read `docs/gameplay_progression_ssot.md` before adding or migrating
+5. Read `docs/git_branch_topology.md` before committing or pushing any core
+   or game branch.
+6. Read `docs/asset_generation_guardrails.md` before generating or editing art.
+7. Read `docs/gameplay_progression_ssot.md` before adding or migrating
    level completion, fail/retry, or difficulty-scaling behavior.
-7. Copy `docs/reskin_checklist_template.md` into the game repo if the game
+8. Copy `docs/reskin_checklist_template.md` into the game repo if the game
    has no local reskin checklist.
-8. Use `templates/new_game` when starting a fresh game.
-9. Create or update the game-owned `GameCoreConfig.tres`.
-10. Create or update the game-owned `ShinokuteThemeConfig.tres`.
-11. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
-12. Wire gameplay through `GameCore`, not through copied managers.
-13. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
-14. Run Shinokute core tests before claiming the reskin is ready.
-15. Run the Core Learning Gate after any reskin uncovers reusable behavior.
+9. Use `templates/new_game` when starting a fresh game.
+10. Create or update the game-owned `GameCoreConfig.tres`.
+11. Create or update the game-owned `ShinokuteThemeConfig.tres`.
+12. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
+13. Wire gameplay through `GameCore`, not through copied managers.
+14. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+15. Run Shinokute core tests before claiming the reskin is ready.
+16. Run the Core Learning Gate after any reskin uncovers reusable behavior.
     Use `ShinokuteReskinBoundaryAudit` and
     `Tests/test_reskin_core_audit_contract.gd` before pushing core changes.
 
