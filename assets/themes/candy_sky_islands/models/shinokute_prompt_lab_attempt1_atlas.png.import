@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://xa0m6nh67f1x"
+path="res://.godot/imported/shinokute_prompt_lab_attempt1_atlas.png-4de51167a2f91c9d491622ea9872ce8a.ctex"
+metadata={
+"vram_texture": false
+}
+generator_parameters={
+"md5": "9c1b1d1cd70393c07320f64b7cc7810d"
+}
+
+[deps]
+
+source_file="res://assets/themes/candy_sky_islands/models/shinokute_prompt_lab_attempt1_atlas.png"
+dest_files=["res://.godot/imported/shinokute_prompt_lab_attempt1_atlas.png-4de51167a2f91c9d491622ea9872ce8a.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

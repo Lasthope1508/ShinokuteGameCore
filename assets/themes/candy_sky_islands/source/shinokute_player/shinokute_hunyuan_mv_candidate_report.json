@@ -1,0 +1,15 @@
+{
+  "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_candidate.glb",
+  "inputs": {
+    "front": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front.png",
+    "left": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_left_side.png",
+    "back": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back.png"
+  },
+  "seconds": 756.75,
+  "vertices": 58000,
+  "faces": 185784,
+  "pipeline": "Hunyuan3D-2mv/hunyuan3d-dit-v2-mv-turbo",
+  "steps": 5,
+  "octree_resolution": 256,
+  "num_chunks": 16000
+}

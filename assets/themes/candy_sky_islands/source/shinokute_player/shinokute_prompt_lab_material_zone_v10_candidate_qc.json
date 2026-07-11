@@ -1,0 +1,35 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_prompt_lab_material_zone_v10_candidate.glb",
+  "source_candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_prompt_lab_albedo_attempt2_candidate.glb",
+  "prompt_sources": {
+    "albedo_pool": "res://assets/themes/candy_sky_islands/source/shinokute_player/albedo_turnaround_pool_attempt2/",
+    "material_id_pool": "res://assets/themes/candy_sky_islands/source/shinokute_player/material_id_turnaround_pool_attempt1/"
+  },
+  "rendered_via": "Blender MCP socket execute_code on port 9876",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_prompt_lab_material_zone_v10_candidate_preview/contact_sheet.png",
+  "diagnostic_report": "res://assets/themes/candy_sky_islands/source/shinokute_player/shinokute_prompt_lab_material_zone_v10_candidate_report.json",
+  "status": "candidate_not_integrated",
+  "decision": "first_no_bleed_candidate_for_owner_review",
+  "checks": {
+    "reference_images_used_for_9router": true,
+    "photoroom_full_sheet_before_extraction": true,
+    "no_grid_slicing": true,
+    "polygon_or_component_mask_extraction": true,
+    "albedo_pool_qc_bad_empty": true,
+    "material_id_pool_qc_bad_empty": true,
+    "real_3d_volume": true,
+    "skin_not_spilling_onto_hoodie_chest": true,
+    "hoodie_chest_not_skin_patched": true,
+    "exposed_legs_not_black_smeared": true,
+    "socks_remain_black": true,
+    "shoes_remain_red_black_white_from_projection": true,
+    "integrated_to_character_scene": false
+  },
+  "tradeoffs": [
+    "Face detail is reduced by solid material-zone cleanup.",
+    "Hoodie logo/detail is reduced because torso projection was replaced to eliminate bleed.",
+    "Candidate is evidence for no-bleed workflow, not final Godot integration."
+  ],
+  "next_optional_step": "Restore identity details safely with controlled face/detail or hoodie-logo decal pass after material-zone cleanup, or use Hunyuan Paint/native renderer when available."
+}

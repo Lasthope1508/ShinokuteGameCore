@@ -1,0 +1,17 @@
+{
+  "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_candidate.glb",
+  "inputs": {
+    "front": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front.png",
+    "left": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_left_side.png",
+    "back": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back.png"
+  },
+  "seconds": 363.55,
+  "vertices": 60075,
+  "faces": 193974,
+  "pipeline": "Hunyuan3D-2mv/hunyuan3d-dit-v2-mv-turbo",
+  "steps": 5,
+  "octree_resolution": 256,
+  "num_chunks": 16000,
+  "source": "9Router Hunyuan-anatomy corrected sheet -> Photoroom full sheet -> polygon component extracted views",
+  "status": "candidate_not_integrated"
+}

@@ -1,0 +1,47 @@
+{
+  "updated": "2026-07-08",
+  "status": "required_before_material_projection_or_integration",
+  "source_views": {
+    "front": "res://assets/themes/candy_sky_islands/source/shinokute_player/standing_multiview_pool/shinokute_standing_front.png",
+    "left_side": "res://assets/themes/candy_sky_islands/source/shinokute_player/standing_multiview_pool/shinokute_standing_left_side.png",
+    "back": "res://assets/themes/candy_sky_islands/source/shinokute_player/standing_multiview_pool/shinokute_standing_back.png",
+    "front_left_3q": "res://assets/themes/candy_sky_islands/source/shinokute_player/standing_multiview_pool/shinokute_standing_front_left_3q.png",
+    "front_right_3q": {
+      "path": "res://assets/themes/candy_sky_islands/source/shinokute_player/standing_multiview_pool/shinokute_standing_front_right_3q.png",
+      "status": "owner_approved_flip_exception_despite_reversed_text"
+    },
+    "right_back_3q_candidate": "res://assets/themes/candy_sky_islands/source/shinokute_player/standing_multiview_pool/shinokute_standing_right_back_3q_candidate.png"
+  },
+  "mesh_candidate": {
+    "path": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_candidate.glb",
+    "status": "geometry_candidate_not_integrated",
+    "vertices": 58000,
+    "faces": 185784,
+    "bounds": {
+      "min": [-0.333434, -0.218296, -0.998404],
+      "max": [0.293977, 0.238681, 0.958888],
+      "size": [0.627411, 0.456977, 1.957292]
+    },
+    "coordinate_convention": {
+      "z_norm": "(z - min_z) / size_z",
+      "front_y": "negative_y"
+    }
+  },
+  "zones": {
+    "hair": {"z_norm_min": 0.78, "material": "near_black"},
+    "face": {"z_norm_min": 0.72, "z_norm_max": 0.88, "front_y": true, "abs_x_max": 0.16, "material": "skin"},
+    "hoodie_body": {"z_norm_min": 0.48, "z_norm_max": 0.74, "material": "black_fabric"},
+    "hoodie_sleeves": {"z_norm_min": 0.40, "z_norm_max": 0.70, "material": "black_fabric"},
+    "hands": {"material": "skin", "source": "front_and_side_hand_regions"},
+    "shorts": {"z_norm_min": 0.31, "z_norm_max": 0.49, "material": "black_fabric"},
+    "legs": {"z_norm_min": 0.15, "z_norm_max": 0.35, "material": "skin"},
+    "socks": {"z_norm_min": 0.10, "z_norm_max": 0.18, "material": "black"},
+    "shoes": {"z_norm_max": 0.12, "material": "red_black_white"},
+    "hoodie_text": {"z_norm": 0.62, "front_y": true, "material": "white_decal", "text": "SHINOKUTE"}
+  },
+  "texture_pipeline": {
+    "preferred": "Hunyuan3DPaintPipeline multiview texture bake from accepted source views",
+    "current_blocker": "custom_rasterizer not built because CUDA_HOME/nvcc missing",
+    "fallback": "styled_candidate allowed only as candidate, not production, until preview QA and owner approval"
+  }
+}

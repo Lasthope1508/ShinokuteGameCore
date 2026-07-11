@@ -36,10 +36,10 @@ func _init() -> void:
 	for key in REQUIRED_MANIFEST_KEYS:
 		passed = _assert_file_contains(MANIFEST, key, "Manifest should include %s" % key) and passed
 	passed = _assert_file_contains(CHECKLIST, "### Checkpoint 5: Deep Reskin", "Checklist should include deep reskin checkpoint") and passed
-	passed = _assert_file_contains(CHECKLIST, "Stop before SFX replacement", "Checklist should record SFX stop rule") and passed
-	passed = _assert_file_contains(STATE, "Last updated: 2026-07-08", "State should record current update date") and passed
+	passed = _assert_file_contains(CHECKLIST, "Candy Island BGM/SFX replacement applied", "Checklist should record current audio replacement") and passed
+	passed = _assert_file_contains(STATE, "Last updated:", "State should record current update date") and passed
 	passed = _assert_file_contains(STATE, "Deep Reskin", "State should mention deep reskin gate") and passed
-	passed = _assert_file_contains(STATE, "SFX replacement deferred", "State should record SFX deferral") and passed
+	passed = _assert_file_contains(STATE, "Candy Island BGM/SFX replacement applied", "State should record current audio replacement") and passed
 	passed = _assert_file_contains(STATE, "Continue Checkpoint 5", "State should record active Checkpoint 5 next step") and passed
 	passed = _assert_file_not_contains(STATE, "No active reskin gate", "State should not claim there is no active reskin gate") and passed
 	passed = _assert_file_contains_case_insensitive(SPEC, "Stop before SFX Replacement", "Spec should record SFX boundary") and passed

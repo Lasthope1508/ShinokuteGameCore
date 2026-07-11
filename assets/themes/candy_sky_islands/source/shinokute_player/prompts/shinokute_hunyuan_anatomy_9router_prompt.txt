@@ -1,0 +1,29 @@
+Use the provided reference images together.
+
+Reference priority:
+1. Character identity comes from the Shinokute anime boy references: same face, black messy hair, black hoodie, readable SHINOKUTE chest text, black shorts, pale legs, black socks, red/black/white high-top sneakers, slim teen proportions.
+2. 3D anatomy, body volume, stance width, head/body depth, hoodie thickness, leg spacing, shoe volume, and turnaround consistency come from the Hunyuan clay render reference. Treat the clay render as the exact 3D anatomical volume guide, not as the final material style.
+3. The sprite sheet / atlas references show the accepted view-specific outfit details and colors.
+
+Create a clean production reference turnaround sheet for 3D texture projection and anatomy correction.
+
+Output exactly eight full-body standing views in one sheet, arranged in two rows of four:
+top row: front, front_left_3q, left_side, back_left_3q
+bottom row: back, back_right_3q, right_side, front_right_3q
+
+Requirements:
+- Orthographic camera, same character scale in every view, feet aligned on one baseline per row.
+- Neutral standing pose, arms relaxed, no action pose.
+- Preserve the same exact Shinokute character identity in every view.
+- Preserve slim Hunyuan-derived 3D volume: measured bounds approximately height 1.957 units, width 0.627 units, depth 0.457 units; Hunyuan source was Hunyuan3D-2mv turbo, octree_resolution 256, 58k vertices, 185k faces.
+- Keep hoodie as thick cloth with real 3D volume; no flat paper body.
+- Keep face visible and skin-toned in front and 3q views; do not let hair shadow black out the face.
+- Keep hoodie torso black, no beige chest patch.
+- Put SHINOKUTE text on the upper chest, centered and readable in front/front-left/front-right views. For the approved mirrored front-right exception, reversed text is acceptable only if unavoidable, but prefer readable text if possible.
+- Keep shorts black and separated from hoodie.
+- Keep legs skin-toned, socks black, shoes red/black/white with white swoosh-like side shape.
+- Plain white or transparent-safe background, no environment, no shadows touching other views.
+- Each view must be separated by whitespace so Photoroom and polygon extraction can isolate it.
+
+Negative prompt:
+different person, redesigned outfit, wrong face, adult body, chibi proportions, extra limbs, missing hands, missing feet, cropped body, merged views, inconsistent hair, inconsistent shoe colors, unreadable hoodie text, watermark, labels, numbers, grid lines, dark background, perspective distortion, fisheye, action pose, duplicated head, malformed hands, beige hoodie chest panel, blacked-out face.

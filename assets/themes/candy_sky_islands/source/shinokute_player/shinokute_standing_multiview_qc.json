@@ -1,0 +1,165 @@
+{
+  "components_detected": 6,
+  "bad": [],
+  "items": [
+    {
+      "role": "front",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front.png",
+      "size": [
+        278,
+        817
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 106558,
+      "bbox": [
+        59,
+        36,
+        250,
+        789
+      ],
+      "pass": true
+    },
+    {
+      "role": "left_side",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_left_side.png",
+      "size": [
+        196,
+        809
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 65659,
+      "bbox": [
+        379,
+        35,
+        168,
+        781
+      ],
+      "pass": true
+    },
+    {
+      "role": "right_back_3q_candidate",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_right_back_3q_candidate.png",
+      "size": [
+        187,
+        807
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 64647,
+      "bbox": [
+        653,
+        37,
+        159,
+        779
+      ],
+      "pass": true
+    },
+    {
+      "role": "back",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back.png",
+      "size": [
+        262,
+        802
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 101692,
+      "bbox": [
+        901,
+        36,
+        234,
+        774
+      ],
+      "pass": true
+    },
+    {
+      "role": "front_left_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_left_3q.png",
+      "size": [
+        267,
+        820
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 96165,
+      "bbox": [
+        1185,
+        38,
+        239,
+        792
+      ],
+      "pass": true
+    },
+    {
+      "role": "back_left_3q_from_flip",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back_left_3q_from_flip.png",
+      "size": [
+        187,
+        807
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true,
+      "derived": true
+    },
+    {
+      "role": "back_right_3q_from_flip",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back_right_3q_from_flip.png",
+      "size": [
+        187,
+        807
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true,
+      "derived": true
+    },
+    {
+      "role": "front_right_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_right_3q.png",
+      "size": [
+        267,
+        820
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true,
+      "derived": true,
+      "fix": "mirrored from front_left_3q because AI candidate faced wrong direction",
+      "production_texture_status": "accepted_by_owner_despite_reversed_text",
+      "owner_approval": "Owner explicitly approved using the flipped front_right_3q on 2026-07-08."
+    }
+  ],
+  "warnings": [
+    {
+      "role": "front_right_3q",
+      "warning": "Mirrored flip reverses hoodie text; production use is allowed only because owner explicitly approved this exception on 2026-07-08."
+    }
+  ]
+}

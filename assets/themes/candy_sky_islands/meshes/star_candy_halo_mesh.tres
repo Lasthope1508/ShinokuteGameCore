@@ -1,0 +1,25 @@
+[gd_resource type="ArrayMesh" load_steps=2 format=4]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slcf2"]
+resource_name = "Material_StarCandyHaloSurface"
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.949, 0.78, 0.36)
+billboard_mode = 1
+billboard_keep_scale = true
+
+[resource]
+resource_name = "StarCandyHaloMesh"
+_surfaces = [{
+"aabb": AABB(-0.304338, -0.258885, 0, 0.608676, 0.578885, 1e-05),
+"format": 34359742465,
+"index_count": 30,
+"index_data": PackedByteArray("AAABAAIAAAACAAMAAAADAAQAAAAEAAUAAAAFAAYAAAAGAAcAAAAHAAgAAAAIAAkAAAAJAAoAAAAKAAEA"),
+"material": SubResource("StandardMaterial3D_slcf2"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 11,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAUri0IwrXoz4AAAAAUJG0va+H+D0AAAAANNKbvnOEyj0AAAAAEBUSvizcPb0AAAAAAJtAvqKMhL4AAAAAMyP+o5qZGb4AAAAAAJtAPqKMhL4AAAAAEBUSPizcPb0AAAAANNKbPnOEyj0AAAAAUJG0Pa+H+D0AAAAA")
+}]
+metadata/source_asset = "res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb"
+metadata/source_method = "tools/create_candy_collectible_glb.py star_points outer=0.32 inner=0.15"

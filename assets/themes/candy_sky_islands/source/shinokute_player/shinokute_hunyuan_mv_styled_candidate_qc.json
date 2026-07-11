@@ -1,0 +1,19 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_styled_candidate.glb",
+  "source_ssot": "res://assets/themes/candy_sky_islands/source/shinokute_player/shinokute_character_3d_ssot.json",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_styled_candidate_preview/contact_sheet.png",
+  "status": "rejected_candidate_not_integrated",
+  "failed_gates": [
+    "Face remains too dark/black in front render.",
+    "Shoes are coarse red blobs instead of red/black/white shoe cues.",
+    "Material bands are still too crude for production Shinokute identity.",
+    "No real Hunyuan Paint texture bake exists because native custom_rasterizer is blocked by missing CUDA Toolkit/nvcc."
+  ],
+  "passed_gates": [
+    "Uses real Hunyuan multiview 3D geometry candidate.",
+    "Uses machine-readable Shinokute coordinate SSOT instead of untracked magic-number guessing.",
+    "Not integrated into objects/character.tscn."
+  ],
+  "next_action": "Install/point CUDA Toolkit so Hunyuan custom_rasterizer and differentiable_renderer can build, then run Hunyuan3DPaintPipeline texture bake from accepted multiview sprites. If CUDA Toolkit is not available, create a proper Blender UV/projection workflow from the accepted sprites rather than coarse body-band materials."
+}

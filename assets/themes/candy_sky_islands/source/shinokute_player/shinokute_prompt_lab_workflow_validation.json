@@ -1,0 +1,69 @@
+{
+  "updated": "2026-07-08",
+  "scope": "9Router prompt/workflow validation for clean Shinokute albedo turnaround, material-ID masks, and no-bleed candidate output before Godot integration",
+  "status": "workflow_validated_before_godot_integration",
+  "requirements": {
+    "uses_9router_reference_images": {
+      "status": "pass",
+      "evidence": "prompts/2026-07-08-shinokute-albedo-mask-prompt-lab.md records primary identity and anatomy references plus model/key rules"
+    },
+    "uses_only_workspace_image_model": {
+      "status": "pass",
+      "evidence": "prompt lab model rule is cx/gpt-5.5-image"
+    },
+    "clean_albedo_turnaround_exists": {
+      "status": "pass",
+      "evidence": "shinokute_albedo_turnaround_attempt2_qc.json has bad=[] and albedo_turnaround_pool_attempt2 contains 8 extracted views"
+    },
+    "clean_material_id_turnaround_exists": {
+      "status": "pass",
+      "evidence": "shinokute_material_id_turnaround_attempt1_qc.json has bad=[] and material_id_turnaround_pool_attempt1 contains 8 extracted views"
+    },
+    "photoroom_full_sheet_before_extraction": {
+      "status": "pass",
+      "evidence": "prompt lab records full generated sheets were passed through Photoroom before high-alpha component polygon extraction"
+    },
+    "no_grid_slicing": {
+      "status": "pass",
+      "evidence": "prompt lab extraction method records high-alpha connected component polygon masks and no automatic grid slicing"
+    },
+    "naive_projection_rejected": {
+      "status": "pass",
+      "evidence": "prompt lab records albedo projection and material-ID projection candidates rejected because projection still smeared material zones"
+    },
+    "no_bleed_candidate_exists": {
+      "status": "pass",
+      "evidence": "character_shinokute_hunyuan_mv_prompt_lab_material_zone_v10_candidate.glb and preview contact sheet exist"
+    },
+    "no_skin_hood_leg_bleed": {
+      "status": "pass",
+      "evidence": "shinokute_prompt_lab_material_zone_v10_candidate_qc.json marks skin_not_spilling_onto_hoodie_chest, hoodie_chest_not_skin_patched, exposed_legs_not_black_smeared, socks_remain_black, and shoes_remain_red_black_white_from_projection true"
+    },
+    "real_3d_volume": {
+      "status": "pass",
+      "evidence": "shinokute_prompt_lab_material_zone_v10_candidate_report.json records bounds_size [0.629676, 0.410761, 1.956832]"
+    },
+    "not_integrated_to_godot": {
+      "status": "pass",
+      "evidence": "v10 QC has integrated_to_character_scene=false and scene references do not point to the v10 candidate"
+    },
+    "tradeoffs_recorded": {
+      "status": "pass",
+      "evidence": "v10 QC records reduced face detail and reduced hoodie logo/detail as tradeoffs"
+    }
+  },
+  "validated_outputs": {
+    "albedo_qc": "assets/themes/candy_sky_islands/source/shinokute_player/shinokute_albedo_turnaround_attempt2_qc.json",
+    "material_id_qc": "assets/themes/candy_sky_islands/source/shinokute_player/shinokute_material_id_turnaround_attempt1_qc.json",
+    "candidate": "assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_prompt_lab_material_zone_v10_candidate.glb",
+    "candidate_preview": "docs/screenshots/shinokute_hunyuan_mv_prompt_lab_material_zone_v10_candidate_preview/contact_sheet.png",
+    "candidate_qc": "assets/themes/candy_sky_islands/source/shinokute_player/shinokute_prompt_lab_material_zone_v10_candidate_qc.json",
+    "candidate_report": "assets/themes/candy_sky_islands/source/shinokute_player/shinokute_prompt_lab_material_zone_v10_candidate_report.json",
+    "workflow_doc": "assets/themes/candy_sky_islands/source/shinokute_player/prompts/2026-07-08-shinokute-albedo-mask-prompt-lab.md"
+  },
+  "decision": "goal_scope_satisfied_for_prompt_workflow_and_no_bleed_candidate_validation",
+  "not_production_integration": [
+    "Do not integrate v10 into objects/character.tscn without owner approval.",
+    "Production-quality identity restoration remains optional future work: controlled face/detail or hoodie-logo decal pass, or Hunyuan Paint/native renderer when available."
+  ]
+}

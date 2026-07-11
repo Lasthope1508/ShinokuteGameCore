@@ -4,6 +4,7 @@ const THEME_PATH := "res://Resources/Data/Themes/candy_sky_islands/theme_config.
 const AUDIO_SCRIPT := "res://scripts/audio.gd"
 const MAIN_SCRIPT := "res://scripts/main.gd"
 const PLAYER_SCRIPT := "res://scripts/player.gd"
+const PLAYER_CORE_SCRIPT := "res://addons/shinokute_game_core/controllers/character_3d_controller.gd"
 const COIN_SCRIPT := "res://objects/coin.gd"
 const BRICK_SCRIPT := "res://objects/brick.gd"
 const PLATFORM_FALLING_SCRIPT := "res://objects/platform_falling.gd"
@@ -33,12 +34,13 @@ func _init() -> void:
 	passed = passed and _assert_file_contains(AUDIO_SCRIPT, "func play_event", "Audio should expose play_event")
 	passed = passed and _assert_file_contains(MAIN_SCRIPT, "has_method(\"configure_events\")", "Main should guard audio event configuration")
 	passed = passed and _assert_file_contains(MAIN_SCRIPT, "Audio.configure_events(theme_config.audio_event_paths)", "Main should configure Audio from theme_config.audio_event_paths")
-	passed = passed and _assert_routes_event(PLAYER_SCRIPT, "land", "Player should route land sound through Audio.play_event") and passed
-	passed = passed and _assert_routes_event(PLAYER_SCRIPT, "jump", "Player should route jump sound through Audio.play_event") and passed
+	passed = passed and _assert_file_contains(PLAYER_SCRIPT, PLAYER_CORE_SCRIPT, "Candy player should inherit core controller for player audio events")
+	passed = passed and _assert_routes_event(PLAYER_CORE_SCRIPT, "land", "Core player should route land sound through Audio.play_event") and passed
+	passed = passed and _assert_routes_event(PLAYER_CORE_SCRIPT, "jump", "Core player should route jump sound through Audio.play_event") and passed
 	passed = passed and _assert_routes_event(COIN_SCRIPT, "coin", "Coin should route collect sound through Audio.play_event") and passed
 	passed = passed and _assert_routes_event(BRICK_SCRIPT, "break", "Brick should route break sound through Audio.play_event") and passed
 	passed = passed and _assert_routes_event(PLATFORM_FALLING_SCRIPT, "fall", "Falling platform should route fall sound through Audio.play_event") and passed
-	for script_path in [PLAYER_SCRIPT, COIN_SCRIPT, BRICK_SCRIPT, PLATFORM_FALLING_SCRIPT]:
+	for script_path in [PLAYER_SCRIPT, PLAYER_CORE_SCRIPT, COIN_SCRIPT, BRICK_SCRIPT, PLATFORM_FALLING_SCRIPT]:
 		for sound_path in HARDCODED_SFX:
 			passed = passed and _assert_file_not_contains(script_path, sound_path, "%s should not hardcode %s" % [script_path, sound_path])
 	if passed:

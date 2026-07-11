@@ -1,0 +1,118 @@
+{
+  "components_detected": 8,
+  "bad": [],
+  "items": [
+    {
+      "role": "front",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front.png",
+      "size": [
+        193,
+        519
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "front_left_3q",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front_left_3q.png",
+      "size": [
+        145,
+        519
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "left_side",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_left_side.png",
+      "size": [
+        175,
+        522
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "back_left_3q",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back_left_3q.png",
+      "size": [
+        162,
+        513
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "back",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back.png",
+      "size": [
+        179,
+        517
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "back_right_3q",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back_right_3q.png",
+      "size": [
+        168,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "right_side",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_right_side.png",
+      "size": [
+        140,
+        516
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    },
+    {
+      "role": "front_right_3q",
+      "path": "assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front_right_3q.png",
+      "size": [
+        169,
+        520
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "atlas": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\projection\\shinokute_prompt_lab_material_id_attempt1_atlas.png",
+  "cell_size": 768,
+  "columns": 4,
+  "rows": 2,
+  "views": {
+    "front": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_front.png",
+      "cell": [
+        0,
+        0
+      ],
+      "atlas_rect_px": [
+        257,
+        40,
+        254,
+        688
+      ],
+      "uv_rect": [
+        0.08365885416666667,
+        0.5260416666666667,
+        0.08268229166666667,
+        0.4479166666666667
+      ]
+    },
+    "back": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_back.png",
+      "cell": [
+        1,
+        0
+      ],
+      "atlas_rect_px": [
+        1025,
+        40,
+        253,
+        688
+      ],
+      "uv_rect": [
+        0.3336588541666667,
+        0.5260416666666667,
+        0.08235677083333333,
+        0.4479166666666667
+      ]
+    },
+    "left_side": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_left_side.png",
+      "cell": [
+        2,
+        0
+      ],
+      "atlas_rect_px": [
+        1833,
+        40,
+        173,
+        688
+      ],
+      "uv_rect": [
+        0.5966796875,
+        0.5260416666666667,
+        0.056315104166666664,
+        0.4479166666666667
+      ]
+    },
+    "front_left_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_front_left_3q.png",
+      "cell": [
+        3,
+        0
+      ],
+      "atlas_rect_px": [
+        2572,
+        40,
+        231,
+        688
+      ],
+      "uv_rect": [
+        0.8372395833333334,
+        0.5260416666666667,
+        0.0751953125,
+        0.4479166666666667
+      ]
+    },
+    "front_right_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_front_right_3q.png",
+      "cell": [
+        0,
+        1
+      ],
+      "atlas_rect_px": [
+        269,
+        808,
+        230,
+        688
+      ],
+      "uv_rect": [
+        0.08756510416666667,
+        0.02604166666666663,
+        0.07486979166666667,
+        0.4479166666666667
+      ]
+    },
+    "right_side": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_right_side.png",
+      "cell": [
+        1,
+        1
+      ],
+      "atlas_rect_px": [
+        1065,
+        808,
+        173,
+        688
+      ],
+      "uv_rect": [
+        0.3466796875,
+        0.02604166666666663,
+        0.056315104166666664,
+        0.4479166666666667
+      ]
+    },
+    "back_left_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_back_left_3q.png",
+      "cell": [
+        2,
+        1
+      ],
+      "atlas_rect_px": [
+        1808,
+        808,
+        223,
+        688
+      ],
+      "uv_rect": [
+        0.5885416666666666,
+        0.02604166666666663,
+        0.07259114583333333,
+        0.4479166666666667
+      ]
+    },
+    "back_right_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_back_right_3q.png",
+      "cell": [
+        3,
+        1
+      ],
+      "atlas_rect_px": [
+        2575,
+        808,
+        225,
+        688
+      ],
+      "uv_rect": [
+        0.8382161458333334,
+        0.02604166666666663,
+        0.0732421875,
+        0.4479166666666667
+      ]
+    }
+  },
+  "source": "9Router prompt lab albedo sheet, Photoroom full sheet first, high-alpha component polygon extracted pool",
+  "source_mode": "prompt_lab_albedo"
+}

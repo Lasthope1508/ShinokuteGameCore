@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://85ldumyetgou"]
+[gd_scene load_steps=11 format=3 uid="uid://85ldumyetgou"]
 
-[ext_resource type="PackedScene" uid="uid://cs417o1y08xb1" path="res://models/brick.glb" id="1_lex57"]
-[ext_resource type="Script" uid="uid://b1egvfagp7vs1" path="res://objects/brick.gd" id="2_hbwgr"]
-[ext_resource type="Material" uid="uid://booc27br2ap2l" path="res://models/colormap.tres" id="3_2u2la"]
+[ext_resource type="PackedScene" path="res://assets/themes/candy_sky_islands/models/brick_candy_wafer.glb" id="1_lex57"]
+[ext_resource type="Script" path="res://objects/brick.gd" id="2_hbwgr"]
 [ext_resource type="ArrayMesh" uid="uid://bkyb0o2ipxxya" path="res://meshes/brick.res" id="4_pm7ss"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a8y0u"]
@@ -24,7 +23,7 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_iwokp"]
 curve = SubResource("Curve_y3bws")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mi6g1"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_CandyCrumb"]
 particle_flag_align_y = true
 particle_flag_disable_z = true
 emission_shape = 1
@@ -38,6 +37,16 @@ linear_accel_max = -1.0000023
 scale_min = 0.29999998
 scale_curve = SubResource("CurveTexture_iwokp")
 color_ramp = SubResource("GradientTexture1D_1o7s2")
+
+[sub_resource type="StandardMaterial3D" id="Material_CandyCrumb"]
+albedo_color = Color(1, 0.701961, 0.54902, 1)
+roughness = 0.84
+rim_enabled = true
+rim = 0.32
+rim_tint = 0.55
+emission_enabled = true
+emission = Color(1, 0.94902, 0.780392, 1)
+emission_energy_multiplier = 0.08
 
 [node name="brick" type="StaticBody3D"]
 script = ExtResource("2_hbwgr")
@@ -56,7 +65,7 @@ shape = SubResource("BoxShape3D_jkv2x")
 
 [node name="Particles" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25192702, 0)
-material_override = ExtResource("3_2u2la")
+material_override = SubResource("Material_CandyCrumb")
 emitting = false
 amount = 5
 one_shot = true
@@ -66,5 +75,5 @@ explosiveness = 1.0
 randomness = 1.0
 fixed_fps = 60
 local_coords = true
-process_material = SubResource("ParticleProcessMaterial_mi6g1")
+process_material = SubResource("ParticleProcessMaterial_CandyCrumb")
 draw_pass_1 = ExtResource("4_pm7ss")

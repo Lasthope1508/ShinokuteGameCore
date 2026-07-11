@@ -1,0 +1,68 @@
+{
+  "source": "shinokute_player_sheet_photoroom.png",
+  "source_order": "full sheet Photoroom first, then manual polygon clone/cut, then trim",
+  "asset": "shinokute_idle_sign_pose_ref",
+  "polygon_px": [
+    [
+      645,
+      705
+    ],
+    [
+      676,
+      690
+    ],
+    [
+      715,
+      690
+    ],
+    [
+      752,
+      704
+    ],
+    [
+      775,
+      744
+    ],
+    [
+      771,
+      824
+    ],
+    [
+      746,
+      852
+    ],
+    [
+      666,
+      852
+    ],
+    [
+      634,
+      825
+    ],
+    [
+      628,
+      747
+    ]
+  ],
+  "trim_bbox_px": [
+    629,
+    680,
+    149,
+    183
+  ],
+  "size": [
+    149,
+    183
+  ],
+  "mode": "RGBA",
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "edge_alpha_pixels": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+  }
+}

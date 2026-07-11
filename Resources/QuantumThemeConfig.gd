@@ -14,11 +14,30 @@ const QuantumAssetRole := preload("res://Resources/QuantumAssetRole.gd")
 @export var palette_text := Color("#273043")
 
 @export_group("HUD")
-@export_file("*.png", "*.webp") var hud_coin_icon_path := "res://sprites/coin.png"
+@export_file("*.png", "*.webp") var hud_coin_icon_path := "res://assets/themes/candy_sky_islands/star_collectible.png"
 @export_file("*.ttf", "*.otf") var hud_font_path := "res://fonts/lilita_one_regular.ttf"
-@export var hud_text_owner_rect := Rect2(144.0, 64.0, 224.0, 59.0)
+@export var hud_score_frame_rect := Rect2(40.0, 45.0, 313.0, 127.0)
+@export var hud_text_owner_rect := Rect2(160.0, 88.0, 160.0, 54.0)
 @export var hud_text_padding := Vector4(0.0, 0.0, 0.0, 0.0)
-@export var hud_font_size := 48
+@export var hud_font_size := 44
+
+@export_group("Function Skin UI")
+@export_file("*.png", "*.webp") var ui_leaderboard_button_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_button.png"
+@export_file("*.png", "*.webp") var ui_leaderboard_panel_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png"
+@export_file("*.png", "*.webp") var ui_leaderboard_row_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png"
+@export_file("*.png", "*.webp") var ui_leaderboard_tab_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_tab.png"
+@export_file("*.png", "*.webp") var ui_leaderboard_close_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_close.png"
+@export_file("*.png", "*.webp") var ui_username_panel_path := "res://assets/themes/candy_sky_islands/ui/ui_username_panel.png"
+@export_file("*.png", "*.webp") var ui_username_input_path := "res://assets/themes/candy_sky_islands/ui/ui_username_input.png"
+@export_file("*.png", "*.webp") var ui_button_primary_path := "res://assets/themes/candy_sky_islands/ui/ui_button_primary.png"
+@export_file("*.png", "*.webp") var ui_button_secondary_path := "res://assets/themes/candy_sky_islands/ui/ui_button_secondary.png"
+@export_file("*.png", "*.webp") var ui_settings_panel_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png"
+@export_file("*.png", "*.webp") var ui_settings_row_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png"
+@export_file("*.png", "*.webp") var ui_settings_toggle_on_path := "res://assets/themes/candy_sky_islands/ui/ui_button_primary.png"
+@export_file("*.png", "*.webp") var ui_settings_toggle_off_path := "res://assets/themes/candy_sky_islands/ui/ui_button_secondary.png"
+@export var ui_panel_texture_margins := Vector4(72.0, 72.0, 72.0, 72.0)
+@export var ui_button_texture_margins := Vector4(44.0, 32.0, 44.0, 32.0)
+@export var ui_row_texture_margins := Vector4(44.0, 24.0, 44.0, 24.0)
 
 @export_group("Player")
 @export_file("*.png", "*.webp") var player_root_asset_path := "res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png"
@@ -73,7 +92,7 @@ const QuantumAssetRole := preload("res://Resources/QuantumAssetRole.gd")
 @export var colormap_role: QuantumAssetRole
 
 @export_group("World")
-@export_file("*.png", "*.webp") var skybox_path := "res://sprites/skybox.png"
+@export_file("*.png", "*.webp") var skybox_path := "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
 @export var platform_material_color := Color("#FFF2C7")
 @export var coin_material_color := Color("#FF6F61")
 @export var coin_rim_color := Color("#7BE0AD")
@@ -81,11 +100,16 @@ const QuantumAssetRole := preload("res://Resources/QuantumAssetRole.gd")
 @export var cloud_material_color := Color("#FFFFFF")
 
 @export_group("Audio")
+@export_file("*.ogg", "*.wav", "*.mp3") var bgm_track_path := "res://sounds/candy_sky_islands/bgm_candy_island_main.ogg"
+@export var bgm_volume_db := -14.0
+@export var sfx_volume_db := -10.0
 @export var audio_event_paths := {
-	"jump": "res://sounds/jump.ogg",
-	"land": "res://sounds/land.ogg",
-	"coin": "res://sounds/coin.ogg",
-	"walking": "res://sounds/walking.ogg"
+	"jump": "res://sounds/candy_sky_islands/sfx_jump.ogg",
+	"land": "res://sounds/candy_sky_islands/sfx_land.ogg",
+	"coin": "res://sounds/candy_sky_islands/sfx_coin.ogg",
+	"walking": "res://sounds/candy_sky_islands/sfx_walking.ogg",
+	"break": "res://sounds/candy_sky_islands/sfx_break.ogg",
+	"fall": "res://sounds/candy_sky_islands/sfx_fall.ogg"
 }
 
 func validate() -> Array[String]:
@@ -94,13 +118,34 @@ func validate() -> Array[String]:
 		errors.append("theme_name is required")
 	if display_name.strip_edges().is_empty():
 		errors.append("display_name is required")
-	for path in [hud_coin_icon_path, hud_font_path, player_root_asset_path, skybox_path]:
+	for path in [
+		hud_coin_icon_path,
+		hud_font_path,
+		ui_leaderboard_button_path,
+		ui_leaderboard_panel_path,
+		ui_leaderboard_row_path,
+		ui_leaderboard_tab_path,
+		ui_leaderboard_close_path,
+		ui_username_panel_path,
+		ui_username_input_path,
+		ui_button_primary_path,
+		ui_button_secondary_path,
+		ui_settings_panel_path,
+		ui_settings_row_path,
+		ui_settings_toggle_on_path,
+		ui_settings_toggle_off_path,
+		player_root_asset_path,
+		skybox_path,
+		bgm_track_path
+	]:
 		if path.strip_edges().is_empty():
 			errors.append("asset path is empty")
 		elif not ResourceLoader.exists(path) and not FileAccess.file_exists(path):
 			errors.append("missing asset path: %s" % path)
 	if hud_text_owner_rect.size.x <= 0.0 or hud_text_owner_rect.size.y <= 0.0:
 		errors.append("hud_text_owner_rect must have positive size")
+	if hud_score_frame_rect.size.x <= 0.0 or hud_score_frame_rect.size.y <= 0.0:
+		errors.append("hud_score_frame_rect must have positive size")
 	for key in ["jump", "land", "coin", "walking", "break", "fall"]:
 		if not audio_event_paths.has(key):
 			errors.append("missing audio event: %s" % key)

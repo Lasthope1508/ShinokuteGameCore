@@ -1,0 +1,25 @@
+{
+  "source": "assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "output": "assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_uv_face_depth_candidate.glb",
+  "bounds": {
+    "min": [
+      -0.334207,
+      -0.186359,
+      -0.998361
+    ],
+    "max": [
+      0.295469,
+      0.224401,
+      0.958471
+    ],
+    "size": [
+      0.629676,
+      0.410761,
+      1.956832
+    ]
+  },
+  "face_band_polygons": 8692,
+  "face_depth_gated_skin_polygons": 1128,
+  "front_axis": "negative_y",
+  "status": "candidate_not_integrated"
+}

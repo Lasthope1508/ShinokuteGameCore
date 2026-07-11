@@ -1,0 +1,159 @@
+{
+  "sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\asset_family_concept_sheet.png",
+  "sheet_size": [
+    1254,
+    1254
+  ],
+  "regions": {
+    "star_collectible": {
+      "rect": [
+        34,
+        43,
+        301,
+        279
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\star_collectible_crop.png"
+    },
+    "hud_score_frame": {
+      "rect": [
+        384,
+        74,
+        476,
+        184
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\hud_score_frame_crop.png"
+    },
+    "cloud_large": {
+      "rect": [
+        884,
+        20,
+        354,
+        230
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\cloud_large_crop.png"
+    },
+    "cloud_mid": {
+      "rect": [
+        867,
+        266,
+        209,
+        128
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\cloud_mid_crop.png"
+    },
+    "platform_large": {
+      "rect": [
+        28,
+        346,
+        602,
+        339
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\platform_large_crop.png"
+    },
+    "platform_medium": {
+      "rect": [
+        646,
+        410,
+        374,
+        237
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\platform_medium_crop.png"
+    },
+    "platform_small": {
+      "rect": [
+        39,
+        682,
+        300,
+        210
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\platform_small_crop.png"
+    },
+    "platform_long": {
+      "rect": [
+        424,
+        686,
+        394,
+        212
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\platform_long_crop.png"
+    },
+    "wafer_obstacle": {
+      "rect": [
+        36,
+        885,
+        484,
+        250
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\wafer_obstacle_crop.png"
+    },
+    "goal_flag": {
+      "rect": [
+        959,
+        403,
+        273,
+        450
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\goal_flag_crop.png"
+    },
+    "cloud_bottom": {
+      "rect": [
+        299,
+        1098,
+        481,
+        137
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\cloud_bottom_crop.png"
+    },
+    "cloud_bottom_small": {
+      "rect": [
+        984,
+        1110,
+        224,
+        106
+      ],
+      "kind": "photoroom",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\cloud_bottom_small_crop.png"
+    },
+    "sky_panel_clouds": {
+      "rect": [
+        531,
+        947,
+        193,
+        160
+      ],
+      "kind": "opaque",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\sky_panel_clouds_crop.png"
+    },
+    "sky_panel_wide": {
+      "rect": [
+        719,
+        936,
+        247,
+        172
+      ],
+      "kind": "opaque",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\sky_panel_wide_crop.png"
+    },
+    "sky_panel_islands": {
+      "rect": [
+        970,
+        939,
+        254,
+        176
+      ],
+      "kind": "opaque",
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\sky_panel_islands_crop.png"
+    }
+  }
+}

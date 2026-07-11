@@ -1,0 +1,249 @@
+{
+  "source": "assets/themes/candy_sky_islands/source/candy_function_ui_sheet_photoroom.png",
+  "method": "Photoroom full sheet first, then alpha connected-component masks; no raw crop, no grid slicing",
+  "outputs": {
+    "ui_leaderboard_button": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_leaderboard_button.png",
+      "slot": "top_left",
+      "component_bbox_px": [
+        122,
+        57,
+        681,
+        247
+      ],
+      "trim_bbox_px": [
+        110,
+        45,
+        693,
+        259
+      ],
+      "size": [
+        584,
+        215
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_leaderboard_tab": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_leaderboard_tab.png",
+      "slot": "top_middle",
+      "component_bbox_px": [
+        827,
+        79,
+        1167,
+        231
+      ],
+      "trim_bbox_px": [
+        815,
+        67,
+        1179,
+        243
+      ],
+      "size": [
+        365,
+        177
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_leaderboard_close": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_leaderboard_close.png",
+      "slot": "top_right",
+      "component_bbox_px": [
+        1318,
+        65,
+        1504,
+        249
+      ],
+      "trim_bbox_px": [
+        1306,
+        53,
+        1516,
+        261
+      ],
+      "size": [
+        211,
+        209
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_leaderboard_panel": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png",
+      "slot": "middle_left",
+      "component_bbox_px": [
+        93,
+        282,
+        835,
+        613
+      ],
+      "trim_bbox_px": [
+        81,
+        270,
+        847,
+        625
+      ],
+      "size": [
+        767,
+        356
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_leaderboard_row": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png",
+      "slot": "middle_right",
+      "component_bbox_px": [
+        944,
+        417,
+        1543,
+        512
+      ],
+      "trim_bbox_px": [
+        932,
+        405,
+        1555,
+        524
+      ],
+      "size": [
+        624,
+        120
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_username_panel": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_username_panel.png",
+      "slot": "bottom_left",
+      "component_bbox_px": [
+        48,
+        667,
+        403,
+        881
+      ],
+      "trim_bbox_px": [
+        36,
+        655,
+        415,
+        893
+      ],
+      "size": [
+        380,
+        239
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_username_input": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_username_input.png",
+      "slot": "bottom_middle",
+      "component_bbox_px": [
+        445,
+        730,
+        805,
+        854
+      ],
+      "trim_bbox_px": [
+        433,
+        718,
+        817,
+        866
+      ],
+      "size": [
+        385,
+        149
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_button_primary": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_button_primary.png",
+      "slot": "bottom_middle_right",
+      "component_bbox_px": [
+        842,
+        706,
+        1210,
+        873
+      ],
+      "trim_bbox_px": [
+        830,
+        694,
+        1222,
+        885
+      ],
+      "size": [
+        393,
+        192
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    },
+    "ui_button_secondary": {
+      "path": "assets/themes/candy_sky_islands/ui/ui_button_secondary.png",
+      "slot": "bottom_right",
+      "component_bbox_px": [
+        1260,
+        716,
+        1602,
+        872
+      ],
+      "trim_bbox_px": [
+        1248,
+        704,
+        1614,
+        884
+      ],
+      "size": [
+        367,
+        181
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "status": "pass"
+    }
+  }
+}

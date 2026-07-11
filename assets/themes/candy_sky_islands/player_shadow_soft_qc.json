@@ -1,0 +1,18 @@
+{
+  "asset": "player.shadow",
+  "path": "res://assets/themes/candy_sky_islands/player_shadow_soft.png",
+  "source": "local authored 2D alpha gradient, no AI generation, no sheet extraction",
+  "mode": "RGBA",
+  "size": [
+    256,
+    256
+  ],
+  "alpha_extrema": [
+    0,
+    224
+  ],
+  "nonzero_alpha_pixels": 22431,
+  "edge_alpha_ratio_gt_8": 0.0,
+  "runtime_contract": "objects/player.tscn Shadow Decal size Vector3(1, 2, 1)",
+  "passes": true
+}

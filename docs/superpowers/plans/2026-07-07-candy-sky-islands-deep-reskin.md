@@ -8,10 +8,17 @@
 
 **Tech Stack:** Godot 4 GDScript resources and tests, existing `QuantumThemeConfig`, existing `scripts/theme_applier.gd`, Markdown manifest/checklist/state docs, PowerShell validation commands, existing visible screenshot script.
 
+**2026-07-08 reset amendment:** `docs/default_skin_size_ssot.md` is now Step 0 for this plan. Before any design option, image generation, Photoroom extraction, wrapper work, model replacement, or UI runtime replacement, read that file and preserve the default runtime size, collider envelope, or UI rect unless the owner approves a size change. Wrapper passes remain wrapper passes until the legacy model/mesh/texture is fully replaced. Primitive-only dummy meshes, rough placeholder geometry, and local Blender scripts without approved reference-derived silhouette/material cues are prototype evidence only, never production replacements.
+
+**2026-07-08 3D parity amendment:** Before any default 3D asset replacement, check whether the default role has nonzero volume/depth in `docs/default_skin_size_ssot.md`. A volumetric default role must get a volumetric production replacement unless the owner explicitly approves a flat 2D downgrade. `Sprite3D`, billboards, screenshots, and reference PNGs are reference/interim visuals only, not full 3D replacements. `prop.cloud` is the known correction: `cloud_large.png` as `CloudReferenceSprite` was flat interim evidence and must not be treated as complete parity for default `models/cloud.glb`; the production fix is `assets/themes/candy_sky_islands/models/cloud_candy_volume.glb`, a reference-derived volumetric GLB built from the approved Photoroom alpha silhouette.
+
 ---
 
 ## File Structure
 
+- Create `docs/default_skin_size_ssot.md`: baseline default skin size map to Candy Sky Islands roles, including pixel sizes, 3D AABB sizes, HUD runtime rects, wrapper/pending/deferred state, and future gate blocker.
+- Create `tools/audit_skin_size_ssot.gd`: Godot measurement tool for image pixel sizes and 3D scene/model AABB sizes.
+- Create `tests/test_default_skin_size_ssot_contract.gd`: reset-proof contract for default size SSOT coverage and guard wiring.
 - Create `Resources/QuantumAssetRole.gd`: typed resource for `legacy_path`, `reference_path`, `replacement_path`, `mode`, `proof_path`, and role validation.
 - Modify `Resources/QuantumThemeConfig.gd`: add deep visual role exports and audio inventory keys `break` and `fall`.
 - Modify `Resources/Data/Themes/candy_sky_islands/theme_config.tres`: populate deep visual role source records and audio paths without replacing SFX.
@@ -24,6 +31,54 @@
 - Modify `docs/asset_manifest.md`: add missing deep-reskin rows for all old visual roles, `break`, `fall`, unused candidates, and deferred SFX status.
 - Modify `docs/reskin_checklist.md`: add Checkpoint 5 for Deep Reskin and record stop-before-SFX rule.
 - Modify `docs/reskin_state.md`: set current gate to Deep Reskin implementation planning and record pending visual groups.
+
+## Task 0: Default Skin Size SSOT Baseline
+
+**Files:**
+- Create: `docs/default_skin_size_ssot.md`
+- Create: `tools/audit_skin_size_ssot.gd`
+- Create: `tests/test_default_skin_size_ssot_contract.gd`
+- Modify: `AGENTS.md`
+- Modify: `docs/reskin_checklist.md`
+- Modify: `docs/asset_manifest.md`
+- Modify: `docs/reskin_state.md`
+- Modify: this plan and the deep-reskin design spec
+
+- [x] **Step 1: Measure default and Candy role sizes**
+
+Run:
+
+```powershell
+$godot = 'C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
+$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
+& $godot --headless --path $project --script "$project\tools\audit_skin_size_ssot.gd"
+```
+
+Expected: output maps default role path, default size, Candy role path, and Candy size/state for image, 3D, mixed, and audio roles.
+
+- [x] **Step 2: Record baseline table**
+
+Write `docs/default_skin_size_ssot.md` with rows for every default visual/audio role. Mark wrappers as `wrapper_done, legacy_model_kept` or equivalent. Mark `player.shadow`, `material.colormap`, and deeper legacy GLB replacement as pending. Mark SFX as deferred.
+
+For default 3D roles, record whether the default has nonzero depth/volume. If a replacement uses `Sprite3D`, billboard, screenshot, or reference PNG for a role that was originally volumetric, mark it as interim/reference state with `3d_parity_pending`, not full replacement.
+
+- [x] **Step 3: Guard reset context**
+
+Add `docs/default_skin_size_ssot.md` to `AGENTS.md` required reading before baked asset and art pipeline docs. Add `Checkpoint 0: Default Skin Size SSOT` to `docs/reskin_checklist.md`.
+
+- [x] **Step 4: Add contract**
+
+Create `tests/test_default_skin_size_ssot_contract.gd`, requiring:
+
+- baseline file exists,
+- all role keys are present,
+- checklist has Checkpoint 0,
+- AGENTS requires the file,
+- manifest and state point to the baseline.
+
+- [x] **Step 5: Validate**
+
+Run `test_default_skin_size_ssot_contract.gd`, full `tests/test_*.gd`, `git diff --check`, and SFX audit. Expected: pass, with no changed `sounds`.
 
 ## Task 1: Deep Theme Role Contract
 
@@ -877,6 +932,7 @@ Hard gate:
 - Do not generate, replace, or approve new SFX in this checkpoint.
 - Do not create visual replacements for a group until that group has owner approval.
 - Do not use grid slicing. Run Photoroom on the full approved sheet before polygon/outline object extraction.
+- Do not use primitive-only dummy meshes, rough placeholder geometry, or local Blender scripts with no approved reference-derived silhouette/material cues as production visual replacements.
 ```
 
 - [ ] **Step 5: Update state for current gate**
@@ -1019,6 +1075,8 @@ Deep Reskin <group name> visual design approved; implementation pending.
 ```
 
 Update `docs/reskin_checklist.md` by checking the matching group approval item only.
+
+For any 3D role, also record whether the approved option preserves 3D volume/depth. If it does not, the approval must explicitly say the owner accepts a flat 2D downgrade; otherwise continue to a reference-derived 3D mesh/model plan.
 
 - [ ] **Step 4: Commit the group approval docs**
 

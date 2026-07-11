@@ -1,0 +1,25 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_face_depth_candidate.glb",
+  "source_candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "rendered_via": "Blender MCP socket execute_code on port 9876",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_anatomy_uv_face_depth_candidate_preview/contact_sheet.png",
+  "diagnostic_report": "res://assets/themes/candy_sky_islands/source/shinokute_player/shinokute_hunyuan_mv_anatomy_uv_face_depth_candidate_report.json",
+  "status": "candidate_not_integrated",
+  "root_cause": {
+    "not_flat_mesh": true,
+    "mesh_bounds_size": [0.629676, 0.410761, 1.956832],
+    "front_axis": "negative_y",
+    "issue": "The earlier cleanup projected skin by a flat x/z face rectangle and ignored front-depth. Hoodie hood geometry shares the same x/z band as the face, so skin was applied onto the hood. The UV candidate also still has leg/skin tearing from atlas projection.",
+    "fix_attempt": "Only assign skin to face polygons that are in the face x/z band, face forward, and sit near the front-most negative-Y depth. Keep the hood on the original projected hoodie texture."
+  },
+  "checks": {
+    "real_3d_volume": true,
+    "hood_skin_bleed_reduced": true,
+    "hoodie_and_shoes_preserved": true,
+    "leg_projection_artifacts_remain": true,
+    "integrated_to_character_scene": false
+  },
+  "decision": "best_current_candidate_for_review_only",
+  "notes": "This candidate confirms the owner's suspicion about skin being applied from the wrong angle/zone around the hoodie hood. It is still not production-integrated because leg texture artifacts remain."
+}

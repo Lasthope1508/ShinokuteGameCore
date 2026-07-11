@@ -1,0 +1,19 @@
+{
+  "tool": "photoroom_browser_turnstile_segment",
+  "port": 9904,
+  "inputPath": "C:/Users/Admin/Desktop/Godot Casual Games/Html5_SourceGames/Godot/quantum_starter/assets/themes/candy_sky_islands/source/shinokute_player/shinokute_hunyuan_anatomy_turnaround_9router_raw.png",
+  "outputPath": "C:/Users/Admin/Desktop/Godot Casual Games/Html5_SourceGames/Godot/quantum_starter/assets/themes/candy_sky_islands/source/shinokute_player/shinokute_hunyuan_anatomy_turnaround_photoroom.png",
+  "bytes": 1259751,
+  "status": 200,
+  "url": "https://sdk.photoroom.com/v1/segment",
+  "headers": {
+    "cache-control": "no-cache",
+    "content-length": "1259751",
+    "content-type": "image/png",
+    "x-foreground-height": "0.96875",
+    "x-foreground-left": "0.092161015",
+    "x-foreground-top": "0.00703125",
+    "x-foreground-width": "0.7950212",
+    "x-uncertainty-score": "0.11443696975708008"
+  }
+}

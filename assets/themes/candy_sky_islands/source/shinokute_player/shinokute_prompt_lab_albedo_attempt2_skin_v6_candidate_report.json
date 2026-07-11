@@ -1,0 +1,18 @@
+{
+  "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_prompt_lab_albedo_attempt2_candidate.glb",
+  "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_prompt_lab_albedo_attempt2_skin_v6_candidate.glb",
+  "bounds_size": [
+    0.629676,
+    0.410761,
+    1.956832
+  ],
+  "front_axis": "negative_y",
+  "counts": {
+    "face": 2889,
+    "neck": 546,
+    "hands": 12340,
+    "legs": 14088,
+    "socks": 4907
+  },
+  "status": "candidate_not_integrated"
+}

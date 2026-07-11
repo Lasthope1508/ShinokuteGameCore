@@ -1,27 +1,97 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0e27836xgmhi"]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="PackedScene" uid="uid://xy8rvnjp22n5" path="res://models/character.glb" id="1_vn7w5"]
+[ext_resource type="PackedScene" path="res://assets/themes/candy_sky_islands/models/character_chr077_skeleton_mage.glb" id="1_m025x"]
 
-[node name="character" instance=ExtResource("1_vn7w5")]
+[sub_resource type="Animation" id="Animation_yri68"]
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CHR077SkeletonMageSlot")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.25, 1, 0, 0.018, 0, 0.5, 1, 0, 0.03, 0, 0.75, 1, 0, 0.014, 0, 1, 1, 0, 0, 0)
+tracks/1/type = "scale_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CHR077SkeletonMageSlot/CHR077SkeletonMageVisual")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1, 1, 1, 0.5, 1, 1.015, 0.988, 1.015, 1, 1, 1, 1, 1)
+[sub_resource type="Animation" id="Animation_bpdyq"]
+length = 0.5
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CHR077SkeletonMageSlot")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.125, 1, 0, 0.045, 0, 0.25, 1, 0, 0, 0, 0.375, 1, 0, 0.045, 0, 0.5, 1, 0, 0, 0)
+tracks/1/type = "scale_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CHR077SkeletonMageSlot/CHR077SkeletonMageVisual")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1, 1, 1, 0.25, 1, 1.025, 0.98, 1.025, 0.5, 1, 1, 1, 1)
 
-[node name="leg-left" parent="character/root" index="0"]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.125, 0.17625, -0.02375)
+[sub_resource type="Animation" id="Animation_5n7xx"]
+length = 0.35
+loop_mode = 1
+step = 0.0166667
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CHR077SkeletonMageSlot")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.0875, 1, 0, 0.065, 0, 0.175, 1, 0, 0, 0, 0.2625, 1, 0, 0.065, 0, 0.35, 1, 0, 0, 0)
+tracks/1/type = "scale_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CHR077SkeletonMageSlot/CHR077SkeletonMageVisual")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1.035, 0.975, 1.035, 0.175, 1, 0.99, 1.025, 0.99, 0.35, 1, 1.035, 0.975, 1.035)
 
-[node name="leg-right" parent="character/root" index="1"]
-transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -0.125, 0.17625, -0.02375)
+[sub_resource type="Animation" id="Animation_c4ad5"]
+length = 0.7
+step = 0.0166667
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CHR077SkeletonMageSlot")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.18, 1, 0, 0.1, 0, 0.35, 1, 0, 0.16, 0, 0.7, 1, 0, 0, 0)
+tracks/1/type = "scale_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CHR077SkeletonMageSlot/CHR077SkeletonMageVisual")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1.03, 0.97, 1.03, 0.22, 1, 0.98, 1.04, 0.98, 0.7, 1, 1, 1, 1)
 
-[node name="torso" parent="character/root" index="2"]
-transform = Transform3D(1, 0, 0, 0, 0.996194, 0.0871557, 0, -0.0871557, 0.996194, -1.80478e-15, 0.17625, -0.02375)
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4e6vf"]
+_data = {
+"idle": SubResource("Animation_yri68"),
+"jump": SubResource("Animation_c4ad5"),
+"run": SubResource("Animation_5n7xx"),
+"walk": SubResource("Animation_bpdyq")
+}
 
-[node name="arm-left" parent="character/root/torso" index="0"]
-transform = Transform3D(0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0, 1, 0.3, 0.175, 0)
+[node name="character" type="Node3D"]
 
-[node name="arm-right" parent="character/root/torso" index="1"]
-transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, -0.3, 0.1195, 0)
+[node name="CHR077SkeletonMageSlot" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
-[node name="antenna" parent="character/root/torso" index="2"]
-transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0.6, 0)
+[node name="CHR077SkeletonMageVisual" parent="CHR077SkeletonMageSlot" instance=ExtResource("1_m025x")]
 
-[node name="AnimationPlayer" parent="." index="1"]
-deterministic = true
-playback_default_blend_time = 0.2
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4e6vf")
+}
+autoplay = "idle"

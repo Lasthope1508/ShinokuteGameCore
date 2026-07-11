@@ -1,0 +1,121 @@
+{
+  "title": "Candy Sky Islands Asset Family Region Editor",
+  "output_format": "godot_vector4",
+  "stage_aspect": [
+    1254,
+    1254
+  ],
+  "modes": [
+    "concept_sheet"
+  ],
+  "backgrounds": {
+    "concept_sheet": "../assets/themes/candy_sky_islands/asset_family_concept_sheet.png"
+  },
+  "regions": {
+    "star_collectible": {
+      "label": "star collectible",
+      "x": 0.0271,
+      "y": 0.0343,
+      "w": 0.24,
+      "h": 0.2225
+    },
+    "hud_score_frame": {
+      "label": "hud score frame",
+      "x": 0.3062,
+      "y": 0.059,
+      "w": 0.3796,
+      "h": 0.1467
+    },
+    "cloud_large": {
+      "label": "cloud large",
+      "x": 0.7049,
+      "y": 0.0159,
+      "w": 0.2823,
+      "h": 0.1834
+    },
+    "cloud_mid": {
+      "label": "cloud mid",
+      "x": 0.6914,
+      "y": 0.2121,
+      "w": 0.1667,
+      "h": 0.1021
+    },
+    "platform_large": {
+      "label": "platform large",
+      "x": 0.0223,
+      "y": 0.2759,
+      "w": 0.4801,
+      "h": 0.2703
+    },
+    "platform_medium": {
+      "label": "platform medium",
+      "x": 0.5152,
+      "y": 0.327,
+      "w": 0.2982,
+      "h": 0.189
+    },
+    "platform_small": {
+      "label": "platform small",
+      "x": 0.0311,
+      "y": 0.5439,
+      "w": 0.2392,
+      "h": 0.1675
+    },
+    "platform_long": {
+      "label": "platform long",
+      "x": 0.3381,
+      "y": 0.547,
+      "w": 0.3142,
+      "h": 0.1691
+    },
+    "wafer_obstacle": {
+      "label": "wafer obstacle",
+      "x": 0.0287,
+      "y": 0.7057,
+      "w": 0.386,
+      "h": 0.1994
+    },
+    "goal_flag": {
+      "label": "goal flag",
+      "x": 0.7648,
+      "y": 0.3214,
+      "w": 0.2177,
+      "h": 0.3589
+    },
+    "cloud_bottom": {
+      "label": "cloud bottom",
+      "x": 0.2384,
+      "y": 0.8756,
+      "w": 0.3836,
+      "h": 0.1093
+    },
+    "cloud_bottom_small": {
+      "label": "cloud bottom small",
+      "x": 0.7847,
+      "y": 0.8852,
+      "w": 0.1786,
+      "h": 0.0845
+    },
+    "sky_panel_clouds": {
+      "label": "sky panel clouds",
+      "x": 0.4234,
+      "y": 0.7552,
+      "w": 0.1539,
+      "h": 0.1276
+    },
+    "sky_panel_wide": {
+      "label": "sky panel wide",
+      "x": 0.5734,
+      "y": 0.7464,
+      "w": 0.197,
+      "h": 0.1372
+    },
+    "sky_panel_islands": {
+      "label": "sky panel islands",
+      "x": 0.7735,
+      "y": 0.7488,
+      "w": 0.2026,
+      "h": 0.1404
+    }
+  }
+}

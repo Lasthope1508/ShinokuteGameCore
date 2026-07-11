@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="QuantumRuntimeThemeConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Resources/QuantumRuntimeThemeConfig.gd" id="1_runtime_theme"]
+
+[resource]
+script = ExtResource("1_runtime_theme")
+theme_name = "candy_sky_islands"
+display_name = "Candy Sky Islands"
+palette_sky = Color(0.47451, 0.780392, 0.94902, 1)
+palette_surface = Color(1, 0.94902, 0.780392, 1)
+palette_primary = Color(1, 0.435294, 0.380392, 1)
+palette_accent = Color(0.482353, 0.878431, 0.678431, 1)
+palette_text = Color(0.152941, 0.188235, 0.262745, 1)
+hud_coin_icon_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
+hud_font_path = "res://fonts/lilita_one_regular.ttf"
+hud_score_frame_rect = Rect2(40, 45, 313, 127)
+hud_text_owner_rect = Rect2(160, 88, 160, 54)
+hud_text_padding = Vector4(0, 0, 0, 0)
+hud_font_size = 44
+ui_leaderboard_button_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_button.png"
+ui_leaderboard_panel_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png"
+ui_leaderboard_row_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png"
+ui_leaderboard_tab_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_tab.png"
+ui_leaderboard_close_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_close.png"
+ui_username_panel_path = "res://assets/themes/candy_sky_islands/ui/ui_username_panel.png"
+ui_username_input_path = "res://assets/themes/candy_sky_islands/ui/ui_username_input.png"
+ui_button_primary_path = "res://assets/themes/candy_sky_islands/ui/ui_button_primary.png"
+ui_button_secondary_path = "res://assets/themes/candy_sky_islands/ui/ui_button_secondary.png"
+ui_settings_panel_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png"
+ui_settings_row_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png"
+ui_settings_toggle_on_path = "res://assets/themes/candy_sky_islands/ui/ui_button_primary.png"
+ui_settings_toggle_off_path = "res://assets/themes/candy_sky_islands/ui/ui_button_secondary.png"
+ui_panel_texture_margins = Vector4(72, 72, 72, 72)
+ui_button_texture_margins = Vector4(44, 32, 44, 32)
+ui_row_texture_margins = Vector4(44, 24, 44, 24)
+player_root_asset_path = "res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png"
+player_body_material_color = Color(1, 0.94902, 0.780392, 1)
+player_cap_material_color = Color(1, 0.94902, 0.780392, 1)
+player_left_glove_material_color = Color(1, 0.435294, 0.380392, 1)
+player_right_glove_material_color = Color(0.482353, 0.878431, 0.678431, 1)
+player_left_boot_material_color = Color(0.482353, 0.878431, 0.678431, 1)
+player_right_boot_material_color = Color(1, 0.435294, 0.380392, 1)
+player_face_material_color = Color(0.152941, 0.188235, 0.262745, 1)
+hud_score_frame_path = "res://assets/themes/candy_sky_islands/hud_score_frame_clean_9router.png"
+candy_skybox_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
+collectible_star_body_color = Color(1, 0.435294, 0.380392, 1)
+collectible_star_rim_color = Color(0.482353, 0.878431, 0.678431, 1)
+platform_top_material_color = Color(1, 0.94902, 0.780392, 1)
+platform_edge_material_color = Color(1, 0.435294, 0.380392, 1)
+hud_score_frame_color = Color(1, 0.94902, 0.780392, 1)
+skybox_tint_color = Color(0.47451, 0.780392, 0.94902, 1)
+obstacle_wafer_material_color = Color(1, 0.701961, 0.54902, 1)
+goal_pennant_material_color = Color(0.482353, 0.878431, 0.678431, 1)
+cloud_shadow_material_color = Color(0.866667, 0.960784, 1, 1)
+branding_display_name = "Candy Sky Islands"
+branding_splash_path = "res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands.png"
+branding_logo_path = "res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands.png"
+skybox_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
+platform_material_color = Color(1, 0.94902, 0.780392, 1)
+coin_material_color = Color(1, 0.435294, 0.380392, 1)
+coin_rim_color = Color(0.482353, 0.878431, 0.678431, 1)
+trail_particle_color = Color(0.482353, 0.878431, 0.678431, 1)
+cloud_material_color = Color(1, 1, 1, 1)
+bgm_track_path = "res://sounds/candy_sky_islands/bgm_candy_island_main.ogg"
+bgm_volume_db = -14.0
+sfx_volume_db = -10.0
+audio_event_paths = {
+"break": "res://sounds/candy_sky_islands/sfx_break.ogg",
+"coin": "res://sounds/candy_sky_islands/sfx_coin.ogg",
+"fall": "res://sounds/candy_sky_islands/sfx_fall.ogg",
+"jump": "res://sounds/candy_sky_islands/sfx_jump.ogg",
+"land": "res://sounds/candy_sky_islands/sfx_land.ogg",
+"walking": "res://sounds/candy_sky_islands/sfx_walking.ogg"
+}

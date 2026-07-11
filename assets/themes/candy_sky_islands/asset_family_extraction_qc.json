@@ -1,0 +1,673 @@
+{
+  "pipeline": [
+    "Photoroom full sheet via CDP 9223",
+    "Clone/crop each object from alpha sheet",
+    "Apply owner polygon mask",
+    "Trim by alpha with padding",
+    "QA alpha and edge ratios"
+  ],
+  "alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+  "outline_source": "assets/themes/candy_sky_islands/source/asset_family_outline_regions_candidate.json",
+  "assets": {
+    "star_collectible": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/star_collectible_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/star_collectible_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/star_collectible_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/star_collectible.png",
+      "owner_outline_points": 31,
+      "computed_rect_norm": {
+        "x": 0.0304,
+        "y": 0.0308,
+        "w": 0.2533,
+        "h": 0.2275
+      },
+      "computed_rect_px": [
+        38,
+        39,
+        318,
+        285
+      ],
+      "trim_bbox_in_clone": [
+        12,
+        0,
+        317,
+        272
+      ],
+      "output_size": [
+        305,
+        272
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "hud_score_frame": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/hud_score_frame_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/hud_score_frame_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/hud_score_frame_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/hud_score_frame.png",
+      "owner_outline_points": 16,
+      "computed_rect_norm": {
+        "x": 0.3046,
+        "y": 0.0583,
+        "w": 0.3958,
+        "h": 0.1725
+      },
+      "computed_rect_px": [
+        382,
+        73,
+        496,
+        216
+      ],
+      "trim_bbox_in_clone": [
+        6,
+        5,
+        488,
+        201
+      ],
+      "output_size": [
+        482,
+        196
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "cloud_large": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_large_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_large_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_large_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/cloud_large.png",
+      "owner_outline_points": 13,
+      "computed_rect_norm": {
+        "x": 0.7088,
+        "y": 0.0192,
+        "w": 0.2725,
+        "h": 0.1842
+      },
+      "computed_rect_px": [
+        889,
+        24,
+        342,
+        231
+      ],
+      "trim_bbox_in_clone": [
+        4,
+        0,
+        336,
+        227
+      ],
+      "output_size": [
+        332,
+        227
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "cloud_mid": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_mid_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_mid_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_mid_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/cloud_mid.png",
+      "owner_outline_points": 10,
+      "computed_rect_norm": {
+        "x": 0.6971,
+        "y": 0.2158,
+        "w": 0.1492,
+        "h": 0.0992
+      },
+      "computed_rect_px": [
+        874,
+        271,
+        187,
+        124
+      ],
+      "trim_bbox_in_clone": [
+        14,
+        0,
+        180,
+        113
+      ],
+      "output_size": [
+        166,
+        113
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "platform_large": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_large_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_large_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_large_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/platform_large.png",
+      "owner_outline_points": 15,
+      "computed_rect_norm": {
+        "x": 0.0121,
+        "y": 0.2533,
+        "w": 0.4875,
+        "h": 0.3117
+      },
+      "computed_rect_px": [
+        15,
+        318,
+        611,
+        391
+      ],
+      "trim_bbox_in_clone": [
+        9,
+        3,
+        599,
+        374
+      ],
+      "output_size": [
+        590,
+        371
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "platform_medium": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_medium_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_medium_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_medium_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/platform_medium.png",
+      "owner_outline_points": 12,
+      "computed_rect_norm": {
+        "x": 0.5088,
+        "y": 0.3092,
+        "w": 0.2908,
+        "h": 0.2433
+      },
+      "computed_rect_px": [
+        638,
+        388,
+        365,
+        305
+      ],
+      "trim_bbox_in_clone": [
+        3,
+        0,
+        361,
+        291
+      ],
+      "output_size": [
+        358,
+        291
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "platform_small": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_small_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_small_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_small_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/platform_small.png",
+      "owner_outline_points": 10,
+      "computed_rect_norm": {
+        "x": 0.0146,
+        "y": 0.5342,
+        "w": 0.2433,
+        "h": 0.1875
+      },
+      "computed_rect_px": [
+        18,
+        670,
+        305,
+        235
+      ],
+      "trim_bbox_in_clone": [
+        16,
+        2,
+        296,
+        223
+      ],
+      "output_size": [
+        280,
+        221
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "platform_long": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_long_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_long_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/platform_long_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/platform_long.png",
+      "owner_outline_points": 11,
+      "computed_rect_norm": {
+        "x": 0.3429,
+        "y": 0.5408,
+        "w": 0.3242,
+        "h": 0.1933
+      },
+      "computed_rect_px": [
+        430,
+        678,
+        407,
+        242
+      ],
+      "trim_bbox_in_clone": [
+        6,
+        8,
+        392,
+        241
+      ],
+      "output_size": [
+        386,
+        233
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "wafer_obstacle": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/wafer_obstacle_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/wafer_obstacle_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/wafer_obstacle_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/wafer_obstacle.png",
+      "owner_outline_points": 12,
+      "computed_rect_norm": {
+        "x": 0.0204,
+        "y": 0.7008,
+        "w": 0.3958,
+        "h": 0.2342
+      },
+      "computed_rect_px": [
+        26,
+        879,
+        496,
+        294
+      ],
+      "trim_bbox_in_clone": [
+        5,
+        3,
+        479,
+        292
+      ],
+      "output_size": [
+        474,
+        289
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "goal_flag": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/goal_flag_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/goal_flag_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/goal_flag_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/goal_flag.png",
+      "owner_outline_points": 13,
+      "computed_rect_norm": {
+        "x": 0.7496,
+        "y": 0.3283,
+        "w": 0.2417,
+        "h": 0.3758
+      },
+      "computed_rect_px": [
+        940,
+        412,
+        303,
+        471
+      ],
+      "trim_bbox_in_clone": [
+        26,
+        0,
+        303,
+        443
+      ],
+      "output_size": [
+        277,
+        443
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "cloud_bottom": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_bottom_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_bottom_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_bottom_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/cloud_bottom.png",
+      "owner_outline_points": 8,
+      "computed_rect_norm": {
+        "x": 0.7837,
+        "y": 0.89,
+        "w": 0.2025,
+        "h": 0.0975
+      },
+      "computed_rect_px": [
+        983,
+        1116,
+        254,
+        122
+      ],
+      "trim_bbox_in_clone": [
+        14,
+        0,
+        247,
+        108
+      ],
+      "output_size": [
+        233,
+        108
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "cloud_bottom_small": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_bottom_small_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_bottom_small_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/cloud_bottom_small_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/cloud_bottom_small.png",
+      "owner_outline_points": 7,
+      "computed_rect_norm": {
+        "x": 0.5871,
+        "y": 0.8933,
+        "w": 0.1567,
+        "h": 0.0942
+      },
+      "computed_rect_px": [
+        736,
+        1120,
+        197,
+        118
+      ],
+      "trim_bbox_in_clone": [
+        0,
+        0,
+        177,
+        108
+      ],
+      "output_size": [
+        177,
+        108
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "sky_panel_clouds": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_clouds_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_clouds_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_clouds_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/sky_panel_clouds.png",
+      "owner_outline_points": 5,
+      "computed_rect_norm": {
+        "x": 0.4213,
+        "y": 0.7483,
+        "w": 0.1417,
+        "h": 0.1342
+      },
+      "computed_rect_px": [
+        528,
+        938,
+        178,
+        168
+      ],
+      "trim_bbox_in_clone": [
+        0,
+        0,
+        175,
+        160
+      ],
+      "output_size": [
+        175,
+        160
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "sky_panel_wide": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_wide_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_wide_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_wide_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/sky_panel_wide.png",
+      "owner_outline_points": 7,
+      "computed_rect_norm": {
+        "x": 0.5663,
+        "y": 0.7392,
+        "w": 0.1625,
+        "h": 0.1383
+      },
+      "computed_rect_px": [
+        710,
+        927,
+        204,
+        173
+      ],
+      "trim_bbox_in_clone": [
+        0,
+        1,
+        204,
+        171
+      ],
+      "output_size": [
+        204,
+        170
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    },
+    "sky_panel_islands": {
+      "source_alpha_sheet": "assets/themes/candy_sky_islands/source/asset_family_concept_sheet_photoroom.png",
+      "clone_region": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_islands_clone_from_photoroom_sheet.png",
+      "polygon_mask": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_islands_owner_polygon_mask.png",
+      "masked_before_trim": "assets/themes/candy_sky_islands/source/approved_outline_extraction/sky_panel_islands_masked_before_trim.png",
+      "output": "assets/themes/candy_sky_islands/sky_panel_islands.png",
+      "owner_outline_points": 6,
+      "computed_rect_norm": {
+        "x": 0.7371,
+        "y": 0.725,
+        "w": 0.2483,
+        "h": 0.1592
+      },
+      "computed_rect_px": [
+        924,
+        909,
+        311,
+        200
+      ],
+      "trim_bbox_in_clone": [
+        1,
+        19,
+        308,
+        189
+      ],
+      "output_size": [
+        307,
+        170
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_ok": true,
+      "edge_alpha_ratio": {
+        "left": 0.0,
+        "right": 0.0,
+        "top": 0.0,
+        "bottom": 0.0
+      },
+      "risky_edges": {},
+      "edge_ok": true
+    }
+  }
+}

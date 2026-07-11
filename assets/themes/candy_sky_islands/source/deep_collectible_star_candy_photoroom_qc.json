@@ -1,0 +1,22 @@
+{
+  "source_raw_sheet": "assets/themes/candy_sky_islands/source/deep_collectible_star_candy_reference_sheet.png",
+  "photoroom_full_sheet": "assets/themes/candy_sky_islands/source/deep_collectible_star_candy_reference_sheet_photoroom.png",
+  "method": "Photoroom CDP full-sheet first on port 9223 before polygon extraction",
+  "mode": "RGBA",
+  "size": [
+    1254,
+    1254
+  ],
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "corner_alpha": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "edge_foreground_ratio_alpha_gt_8": 0.0,
+  "status": "photoroom_full_sheet_alpha_qa_pass_polygon_pending"
+}

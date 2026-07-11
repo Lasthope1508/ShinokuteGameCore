@@ -40,9 +40,11 @@ func _init() -> void:
 				passed = _assert_true(ALLOWED_MODES.has(role.mode), "%s should use an allowed mode, got %s" % [key, role.mode]) and passed
 				passed = _assert_true(not role.legacy_path.strip_edges().is_empty(), "%s should record legacy path" % key) and passed
 				passed = _assert_true(role.validate_role().is_empty(), "%s should validate cleanly" % key) and passed
-		passed = _assert_active_path(theme, "player_model_role", "res://models/character.glb") and passed
-		passed = _assert_active_path(theme, "platform_small_role", "res://models/platform.glb") and passed
-		passed = _assert_active_path(theme, "player_shadow_role", "res://sprites/blob_shadow.png") and passed
+		passed = _assert_active_path(theme, "player_model_role", "res://objects/character.tscn") and passed
+		passed = _assert_active_path(theme, "platform_small_role", "res://objects/platform.tscn") and passed
+		passed = _assert_active_path(theme, "platform_medium_role", "res://objects/platform_medium.tscn") and passed
+		passed = _assert_active_path(theme, "platform_falling_role", "res://objects/platform_falling.tscn") and passed
+		passed = _assert_active_path(theme, "player_shadow_role", "res://assets/themes/candy_sky_islands/player_shadow_soft.png") and passed
 		passed = _assert_active_path(theme, "platform_large_unused_role", "res://models/platform-large.glb") and passed
 		passed = _assert_active_path(theme, "hud_icon_role", "res://assets/themes/candy_sky_islands/star_collectible.png") and passed
 	if passed:

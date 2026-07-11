@@ -1,0 +1,16 @@
+{
+  "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\models\\character_shinokute_lentil_shell_candidate.glb",
+  "sources": {
+    "front": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_front.png",
+    "back": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_back.png",
+    "left": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_left_side.png",
+    "right": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_right_side.png"
+  },
+  "method": "image-derived lentil shell: accepted albedo sprites on front/back curved shells plus left/right alpha-silhouette depth walls with SSOT material bands; no atlas UV projection and no primitive dummy body",
+  "status": "candidate_not_integrated",
+  "dimensions_target": [
+    0.62,
+    1.34,
+    0.34
+  ]
+}

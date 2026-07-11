@@ -1,0 +1,127 @@
+{
+  "components_detected": 8,
+  "outputs": 8,
+  "bad": [],
+  "items": [
+    {
+      "role": "front",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_front.png",
+      "size": [
+        187,
+        484
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 37029,
+      "pass": true
+    },
+    {
+      "role": "front_right_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_front_right_3q.png",
+      "size": [
+        172,
+        488
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 35441,
+      "pass": true
+    },
+    {
+      "role": "right_side",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_right_side.png",
+      "size": [
+        133,
+        485
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 22189,
+      "pass": true
+    },
+    {
+      "role": "back_right_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_back_right_3q.png",
+      "size": [
+        169,
+        489
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 35552,
+      "pass": true
+    },
+    {
+      "role": "back",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_back.png",
+      "size": [
+        179,
+        481
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 35060,
+      "pass": true
+    },
+    {
+      "role": "back_left_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_back_left_3q.png",
+      "size": [
+        163,
+        481
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 32829,
+      "pass": true
+    },
+    {
+      "role": "left_side",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_left_side.png",
+      "size": [
+        126,
+        482
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 20631,
+      "pass": true
+    },
+    {
+      "role": "front_left_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\albedo_turnaround_pool_attempt2\\shinokute_albedo_attempt2_front_left_3q.png",
+      "size": [
+        167,
+        486
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 33304,
+      "pass": true
+    }
+  ]
+}

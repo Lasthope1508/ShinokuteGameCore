@@ -1,0 +1,25 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_uv_projected_candidate.glb",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_uv_projected_candidate_preview/contact_sheet.png",
+  "texture_sources": [
+    "res://assets/themes/candy_sky_islands/source/shinokute_player/anatomy_turnaround_pool/shinokute_anatomy_front.png",
+    "res://assets/themes/candy_sky_islands/source/shinokute_player/anatomy_turnaround_pool/shinokute_anatomy_left_side.png",
+    "res://assets/themes/candy_sky_islands/source/shinokute_player/anatomy_turnaround_pool/shinokute_anatomy_back.png",
+    "res://assets/themes/candy_sky_islands/source/shinokute_player/anatomy_turnaround_pool/shinokute_anatomy_front_left_3q.png",
+    "res://assets/themes/candy_sky_islands/source/shinokute_player/anatomy_turnaround_pool/shinokute_anatomy_front_right_3q.png"
+  ],
+  "status": "rejected_candidate_not_integrated",
+  "failed_gates": [
+    "Naive UV projection from atlas onto the Hunyuan mesh creates broken/misaligned facial texture.",
+    "Leg and shoe texture stretches and tears.",
+    "Hoodie text becomes warped/reversed and does not preserve source readability.",
+    "Projection is not sufficient as production texture bake."
+  ],
+  "passed_gates": [
+    "9Router anatomy turnaround sheet is visually strong and extracted cleanly after Photoroom.",
+    "Candidate was rendered and QA inspected before integration.",
+    "Candidate was not integrated into objects/character.tscn."
+  ],
+  "next_action": "Use the corrected anatomy views as Hunyuan multiview shape inputs, then texture with Hunyuan Paint after custom_rasterizer/CUDA Toolkit is available or with a real camera-projection bake, not naive atlas UV."
+}

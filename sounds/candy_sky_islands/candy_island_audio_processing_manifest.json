@@ -1,0 +1,61 @@
+{
+  "pipeline": "ffmpeg imageio-ffmpeg local binary; silenceremove before concat/output; Vorbis q=4",
+  "ffmpeg": "C:\\Users\\Admin\\AppData\\Roaming\\Python\\Python314\\site-packages\\imageio_ffmpeg\\binaries\\ffmpeg-win-x86_64-v7.1.exe",
+  "trim_filter": "silenceremove=start_periods=1:start_threshold=-48dB:start_silence=0.02:stop_periods=1:stop_threshold=-48dB:stop_silence=0.02",
+  "bgm_sources": [
+    "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Audio\\Candy Island\\Candy_Island_Loop_1.wav",
+    "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Audio\\Candy Island\\Candy_Island_Loop_2.wav"
+  ],
+  "bgm_output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\sounds\\candy_sky_islands\\bgm_candy_island_main.ogg",
+  "outputs": [
+    {
+      "file": "bgm_candy_island_main.ogg",
+      "samplerate": 44100,
+      "channels": 2,
+      "duration": 76.02022675736961,
+      "size_bytes": 1136942
+    },
+    {
+      "file": "sfx_break.ogg",
+      "samplerate": 44100,
+      "channels": 1,
+      "duration": 1.746031746031746,
+      "size_bytes": 19973
+    },
+    {
+      "file": "sfx_coin.ogg",
+      "samplerate": 44100,
+      "channels": 1,
+      "duration": 0.12430839002267574,
+      "size_bytes": 4948
+    },
+    {
+      "file": "sfx_fall.ogg",
+      "samplerate": 44100,
+      "channels": 1,
+      "duration": 0.29219954648526075,
+      "size_bytes": 6278
+    },
+    {
+      "file": "sfx_jump.ogg",
+      "samplerate": 44100,
+      "channels": 1,
+      "duration": 0.054285714285714284,
+      "size_bytes": 4446
+    },
+    {
+      "file": "sfx_land.ogg",
+      "samplerate": 44100,
+      "channels": 1,
+      "duration": 0.1082312925170068,
+      "size_bytes": 4826
+    },
+    {
+      "file": "sfx_walking.ogg",
+      "samplerate": 44100,
+      "channels": 1,
+      "duration": 0.16807256235827664,
+      "size_bytes": 5411
+    }
+  ]
+}

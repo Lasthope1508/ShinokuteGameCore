@@ -1,0 +1,26 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_skin_v5_candidate.glb",
+  "source_candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "rendered_via": "Blender MCP socket execute_code on port 9876",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_anatomy_uv_skin_v5_candidate_preview/contact_sheet.png",
+  "diagnostic_report": "res://assets/themes/candy_sky_islands/source/shinokute_player/shinokute_hunyuan_mv_anatomy_uv_skin_v5_candidate_report.json",
+  "status": "candidate_not_integrated",
+  "root_cause": {
+    "leg_issue": "Atlas projection put black sock/short/side-shadow pixels into exposed leg areas. Earlier cleanup used narrow x columns and missed side surfaces.",
+    "neck_cheek_issue": "Wider neck cleanup painted hoodie/chest as skin. V5 keeps the neck window narrow and front-depth gated, while using a whole exposed-leg z band between shorts and sock/boot.",
+    "not_flat_mesh": true
+  },
+  "checks": {
+    "left_right_preview_labels_corrected": true,
+    "real_3d_volume": true,
+    "legs_black_artifact_reduced": true,
+    "socks_and_shoes_preserved_black": true,
+    "neck_white_patch_removed": true,
+    "cheek_black_bleed_reduced": true,
+    "hoodie_chest_not_skin_patched": true,
+    "integrated_to_character_scene": false
+  },
+  "decision": "best_current_candidate_for_owner_review",
+  "notes": "Best current visual cleanup candidate. It reduces black exposed-leg artifacts and avoids the v2 skin patch on hoodie/chest, but it is still not production-integrated pending owner review."
+}

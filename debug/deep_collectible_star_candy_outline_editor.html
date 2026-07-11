@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Polygon Sheet Outline Editor</title>
+  <style>
+    :root { color-scheme: dark; --bg:#070b0e; --panel:#11181e; --line:#ffd84d; --active:#52f0c4; --text:#e9fbff; --muted:#8fb8bd; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; background:var(--bg); color:var(--text); font-family:Inter,Segoe UI,Arial,sans-serif; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid rgba(255,216,77,.28); background:rgba(7,11,14,.9); position:sticky; top:0; z-index:10; }
+    h1 { margin:0; font-size:16px; letter-spacing:0; }
+    .toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    button, select { min-height:34px; border:1px solid rgba(255,216,77,.45); border-radius:6px; background:#13191d; color:var(--text); padding:0 10px; font-weight:700; cursor:pointer; }
+    button.active { border-color:var(--active); color:var(--active); }
+    main { display:grid; grid-template-columns:minmax(0, 1fr) 420px; gap:14px; padding:14px; }
+    .stagePanel, .sidePanel { border:1px solid rgba(255,216,77,.2); background:var(--panel); border-radius:8px; }
+    .stagePanel { padding:16px; overflow:auto; }
+    .stageWrap { width:min(100%, 1200px); margin:0 auto; }
+    .stage { position:relative; width:100%; aspect-ratio:1254 / 1254; background:#1a1f22; border:1px solid rgba(255,255,255,.16); user-select:none; touch-action:none; cursor:crosshair; }
+    .basis { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; pointer-events:none; }
+    .overlay { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+    .polyLine { fill:rgba(82,240,196,.08); stroke:var(--line); stroke-width:2; vector-effect:non-scaling-stroke; pointer-events:none; }
+    .polyLine.active { fill:rgba(82,240,196,.12); stroke:var(--active); stroke-width:3; }
+    .point { fill:#fff; stroke:#050505; stroke-width:2; cursor:grab; vector-effect:non-scaling-stroke; }
+    .point.active { fill:var(--active); }
+    .sidePanel { display:flex; flex-direction:column; gap:12px; padding:12px; }
+    .metrics { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+    .metric { border:1px solid rgba(255,255,255,.12); border-radius:6px; padding:8px; background:rgba(255,255,255,.035); min-height:52px; }
+    .metric b { display:block; font-size:11px; color:var(--muted); margin-bottom:4px; }
+    .metric span { font:12px/1.35 Consolas,ui-monospace,monospace; }
+    textarea { min-height:320px; resize:vertical; border:1px solid rgba(255,216,77,.28); border-radius:6px; background:#071014; color:var(--text); padding:10px; font:12px/1.45 Consolas,ui-monospace,monospace; }
+    @media (max-width:960px) { main { grid-template-columns:1fr; } .sidePanel { order:-1; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Polygon Sheet Outline Editor</h1>
+    <div class="toolbar">
+      <select id="asset"></select>
+      <button id="draw" class="active">Draw</button>
+      <button id="undo">Undo</button>
+      <button id="clear">Clear</button>
+      <button id="copy">Copy</button>
+    </div>
+  </header>
+  <main>
+    <section class="stagePanel"><div class="stageWrap"><div id="stage" class="stage"><img id="basis" class="basis" src="assets/themes/candy_sky_islands/source/deep_collectible_star_candy_reference_sheet_photoroom.png" alt=""><svg id="overlay" class="overlay" viewBox="0 0 1254 1254" preserveAspectRatio="none"></svg></div></div></section>
+    <aside class="sidePanel"><div class="metrics"><div class="metric"><b>points</b><span id="pointCount">0</span></div><div class="metric"><b>rect</b><span id="rectText">none</span></div><div class="metric"><b>asset</b><span id="assetText"></span></div></div><textarea id="output" spellcheck="false"></textarea></aside>
+  </main>
+  <script>
+    const sheet = { width: 1254, height: 1254, path: "assets/themes/candy_sky_islands/source/deep_collectible_star_candy_reference_sheet_photoroom.png" };
+    const assetKeys = ["star_candy_front", "star_candy_three_quarter", "star_candy_side", "star_candy_top"];
+    const colors = ["#52f0c4","#ffd84d","#ff6f61","#79c7f2","#7be0ad","#f79ad3","#fff2c7","#b9a7ff","#ffb85c","#6ee7ff"];
+    const state = Object.fromEntries(assetKeys.map((key) => [key, []]));
+    const assetSelect = document.getElementById("asset");
+    const stage = document.getElementById("stage");
+    const overlay = document.getElementById("overlay");
+    const drawButton = document.getElementById("draw");
+    const pointCount = document.getElementById("pointCount");
+    const rectText = document.getElementById("rectText");
+    const assetText = document.getElementById("assetText");
+    const output = document.getElementById("output");
+    let drawing = true;
+    let dragging = null;
+    for (const key of assetKeys) { const option = document.createElement("option"); option.value = key; option.textContent = key; assetSelect.appendChild(option); }
+    function activeKey() { return assetSelect.value || assetKeys[0]; }
+    function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
+    function round(value) { return Math.round(value * 10000) / 10000; }
+    function toSheetPoint(event) { const rect = stage.getBoundingClientRect(); return { x: clamp(((event.clientX - rect.left) / rect.width) * sheet.width, 0, sheet.width), y: clamp(((event.clientY - rect.top) / rect.height) * sheet.height, 0, sheet.height) }; }
+    function normPoint(point) { return [round(point.x / sheet.width), round(point.y / sheet.height)]; }
+    function rectFor(points) { if (points.length < 3) return null; const xs = points.map((point) => point.x); const ys = points.map((point) => point.y); const minX = Math.min(...xs); const maxX = Math.max(...xs); const minY = Math.min(...ys); const maxY = Math.max(...ys); return { x: round(minX / sheet.width), y: round(minY / sheet.height), w: round((maxX - minX) / sheet.width), h: round((maxY - minY) / sheet.height) }; }
+    function pointList(points) { return points.map((point) => `${point.x},${point.y}`).join(" "); }
+    function render() {
+      overlay.replaceChildren();
+      const selected = activeKey();
+      assetKeys.forEach((key, index) => {
+        const points = state[key];
+        if (points.length === 0) return;
+        const polygon = document.createElementNS("http://www.w3.org/2000/svg", points.length > 2 ? "polygon" : "polyline");
+        polygon.setAttribute("points", pointList(points));
+        polygon.setAttribute("class", key === selected ? "polyLine active" : "polyLine");
+        polygon.setAttribute("style", `stroke:${key === selected ? "var(--active)" : colors[index % colors.length]}`);
+        overlay.appendChild(polygon);
+        if (key !== selected) return;
+        points.forEach((point, pointIndex) => { const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle"); circle.setAttribute("cx", point.x); circle.setAttribute("cy", point.y); circle.setAttribute("r", 6); circle.setAttribute("class", "point active"); circle.dataset.index = String(pointIndex); overlay.appendChild(circle); });
+      });
+      updateOutput();
+    }
+    function updateOutput() {
+      const selectedPoints = state[activeKey()];
+      const rect = rectFor(selectedPoints);
+      pointCount.textContent = String(selectedPoints.length);
+      rectText.textContent = rect ? `${rect.x}, ${rect.y}, ${rect.w}, ${rect.h}` : "none";
+      assetText.textContent = activeKey();
+      const payload = { sheet: sheet.path, sheet_size: [sheet.width, sheet.height], assets: {} };
+      for (const key of assetKeys) payload.assets[key] = { outline: state[key].map(normPoint), computed_rect: rectFor(state[key]) };
+      output.value = JSON.stringify(payload, null, 2);
+    }
+    stage.addEventListener("pointerdown", (event) => { if (event.target.classList.contains("point")) { dragging = Number(event.target.dataset.index); event.target.setPointerCapture(event.pointerId); event.preventDefault(); return; } if (!drawing) return; state[activeKey()].push(toSheetPoint(event)); render(); });
+    stage.addEventListener("pointermove", (event) => { if (dragging === null) return; state[activeKey()][dragging] = toSheetPoint(event); render(); });
+    stage.addEventListener("pointerup", () => { dragging = null; });
+    stage.addEventListener("pointercancel", () => { dragging = null; });
+    assetSelect.addEventListener("change", render);
+    drawButton.addEventListener("click", () => { drawing = !drawing; drawButton.classList.toggle("active", drawing); });
+    document.getElementById("undo").addEventListener("click", () => { state[activeKey()].pop(); render(); });
+    document.getElementById("clear").addEventListener("click", () => { state[activeKey()] = []; render(); });
+    document.getElementById("copy").addEventListener("click", async () => { updateOutput(); await navigator.clipboard.writeText(output.value); });
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://shinokuteusernameprompt"]
+
+[ext_resource type="Script" path="res://addons/shinokute_game_core/ui/username_prompt_overlay.gd" id="1_prompt"]
+
+[node name="UsernamePromptOverlay" type="CanvasLayer"]
+script = ExtResource("1_prompt")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -130.0
+offset_right = 220.0
+offset_bottom = 130.0
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+text = "ENTER PLAYER NAME"
+horizontal_alignment = 1
+
+[node name="NameEdit" type="LineEdit" parent="Panel/Margin/VBox"]
+layout_mode = 2
+placeholder_text = "3-15 characters"
+
+[node name="ErrorLabel" type="Label" parent="Panel/Margin/VBox"]
+visible = false
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SkipButton" type="Button" parent="Panel/Margin/VBox/Buttons"]
+layout_mode = 2
+text = "SKIP"
+
+[node name="ConfirmButton" type="Button" parent="Panel/Margin/VBox/Buttons"]
+layout_mode = 2
+text = "OK"

@@ -1,0 +1,23 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "source_mesh": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_candidate.glb",
+  "source_views": "res://assets/themes/candy_sky_islands/source/shinokute_player/anatomy_turnaround_pool/",
+  "projection_atlas": "res://assets/themes/candy_sky_islands/source/shinokute_player/projection/shinokute_projection_atlas.png",
+  "rendered_via": "Blender MCP socket execute_code on port 9876",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_anatomy_uv_candidate_preview/contact_sheet.png",
+  "status": "candidate_not_integrated",
+  "checks": {
+    "uses_owner_2d_character_identity": true,
+    "uses_9router_reference_based_anatomy_views": true,
+    "photoroom_full_generated_sheet_before_extraction": true,
+    "polygon_or_component_extracted_views": true,
+    "real_3d_volume": true,
+    "hoodie_silhouette_readable": true,
+    "shorts_and_shoes_readable": true,
+    "texture_projection_artifacts_on_skin_and_face": true,
+    "integrated_to_character_scene": false
+  },
+  "decision": "hold_for_visual_review_or_texture_cleanup",
+  "notes": "Geometry and outfit read significantly better than previous rejected candidates. Texture projection still shows dark tearing on face, legs, and exposed skin, so this GLB is not production-integrated yet."
+}

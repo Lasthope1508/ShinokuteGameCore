@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://87u3k0nrgtmf"
+path="res://.godot/imported/character_shinokute_lentil_shell_candidate_shinokute_albedo_attempt2_back.png-7ad63133ecfaebc7287d3ea6feab134c.ctex"
+metadata={
+"vram_texture": false
+}
+generator_parameters={
+"md5": "cdc070203eae493604ccc8aeaede979f"
+}
+
+[deps]
+
+source_file="res://assets/themes/candy_sky_islands/models/character_shinokute_lentil_shell_candidate_shinokute_albedo_attempt2_back.png"
+dest_files=["res://.godot/imported/character_shinokute_lentil_shell_candidate_shinokute_albedo_attempt2_back.png-7ad63133ecfaebc7287d3ea6feab134c.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

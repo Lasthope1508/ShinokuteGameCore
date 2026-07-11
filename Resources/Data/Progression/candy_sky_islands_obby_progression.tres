@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="ShinokuteProgressionCatalog" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://addons/shinokute_game_core/core/progression_catalog.gd" id="1_config"]
+[ext_resource type="Script" path="res://addons/shinokute_game_core/core/progression_level.gd" id="2_level"]
+
+[sub_resource type="Resource" id="Level_lollipop_intro"]
+script = ExtResource("2_level")
+level_id = "obby_001_lollipop_intro"
+display_name = "Lollipop Intro"
+difficulty_tier = 1
+completion_condition = {"type": "goal_reached", "coin_quota": 0}
+failure_policy = {"type": "retry_current", "fall_reset_y": -10.0}
+layout_profile = {"gap_distance": 3.0, "hazard_count": 1, "platform_count": 5, "route_length": 18.0, "verticality": 1.0}
+stage_segments = [{"platform": "large", "position": Vector3(0, 0, 0), "role": "start"}, {"coin": true, "platform": "medium", "position": Vector3(-4, 0.25, 2), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-8, 0.45, 4), "role": "hazard"}, {"coin": true, "platform": "small", "position": Vector3(-12, 0.75, 2), "role": "platform"}, {"goal_offset": Vector3(0, 1.2, 0), "platform": "medium", "position": Vector3(-16, 1, 0), "role": "goal"}]
+environment_segments = [{"kind": "cloud", "position": Vector3(2, 1.1, -3), "role": "decor", "scale": Vector3(1, 1, 1)}, {"kind": "cloud", "position": Vector3(-8, 2, 8), "role": "decor", "scale": Vector3(1.35, 1.35, 1.35)}, {"kind": "brick", "position": Vector3(-4, 1.15, 2.9), "role": "terrain", "rotation_y": -14.0}]
+difficulty_curve = {"falling_platform_acceleration": 15.0, "falling_platform_trigger_delay": 0.35}
+next_level_id = "obby_002_marshmallow_steps"
+
+[sub_resource type="Resource" id="Level_marshmallow_steps"]
+script = ExtResource("2_level")
+level_id = "obby_002_marshmallow_steps"
+display_name = "Marshmallow Steps"
+difficulty_tier = 2
+completion_condition = {"type": "goal_reached", "coin_quota": 0}
+failure_policy = {"type": "retry_current", "fall_reset_y": -10.0}
+layout_profile = {"gap_distance": 4.4, "hazard_count": 2, "platform_count": 8, "route_length": 36.0, "verticality": 3.4}
+stage_segments = [{"platform": "large", "position": Vector3(0, 0, 0), "role": "start"}, {"coin": true, "platform": "small", "position": Vector3(4, 0.35, -3), "role": "platform"}, {"coin": true, "platform": "medium", "position": Vector3(0, 0.8, -7), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-5, 1.1, -9), "role": "hazard"}, {"coin": true, "platform": "small", "position": Vector3(-10, 1.55, -6), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-14, 2.1, -1), "role": "hazard"}, {"coin": true, "platform": "medium", "position": Vector3(-19, 2.8, 2), "role": "platform"}, {"goal_offset": Vector3(0, 1.2, 0), "platform": "large", "position": Vector3(-25, 3.4, -2), "role": "goal"}]
+environment_segments = [{"kind": "cloud", "position": Vector3(4, 1.2, -6), "role": "decor", "scale": Vector3(1.2, 1.2, 1.2)}, {"kind": "cloud", "position": Vector3(-12, 3.2, -13), "role": "decor", "scale": Vector3(1.5, 1.5, 1.5)}, {"kind": "cloud", "position": Vector3(-23, 4.1, 3), "role": "decor", "scale": Vector3(1.25, 1.25, 1.25)}, {"kind": "brick", "position": Vector3(-5, 2.05, -8.1), "role": "terrain", "rotation_y": 18.0}, {"kind": "brick", "position": Vector3(-14, 3.05, -0.1), "role": "terrain", "rotation_y": -28.0}]
+difficulty_curve = {"falling_platform_acceleration": 18.0, "falling_platform_trigger_delay": 0.15}
+next_level_id = "obby_003_candy_drop"
+
+[sub_resource type="Resource" id="Level_candy_drop"]
+script = ExtResource("2_level")
+level_id = "obby_003_candy_drop"
+display_name = "Candy Drop"
+difficulty_tier = 3
+completion_condition = {"type": "goal_reached", "coin_quota": 0}
+failure_policy = {"type": "retry_current", "fall_reset_y": -10.0}
+layout_profile = {"gap_distance": 5.2, "hazard_count": 4, "platform_count": 12, "route_length": 64.0, "verticality": 6.0}
+stage_segments = [{"platform": "large", "position": Vector3(0, 0, 0), "role": "start"}, {"coin": true, "platform": "small", "position": Vector3(-4, 0.55, 3), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-9, 1, 6), "role": "hazard"}, {"coin": true, "platform": "medium", "position": Vector3(-13, 1.7, 2), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-18, 2.3, -3), "role": "hazard"}, {"coin": true, "platform": "small", "position": Vector3(-24, 3, -6), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-30, 3.6, -1), "role": "hazard"}, {"coin": true, "platform": "medium", "position": Vector3(-36, 4.3, 4), "role": "platform"}, {"coin": true, "platform": "falling", "position": Vector3(-42, 4.8, 1), "role": "hazard"}, {"coin": true, "platform": "small", "position": Vector3(-48, 5.2, -5), "role": "platform"}, {"coin": true, "platform": "medium", "position": Vector3(-56, 5.6, -7), "role": "platform"}, {"goal_offset": Vector3(0, 1.2, 0), "platform": "large", "position": Vector3(-64, 6, -2), "role": "goal"}]
+environment_segments = [{"kind": "cloud", "position": Vector3(5, 1.2, 4), "role": "decor", "scale": Vector3(1.1, 1.1, 1.1)}, {"kind": "cloud", "position": Vector3(-10, 2.2, 10), "role": "decor", "scale": Vector3(1.45, 1.45, 1.45)}, {"kind": "cloud", "position": Vector3(-28, 4.2, -9), "role": "decor", "scale": Vector3(1.65, 1.65, 1.65)}, {"kind": "cloud", "position": Vector3(-50, 6.6, 3), "role": "decor", "scale": Vector3(1.35, 1.35, 1.35)}, {"kind": "brick", "position": Vector3(-9, 1.95, 6.9), "role": "terrain", "rotation_y": 24.0}, {"kind": "brick", "position": Vector3(-18, 3.25, -2.1), "role": "terrain", "rotation_y": -24.0}, {"kind": "brick", "position": Vector3(-30, 4.55, -0.1), "role": "terrain", "rotation_y": 30.0}, {"kind": "brick", "position": Vector3(-42, 5.75, 1.9), "role": "terrain", "rotation_y": -32.0}]
+difficulty_curve = {"falling_platform_acceleration": 22.0, "falling_platform_trigger_delay": 0.0}
+next_level_id = ""
+
+[resource]
+script = ExtResource("1_config")
+game_family = "3d_obby"
+completion_policy = "next_loop"
+required_difficulty_keys = Array[String](["falling_platform_acceleration", "falling_platform_trigger_delay"])
+difficulty_sort_directions = {"falling_platform_acceleration": "ASCENDING", "falling_platform_trigger_delay": "DESCENDING"}
+required_layout_keys = Array[String](["route_length", "platform_count", "verticality", "gap_distance", "hazard_count"])
+layout_sort_directions = {"gap_distance": "ASCENDING", "hazard_count": "ASCENDING", "platform_count": "ASCENDING", "route_length": "ASCENDING", "verticality": "ASCENDING"}
+level_catalog = Array[Resource]([SubResource("Level_lollipop_intro"), SubResource("Level_marshmallow_steps"), SubResource("Level_candy_drop")])

@@ -7,51 +7,51 @@
 script = ExtResource("2_role")
 role_key = "player.model"
 legacy_path = "res://models/character.glb"
-reference_path = "res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png"
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_player_marshmallow_runner.png"
-notes = "Existing rig/model remains; material pass only."
+reference_path = "res://assets/themes/candy_sky_islands/models/character_chr077_skeleton_mage.glb"
+replacement_path = "res://objects/character.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_player_glb_replacement.png"
+notes = "Legacy character GLB first replaced by Candy marshmallow GLB, then Shinokute human GLB, now by CHR077 Skeleton Mage GLB from KayKit CC0 in objects/character.tscn; CHR077 raw size is scaled through CHR077SkeletonMageSlot at 0.5 to meet player.visual_target_height 1.30 u and allowed range 1.10..1.35 u; player scene preserves controller, collider, animation target, idle/walk/jump names, adds future run, uses 1/60s animation step, and preserves movement, jump, footsteps, and in-place fall retry behavior."
 
 [sub_resource type="Resource" id="Role_player_shadow"]
 script = ExtResource("2_role")
 role_key = "player.shadow"
 legacy_path = "res://sprites/blob_shadow.png"
-reference_path = ""
-replacement_path = ""
-mode = "legacy"
-proof_path = ""
-notes = "Keep shadow until visual replacement is approved."
+reference_path = "res://assets/themes/candy_sky_islands/player_shadow_soft.png"
+replacement_path = "res://assets/themes/candy_sky_islands/player_shadow_soft.png"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_player_wrapper.png"
+notes = "Legacy blob shadow replaced by local authored 2D soft Candy Sky Islands shadow; Decal size remains Vector3(1, 2, 1)."
 
 [sub_resource type="Resource" id="Role_player_trail_mesh"]
 script = ExtResource("2_role")
 role_key = "player.trail.dust"
 legacy_path = "res://meshes/dust.res"
 reference_path = ""
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_coin_pickup.png"
-notes = "Trail color is themed; mesh remains old."
+replacement_path = "res://objects/player.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_vfx_material_cleanup.png"
+notes = "Trail mesh remains old, but player scene adds CandyTrailSparkle local VFX and theme-owned material cleanup."
 
 [sub_resource type="Resource" id="Role_collectible_model"]
 script = ExtResource("2_role")
 role_key = "collectible.coin.model"
 legacy_path = "res://models/coin.glb"
-reference_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
-replacement_path = ""
-mode = "material"
+reference_path = "res://assets/themes/candy_sky_islands/deep_star_candy_model_reference.png"
+replacement_path = "res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb"
+mode = "replacement"
 proof_path = "res://docs/screenshots/candy_sky_islands_coin_pickup.png"
-notes = "Coin model remains old until star-candy model/wrapper is approved."
+notes = "Coin behavior remains; visual child now uses Candy GLB res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb derived from the accepted deep star-candy reference."
 
 [sub_resource type="Resource" id="Role_collectible_particle"]
 script = ExtResource("2_role")
 role_key = "collectible.coin.particle"
 legacy_path = "res://sprites/particle.png"
 reference_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_coin_pickup.png"
-notes = "Particle color is themed; texture remains old."
+replacement_path = "res://objects/coin.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_vfx_material_cleanup.png"
+notes = "Legacy particle texture remains; coin scene adds CandyPickupHalo and candy pickup particle process/material cleanup."
 
 [sub_resource type="Resource" id="Role_hud_icon"]
 script = ExtResource("2_role")
@@ -68,40 +68,40 @@ script = ExtResource("2_role")
 role_key = "platform.small"
 legacy_path = "res://models/platform.glb"
 reference_path = "res://assets/themes/candy_sky_islands/platform_small.png"
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
-notes = "Small platform model remains old; material pass only."
+replacement_path = "res://objects/platform.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_platform_glb_replacement.png"
+notes = "Small platform scene keeps collider/layout but its visual instance now uses Candy GLB res://assets/themes/candy_sky_islands/models/platform_candy_small.glb."
 
 [sub_resource type="Resource" id="Role_platform_medium"]
 script = ExtResource("2_role")
 role_key = "platform.medium"
 legacy_path = "res://models/platform-medium.glb"
 reference_path = "res://assets/themes/candy_sky_islands/platform_medium.png"
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
-notes = "Medium platform model remains old; material pass only."
+replacement_path = "res://objects/platform_medium.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_platform_glb_replacement.png"
+notes = "Medium platform scene keeps collider/layout but its visual instance now uses Candy GLB res://assets/themes/candy_sky_islands/models/platform_candy_medium.glb."
 
 [sub_resource type="Resource" id="Role_platform_falling"]
 script = ExtResource("2_role")
 role_key = "platform.falling"
 legacy_path = "res://models/platform-falling.glb"
 reference_path = "res://assets/themes/candy_sky_islands/platform_long.png"
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
-notes = "Falling behavior remains unchanged."
+replacement_path = "res://objects/platform_falling.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_platform_glb_replacement.png"
+notes = "Falling platform keeps Area3D trigger, collider, signal, script, and fall logic; visual instance now uses Candy GLB res://assets/themes/candy_sky_islands/models/platform_candy_falling.glb."
 
 [sub_resource type="Resource" id="Role_platform_round"]
 script = ExtResource("2_role")
 role_key = "platform.round.large"
 legacy_path = "res://models/platform-grass-large-round.glb"
 reference_path = "res://assets/themes/candy_sky_islands/platform_large.png"
-replacement_path = ""
-mode = "legacy"
-proof_path = ""
-notes = "Round platform remains old until approved replacement."
+replacement_path = "res://objects/platform_grass_large_round.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_props_background_glb_replacement.png"
+notes = "Round platform scene keeps collision/layout but its visual instance now uses Candy GLB res://assets/themes/candy_sky_islands/models/platform_candy_round_large.glb."
 
 [sub_resource type="Resource" id="Role_platform_large_unused"]
 script = ExtResource("2_role")
@@ -128,60 +128,60 @@ script = ExtResource("2_role")
 role_key = "obstacle.brick"
 legacy_path = "res://models/brick.glb"
 reference_path = "res://assets/themes/candy_sky_islands/wafer_obstacle.png"
-replacement_path = ""
-mode = "material"
-proof_path = ""
-notes = "Brick model remains until candy wafer replacement is approved."
+replacement_path = "res://objects/brick.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_obstacle_goal_wrapper.png"
+notes = "Brick keeps StaticBody3D, collider, bottom detector, particles, and break behavior; visual instance now uses Candy GLB res://assets/themes/candy_sky_islands/models/brick_candy_wafer.glb."
 
 [sub_resource type="Resource" id="Role_obstacle_brick_particle"]
 script = ExtResource("2_role")
 role_key = "obstacle.brick.particle"
 legacy_path = "res://models/brick-particle.glb"
 reference_path = "res://assets/themes/candy_sky_islands/wafer_obstacle.png"
-replacement_path = ""
-mode = "legacy"
-proof_path = ""
-notes = "Break particles remain old; SFX replacement is deferred."
+replacement_path = "res://objects/brick.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_vfx_material_cleanup.png"
+notes = "Break particle mesh remains old; brick scene uses local candy crumb material and process cleanup. SFX replacement is deferred."
 
 [sub_resource type="Resource" id="Role_goal_flag"]
 script = ExtResource("2_role")
 role_key = "goal.flag"
 legacy_path = "res://models/flag.glb"
 reference_path = "res://assets/themes/candy_sky_islands/goal_flag.png"
-replacement_path = ""
-mode = "material"
-proof_path = ""
-notes = "Flag model remains until candy pennant replacement is approved."
+replacement_path = "res://objects/goal_flag.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_obstacle_goal_wrapper.png"
+notes = "Main scene keeps flag node name and transform; goal scene visual instance now uses Candy GLB res://assets/themes/candy_sky_islands/models/goal_candy_pennant.glb."
 
 [sub_resource type="Resource" id="Role_prop_cloud"]
 script = ExtResource("2_role")
 role_key = "prop.cloud"
 legacy_path = "res://models/cloud.glb"
 reference_path = "res://assets/themes/candy_sky_islands/cloud_large.png"
-replacement_path = ""
-mode = "material"
-proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
-notes = "Cloud model remains; material pass only."
+replacement_path = "res://objects/cloud.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_props_background_glb_replacement.png"
+notes = "Cloud scene keeps movement script and transform while its production visual now uses reference-derived volumetric Candy cloud GLB res://assets/themes/candy_sky_islands/models/cloud_candy_volume.glb built from the approved Photoroom cloud reference res://assets/themes/candy_sky_islands/cloud_large.png alpha silhouette. Primitive-only cloud_candy.glb remains demoted evidence because dummy geometry is forbidden."
 
 [sub_resource type="Resource" id="Role_prop_grass"]
 script = ExtResource("2_role")
 role_key = "prop.grass"
 legacy_path = "res://models/grass.glb"
 reference_path = ""
-replacement_path = ""
-mode = "legacy"
-proof_path = ""
-notes = "Grass remains old until prop replacement is approved."
+replacement_path = "res://objects/platform_grass_large_round.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_props_background_glb_replacement.png"
+notes = "Round platform scene now uses Candy GLB grass refs via res://assets/themes/candy_sky_islands/models/grass_candy.glb."
 
 [sub_resource type="Resource" id="Role_prop_grass_small"]
 script = ExtResource("2_role")
 role_key = "prop.grass.small"
 legacy_path = "res://models/grass-small.glb"
 reference_path = ""
-replacement_path = ""
-mode = "legacy"
-proof_path = ""
-notes = "Small grass remains old until prop replacement is approved."
+replacement_path = "res://objects/platform_grass_large_round.tscn"
+mode = "replacement"
+proof_path = "res://docs/screenshots/candy_sky_islands_props_background_glb_replacement.png"
+notes = "Round platform scene now uses Candy GLB small grass refs via res://assets/themes/candy_sky_islands/models/grass_candy_small.glb."
 
 [sub_resource type="Resource" id="Role_skybox"]
 script = ExtResource("2_role")
@@ -190,18 +190,18 @@ legacy_path = "res://sprites/skybox.png"
 reference_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
 replacement_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
 mode = "replacement"
-proof_path = "res://docs/screenshots/candy_sky_islands_asset_family_gameplay.png"
-notes = "Theme path points at approved candy sky panel; scene environment direct reference is tracked for cleanup."
+proof_path = "res://docs/screenshots/candy_sky_islands_props_background_wrapper.png"
+notes = "Environment resource now routes directly to the approved Candy Sky panel through SSOT."
 
 [sub_resource type="Resource" id="Role_colormap"]
 script = ExtResource("2_role")
 role_key = "material.colormap"
 legacy_path = "res://models/Textures/colormap.png"
-reference_path = ""
+reference_path = "res://assets/themes/candy_sky_islands/asset_family_concept_sheet.png"
 replacement_path = ""
-mode = "legacy"
-proof_path = ""
-notes = "Shared material texture remains until material cleanup is approved."
+mode = "unused_candidate"
+proof_path = "res://docs/screenshots/candy_sky_islands_vfx_material_cleanup.png"
+notes = "Shared colormap file remains on disk as legacy source evidence, but no active production scene references models/Textures/colormap.png after coin, platform, cloud, obstacle, and goal GLB replacements."
 
 [resource]
 script = ExtResource("1_theme")
@@ -214,9 +214,26 @@ palette_accent = Color(0.482353, 0.878431, 0.678431, 1)
 palette_text = Color(0.152941, 0.188235, 0.262745, 1)
 hud_coin_icon_path = "res://assets/themes/candy_sky_islands/star_collectible.png"
 hud_font_path = "res://fonts/lilita_one_regular.ttf"
-hud_text_owner_rect = Rect2(144, 64, 224, 59)
+hud_score_frame_rect = Rect2(40, 45, 313, 127)
+hud_text_owner_rect = Rect2(160, 88, 160, 54)
 hud_text_padding = Vector4(0, 0, 0, 0)
-hud_font_size = 48
+hud_font_size = 44
+ui_leaderboard_button_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_button.png"
+ui_leaderboard_panel_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png"
+ui_leaderboard_row_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png"
+ui_leaderboard_tab_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_tab.png"
+ui_leaderboard_close_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_close.png"
+ui_username_panel_path = "res://assets/themes/candy_sky_islands/ui/ui_username_panel.png"
+ui_username_input_path = "res://assets/themes/candy_sky_islands/ui/ui_username_input.png"
+ui_button_primary_path = "res://assets/themes/candy_sky_islands/ui/ui_button_primary.png"
+ui_button_secondary_path = "res://assets/themes/candy_sky_islands/ui/ui_button_secondary.png"
+ui_settings_panel_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_panel.png"
+ui_settings_row_path = "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_row.png"
+ui_settings_toggle_on_path = "res://assets/themes/candy_sky_islands/ui/ui_button_primary.png"
+ui_settings_toggle_off_path = "res://assets/themes/candy_sky_islands/ui/ui_button_secondary.png"
+ui_panel_texture_margins = Vector4(72, 72, 72, 72)
+ui_button_texture_margins = Vector4(44, 32, 44, 32)
+ui_row_texture_margins = Vector4(44, 24, 44, 24)
 player_root_asset_path = "res://assets/themes/candy_sky_islands/root_asset_marshmallow_runner_concept.png"
 player_body_material_color = Color(1, 0.94902, 0.780392, 1)
 player_cap_material_color = Color(1, 0.94902, 0.780392, 1)
@@ -226,7 +243,7 @@ player_left_boot_material_color = Color(0.482353, 0.878431, 0.678431, 1)
 player_right_boot_material_color = Color(1, 0.435294, 0.380392, 1)
 player_face_material_color = Color(0.152941, 0.188235, 0.262745, 1)
 asset_family_concept_sheet_path = "res://assets/themes/candy_sky_islands/asset_family_concept_sheet.png"
-hud_score_frame_path = "res://assets/themes/candy_sky_islands/hud_score_frame.png"
+hud_score_frame_path = "res://assets/themes/candy_sky_islands/hud_score_frame_clean_9router.png"
 candy_skybox_path = "res://assets/themes/candy_sky_islands/sky_panel_islands.png"
 collectible_star_body_color = Color(1, 0.435294, 0.380392, 1)
 collectible_star_rim_color = Color(0.482353, 0.878431, 0.678431, 1)
@@ -267,11 +284,14 @@ coin_material_color = Color(1, 0.435294, 0.380392, 1)
 coin_rim_color = Color(0.482353, 0.878431, 0.678431, 1)
 trail_particle_color = Color(0.482353, 0.878431, 0.678431, 1)
 cloud_material_color = Color(1, 1, 1, 1)
+bgm_track_path = "res://sounds/candy_sky_islands/bgm_candy_island_main.ogg"
+bgm_volume_db = -14.0
+sfx_volume_db = -10.0
 audio_event_paths = {
-"break": "res://sounds/break.ogg",
-"coin": "res://sounds/coin.ogg",
-"fall": "res://sounds/fall.ogg",
-"jump": "res://sounds/jump.ogg",
-"land": "res://sounds/land.ogg",
-"walking": "res://sounds/walking.ogg"
+"break": "res://sounds/candy_sky_islands/sfx_break.ogg",
+"coin": "res://sounds/candy_sky_islands/sfx_coin.ogg",
+"fall": "res://sounds/candy_sky_islands/sfx_fall.ogg",
+"jump": "res://sounds/candy_sky_islands/sfx_jump.ogg",
+"land": "res://sounds/candy_sky_islands/sfx_land.ogg",
+"walking": "res://sounds/candy_sky_islands/sfx_walking.ogg"
 }

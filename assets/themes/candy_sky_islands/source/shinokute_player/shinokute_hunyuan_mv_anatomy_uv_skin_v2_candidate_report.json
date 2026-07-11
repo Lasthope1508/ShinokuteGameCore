@@ -1,0 +1,31 @@
+{
+  "source": "assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "output": "assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_uv_skin_v2_candidate.glb",
+  "bounds": {
+    "min": [
+      -0.334207,
+      -0.186359,
+      -0.998361
+    ],
+    "max": [
+      0.295469,
+      0.224401,
+      0.958471
+    ],
+    "size": [
+      0.629676,
+      0.410761,
+      1.956832
+    ]
+  },
+  "front_axis": "negative_y",
+  "counts": {
+    "face_cheek_skin": 2232,
+    "neck_skin": 1285,
+    "hand_skin": 8483,
+    "leg_skin": 9069,
+    "sock_fabric": 2210,
+    "hood_or_collar_fabric": 6520
+  },
+  "status": "candidate_not_integrated"
+}

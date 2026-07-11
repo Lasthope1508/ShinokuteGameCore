@@ -1,0 +1,127 @@
+{
+  "components_detected": 8,
+  "outputs": 8,
+  "bad": [],
+  "items": [
+    {
+      "role": "front",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_front.png",
+      "size": [
+        200,
+        522
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 42823,
+      "pass": true
+    },
+    {
+      "role": "front_right_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_front_right_3q.png",
+      "size": [
+        184,
+        526
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 40584,
+      "pass": true
+    },
+    {
+      "role": "right_side",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_right_side.png",
+      "size": [
+        140,
+        523
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 25740,
+      "pass": true
+    },
+    {
+      "role": "back_right_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_back_right_3q.png",
+      "size": [
+        180,
+        526
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 40592,
+      "pass": true
+    },
+    {
+      "role": "back",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_back.png",
+      "size": [
+        194,
+        503
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 41375,
+      "pass": true
+    },
+    {
+      "role": "back_left_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_back_left_3q.png",
+      "size": [
+        172,
+        503
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 38439,
+      "pass": true
+    },
+    {
+      "role": "left_side",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_left_side.png",
+      "size": [
+        133,
+        501
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0,
+      "component_area": 23847,
+      "pass": true
+    },
+    {
+      "role": "front_left_3q",
+      "path": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\material_id_turnaround_pool_attempt1\\shinokute_material_id_attempt1_front_left_3q.png",
+      "size": [
+        176,
+        501
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_foreground_ratio": 0.0006238458851125418,
+      "component_area": 38382,
+      "pass": true
+    }
+  ]
+}

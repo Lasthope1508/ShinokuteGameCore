@@ -1,0 +1,597 @@
+{
+  "sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+  "alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+  "sheet_size": [
+    1774,
+    887
+  ],
+  "method": "Photoroom full sheet first; connected alpha components converted to polygon outline records; no grid slicing; no raw crop; missing back 3q derived by owner-approved horizontal flip symmetry.",
+  "assets": {
+    "front": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "source_raw_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front.png",
+      "outline": [
+        [
+          0.10992108229988726,
+          0.040586245772266064
+        ],
+        [
+          0.0834272829763247,
+          0.15107102593010147
+        ],
+        [
+          0.05129650507328072,
+          0.26268320180383314
+        ],
+        [
+          0.04171364148816235,
+          0.37316798196166856
+        ],
+        [
+          0.04171364148816235,
+          0.48478015783540024
+        ],
+        [
+          0.06482525366403608,
+          0.5963923337091319
+        ],
+        [
+          0.05975197294250282,
+          0.7068771138669673
+        ],
+        [
+          0.05355129650507328,
+          0.818489289740699
+        ],
+        [
+          0.03889515219842165,
+          0.9301014656144306
+        ],
+        [
+          0.16798196166854565,
+          0.9301014656144306
+        ],
+        [
+          0.1544532130777903,
+          0.818489289740699
+        ],
+        [
+          0.14825253664036075,
+          0.7068771138669673
+        ],
+        [
+          0.14374295377677565,
+          0.5963923337091319
+        ],
+        [
+          0.1668545659526494,
+          0.48478015783540024
+        ],
+        [
+          0.16798196166854565,
+          0.37316798196166856
+        ],
+        [
+          0.15839909808342728,
+          0.26268320180383314
+        ],
+        [
+          0.12570462232243518,
+          0.15107102593010147
+        ],
+        [
+          0.11161217587373168,
+          0.040586245772266064
+        ]
+      ],
+      "computed_rect": {
+        "x": 0.03325817361894025,
+        "y": 0.040586245772266064,
+        "w": 0.14092446448703494,
+        "h": 0.8895152198421646
+      },
+      "crop_rect_px": [
+        45,
+        22,
+        278,
+        817
+      ],
+      "role_candidate": "front",
+      "accepted_by_owner": true
+    },
+    "left_side": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "source_raw_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_left_side.png",
+      "outline": [
+        [
+          0.26944757609921083,
+          0.03945885005636979
+        ],
+        [
+          0.24182638105975196,
+          0.1488162344983089
+        ],
+        [
+          0.2463359639233371,
+          0.2593010146561443
+        ],
+        [
+          0.24013528748590757,
+          0.3686583990980834
+        ],
+        [
+          0.24182638105975196,
+          0.4791431792559188
+        ],
+        [
+          0.24971815107102593,
+          0.5896279594137542
+        ],
+        [
+          0.2593010146561443,
+          0.6989853438556933
+        ],
+        [
+          0.2525366403607666,
+          0.8094701240135288
+        ],
+        [
+          0.23337091319052988,
+          0.9199549041713642
+        ],
+        [
+          0.25422773393461107,
+          0.9199549041713642
+        ],
+        [
+          0.28804960541149943,
+          0.8094701240135288
+        ],
+        [
+          0.2919954904171364,
+          0.6989853438556933
+        ],
+        [
+          0.2846674182638106,
+          0.5896279594137542
+        ],
+        [
+          0.2919954904171364,
+          0.4791431792559188
+        ],
+        [
+          0.29537767756482525,
+          0.3686583990980834
+        ],
+        [
+          0.2965050732807215,
+          0.2593010146561443
+        ],
+        [
+          0.28692220969560317,
+          0.1488162344983089
+        ],
+        [
+          0.2733934611048478,
+          0.03945885005636979
+        ]
+      ],
+      "computed_rect": {
+        "x": 0.213641488162345,
+        "y": 0.03945885005636979,
+        "w": 0.09470124013528748,
+        "h": 0.8804960541149943
+      },
+      "crop_rect_px": [
+        365,
+        21,
+        196,
+        809
+      ],
+      "role_candidate": "left_side",
+      "accepted_by_owner": true
+    },
+    "right_back_3q_candidate": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "source_raw_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_right_back_3q_candidate.png",
+      "outline": [
+        [
+          0.4019165727170237,
+          0.04171364148816235
+        ],
+        [
+          0.3900789177001127,
+          0.15107102593010147
+        ],
+        [
+          0.3788049605411499,
+          0.26042841037204056
+        ],
+        [
+          0.37993235625704624,
+          0.370913190529876
+        ],
+        [
+          0.38218714768883877,
+          0.48027057497181513
+        ],
+        [
+          0.38895152198421645,
+          0.5896279594137542
+        ],
+        [
+          0.38162344983089064,
+          0.7001127395715896
+        ],
+        [
+          0.3850056369785795,
+          0.8094701240135288
+        ],
+        [
+          0.4165727170236753,
+          0.9199549041713642
+        ],
+        [
+          0.43799323562570464,
+          0.9199549041713642
+        ],
+        [
+          0.41882750845546785,
+          0.8094701240135288
+        ],
+        [
+          0.4137542277339346,
+          0.7001127395715896
+        ],
+        [
+          0.423337091319053,
+          0.5896279594137542
+        ],
+        [
+          0.4317925591882751,
+          0.48027057497181513
+        ],
+        [
+          0.43404735062006766,
+          0.370913190529876
+        ],
+        [
+          0.42897406989853437,
+          0.26042841037204056
+        ],
+        [
+          0.43404735062006766,
+          0.15107102593010147
+        ],
+        [
+          0.4069898534385569,
+          0.04171364148816235
+        ]
+      ],
+      "computed_rect": {
+        "x": 0.36809470124013527,
+        "y": 0.04171364148816235,
+        "w": 0.08962795941375423,
+        "h": 0.8782412626832018
+      },
+      "crop_rect_px": [
+        639,
+        23,
+        187,
+        807
+      ],
+      "role_candidate": "right_back_3q_candidate",
+      "accepted_by_owner": true
+    },
+    "back": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "source_raw_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back.png",
+      "outline": [
+        [
+          0.5676437429537767,
+          0.040586245772266064
+        ],
+        [
+          0.5535512965050733,
+          0.1488162344983089
+        ],
+        [
+          0.5219842164599775,
+          0.25817361894024804
+        ],
+        [
+          0.5129650507328072,
+          0.36753100338218714
+        ],
+        [
+          0.5146561443066516,
+          0.4768883878241263
+        ],
+        [
+          0.5310033821871477,
+          0.5851183765501691
+        ],
+        [
+          0.5304396843291995,
+          0.6944757609921083
+        ],
+        [
+          0.5298759864712514,
+          0.8038331454340474
+        ],
+        [
+          0.5326944757609922,
+          0.9131905298759865
+        ],
+        [
+          0.6144306651634723,
+          0.9131905298759865
+        ],
+        [
+          0.617249154453213,
+          0.8038331454340474
+        ],
+        [
+          0.617249154453213,
+          0.6944757609921083
+        ],
+        [
+          0.616685456595265,
+          0.5851183765501691
+        ],
+        [
+          0.6330326944757609,
+          0.4768883878241263
+        ],
+        [
+          0.6347237880496054,
+          0.36753100338218714
+        ],
+        [
+          0.6262683201803834,
+          0.25817361894024804
+        ],
+        [
+          0.5941375422773394,
+          0.1488162344983089
+        ],
+        [
+          0.5693348365276212,
+          0.040586245772266064
+        ]
+      ],
+      "computed_rect": {
+        "x": 0.507891770011274,
+        "y": 0.040586245772266064,
+        "w": 0.1319052987598647,
+        "h": 0.8726042841037204
+      },
+      "crop_rect_px": [
+        887,
+        22,
+        262,
+        802
+      ],
+      "role_candidate": "back",
+      "accepted_by_owner": true
+    },
+    "front_left_3q": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "source_raw_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_left_3q.png",
+      "outline": [
+        [
+          0.7463359639233371,
+          0.04284103720405862
+        ],
+        [
+          0.7237880496054115,
+          0.1544532130777903
+        ],
+        [
+          0.7023675310033822,
+          0.266065388951522
+        ],
+        [
+          0.6950394588500564,
+          0.37767756482525366
+        ],
+        [
+          0.6916572717023676,
+          0.48928974069898534
+        ],
+        [
+          0.7091319052987599,
+          0.6009019165727171
+        ],
+        [
+          0.7142051860202931,
+          0.7125140924464487
+        ],
+        [
+          0.705749718151071,
+          0.8241262683201804
+        ],
+        [
+          0.7643742953776775,
+          0.9357384441939121
+        ],
+        [
+          0.7801578354002254,
+          0.9357384441939121
+        ],
+        [
+          0.790304396843292,
+          0.8241262683201804
+        ],
+        [
+          0.7857948139797069,
+          0.7125140924464487
+        ],
+        [
+          0.7767756482525366,
+          0.6009019165727171
+        ],
+        [
+          0.7936865839909808,
+          0.48928974069898534
+        ],
+        [
+          0.8021420518602029,
+          0.37767756482525366
+        ],
+        [
+          0.7953776775648252,
+          0.266065388951522
+        ],
+        [
+          0.7615558060879368,
+          0.1544532130777903
+        ],
+        [
+          0.7480270574971815,
+          0.04284103720405862
+        ]
+      ],
+      "computed_rect": {
+        "x": 0.6679819616685456,
+        "y": 0.04284103720405862,
+        "w": 0.13472378804960541,
+        "h": 0.8928974069898534
+      },
+      "crop_rect_px": [
+        1171,
+        24,
+        267,
+        820
+      ],
+      "role_candidate": "front_left_3q",
+      "accepted_by_owner": true
+    },
+    "front_right_3q": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "derived_from": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_left_3q.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_right_3q.png",
+      "method": "horizontal_flip_symmetry_from_front_left_3q",
+      "accepted_by_owner_rule": "Owner explicitly approved this mirrored front-right view on 2026-07-08 even though hoodie text is reversed.",
+      "replaces_rejected": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_right_3q_rejected_ai_same_direction.png",
+      "production_texture_status": "accepted_by_owner_despite_reversed_text",
+      "allowed_use": "production_texture_and_geometry_silhouette",
+      "next_action": "none for this standing pool unless owner later requests readable SHINOKUTE text on this angle"
+    },
+    "back_left_3q_from_flip": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "derived_from": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_right_back_3q_candidate.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back_left_3q_from_flip.png",
+      "method": "horizontal_flip_symmetry",
+      "accepted_by_owner_rule": "Owner said missing angles may be derived by mirror flip."
+    },
+    "back_right_3q_from_flip": {
+      "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+      "derived_from": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_right_back_3q_candidate.png",
+      "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_back_right_3q_from_flip.png",
+      "method": "reuse_back_3q_candidate",
+      "accepted_by_owner_rule": "Owner said missing angles may be derived by mirror flip."
+    },
+    "rejected_candidates": {
+      "front_right_3q_ai_same_direction": {
+        "source_alpha_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_photoroom.png",
+        "source_raw_sheet": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\shinokute_turnaround_multiview_9router_raw.png",
+        "output": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\standing_multiview_pool\\shinokute_standing_front_right_3q.png",
+        "outline": [
+          [
+            0.9002254791431793,
+            0.04284103720405862
+          ],
+          [
+            0.8765501691093573,
+            0.1544532130777903
+          ],
+          [
+            0.8562570462232244,
+            0.266065388951522
+          ],
+          [
+            0.8494926719278467,
+            0.37767756482525366
+          ],
+          [
+            0.8449830890642616,
+            0.48928974069898534
+          ],
+          [
+            0.8607666290868095,
+            0.6009019165727171
+          ],
+          [
+            0.8652762119503946,
+            0.7125140924464487
+          ],
+          [
+            0.8562570462232244,
+            0.8241262683201804
+          ],
+          [
+            0.9160090191657272,
+            0.9357384441939121
+          ],
+          [
+            0.9329199549041713,
+            0.9357384441939121
+          ],
+          [
+            0.9447576099210823,
+            0.8241262683201804
+          ],
+          [
+            0.9408117249154453,
+            0.7125140924464487
+          ],
+          [
+            0.9306651634723788,
+            0.6009019165727171
+          ],
+          [
+            0.9470124013528749,
+            0.48928974069898534
+          ],
+          [
+            0.9560315670800451,
+            0.37767756482525366
+          ],
+          [
+            0.9498308906426156,
+            0.266065388951522
+          ],
+          [
+            0.9143179255918827,
+            0.1544532130777903
+          ],
+          [
+            0.9013528748590756,
+            0.04284103720405862
+          ]
+        ],
+        "computed_rect": {
+          "x": 0.8179255918827508,
+          "y": 0.04284103720405862,
+          "w": 0.1386696730552424,
+          "h": 0.8928974069898534
+        },
+        "crop_rect_px": [
+          1437,
+          24,
+          274,
+          820
+        ],
+        "role_candidate": "front_right_3q",
+        "accepted_by_owner": true,
+        "rejection_reason": "AI generated front_right_3q faced same direction as front_left_3q; replaced by owner-approved symmetry flip."
+      }
+    }
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "star_collectible": {
+    "rect": [
+      34,
+      43,
+      301,
+      279
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.0,
+      "right": 0.13870967741935483,
+      "top": 0.009634551495016611,
+      "bottom": 0.0
+    },
+    "risky_edges": {
+      "right": 0.13870967741935483,
+      "top": 0.009634551495016611
+    },
+    "risk": true
+  },
+  "hud_score_frame": {
+    "rect": [
+      384,
+      74,
+      476,
+      184
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.0,
+      "right": 0.5793478260869566,
+      "top": 0.0,
+      "bottom": 0.9069327731092437
+    },
+    "risky_edges": {
+      "right": 0.5793478260869566,
+      "bottom": 0.9069327731092437
+    },
+    "risk": true
+  },
+  "cloud_large": {
+    "rect": [
+      884,
+      20,
+      354,
+      230
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.0,
+      "right": 0.0,
+      "top": 0.0,
+      "bottom": 0.41073446327683616
+    },
+    "risky_edges": {
+      "bottom": 0.41073446327683616
+    },
+    "risk": true
+  },
+  "cloud_mid": {
+    "rect": [
+      867,
+      266,
+      209,
+      128
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.0,
+      "right": 0.0,
+      "top": 0.0,
+      "bottom": 0.0
+    },
+    "risky_edges": {},
+    "risk": false
+  },
+  "platform_large": {
+    "rect": [
+      28,
+      346,
+      602,
+      339
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.07109144542772862,
+      "right": 0.10825958702064897,
+      "top": 0.4219269102990033,
+      "bottom": 0.3458471760797342
+    },
+    "risky_edges": {
+      "left": 0.07109144542772862,
+      "right": 0.10825958702064897,
+      "top": 0.4219269102990033,
+      "bottom": 0.3458471760797342
+    },
+    "risk": true
+  },
+  "platform_medium": {
+    "rect": [
+      646,
+      410,
+      374,
+      237
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.10632911392405063,
+      "right": 0.0,
+      "top": 0.49171122994652405,
+      "bottom": 0.7483957219251337
+    },
+    "risky_edges": {
+      "left": 0.10632911392405063,
+      "top": 0.49171122994652405,
+      "bottom": 0.7483957219251337
+    },
+    "risk": true
+  },
+  "platform_small": {
+    "rect": [
+      39,
+      682,
+      300,
+      210
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.1180952380952381,
+      "right": 0.06333333333333334,
+      "top": 0.4836666666666667,
+      "bottom": 0.3416666666666667
+    },
+    "risky_edges": {
+      "left": 0.1180952380952381,
+      "right": 0.06333333333333334,
+      "top": 0.4836666666666667,
+      "bottom": 0.3416666666666667
+    },
+    "risk": true
+  },
+  "platform_long": {
+    "rect": [
+      424,
+      686,
+      394,
+      212
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.03207547169811321,
+      "right": 0.33726415094339623,
+      "top": 0.005076142131979695,
+      "bottom": 0.5477157360406092
+    },
+    "risky_edges": {
+      "left": 0.03207547169811321,
+      "right": 0.33726415094339623,
+      "top": 0.005076142131979695,
+      "bottom": 0.5477157360406092
+    },
+    "risk": true
+  },
+  "wafer_obstacle": {
+    "rect": [
+      36,
+      885,
+      484,
+      250
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.3524,
+      "right": 0.0764,
+      "top": 0.168801652892562,
+      "bottom": 0.4121900826446281
+    },
+    "risky_edges": {
+      "left": 0.3524,
+      "right": 0.0764,
+      "top": 0.168801652892562,
+      "bottom": 0.4121900826446281
+    },
+    "risk": true
+  },
+  "goal_flag": {
+    "rect": [
+      959,
+      403,
+      273,
+      450
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.45111111111111113,
+      "right": 0.06355555555555556,
+      "top": 0.017948717948717947,
+      "bottom": 0.31684981684981683
+    },
+    "risky_edges": {
+      "left": 0.45111111111111113,
+      "right": 0.06355555555555556,
+      "top": 0.017948717948717947,
+      "bottom": 0.31684981684981683
+    },
+    "risk": true
+  },
+  "cloud_bottom": {
+    "rect": [
+      299,
+      1098,
+      481,
+      137
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.537956204379562,
+      "right": 0.25255474452554744,
+      "top": 0.11455301455301456,
+      "bottom": 0.05051975051975052
+    },
+    "risky_edges": {
+      "left": 0.537956204379562,
+      "right": 0.25255474452554744,
+      "top": 0.11455301455301456,
+      "bottom": 0.05051975051975052
+    },
+    "risk": true
+  },
+  "cloud_bottom_small": {
+    "rect": [
+      984,
+      1110,
+      224,
+      106
+    ],
+    "kind": "photoroom",
+    "edge_foreground_ratio": {
+      "left": 0.1509433962264151,
+      "right": 0.44528301886792454,
+      "top": 0.0,
+      "bottom": 0.8553571428571428
+    },
+    "risky_edges": {
+      "left": 0.1509433962264151,
+      "right": 0.44528301886792454,
+      "bottom": 0.8553571428571428
+    },
+    "risk": true
+  },
+  "sky_panel_clouds": {
+    "rect": [
+      531,
+      947,
+      193,
+      160
+    ],
+    "kind": "opaque",
+    "edge_foreground_ratio": {
+      "left": 0.31375,
+      "right": 0.481875,
+      "top": 0.25751295336787566,
+      "bottom": 0.0
+    },
+    "risky_edges": {
+      "left": 0.31375,
+      "right": 0.481875,
+      "top": 0.25751295336787566
+    },
+    "risk": true
+  },
+  "sky_panel_wide": {
+    "rect": [
+      719,
+      936,
+      247,
+      172
+    ],
+    "kind": "opaque",
+    "edge_foreground_ratio": {
+      "left": 0.7819767441860465,
+      "right": 0.8854651162790698,
+      "top": 0.6020242914979758,
+      "bottom": 0.0
+    },
+    "risky_edges": {
+      "left": 0.7819767441860465,
+      "right": 0.8854651162790698,
+      "top": 0.6020242914979758
+    },
+    "risk": true
+  },
+  "sky_panel_islands": {
+    "rect": [
+      970,
+      939,
+      254,
+      176
+    ],
+    "kind": "opaque",
+    "edge_foreground_ratio": {
+      "left": 0.8573863636363637,
+      "right": 0.7261363636363637,
+      "top": 0.9704724409448819,
+      "bottom": 0.0
+    },
+    "risky_edges": {
+      "left": 0.8573863636363637,
+      "right": 0.7261363636363637,
+      "top": 0.9704724409448819
+    },
+    "risk": true
+  }
+}

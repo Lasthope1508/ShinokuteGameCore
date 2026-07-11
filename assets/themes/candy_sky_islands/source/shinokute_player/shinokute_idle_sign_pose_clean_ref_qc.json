@@ -1,0 +1,27 @@
+{
+  "source": "shinokute_idle_sign_pose_clean_9router_raw.png",
+  "photoroom": "shinokute_idle_sign_pose_clean_photoroom.png",
+  "final": "shinokute_idle_sign_pose_clean_ref.png",
+  "mode": "RGBA",
+  "size": [
+    864,
+    1725
+  ],
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "trim_bbox_px": [
+    0,
+    0,
+    864,
+    1725
+  ],
+  "source_order": "bad sheet pose -> 9Router baked artifact cleanup -> Photoroom full image -> trim alpha",
+  "edge_alpha_pixels": {
+    "top": 2,
+    "bottom": 0,
+    "left": 1,
+    "right": 1
+  }
+}

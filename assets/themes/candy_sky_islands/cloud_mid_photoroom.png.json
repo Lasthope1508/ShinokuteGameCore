@@ -1,0 +1,19 @@
+{
+  "tool": "photoroom_browser_turnstile_segment",
+  "port": 9223,
+  "inputPath": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\cloud_mid_crop.png",
+  "outputPath": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\cloud_mid_photoroom.png",
+  "bytes": 24269,
+  "status": 200,
+  "url": "https://sdk.photoroom.com/v1/segment",
+  "headers": {
+    "cache-control": "no-cache",
+    "content-length": "24269",
+    "content-type": "image/png",
+    "x-foreground-height": "0.78453946",
+    "x-foreground-left": "0.13961694",
+    "x-foreground-top": "0.074835524",
+    "x-foreground-width": "0.71774197",
+    "x-uncertainty-score": "0.334896354675293"
+  }
+}

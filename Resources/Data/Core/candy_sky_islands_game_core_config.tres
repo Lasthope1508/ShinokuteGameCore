@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="GameCoreConfig" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://addons/shinokute_game_core/core/game_core_config.gd" id="1_core_config"]
+[ext_resource type="Resource" path="res://Resources/Data/Themes/candy_sky_islands/theme_runtime_export.tres" id="2_theme"]
+[ext_resource type="Resource" path="res://Resources/Data/Progression/candy_sky_islands_obby_progression.tres" id="3_progression"]
+
+[resource]
+script = ExtResource("1_core_config")
+game_id = "candy_sky_islands"
+display_name = "Candy Sky Islands"
+firebase_project_id = "foodapp-7ff6b"
+firestore_api_key = "AIzaSyCn3QkPRiv1vq6jZ-TBfTDF9bDhEMYTpr0"
+geolocation_url = "https://foodapp-7ff6b.web.app/api/location"
+username_min_length = 3
+username_max_length = 15
+allow_skip_username = true
+require_username_on_first_launch = true
+default_username_prefix = "CandyPlayer"
+leaderboard_limit = 15
+leaderboard_collections = {"classic": "candy_sky_islands_classic"}
+score_labels = {"classic": "level"}
+score_sort_directions = {"classic": "DESCENDING"}
+theme_config = ExtResource("2_theme")
+scene_routes = {"game": "res://scenes/main.tscn"}
+overlay_scenes = {"username": "res://scenes/ui/candy_username_prompt_overlay.tscn"}
+ad_placements = {}
+analytics_config = {"event_prefix": "candy_sky_islands"}
+remote_defaults = {"leaderboard_enabled": true}
+settings_defaults = {"bgm_enabled": true, "sfx_enabled": true, "shift_lock_enabled": false}
+translations = {"en": {"play": "Play"}, "vi": {"play": "Choi"}}
+progression_catalog = ExtResource("3_progression")
+default_locale = "en"
+fallback_locale = "en"
+ads_enabled = false

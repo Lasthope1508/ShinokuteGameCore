@@ -8,6 +8,12 @@ Owner selected approach A: deep-but-safe full reskin.
 
 SFX is explicitly separated. This design stops before replacing, generating, or approving new SFX. Audio paths may be inventoried and routed through SSOT so a later SFX pass can replace them cleanly.
 
+2026-07-08 reset amendment: before any future design option, generation prompt, Photoroom extraction, wrapper, model replacement, or UI runtime replacement, the agent must read `docs/default_skin_size_ssot.md`. The default runtime size, collider envelope, or UI rect is the baseline contract unless the owner explicitly approves a size change. Wrapper work must remain labeled as wrapper work until the legacy model/mesh/texture is fully replaced. Primitive-only dummy meshes, rough placeholder geometry, and local Blender scripts without approved reference-derived silhouette/material cues are prototype evidence only, never production replacements.
+
+2026-07-08 3D parity amendment: if the default role is a 3D model or 3D scene with nonzero volume/depth, the production replacement must also preserve 3D volume/depth unless the owner explicitly approves a flat 2D downgrade. `Sprite3D`, billboards, screenshots, and reference PNGs can be used as references or interim visuals, but they cannot be marked as full 3D replacements for volumetric default roles. The cloud regression is the reset example: default `models/cloud.glb` is volumetric, so `cloud_large.png` as `CloudReferenceSprite` was only interim evidence. The production fix is the reference-derived volumetric GLB `assets/themes/candy_sky_islands/models/cloud_candy_volume.glb`, built from the approved Photoroom cloud reference alpha silhouette.
+
+2026-07-08 2D character to 3D amendment: when the owner supplies a 2D player character image/sheet, read `docs/reskin_2d_character_to_3d_runbook.md` before any generation or modeling. Required order: Photoroom the full owner source, polygon-extract a clean source pose/sprite, use 9Router with that extracted character as the reference to generate a full turnaround/multiview sprite sheet, Photoroom the full generated sheet, polygon-extract every generated view/sprite, then run 3D reconstruction/render. Do not use raw-sheet crop, grid slicing, primitive kitbash, manual reinterpretation, or single flat extrusion as production.
+
 ## Current Gate Report
 
 Current gate:
@@ -42,6 +48,7 @@ In scope:
 - Normalize old, reference, and future replacement asset paths into SSOT fields.
 - Add contracts that prove every visual role is represented in the manifest and theme config.
 - Replace visible assets only through approved asset groups and theme-owned paths.
+- Preserve 3D parity: volumetric default 3D roles need volumetric replacements or explicitly approved flat downgrade records.
 - Keep physics, camera, movement, scoring, falling platform behavior, scene reload, and level layout unchanged.
 - Record every accepted changed asset in `docs/asset_manifest.md`, `docs/reskin_checklist.md`, and `docs/reskin_state.md`.
 - Run validation and screenshot evidence for each applied group.
@@ -171,6 +178,7 @@ Decision for this gate:
 
 Every creative visual group must follow this sequence:
 
+0. Read `docs/default_skin_size_ssot.md` and identify the default role size, runtime rect, collider envelope, and current Candy Sky Islands state.
 1. Design options for the group.
 2. Owner approval of the group.
 3. Asset creation, generation, or local modeling only after approval.
@@ -179,13 +187,26 @@ Every creative visual group must follow this sequence:
 6. Do not crop from the raw sheet first.
 7. Do not use automatic grid slicing.
 8. Trim and QA alpha, edge contact, dimensions, and visual readability.
-9. Update manifest, checklist, state, and SSOT.
+9. Update manifest, checklist, state, default-size SSOT, and theme SSOT.
 10. Apply in game.
-11. Validate and capture proof screenshots.
+11. Validate default-size contract and capture proof screenshots.
+12. Reject primitive-only dummy replacements before production integration; production visuals must trace to approved real reference art, Photoroom/outline extraction, owner-approved generated art, or a model derived from those references.
+13. For owner-supplied 2D player characters, use `docs/reskin_2d_character_to_3d_runbook.md`: 9Router reference-based multiview sprites must be produced and Photoroom/polygon extracted before 3D reconstruction/render.
 
 ## Phased Design
 
-### Phase 0: SSOT Normalization
+### Phase 0A: Default Skin Size SSOT
+
+Create and maintain `docs/default_skin_size_ssot.md` before visual design work. This is the first baseline for default skin image pixel sizes, 3D AABB sizes, HUD runtime rects, collider envelope notes, replacement/wrapper state, pending roles, unused candidates, and SFX-deferred roles.
+
+Required outcome:
+
+- Every default visual/audio role is mapped to a Candy Sky Islands asset, wrapper state, pending state, unused candidate, or deferred SFX state.
+- Every wrapper role is marked as wrapper work, not full replacement, while legacy GLBs/meshes/textures remain.
+- Every future visual group updates this file before validation.
+- `test_default_skin_size_ssot_contract.gd` passes.
+
+### Phase 0B: Theme SSOT Normalization
 
 Create or extend theme-owned role fields for all visual asset groups. The first implementation should make the current state explicit before replacing more assets.
 
@@ -251,6 +272,7 @@ The later SFX gate should cover:
 The implementation plan must include:
 
 - All Godot script tests: `tests/test_*.gd`.
+- Default skin size SSOT contract: `test_default_skin_size_ssot_contract.gd`.
 - Deep-reskin manifest contract.
 - Deep-reskin SSOT contract.
 - Audio inventory contract that includes `break` and `fall`.
@@ -268,6 +290,8 @@ Do not claim mobile, web, publish, or SFX readiness from this validation.
 - Platform model replacement can break collision shape expectations if wrapper scale does not match.
 - Skybox replacement can change readability and contrast.
 - Generated sheets can drift, overlap, or create bad object boundaries; use Photoroom full-sheet first and owner polygon extraction only.
+- Local primitive-only models can look fast but fail art-direction truth. Treat them as prototypes unless their silhouette/material cues are explicitly derived from approved reference assets.
+- Flat 2D reference art can remove bad dummy geometry, but it is not enough for a volumetric default role. Track it as interim/reference state until a real 3D replacement exists.
 - Worktree is already dirty. Implementation must stage only related files and must not revert unrelated changes.
 
 ## Approval Status

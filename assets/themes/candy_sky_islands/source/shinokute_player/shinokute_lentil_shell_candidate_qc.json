@@ -1,0 +1,26 @@
+{
+  "candidate": "assets/themes/candy_sky_islands/models/character_shinokute_lentil_shell_candidate.glb",
+  "preview_contact_sheet": "docs/screenshots/shinokute_lentil_shell_candidate_preview/contact_sheet.png",
+  "status": "rejected_diagnostic_candidate_not_integrated",
+  "method": "image-derived lentil shell using accepted albedo attempt 2 front/back sprites plus left/right alpha-silhouette depth walls with SSOT fabric/skin/shoe material bands, alpha-silhouette mesh rows, and alpha-clipped image materials",
+  "pass": [
+    "front view uses the accepted Shinokute front sprite and preserves face, hoodie text, shorts, exposed legs, socks, and red shoes",
+    "back view uses the accepted Shinokute back sprite",
+    "large black side slab from the first shell attempt is removed",
+    "duplicate textured side-panel ghosting from the second shell attempt is removed",
+    "side view now carries basic material zones instead of one all-black silhouette",
+    "no naive atlas UV projection is used, so the prior skin/hood/leg projection bleed is avoided on the direct sprite surfaces"
+  ],
+  "fail": [
+    "owner rejected the two-half lentil shell / image-shell method on 2026-07-08",
+    "side material bands are coarse and not yet real textured side-body detail",
+    "side walls are not yet stitched into one continuous detailed surface",
+    "current geometry is not production quality for Godot player integration"
+  ],
+  "next_valid_steps": [
+    "use clean multiview inputs and an owner-approved AI 3D generator or Blender plugin/API",
+    "run Blender cleanup, retopo or topology cleanup, UV unwrap, texture bake, rig preparation, and FBX/GLB export",
+    "do not return to front/back shell, card-rig, billboard, or two-half bean geometry unless the owner explicitly reopens that method",
+    "do not integrate this GLB into objects/character.tscn before owner approval"
+  ]
+}

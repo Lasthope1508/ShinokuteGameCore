@@ -1,0 +1,162 @@
+{
+  "atlas": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\projection\\shinokute_projection_atlas.png",
+  "cell_size": 768,
+  "columns": 4,
+  "rows": 2,
+  "views": {
+    "front": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front.png",
+      "cell": [
+        0,
+        0
+      ],
+      "atlas_rect_px": [
+        261,
+        40,
+        245,
+        688
+      ],
+      "uv_rect": [
+        0.0849609375,
+        0.5260416666666667,
+        0.07975260416666667,
+        0.4479166666666667
+      ]
+    },
+    "back": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back.png",
+      "cell": [
+        1,
+        0
+      ],
+      "atlas_rect_px": [
+        1038,
+        40,
+        228,
+        688
+      ],
+      "uv_rect": [
+        0.337890625,
+        0.5260416666666667,
+        0.07421875,
+        0.4479166666666667
+      ]
+    },
+    "left_side": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_left_side.png",
+      "cell": [
+        2,
+        0
+      ],
+      "atlas_rect_px": [
+        1811,
+        40,
+        218,
+        688
+      ],
+      "uv_rect": [
+        0.5895182291666666,
+        0.5260416666666667,
+        0.07096354166666667,
+        0.4479166666666667
+      ]
+    },
+    "front_left_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front_left_3q.png",
+      "cell": [
+        3,
+        0
+      ],
+      "atlas_rect_px": [
+        2598,
+        40,
+        180,
+        688
+      ],
+      "uv_rect": [
+        0.845703125,
+        0.5260416666666667,
+        0.05859375,
+        0.4479166666666667
+      ]
+    },
+    "front_right_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_front_right_3q.png",
+      "cell": [
+        0,
+        1
+      ],
+      "atlas_rect_px": [
+        277,
+        808,
+        214,
+        688
+      ],
+      "uv_rect": [
+        0.09016927083333333,
+        0.02604166666666663,
+        0.06966145833333333,
+        0.4479166666666667
+      ]
+    },
+    "right_side": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_right_side.png",
+      "cell": [
+        1,
+        1
+      ],
+      "atlas_rect_px": [
+        1064,
+        808,
+        175,
+        688
+      ],
+      "uv_rect": [
+        0.3463541666666667,
+        0.02604166666666663,
+        0.056966145833333336,
+        0.4479166666666667
+      ]
+    },
+    "back_left_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back_left_3q.png",
+      "cell": [
+        2,
+        1
+      ],
+      "atlas_rect_px": [
+        1818,
+        808,
+        203,
+        688
+      ],
+      "uv_rect": [
+        0.591796875,
+        0.02604166666666663,
+        0.06608072916666667,
+        0.4479166666666667
+      ]
+    },
+    "back_right_3q": {
+      "source": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\shinokute_player\\anatomy_turnaround_pool\\shinokute_anatomy_back_right_3q.png",
+      "cell": [
+        3,
+        1
+      ],
+      "atlas_rect_px": [
+        2580,
+        808,
+        216,
+        688
+      ],
+      "uv_rect": [
+        0.83984375,
+        0.02604166666666663,
+        0.0703125,
+        0.4479166666666667
+      ]
+    }
+  },
+  "source": "9Router Hunyuan-anatomy corrected sheet, Photoroom full sheet first, component polygon extracted pool",
+  "source_mode": "anatomy"
+}

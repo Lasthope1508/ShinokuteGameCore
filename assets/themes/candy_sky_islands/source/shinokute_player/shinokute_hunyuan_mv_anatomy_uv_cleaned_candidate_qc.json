@@ -1,0 +1,18 @@
+{
+  "updated": "2026-07-08",
+  "candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_cleaned_candidate.glb",
+  "source_candidate": "res://assets/themes/candy_sky_islands/models/character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "rendered_via": "Blender MCP socket execute_code on port 9876",
+  "preview": "res://docs/screenshots/shinokute_hunyuan_mv_anatomy_uv_cleaned_candidate_preview/contact_sheet.png",
+  "status": "review_candidate_not_integrated",
+  "checks": {
+    "real_3d_volume": true,
+    "face_skin_more_readable_than_uv_candidate": true,
+    "hoodie_and_shoes_preserved": true,
+    "blocky_skin_cleanup_artifacts": true,
+    "leg_projection_artifacts_remain": true,
+    "integrated_to_character_scene": false
+  },
+  "decision": "not_production_without_owner_review",
+  "notes": "SSOT-zone cleanup improves facial readability but creates blockier hands/legs. Keep as comparison evidence only unless owner approves this look or asks for another cleanup pass."
+}

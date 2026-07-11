@@ -1,0 +1,18 @@
+{
+  "source": "assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_uv_candidate.glb",
+  "output": "assets\\themes\\candy_sky_islands\\models\\character_shinokute_hunyuan_mv_anatomy_uv_skin_v5_candidate.glb",
+  "bounds_size": [
+    0.629676,
+    0.410761,
+    1.956832
+  ],
+  "front_axis": "negative_y",
+  "counts": {
+    "face": 1116,
+    "neck": 50,
+    "hands": 9238,
+    "legs": 13984,
+    "socks": 4679
+  },
+  "status": "candidate_not_integrated"
+}

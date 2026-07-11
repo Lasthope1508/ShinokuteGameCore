@@ -1,0 +1,39 @@
+{
+  "source_alpha_sheet": "assets/themes/candy_sky_islands/source/deep_collectible_star_candy_reference_attempt2_photoroom.png",
+  "output": "assets/themes/candy_sky_islands/deep_star_candy_model_reference.png",
+  "method": "single isolated object alpha trim from Photoroom full-image output after owner permission; no raw-sheet crop; no grid slicing",
+  "source_size": [
+    1254,
+    1254
+  ],
+  "trim_bbox_px": [
+    169,
+    112,
+    919,
+    949
+  ],
+  "raw_alpha_bbox_px": [
+    177,
+    120,
+    903,
+    933
+  ],
+  "padding_px": 8,
+  "mode": "RGBA",
+  "size": [
+    919,
+    949
+  ],
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "corner_alpha": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "edge_foreground_ratio_alpha_gt_8": 0.0,
+  "status": "pass"
+}
