@@ -13,6 +13,10 @@ func _run() -> void:
 		return
 
 	var router_script := load(ROUTER_SCRIPT_PATH)
+	var router_source := FileAccess.get_file_as_string(ROUTER_SCRIPT_PATH)
+	passed = _assert_true(router_source.find("web_android") >= 0 and router_source.find("web_ios") >= 0, "Web mobile detection should use Godot web_android/web_ios feature tags") and passed
+	passed = _assert_true(router_source.find("navigator.maxTouchPoints") < 0, "Desktop HTML5 must not show mobile controls just because browser reports touch capability") and passed
+	passed = _assert_true(router_source.find("pointer: coarse") < 0, "Desktop HTML5 must not show mobile controls from coarse-pointer media query") and passed
 	var router: Node = router_script.new()
 	root.add_child(router)
 	await process_frame

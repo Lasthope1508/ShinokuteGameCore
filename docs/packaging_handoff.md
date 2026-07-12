@@ -352,9 +352,11 @@ Required smoke:
 3. Enter or skip username prompt.
 4. Reach gameplay Level 1.
 5. Move, jump, double jump, collect one star candy, and fall/retry once.
-6. On mobile/iOS, test left thumbstick, right jump, right-side look, pinch zoom,
+6. On desktop Web, confirm the mobile thumbstick/jump overlay is not visible on
+   load; desktop Web uses keyboard/mouse/gamepad only.
+7. On mobile/iOS, test left thumbstick, right jump, right-side look, pinch zoom,
    portrait to landscape rotation, and landscape to portrait rotation.
-7. Console must have no errors.
+8. Console must have no errors.
 
 If this smoke was not run in the current pass, say "Web export built, gameplay
 smoke not completed" instead of "ready".

@@ -240,6 +240,7 @@ Core Learning Gate:
 Platform Input Matrix:
 - Record PC keyboard/mouse, mobile touch, iOS Web, Android Web/native, HTML5 desktop, and Roblox parity expectations before changing controls.
 - Input behavior must route through one core input path where possible; platform adapters may translate gestures, but must not create a second camera/movement path.
+- HTML5 desktop and HTML5 mobile are separate runtime profiles. Desktop Web uses keyboard/mouse/gamepad and must not show the mobile thumbstick/jump overlay on load. Web mobile enables touch overlay only through Godot mobile Web feature tags such as `web_android`/`web_ios`, native mobile tags, or explicit test/owner force; do not auto-enable it from generic browser touch capability such as `navigator.maxTouchPoints` or CSS coarse pointer, because Windows touch laptops and browser emulation can report those on desktop.
 
 Export Audit:
 - After core/schema/export edits, scan `export_presets.cfg` and the generated PCK for stale game-local schema names, authoring-only files, debug/source paths, old JS globals, and missing selected runtime helpers.

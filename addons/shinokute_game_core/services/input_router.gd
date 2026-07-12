@@ -160,9 +160,6 @@ func _detect_touch_supported() -> bool:
 		return false
 	if OS.has_feature("android") or OS.has_feature("ios") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
 		return true
-	if OS.has_feature("web") and ClassDB.class_exists("JavaScriptBridge"):
-		var result = JavaScriptBridge.eval("(navigator.maxTouchPoints || 0) > 0 || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)", true)
-		return bool(result)
 	return false
 
 func _release_web_code_actions(code: String) -> void:
