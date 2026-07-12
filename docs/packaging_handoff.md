@@ -12,8 +12,16 @@ payload-size audit, or any package-ready claim for Candy Sky Islands.
 - Godot console on this machine: `C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe`
 - Web preset name: `Web`
 - Main scene: `res://scenes/main.tscn`
-- Firebase project: `foodapp-7ff6b`
+- Firebase preview project: `foodapp-7ff6b`
+- Firebase preview hosting target: `candy-preview`
+- Firebase preview site: `foodapp-7ff6b`
 - Firebase preview channel for owner device testing: `candy-sky-islands-test`
+- Firebase production project for `play.shinokute.com`: `shinokute-studio`
+- Firebase production hosting target: `shinokute-play`
+- Firebase production site: `shinokute-play`
+- Production domain: `play.shinokute.com`
+- Production DNS verified on 2026-07-12: `play.shinokute.com` CNAMEs to
+  `shinokute-play.web.app`.
 
 Do not use `origin` for pushing this game branch. `origin` points at the
 upstream Kenney starter kit. Use `shinokute-core` for Candy Sky Islands.
@@ -25,6 +33,10 @@ Current supported package target is Web/HTML5 only.
 Do not claim Android, Play Store, or full package-ready status. Android is
 blocked until an Android export preset, signing profile, fresh AAB export, AAB
 forbidden-marker scan, and Android size table exist.
+
+Production Web deploy to `play.shinokute.com` is allowed only after the owner
+approves production deploy for the current build. Preview deploy remains the
+default for owner device testing.
 
 ## Runtime Source Of Truth
 
@@ -107,9 +119,11 @@ if ($failures.Count -gt 0) {
 Write-Host "CANDY_FULL_TEST_SWEEP_PASS count=$($tests.Count)"
 ```
 
-## Sync For Firebase Preview
+## Sync For Firebase Preview And Production
 
-After a fresh export succeeds, sync the export folder used by Firebase:
+After a fresh export succeeds, sync the export folder used by Firebase. Both
+preview and production targets publish from `Export_web_test/`, so this sync is
+mandatory before either deploy.
 
 ```powershell
 $project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
@@ -119,17 +133,62 @@ New-Item -ItemType Directory -Force -Path "$project\Export_web_test" | Out-Null
 Copy-Item -LiteralPath (Get-ChildItem -LiteralPath "$project\Export" -File).FullName -Destination "$project\Export_web_test" -Force
 ```
 
-Then deploy preview only, unless the owner explicitly asks for production:
+Then deploy preview for owner device testing:
 
 ```powershell
-firebase hosting:channel:deploy candy-sky-islands-test --project foodapp-7ff6b --expires 7d
+firebase hosting:channel:deploy candy-sky-islands-test --only hosting:candy-preview --project foodapp-7ff6b --expires 7d
 ```
 
-Production deploy command, owner approval required:
+Production deploy to `play.shinokute.com`, owner approval required:
 
 ```powershell
-firebase deploy --only hosting --project foodapp-7ff6b
+firebase deploy --only hosting:shinokute-play --project shinokute-studio
 ```
+
+Before production deploy, verify the target still points at the production site:
+
+```powershell
+firebase hosting:sites:list --project shinokute-studio
+nslookup play.shinokute.com
+```
+
+Expected:
+
+- `shinokute-studio` lists site `shinokute-play`.
+- `play.shinokute.com` resolves through `shinokute-play.web.app`.
+
+If either check fails, stop. Do not deploy production by guessing another site.
+
+## Android / Play Store Handoff
+
+Android is not configured in this source yet. Current `export_presets.cfg` has
+only one preset:
+
+```text
+name="Web"
+platform="Web"
+```
+
+The packaging agent must not create an AAB by guessing package id, signing, or
+Play Store settings. Android remains blocked until source receives all of these:
+
+- Android export preset in `export_presets.cfg`, preferably named `Android`.
+- Package id / unique name approved by owner.
+- Version name and version code policy.
+- Release keystore path, alias, and password-source policy.
+- Target architecture policy.
+- Min/target SDK policy.
+- Android icon/splash/adaptive icon policy.
+- AAB export path, expected `Export_android/` or equivalent output folder.
+- AAB forbidden-marker scan command and expected marker list.
+- Android size table and budget.
+- Device smoke checklist for touch controls, rotation, audio, settings,
+  leaderboard/username, win/death retry, and level progression.
+
+When those inputs exist, update this handoff, `export_presets.cfg`, and
+`tests/test_packaging_handoff_contract.gd` in the same source commit. Until
+then, the correct Android report is:
+`Android blocked: no Android preset or signing handoff in source`.
 
 ## Payload Hygiene Scan
 
@@ -200,6 +259,10 @@ A packaging agent must report:
 - PCK marker scan result.
 - Size table with fresh values.
 - Firebase command used and preview URL, if deployed.
+- Production command used and `https://play.shinokute.com` result, if production
+  was owner-approved.
+- Android AAB command, signing status, AAB scan, size table, and device smoke
+  result, if Android has been configured. Otherwise report the Android blocker.
 - Web smoke path and result.
 - Explicit blockers: Android unsupported, smoke not run, Firebase auth missing,
   or any payload marker/size failure.

@@ -1,5 +1,22 @@
 {
   "projects": {
-    "default": "foodapp-7ff6b"
+    "default": "foodapp-7ff6b",
+    "play": "shinokute-studio"
+  },
+  "targets": {
+    "foodapp-7ff6b": {
+      "hosting": {
+        "candy-preview": [
+          "foodapp-7ff6b"
+        ]
+      }
+    },
+    "shinokute-studio": {
+      "hosting": {
+        "shinokute-play": [
+          "shinokute-play"
+        ]
+      }
+    }
   }
 }
