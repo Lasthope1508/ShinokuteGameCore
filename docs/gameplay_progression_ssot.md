@@ -60,16 +60,20 @@ for a forward double jump, then caps route landing-point distance to a safety
 factor of that measured jump envelope. Do not validate jumps only against a
 guessed or hand-written `max_step_distance`.
 
-- consecutive horizontal step distance within the measured player jump envelope
-  safety cap,
+- consecutive clear landing gap at least `gap_distance` and within the measured
+  player jump envelope safety cap,
 - consecutive vertical delta within `max_step_height`,
+- lateral X/Z route width at least `route_width` so generated maps are not a
+  one-axis line,
 - no final-goal falling hazard,
 - falling platform delay at least `0.20s`,
 - generated hazard count matching `hazard_count`.
 
-Generated obby routes must also honor `route_length` as the actual start-to-goal
-span. If a longer route would make adjacent landing points too far apart, raise
-`platform_count` in `layout_profile`; do not silently shorten the generated map.
+Generated obby routes must also honor `route_length` as cumulative clear
+traversal gap length, not as a single straight-line start-to-goal span. A 3D
+obby must be allowed to snake through X/Z space. If a longer route would make
+adjacent landing gaps too far apart, raise `platform_count` in
+`layout_profile`; do not silently shorten the generated map.
 
 Manual playtest remains required after the contract passes. Contract pass means
 the route is inside the measured movement envelope; it does not replace playing

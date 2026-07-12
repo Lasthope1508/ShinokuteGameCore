@@ -4,6 +4,12 @@ const CONFIG_PATH := "res://Resources/Data/Progression/candy_sky_islands_obby_pr
 const GENERATOR_PATH := "res://scripts/obby_route_generator.gd"
 const PLAYER_SCENE := "res://objects/player.tscn"
 const JUMP_DISTANCE_SAFETY_FACTOR := 0.80
+const PLATFORM_RADIUS_BY_KIND := {
+	"small": 1.0,
+	"falling": 1.1,
+	"medium": 1.5,
+	"large": 2.5
+}
 
 var _passed := true
 
@@ -135,11 +141,16 @@ func _validate_level(level: Resource, generator_script: Script, index: int, allo
 	var start_pos := _vector3_from_value(route[0].get("position", Vector3.ZERO))
 	var goal_pos := _vector3_from_value(route[route.size() - 1].get("position", Vector3.ZERO))
 	var generated_span := Vector2(goal_pos.x - start_pos.x, goal_pos.z - start_pos.z).length()
-	_assert_true(absf(generated_span - route_length) <= 0.01, "Level %s generated span %.2f should match route_length %.2f" % [index, generated_span, route_length])
+	_assert_true(generated_span > 0.0, "Level %s generated start-to-goal span should be positive" % index)
 	var max_step := float(layout.get("max_step_distance", allowed_step_distance))
 	var step_limit := minf(allowed_step_distance, max_step)
 	var max_height := float(layout.get("max_step_height", 0.55))
+	var gap_distance := float(layout.get("gap_distance", 0.0))
+	var route_width := float(layout.get("route_width", 0.0))
 	var hazard_count := 0
+	var cumulative_clear_gap := 0.0
+	var min_z := start_pos.z
+	var max_z := start_pos.z
 	for segment_index in range(1, route.size()):
 		var previous: Dictionary = route[segment_index - 1]
 		var current: Dictionary = route[segment_index]
@@ -147,15 +158,28 @@ func _validate_level(level: Resource, generator_script: Script, index: int, allo
 		var current_pos := _vector3_from_value(current.get("position", Vector3.ZERO))
 		var horizontal := Vector2(current_pos.x - previous_pos.x, current_pos.z - previous_pos.z).length()
 		var vertical := absf(current_pos.y - previous_pos.y)
-		_assert_true(horizontal <= step_limit + 0.01, "Level %s step %s horizontal %.2f should be <= min(measured jump cap %.2f, max_step_distance %.2f)" % [index, segment_index, horizontal, allowed_step_distance, max_step])
+		var previous_radius := _platform_radius(String(previous.get("platform", "small")))
+		var current_radius := _platform_radius(String(current.get("platform", "small")))
+		var clear_gap: float = maxf(0.0, horizontal - previous_radius - current_radius)
+		cumulative_clear_gap += clear_gap
+		min_z = minf(min_z, current_pos.z)
+		max_z = maxf(max_z, current_pos.z)
+		_assert_true(clear_gap >= gap_distance - 0.05, "Level %s step %s clear landing gap %.2f should use layout gap_distance %.2f instead of crowding platform centers" % [index, segment_index, clear_gap, gap_distance])
+		_assert_true(clear_gap <= step_limit + 0.01, "Level %s step %s clear landing gap %.2f should be <= min(measured jump cap %.2f, max_step_distance %.2f)" % [index, segment_index, clear_gap, allowed_step_distance, max_step])
 		_assert_true(vertical <= max_height + 0.01, "Level %s step %s vertical %.2f should be <= %.2f" % [index, segment_index, vertical, max_height])
 		if String(current.get("platform", "")) == "falling":
 			hazard_count += 1
 			_assert_true(segment_index < route.size() - 1, "Level %s falling hazard should not be final goal step" % index)
+	var lateral_span := max_z - min_z
+	_assert_true(cumulative_clear_gap >= route_length - 0.05, "Level %s cumulative clear route %.2f should honor route_length %.2f" % [index, cumulative_clear_gap, route_length])
+	_assert_true(lateral_span >= route_width - 0.05, "Level %s lateral route width %.2f should honor route_width %.2f so 3D obby is not a one-axis line" % [index, lateral_span, route_width])
 	var expected_hazards := int(layout.get("hazard_count", 0))
 	_assert_eq(hazard_count, expected_hazards, "Level %s generated hazard count should match layout_profile" % index)
 	var trigger_delay := float(profile.get("falling_platform_trigger_delay", 0.0))
 	_assert_true(trigger_delay >= 0.20, "Level %s falling platforms need at least 0.20s delay for jump recovery" % index)
+
+func _platform_radius(kind: String) -> float:
+	return float(PLATFORM_RADIUS_BY_KIND.get(kind, PLATFORM_RADIUS_BY_KIND["small"]))
 
 func _vector3_from_value(value) -> Vector3:
 	if value is Vector3:
