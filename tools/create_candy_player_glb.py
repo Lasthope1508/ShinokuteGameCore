@@ -247,6 +247,6 @@ def export(path):
 if __name__ == "__main__":
     clear_scene()
     build_player()
-    output = OUT_DIR / "character_candy_marshmallow.glb"
+    output = ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "model_candidates" / "character_candy_marshmallow.glb"
     export(output)
     print("wrote", output)

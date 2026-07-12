@@ -192,6 +192,33 @@ Expected:
 - No parse errors.
 - No missing resource errors for changed assets.
 
+## Gate 4B: Web Payload Hygiene
+
+Run after any export preset, `.import`, audio, asset, `.gdignore`, or selected-resource change.
+
+```powershell
+$pck = Join-Path $project 'Export\candy_sky_islands.pck'
+if (-not (Test-Path -LiteralPath $pck)) {
+  Write-Error "Missing Web PCK: $pck"
+  exit 1
+}
+
+$paths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $pck | Sort-Object -Unique
+$bad = $paths | Where-Object {
+  $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+}
+if ($bad) {
+  Write-Error "PCK forbidden marker scan failed:`n$($bad -join "`n")"
+  exit 1
+}
+Write-Host "Gate 4B PASS: PCK forbidden marker scan clean; path_count=$($paths.Count)"
+```
+
+Expected:
+- Exit code `0`.
+- No `docs`, `debug`, `tests`, `tools`, `source`, raw, candidate, local absolute path, legacy root mesh, or old colormap markers in Web PCK.
+- `models/.gdignore`, `meshes/.gdignore`, `assets/themes/candy_sky_islands/source/.gdignore`, and `assets/themes/candy_sky_islands/source/branding_raw/.gdignore` exist when legacy/source evidence remains on disk.
+
 ## Gate 5: Gameplay Smoke
 
 Launch the project:

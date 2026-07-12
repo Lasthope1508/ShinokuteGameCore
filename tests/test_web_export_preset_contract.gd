@@ -44,6 +44,11 @@ const FORBIDDEN_EXPORT_FILES := [
 	"res://Resources/GameProgressionConfig.gd",
 	"res://Resources/GameLevelDefinition.gd",
 	"res://Resources/Data/Themes/candy_sky_islands/theme_config.tres",
+	"res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands_raw.png",
+	"res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands_raw.png",
+	"res://meshes/dust.res",
+	"res://meshes/brick.res",
+	"res://models/Textures/colormap.png",
 ]
 
 const RUNTIME_THEME := "res://Resources/Data/Themes/candy_sky_islands/theme_runtime_export.tres"
@@ -59,6 +64,43 @@ const FORBIDDEN_INCLUDE_PATTERNS := [
 	"*.tres",
 	"assets/**",
 	"Assets/**",
+]
+
+const AUTHORING_GDIGNORE_DIRS := [
+	"res://docs",
+	"res://debug",
+	"res://output",
+	"res://tools",
+	"res://Export",
+	"res://Export_web_test",
+	"res://models",
+	"res://meshes",
+	"res://assets/themes/candy_sky_islands/source",
+	"res://assets/themes/candy_sky_islands/source/branding_raw",
+	"res://assets/themes/candy_sky_islands/source/model_candidates",
+]
+
+const FORBIDDEN_RUNTIME_FILES := [
+	"res://assets/themes/candy_sky_islands/branding/logo_candy_sky_islands_raw.png",
+	"res://assets/themes/candy_sky_islands/branding/splash_candy_sky_islands_raw.png",
+	"res://assets/themes/candy_sky_islands/models/character_candy_marshmallow.glb",
+	"res://assets/themes/candy_sky_islands/models/character_shinokute_human.glb",
+	"res://assets/themes/candy_sky_islands/models/character_shinokute_human_shinokute_idle_sign_pose_clean_ref.png",
+	"res://assets/themes/candy_sky_islands/models/cloud_candy.glb",
+]
+
+const ACTIVE_GLB_IMPORTS := [
+	"res://assets/themes/candy_sky_islands/models/brick_candy_wafer.glb.import",
+	"res://assets/themes/candy_sky_islands/models/character_chr077_skeleton_mage.glb.import",
+	"res://assets/themes/candy_sky_islands/models/cloud_candy_volume.glb.import",
+	"res://assets/themes/candy_sky_islands/models/goal_candy_pennant.glb.import",
+	"res://assets/themes/candy_sky_islands/models/grass_candy.glb.import",
+	"res://assets/themes/candy_sky_islands/models/grass_candy_small.glb.import",
+	"res://assets/themes/candy_sky_islands/models/platform_candy_falling.glb.import",
+	"res://assets/themes/candy_sky_islands/models/platform_candy_medium.glb.import",
+	"res://assets/themes/candy_sky_islands/models/platform_candy_round_large.glb.import",
+	"res://assets/themes/candy_sky_islands/models/platform_candy_small.glb.import",
+	"res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb.import",
 ]
 
 func _init() -> void:
@@ -89,6 +131,12 @@ func _init() -> void:
 	for pattern in FORBIDDEN_INCLUDE_PATTERNS:
 		passed = _assert_not_contains(text, "include_filter=\"%s" % pattern, "Web export include_filter must not use broad pattern %s" % pattern) and passed
 		passed = _assert_not_contains(text, ",%s" % pattern, "Web export include_filter must not use broad pattern %s" % pattern) and passed
+	for path in AUTHORING_GDIGNORE_DIRS:
+		passed = _assert_true(FileAccess.file_exists("%s/.gdignore" % path), "Authoring/build dir should be hidden from Godot import: %s" % path) and passed
+	for path in FORBIDDEN_RUNTIME_FILES:
+		passed = _assert_true(not FileAccess.file_exists(path), "Authoring-only or rejected asset should live under ignored source, not runtime folders: %s" % path) and passed
+	for path in ACTIVE_GLB_IMPORTS:
+		passed = _assert_file_contains(path, "meshes/generate_lods=false", "Candy runtime GLB import should disable LOD generation to avoid non-finite-normal LOD warnings: %s" % path) and passed
 	for path in REQUIRED_EXPORT_FILES:
 		passed = _assert_contains(text, path, "Web export selected resources should include %s" % path) and passed
 	for path in FORBIDDEN_EXPORT_FILES:
@@ -109,6 +157,19 @@ func _assert_contains(text: String, needle: String, message: String) -> bool:
 func _assert_not_contains(text: String, needle: String, message: String) -> bool:
 	if text.contains(needle):
 		push_error("%s: unexpected '%s'" % [message, needle])
+		return false
+	return true
+
+func _assert_file_contains(path: String, needle: String, message: String) -> bool:
+	if not FileAccess.file_exists(path):
+		push_error("%s: missing %s" % [message, path])
+		return false
+	var text := FileAccess.get_file_as_string(path)
+	return _assert_contains(text, needle, message)
+
+func _assert_true(value: bool, message: String) -> bool:
+	if not value:
+		push_error(message)
 		return false
 	return true
 

@@ -94,6 +94,6 @@ def export(path):
 if __name__ == "__main__":
     clear_scene()
     add_cloud()
-    output = OUT_DIR / "cloud_candy.glb"
+    output = ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "model_candidates" / "cloud_candy.glb"
     export(output)
     print("wrote", output)

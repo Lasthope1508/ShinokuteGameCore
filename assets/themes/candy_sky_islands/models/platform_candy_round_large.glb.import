@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://vmfxhkrohdew"
+uid="uid://b6lfvn8dpa0bd"
 path="res://.godot/imported/platform_candy_round_large.glb-c7acca19854fcedc6a65d5328dcf3294.scn"
 
 [deps]
@@ -19,7 +19,7 @@ nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
 meshes/ensure_tangents=true
-meshes/generate_lods=true
+meshes/generate_lods=false
 meshes/create_shadow_meshes=true
 meshes/light_baking=1
 meshes/lightmap_texel_size=0.2

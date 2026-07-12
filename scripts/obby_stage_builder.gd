@@ -1,5 +1,7 @@
 extends Node3D
 
+const CandyObbyRouteGenerator := preload("res://scripts/obby_route_generator.gd")
+
 @export var small_platform_scene: PackedScene
 @export var medium_platform_scene: PackedScene
 @export var large_platform_scene: PackedScene
@@ -17,11 +19,11 @@ func apply_difficulty_profile(profile: Dictionary) -> void:
 	_generated_root = Node3D.new()
 	_generated_root.name = generated_root_name
 	add_child(_generated_root)
-	var segments: Array = profile.get("stage_segments", [])
+	var segments: Array = CandyObbyRouteGenerator.build_stage_segments(profile)
 	for index in segments.size():
 		var segment: Dictionary = segments[index]
 		_spawn_segment(segment, index, profile)
-	var environment_segments: Array = profile.get("environment_segments", [])
+	var environment_segments: Array = CandyObbyRouteGenerator.build_environment_segments(profile, segments)
 	for index in environment_segments.size():
 		var segment: Dictionary = environment_segments[index]
 		_spawn_environment_segment(segment, index)

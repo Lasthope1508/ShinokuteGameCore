@@ -1,6 +1,6 @@
 extends SceneTree
 
-const MODEL_PATH := "res://assets/themes/candy_sky_islands/models/character_shinokute_human.glb"
+const MODEL_PATH := "res://assets/themes/candy_sky_islands/source/model_candidates/character_shinokute_human.glb"
 
 func _init():
 	var scene = load(MODEL_PATH)

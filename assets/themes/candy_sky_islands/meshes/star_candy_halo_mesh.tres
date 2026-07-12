@@ -22,4 +22,4 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAUri0IwrXoz4AAAAAUJG0va+H+D0AAAAANNKbvnOEyj0AAAAAEBUSvizcPb0AAAAAAJtAvqKMhL4AAAAAMyP+o5qZGb4AAAAAAJtAPqKMhL4AAAAAEBUSPizcPb0AAAAANNKbPnOEyj0AAAAAUJG0Pa+H+D0AAAAA")
 }]
 metadata/source_asset = "res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb"
-metadata/source_method = "tools/create_candy_collectible_glb.py star_points outer=0.32 inner=0.15"
+metadata/source_method = "star_points outer=0.32 inner=0.15"

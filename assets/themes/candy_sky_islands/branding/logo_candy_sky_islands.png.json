@@ -1,7 +1,7 @@
 {
   "tool": "photoroom_browser_turnstile_segment",
   "port": 9223,
-  "inputPath": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\branding\\logo_candy_sky_islands_raw.png",
+  "inputPath": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\source\\branding_raw\\logo_candy_sky_islands_raw.png",
   "outputPath": "C:\\Users\\Admin\\Desktop\\Godot Casual Games\\Html5_SourceGames\\Godot\\quantum_starter\\assets\\themes\\candy_sky_islands\\branding\\logo_candy_sky_islands.png",
   "bytes": 1632767,
   "status": 200,

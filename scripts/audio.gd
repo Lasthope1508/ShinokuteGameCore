@@ -106,6 +106,8 @@ func play_bgm(path: String, volume_db: float = -14.0) -> void:
 	if stream == null:
 		push_warning("BGM not found: %s" % path)
 		return
+	if stream is AudioStreamOggVorbis:
+		stream.loop = true
 	bgm_player.stream = stream
 	bgm_player.volume_db = volume_db
 	if bgm_enabled:

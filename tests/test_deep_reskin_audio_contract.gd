@@ -1,6 +1,7 @@
 extends SceneTree
 
 const THEME_PATH := "res://Resources/Data/Themes/candy_sky_islands/theme_config.tres"
+const BGM_IMPORT_PATH := "res://sounds/candy_sky_islands/bgm_candy_island_main.ogg.import"
 const AUDIO_SCRIPT := "res://scripts/audio.gd"
 const MAIN_SCRIPT := "res://scripts/main.gd"
 const PLAYER_SCRIPT := "res://scripts/player.gd"
@@ -23,6 +24,9 @@ func _init() -> void:
 	var theme := load(THEME_PATH)
 	passed = passed and _assert_true(theme != null, "Candy theme should load")
 	if theme != null:
+		var bgm_path := String(theme.get("bgm_track_path"))
+		passed = passed and _assert_true(not bgm_path.is_empty(), "Theme should expose bgm_track_path")
+		passed = passed and _assert_true(ResourceLoader.exists(bgm_path), "Theme BGM path should exist: %s" % bgm_path)
 		var audio_event_paths = theme.get("audio_event_paths")
 		passed = passed and _assert_true(audio_event_paths is Dictionary, "Theme should expose audio_event_paths")
 		if audio_event_paths is Dictionary:
@@ -32,6 +36,8 @@ func _init() -> void:
 					passed = passed and _assert_true(ResourceLoader.exists(audio_event_paths[event_name]), "%s audio path should exist: %s" % [event_name, audio_event_paths[event_name]])
 	passed = passed and _assert_file_contains(AUDIO_SCRIPT, "func configure_events", "Audio should expose configure_events")
 	passed = passed and _assert_file_contains(AUDIO_SCRIPT, "func play_event", "Audio should expose play_event")
+	passed = passed and _assert_file_contains(AUDIO_SCRIPT, "stream.loop = true", "Audio.play_bgm should force native stream loop for platform exports")
+	passed = passed and _assert_file_contains(BGM_IMPORT_PATH, "loop=true", "BGM import must enable native OGG looping")
 	passed = passed and _assert_file_contains(MAIN_SCRIPT, "has_method(\"configure_events\")", "Main should guard audio event configuration")
 	passed = passed and _assert_file_contains(MAIN_SCRIPT, "Audio.configure_events(theme_config.audio_event_paths)", "Main should configure Audio from theme_config.audio_event_paths")
 	passed = passed and _assert_file_contains(PLAYER_SCRIPT, PLAYER_CORE_SCRIPT, "Candy player should inherit core controller for player audio events")

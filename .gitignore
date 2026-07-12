@@ -17,3 +17,12 @@ mono_crash.*.json
 # Kenney ignores
 build/
 .superpowers/
+
+# Local deploy/build/test artifacts
+.firebase/
+Export/
+Export_web_test/
+output/
+debug/*.log
+tools/__pycache__/
+assets/themes/*/source/**/*.import

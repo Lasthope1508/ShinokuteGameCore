@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "assets" / "themes" / "candy_sky_islands" / "branding"
+RAW_DIR = ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "branding_raw"
 IMAGE_URL = os.environ.get("NINEROUTER_IMAGE_URL", "https://img.teelab247.com").rstrip("/")
 MODEL = "cx/gpt-5.5-image"
 
@@ -90,8 +91,8 @@ def _post_image(prompt: str, size: str, output_path: Path) -> None:
 def main() -> int:
 	_ensure_model_available()
 	_post_image(ICON_PROMPT, "1024x1024", OUT_DIR / "app_icon_source.png")
-	_post_image(SPLASH_PROMPT, "1792x1024", OUT_DIR / "splash_candy_sky_islands_raw.png")
-	_post_image(LOGO_PROMPT, "1024x1024", OUT_DIR / "logo_candy_sky_islands_raw.png")
+	_post_image(SPLASH_PROMPT, "1792x1024", RAW_DIR / "splash_candy_sky_islands_raw.png")
+	_post_image(LOGO_PROMPT, "1024x1024", RAW_DIR / "logo_candy_sky_islands_raw.png")
 	return 0
 
 

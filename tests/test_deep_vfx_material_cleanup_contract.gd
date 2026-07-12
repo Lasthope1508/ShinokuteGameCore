@@ -13,6 +13,7 @@ func _init() -> void:
 	passed = _assert_file_contains(PLAYER_SCENE, "[node name=\"CandyTrailSparkle\" type=\"GPUParticles3D\" parent=\".\"]", "Player should add candy trail sparkle VFX") and passed
 	passed = _assert_file_contains(PLAYER_SCENE, "Material_CandyTrailSparkle", "Player trail sparkle should use local candy material") and passed
 	passed = _assert_file_contains(PLAYER_SCENE, "ParticleProcessMaterial_CandyTrailSparkle", "Player trail sparkle should use local candy process material") and passed
+	passed = _assert_file_not_contains(PLAYER_SCENE, "res://meshes/dust.res", "Player particles should not pull legacy dust mesh into platform exports") and passed
 
 	passed = _assert_file_contains(COIN_SCENE, "[node name=\"CandyPickupHalo\" type=\"MeshInstance3D\" parent=\".\"]", "Coin should add candy pickup halo") and passed
 	passed = _assert_file_contains(COIN_SCENE, "Material_CandyPickupHalo", "Coin halo should use local candy material") and passed
@@ -20,6 +21,7 @@ func _init() -> void:
 
 	passed = _assert_file_contains(BRICK_SCENE, "Material_CandyCrumb", "Brick crumbs should use local candy material") and passed
 	passed = _assert_file_contains(BRICK_SCENE, "ParticleProcessMaterial_CandyCrumb", "Brick crumbs should use candy process material") and passed
+	passed = _assert_file_not_contains(BRICK_SCENE, "res://meshes/brick.res", "Brick particles should not pull legacy brick particle mesh into platform exports") and passed
 	passed = _assert_file_not_contains(BRICK_SCENE, "material_override = ExtResource(\"3_2u2la\")", "Brick particles should no longer rely directly on shared colormap material") and passed
 
 	passed = _assert_file_contains(CAPTURE_TOOL, "candy_sky_islands_vfx_material_cleanup.png", "Screenshot tool should capture VFX/material proof") and passed

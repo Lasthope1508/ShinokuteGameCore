@@ -1,6 +1,6 @@
 extends SceneTree
 
-const PLAYER_GLB := "res://assets/themes/candy_sky_islands/models/character_candy_marshmallow.glb"
+const PLAYER_GLB := "res://assets/themes/candy_sky_islands/source/model_candidates/character_candy_marshmallow.glb"
 const CHARACTER_SCENE := "res://objects/character.tscn"
 
 func _init() -> void:

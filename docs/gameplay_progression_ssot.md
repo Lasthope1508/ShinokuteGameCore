@@ -14,8 +14,9 @@ logic, difficulty scaling, or genre-specific game rules to Candy Sky Islands.
 | `difficulty.curve` | `ShinokuteProgressionLevel` rows | Per-level difficulty profile. |
 | `difficulty.profile` | Runtime dictionary | Values pushed into gameplay nodes that accept difficulty. |
 | `layout.profile` | `ShinokuteProgressionLevel` rows | Numeric obby route metrics: route length, platform count, verticality, gap distance, and hazard count. |
-| `layout.stage_segments` | `ShinokuteProgressionLevel` rows | Data-owned traversal route built at runtime. |
-| `layout.environment_segments` | `ShinokuteProgressionLevel` rows | Data-owned terrain/decor such as candy bricks and clouds. |
+| `layout.route_generator` | Game route generator script | Builds traversal route from profile metrics without fixed per-level terrain coordinates. |
+| `layout.stage_segments` | `ShinokuteProgressionLevel` rows | Optional start/goal anchors or legacy fallback route. Do not use this as fixed terrain for scaled obby levels. |
+| `layout.environment_segments` | `ShinokuteProgressionLevel` rows | Optional terrain/decor fallback. Generated obby terrain should come from the route generator. |
 
 Scenes may expose stable node targets such as `Player`, `World`, and `flag`.
 Scenes must not own the meaning of level order, win condition, or difficulty.
@@ -40,16 +41,39 @@ Current reference implementation:
   `Player.reset_for_level(...)`.
 - `objects/platform_falling.gd` exposes `apply_difficulty_profile`; it does
   not own the difficulty curve.
-- `scripts/obby_stage_builder.gd` builds the current route from
-  `stage_segments` and decor/terrain from `environment_segments`. It maps
-  abstract data keys such as `small`, `falling`, `goal`, `brick`, and `cloud`
-  to Candy-owned scene refs exported on `World`.
+- `scripts/obby_route_generator.gd` builds Candy's current route from
+  `layout_profile` when `route_generator` is `candy_curve_v1`.
+- `scripts/obby_stage_builder.gd` consumes generated route/environment
+  segments and maps abstract data keys such as `small`, `falling`, `goal`,
+  `brick`, and `cloud` to Candy-owned scene refs exported on `World`.
 
 Candy difficulty is not only falling platform speed. Each row must scale map
 shape through `layout.profile`: route length, platform count, verticality,
 gap distance, and hazard count. It may also scale moving platform speed,
 coin quota, timer budget, or checkpoint count, but those must be fields in
 `ShinokuteProgressionLevel` or a successor core resource first.
+
+Obby difficulty must not scale by making jumps impossible. Every generated
+route must pass `tests/test_obby_route_solvability_contract.gd`. The contract
+instantiates the real `objects/player.tscn`, runs the actual controller physics
+for a forward double jump, then caps route landing-point distance to a safety
+factor of that measured jump envelope. Do not validate jumps only against a
+guessed or hand-written `max_step_distance`.
+
+- consecutive horizontal step distance within the measured player jump envelope
+  safety cap,
+- consecutive vertical delta within `max_step_height`,
+- no final-goal falling hazard,
+- falling platform delay at least `0.20s`,
+- generated hazard count matching `hazard_count`.
+
+Generated obby routes must also honor `route_length` as the actual start-to-goal
+span. If a longer route would make adjacent landing points too far apart, raise
+`platform_count` in `layout_profile`; do not silently shorten the generated map.
+
+Manual playtest remains required after the contract passes. Contract pass means
+the route is inside the measured movement envelope; it does not replace playing
+levels 1-3 with real keyboard/touch input.
 
 ## Shinokute Core Mapping
 
@@ -114,9 +138,12 @@ means.
 - Level catalog lives in a Resource or core config, not in scattered scripts.
 - Goal/fail nodes emit semantic signals only.
 - Difficulty values come from `difficulty.curve`, not magic numbers in nodes.
-- Route complexity comes from `layout.profile` and `stage_segments`, not
-  hand-placed static platform nodes in `main.tscn`.
-- Terrain/decor comes from `environment_segments`, not unrelated static scene
-  leftovers.
+- Route complexity comes from `layout.profile` and a route generator, not
+  hand-placed static platform nodes in `main.tscn` or fixed per-level terrain
+  coordinates.
+- Terrain/decor comes from generated environment segments or explicit fallback
+  `environment_segments`, not unrelated static scene leftovers.
 - Contract tests load the config and prove difficulty increases.
+- Solvability contract proves generated jumps stay inside player movement
+  envelope before manual playtest.
 - Reskin work can replace visuals without changing progression data.

@@ -1,6 +1,6 @@
 extends SceneTree
 
-const PLAYER_GLB := "res://assets/themes/candy_sky_islands/models/character_shinokute_human.glb"
+const PLAYER_GLB := "res://assets/themes/candy_sky_islands/source/model_candidates/character_shinokute_human.glb"
 const CHARACTER_SCENE := "res://objects/character.tscn"
 const VISUAL := "ShinokuteCharacterVisual"
 const MODEL_SCALE := 0.68

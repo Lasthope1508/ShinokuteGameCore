@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/bgm_candy_island_main.ogg-e0cf092670d6d278ff0
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

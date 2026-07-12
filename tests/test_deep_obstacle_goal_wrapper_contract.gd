@@ -5,6 +5,7 @@ const BRICK_SCRIPT := "res://objects/brick.gd"
 const GOAL_SCENE := "res://objects/goal_flag.tscn"
 const MAIN_SCENE := "res://scenes/main.tscn"
 const PROGRESSION_CONFIG := "res://Resources/Data/Progression/candy_sky_islands_obby_progression.tres"
+const ROUTE_GENERATOR := "res://scripts/obby_route_generator.gd"
 const THEME_APPLIER := "res://scripts/theme_applier.gd"
 const THEME_PATH := "res://Resources/Data/Themes/candy_sky_islands/theme_config.tres"
 const PROOF := "res://docs/screenshots/candy_sky_islands_obstacle_goal_wrapper.png"
@@ -31,7 +32,7 @@ func _init() -> void:
 	passed = _assert_file_contains(MAIN_SCENE, "path=\"res://objects/goal_flag.tscn\"", "Main scene should instance goal wrapper scene") and passed
 	passed = _assert_file_contains(MAIN_SCENE, "goal_scene = ExtResource", "World builder should receive goal scene reference") and passed
 	passed = _assert_file_contains(PROGRESSION_CONFIG, "\"role\": \"goal\"", "Goal placement should live in data-owned stage segments") and passed
-	passed = _assert_file_contains(PROGRESSION_CONFIG, "\"kind\": \"brick\"", "Brick terrain placement should live in data-owned environment segments") and passed
+	passed = _assert_generated_environment_has_kind("brick", "Brick terrain placement should be generated from data-owned layout profile") and passed
 	passed = _assert_file_contains(THEME_APPLIER, "_apply_obstacle_node", "Theme applier should preserve wafer wrapper color roles") and passed
 	passed = _assert_file_contains(THEME_APPLIER, "_apply_goal_node", "Theme applier should preserve goal wrapper color roles") and passed
 	passed = _assert_file_contains(THEME_APPLIER, "CreamStripe", "Theme applier should handle obstacle cream stripes") and passed
@@ -49,6 +50,24 @@ func _init() -> void:
 	else:
 		print("test_deep_obstacle_goal_wrapper_contract: FAIL")
 		quit(1)
+
+func _assert_generated_environment_has_kind(kind: String, message: String) -> bool:
+	var config = load(PROGRESSION_CONFIG)
+	var generator = load(ROUTE_GENERATOR)
+	if config == null or generator == null:
+		push_error("%s: missing config or route generator" % message)
+		return false
+	for level in config.level_catalog:
+		if level == null:
+			continue
+		var profile: Dictionary = level.difficulty_profile()
+		var route: Array = generator.build_stage_segments(profile)
+		var environment: Array = generator.build_environment_segments(profile, route)
+		for segment in environment:
+			if String(Dictionary(segment).get("kind", "")) == kind:
+				return true
+	push_error("%s: generated environment missing kind %s" % [message, kind])
+	return false
 
 func _assert_role(theme: Resource, key: String, path: String) -> bool:
 	var role = theme.get(key)

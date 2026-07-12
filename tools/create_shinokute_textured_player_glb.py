@@ -5,7 +5,7 @@ import bpy
 
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "shinokute_player" / "shinokute_idle_sign_pose_clean_ref.png"
-OUT = ROOT / "assets" / "themes" / "candy_sky_islands" / "models" / "character_shinokute_human.glb"
+OUT = ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "model_candidates" / "character_shinokute_human.glb"
 
 HEIGHT = 1.32
 BOTTOM_Z = -0.40

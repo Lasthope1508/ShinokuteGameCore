@@ -6,11 +6,12 @@ from PIL import Image, ImageStat
 
 ROOT = Path(__file__).resolve().parents[1]
 BRANDING = ROOT / "assets" / "themes" / "candy_sky_islands" / "branding"
+RAW_BRANDING = ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "branding_raw"
 OUT = BRANDING / "branding_qc.json"
 
 ASSETS = {
 	"app_icon_source": {"path": BRANDING / "app_icon_source.png", "size": (1024, 1024), "alpha": False},
-	"splash_raw": {"path": BRANDING / "splash_candy_sky_islands_raw.png", "min_size": (1024, 576), "alpha": False},
+	"splash_raw": {"path": RAW_BRANDING / "splash_candy_sky_islands_raw.png", "min_size": (1024, 576), "alpha": False},
 	"logo": {"path": BRANDING / "logo_candy_sky_islands.png", "alpha": True},
 }
 

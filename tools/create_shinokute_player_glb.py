@@ -255,7 +255,7 @@ def export(path):
 def main():
     clear_scene()
     build_model()
-    export(OUT_DIR / "character_shinokute_human.glb")
+    export(ROOT / "assets" / "themes" / "candy_sky_islands" / "source" / "model_candidates" / "character_shinokute_human.glb")
 
 
 if __name__ == "__main__":

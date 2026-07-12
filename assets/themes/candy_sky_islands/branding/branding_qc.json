@@ -10,7 +10,7 @@
       "nonblank": true
     },
     "splash_raw": {
-      "path": "assets\\themes\\candy_sky_islands\\branding\\splash_candy_sky_islands_raw.png",
+      "path": "assets\\themes\\candy_sky_islands\\source\\branding_raw\\splash_candy_sky_islands_raw.png",
       "mode": "RGB",
       "size": [
         1672,

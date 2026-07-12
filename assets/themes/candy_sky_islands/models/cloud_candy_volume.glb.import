@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://i5nmuv8c2uri"
+uid="uid://cwb7y2jw51x5v"
 path="res://.godot/imported/cloud_candy_volume.glb-12b661ea6b851d7840662f5d113583d4.scn"
 
 [deps]
@@ -19,7 +19,7 @@ nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
 meshes/ensure_tangents=true
-meshes/generate_lods=true
+meshes/generate_lods=false
 meshes/create_shadow_meshes=true
 meshes/light_baking=1
 meshes/lightmap_texel_size=0.2

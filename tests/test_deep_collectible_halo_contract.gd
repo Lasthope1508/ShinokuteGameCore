@@ -17,6 +17,7 @@ func _init() -> void:
 	passed = _assert_file_contains(STAR_HALO_MESH, "\"vertex_count\": 11", "Star halo mesh should be 10 points plus center") and passed
 	passed = _assert_file_contains(STAR_HALO_MESH, "metadata/source_asset = \"res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb\"", "Star halo mesh should record real collectible source") and passed
 	passed = _assert_file_contains(STAR_HALO_MESH, "star_points outer=0.32 inner=0.15", "Star halo mesh should preserve collectible star proportions") and passed
+	passed = _assert_file_not_contains(STAR_HALO_MESH, "tools/", "Star halo runtime mesh should not embed authoring tool paths") and passed
 	passed = _assert_file_contains(THEME_APPLIER, "[\"CandyPickupHalo\"]", "Theme applier should not recolor the halo as coin body mesh") and passed
 	var halo_mesh := load(STAR_HALO_MESH) as ArrayMesh
 	passed = _assert_true(halo_mesh != null, "Star halo mesh should load as ArrayMesh") and passed
@@ -38,6 +39,16 @@ func _assert_file_contains(path: String, needle: String, message: String) -> boo
 	var text := FileAccess.get_file_as_string(path)
 	if not text.contains(needle):
 		push_error("%s: missing '%s'" % [message, needle])
+		return false
+	return true
+
+func _assert_file_not_contains(path: String, needle: String, message: String) -> bool:
+	if not FileAccess.file_exists(path):
+		push_error("%s: missing %s" % [message, path])
+		return false
+	var text := FileAccess.get_file_as_string(path)
+	if text.contains(needle):
+		push_error("%s: unexpected '%s'" % [message, needle])
 		return false
 	return true
 

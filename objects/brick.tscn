@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" path="res://assets/themes/candy_sky_islands/models/brick_candy_wafer.glb" id="1_lex57"]
 [ext_resource type="Script" path="res://objects/brick.gd" id="2_hbwgr"]
-[ext_resource type="ArrayMesh" uid="uid://bkyb0o2ipxxya" path="res://meshes/brick.res" id="4_pm7ss"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a8y0u"]
 size = Vector3(0.75, 0.75, 0.75)
@@ -48,6 +47,9 @@ emission_enabled = true
 emission = Color(1, 0.94902, 0.780392, 1)
 emission_energy_multiplier = 0.08
 
+[sub_resource type="BoxMesh" id="BoxMesh_CandyCrumbParticle"]
+size = Vector3(0.16, 0.16, 0.16)
+
 [node name="brick" type="StaticBody3D"]
 script = ExtResource("2_hbwgr")
 
@@ -76,4 +78,4 @@ randomness = 1.0
 fixed_fps = 60
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_CandyCrumb")
-draw_pass_1 = ExtResource("4_pm7ss")
+draw_pass_1 = SubResource("BoxMesh_CandyCrumbParticle")

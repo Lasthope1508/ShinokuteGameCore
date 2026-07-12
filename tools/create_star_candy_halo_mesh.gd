@@ -11,7 +11,7 @@ func _init() -> void:
 	var mesh := _build_star_mesh()
 	mesh.resource_name = "StarCandyHaloMesh"
 	mesh.set_meta("source_asset", "res://assets/themes/candy_sky_islands/models/star_candy_collectible.glb")
-	mesh.set_meta("source_method", "tools/create_candy_collectible_glb.py star_points outer=0.32 inner=0.15")
+	mesh.set_meta("source_method", "star_points outer=0.32 inner=0.15")
 	var err := ResourceSaver.save(mesh, OUT_PATH)
 	if err != OK:
 		push_error("Failed to save %s: %s" % [OUT_PATH, err])

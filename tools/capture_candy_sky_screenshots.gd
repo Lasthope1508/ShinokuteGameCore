@@ -102,11 +102,11 @@ func _run() -> void:
 		passed = false
 		push_error("Player collect_coin method should exist")
 
-	var falling_platform := scene.get_node_or_null("World/platform-falling")
+	var falling_platform := _find_node_with_name_part(scene, "falling")
 	if falling_platform != null and falling_platform.has_method("_on_body_entered") and player != null:
 		falling_platform._on_body_entered(player)
 		await _settle_frames(2)
-		passed = passed and _assert_true(falling_platform.falling, "Falling platform should enter falling state")
+		passed = passed and _assert_true(bool(falling_platform.triggered), "Falling platform should enter triggered state")
 	else:
 		passed = false
 		push_error("Falling platform smoke target should exist")
@@ -115,7 +115,7 @@ func _run() -> void:
 	if player != null:
 		player.position.y = -11.0
 		await _settle_physics_frames(4)
-		passed = passed and _assert_true(current_scene != null and current_scene != scene_before_reload and current_scene.get_node_or_null("Player") != null, "Falling below world should reload current scene")
+		passed = passed and _assert_true(current_scene != null and current_scene == scene_before_reload and current_scene.get_node_or_null("Player") != null, "Falling below world should reset in the same scene")
 	else:
 		passed = false
 		push_error("Fall reload smoke target should exist")
@@ -124,14 +124,18 @@ func _run() -> void:
 	var proof_player := proof_scene.get_node_or_null("Player") if proof_scene != null else null
 	var proof_view := proof_scene.get_node_or_null("View") if proof_scene != null else null
 	if proof_player != null and proof_view != null:
-		proof_player.global_position = Vector3(-2.0, 3.4, -2.8)
+		var goal_node := _find_node_with_name_part(proof_scene, "_goal") as Node3D
+		var goal_position := goal_node.global_position if goal_node != null else Vector3(-2.0, 3.4, -2.8)
+		proof_player.global_position = goal_position + Vector3(2.0, 2.2, -2.8)
 		proof_view.camera_rotation = Vector3(-42, 35, 0)
 		proof_view.zoom = 9.0
 		await _settle_physics_frames(24)
 		var obstacle_goal_saved: bool = await _save_viewport("candy_sky_islands_obstacle_goal_wrapper.png", Rect2i())
 		passed = passed and obstacle_goal_saved
 
-		proof_player.global_position = Vector3(-7.0, 2.6, -2.0)
+		var decor_node := _find_node_with_name_part(proof_scene, "env_") as Node3D
+		var decor_position := decor_node.global_position if decor_node != null else Vector3(-7.0, 2.6, -2.0)
+		proof_player.global_position = decor_position + Vector3(2.0, 1.4, -2.0)
 		proof_view.camera_rotation = Vector3(-45, 30, 0)
 		proof_view.zoom = 8.0
 		await _settle_physics_frames(24)
@@ -182,6 +186,15 @@ func _assert_nonblank_image(image: Image, label: String) -> bool:
 				return true
 	push_error("%s screenshot appears blank" % label)
 	return false
+
+func _find_node_with_name_part(node: Node, needle: String) -> Node:
+	if String(node.name).contains(needle):
+		return node
+	for child in node.get_children():
+		var found := _find_node_with_name_part(child, needle)
+		if found != null:
+			return found
+	return null
 
 func _collect_mesh_instances(node: Node) -> Array[MeshInstance3D]:
 	var meshes: Array[MeshInstance3D] = []
