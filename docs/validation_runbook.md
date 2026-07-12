@@ -195,7 +195,7 @@ Expected:
 ## Gate 4B: Web Payload Hygiene
 
 Before running this gate for Candy Sky Islands packaging or Firebase deploy,
-read `docs/packaging_handoff.md`. That file owns the current Web-only packaging
+read `docs/packaging_handoff.md`. That file owns the current Web packaging
 scope, the `Export/` versus `Export_web_test/` folder split, Firebase project,
 preview channel, required sync step, and final report fields. If the handoff
 and the command being run disagree, stop and fix the handoff or command first.
@@ -224,6 +224,39 @@ Expected:
 - Exit code `0`.
 - No `docs`, `debug`, `tests`, `tools`, `source`, raw, candidate, local absolute path, legacy root mesh, or old colormap markers in Web PCK.
 - `models/.gdignore`, `meshes/.gdignore`, `assets/themes/candy_sky_islands/source/.gdignore`, and `assets/themes/candy_sky_islands/source/branding_raw/.gdignore` exist when legacy/source evidence remains on disk.
+
+## Gate 4C: Android Payload Hygiene
+
+Before running this gate for Candy Sky Islands Android export, Play Store
+handoff, or package-ready claims, read `docs/packaging_handoff.md`. That file
+owns the Android preset name, package id, version policy, signing handoff, AAB
+path, device smoke checklist, and final report fields. If the handoff and the
+command being run disagree, stop and fix the handoff or command first.
+
+Run after every fresh Android export:
+
+```powershell
+$aab = Join-Path $project 'Export\candy_sky_islands.aab'
+if (-not (Test-Path -LiteralPath $aab)) {
+  Write-Error "Missing Android AAB: $aab"
+  exit 1
+}
+
+$paths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $aab | Sort-Object -Unique
+$bad = $paths | Where-Object {
+  $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+}
+if ($bad) {
+  Write-Error "AAB forbidden marker scan failed:`n$($bad -join "`n")"
+  exit 1
+}
+Write-Host "Gate 4C PASS: AAB forbidden marker scan clean; path_count=$($paths.Count)"
+```
+
+Expected:
+- Exit code `0`.
+- No `docs`, `debug`, `tests`, `tools`, `source`, raw, candidate, local absolute path, legacy root mesh, or old colormap markers in Android AAB.
+- Report Android package id, version code/name, signing status, AAB size, and device smoke result before any Play Store handoff.
 
 ## Gate 5: Gameplay Smoke
 

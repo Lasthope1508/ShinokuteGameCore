@@ -1,7 +1,8 @@
 # Candy Sky Islands Packaging Handoff
 
-This is the first file to read before packaging, Web export, Firebase deploy,
-payload-size audit, or any package-ready claim for Candy Sky Islands.
+This is the first file to read before packaging, Web export, Android export,
+Firebase deploy, Play Store handoff, payload-size audit, or any package-ready
+claim for Candy Sky Islands.
 
 ## Contextless Agent Bootstrap
 
@@ -12,12 +13,13 @@ Required first reads:
 
 1. `AGENTS.md`
 2. `docs/packaging_handoff.md`
-3. `docs/validation_runbook.md` Gate 4B
+3. `docs/validation_runbook.md` Gate 4B and Gate 4C
 4. `export_presets.cfg`
 5. `firebase.json`
 6. `.firebaserc`
 7. `tests/test_packaging_handoff_contract.gd`
 8. `tests/test_web_export_preset_contract.gd`
+9. `tests/test_android_export_preset_contract.gd`
 
 Do not use memory, prior chat, old Firebase links, stale terminal output, or
 old `Export_web_test/` contents as source of truth.
@@ -30,6 +32,7 @@ Required first report:
 - Web preview target
 - production target
 - Android status
+- Play Store handoff status
 - exact blocker list, if any
 
 ## Source Completion Handoff Gate
@@ -67,6 +70,7 @@ fails. The packaging agent must stop if this contract fails after pulling.
 - Remote branch: `shinokute-core/game/candy-sky-islands`
 - Godot console on this machine: `C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe`
 - Web preset name: `Web`
+- Android preset name: `Android`
 - Main scene: `res://scenes/main.tscn`
 - Firebase preview project: `foodapp-7ff6b`
 - Firebase preview hosting target: `candy-preview`
@@ -84,11 +88,13 @@ upstream Kenney starter kit. Use `shinokute-core` for Candy Sky Islands.
 
 ## Current Packaging Scope
 
-Current supported package target is Web/HTML5 only.
+Current source handoff covers Web/HTML5 and Android AAB.
 
-Do not claim Android, Play Store, or full package-ready status. Android is
-blocked until an Android export preset, signing profile, fresh AAB export, AAB
-forbidden-marker scan, and Android size table exist.
+Do not claim Android, Play Store, or full package-ready status until the current
+pass has a fresh Android export, AAB forbidden-marker scan, Android size table,
+signing evidence, and device smoke. The source has an Android preset and
+signing handoff; packaging/release agents must use them instead of inventing
+package ids, keystores, or Play Store settings.
 
 Production Web deploy to `play.shinokute.com` is allowed only after the owner
 approves production deploy for the current build. Preview deploy remains the
@@ -105,7 +111,9 @@ Rules:
 - Do not add broad `include_filter` patterns such as `*.png`, `*.ogg`,
   `*.tres`, `Assets/**`, or `assets/**`.
 - If a runtime script preloads a new `res://...` helper, add it explicitly to
-  `export_files` and update `tests/test_web_export_preset_contract.gd`.
+  Web and Android `export_files`, then update
+  `tests/test_web_export_preset_contract.gd` and
+  `tests/test_android_export_preset_contract.gd`.
 - Keep raw/reference/candidate/debug docs out of runtime payload:
   `docs/`, `debug/`, `tests/`, `tools/`, `output/`, `assets/themes/candy_sky_islands/source/`,
   root `models/`, root `meshes/`, `_raw.png`, and `candidate`.
@@ -259,36 +267,115 @@ If either check fails, stop. Do not deploy production by guessing another site.
 
 ## Android / Play Store Handoff
 
-Android is not configured in this source yet. Current `export_presets.cfg` has
-only one preset:
+## Android Packaging Reset Rule
 
-```text
-name="Web"
-platform="Web"
+Every Android packaging agent must read this section before touching Android
+export, keystore, Java/JDK, Gradle, SDK, AAB, or Play Store work.
+
+- First compare the existing shipped patterns, not memory or guesses:
+  `shinokute-core/game/bloxchain` and `shinokute-core/game/glyph-arrows`
+  Android presets both use a dedicated `Android` preset, selected
+  `export_filter="resources"`, `Export/<game>.aab`, package id
+  `com.shinokutestudio.<game>`, per-game release keystore under
+  `C:/Users/Admin/.gemini/antigravity/secrets/`, and no committed passwords.
+- Source handoff work must not install Java/JDK, Android SDK, Gradle, create a
+  keystore, change machine release tooling, or invent Play Console settings.
+  Source handoff only owns `export_presets.cfg`, package id/version policy,
+  signing path/alias/password-source documentation, docs, and contract tests.
+- Packaging/release work may build the AAB only after source handoff contracts
+  pass. If Java/JDK, SDK, Gradle, Godot templates, keystore, or password source
+  are missing, report the exact missing item as a packaging blocker.
+  Do not create a replacement keystore. Do not change package id, switch to
+  debug signing, or upload a different app unless the owner explicitly approves
+  that release operation.
+- Google Play upload is packaging/release-owned after source contracts pass.
+  Source owner remains responsible for keeping the Android preset, signing
+  handoff, version policy, runtime asset list, and Gate 4C scan rules current.
+- Any future game branch must copy this split: source branch defines Android
+  truth, packaging agent builds from docs, and neither side relies on chat
+  history.
+
+Android is configured in source. The packaging/release agent must use these
+values exactly.
+
+- Android preset name: `Android`
+- Package id: `com.shinokutestudio.candyskyislands`
+- Android app label: `Candy Sky Islands`
+- Version policy: start at `version/code=1`, `version/name="1.0.0"`; bump
+  `version/code` by one for every Play upload attempt that reaches Google.
+- AAB export path: `Export/candy_sky_islands.aab`
+- Release keystore: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`
+- Release key alias: `candy_sky_islands`
+- Password source: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`
+- Do not commit keystore files, passwords, or Play Console credentials.
+- Target architectures: `armeabi-v7a=true`, `arm64-v8a=true`, `x86=false`,
+  `x86_64=false`.
+- Screen orientation: landscape, `graphics/screen_orientation=1`, until owner
+  approves portrait or sensor rotation for native Android.
+- Android icon policy: root `res://icon.png` is the current source icon;
+  launcher/adaptive icon fields stay empty until dedicated Android launcher
+  assets are produced and recorded in `docs/asset_manifest.md`.
+
+Fresh Android export command:
+
+```powershell
+$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
+$godot = 'C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
+Set-Location $project
+
+& $godot --headless --path $project --script "$project\tests\test_packaging_handoff_contract.gd"
+& $godot --headless --path $project --script "$project\tests\test_android_export_preset_contract.gd"
+& $godot --headless --path $project --script "$project\tests\test_web_export_preset_contract.gd"
+& $godot --headless --path $project --import
+& $godot --headless --path $project --export-release "Android" "$project\Export\candy_sky_islands.aab"
 ```
 
-The packaging agent must not create an AAB by guessing package id, signing, or
-Play Store settings. Android remains blocked until source receives all of these:
+If the Android export fails because Godot export templates, Android SDK,
+Gradle, Java/JDK, or local keystore tooling are missing, report the exact
+missing tool from the command output. Do not replace the signed release preset
+with an unsigned/debug build and do not create a new package id.
 
-- Android export preset in `export_presets.cfg`, preferably named `Android`.
-- Package id / unique name approved by owner.
-- Version name and version code policy.
-- Release keystore path, alias, and password-source policy.
-- Target architecture policy.
-- Min/target SDK policy.
-- Android icon/splash/adaptive icon policy.
-- AAB export path, expected `Export_android/` or equivalent output folder.
-- AAB forbidden-marker scan command and expected marker list.
-- Android size table and budget.
-- Device smoke checklist for touch controls, rotation, audio, settings,
-  leaderboard/username, win/death retry, and level progression.
+## Gate 4C: Android Payload Hygiene
 
-When those inputs exist, update this handoff, `export_presets.cfg`, and
-`tests/test_packaging_handoff_contract.gd` in the same source commit. Until
-then, the correct Android report is:
-`Android blocked: no Android preset or signing handoff in source`.
+Run after every fresh Android export and before Play Store handoff:
 
-## Payload Hygiene Scan
+```powershell
+$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
+$aab = Join-Path $project 'Export\candy_sky_islands.aab'
+if (-not (Test-Path -LiteralPath $aab)) {
+  Write-Error "Missing Android AAB: $aab"
+  exit 1
+}
+
+$paths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $aab | Sort-Object -Unique
+$bad = $paths | Where-Object {
+  $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+}
+if ($bad) {
+  $bad | ForEach-Object { Write-Error "AAB_FORBIDDEN $_" }
+  exit 1
+}
+Write-Host "AAB_PATH_MARKER_SCAN_PASS path_count=$($paths.Count)"
+```
+
+Native Android device smoke checklist:
+
+1. Install the signed release AAB through the Play/internal-test path or a
+   release-equivalent local extraction path documented by the packaging agent.
+2. Launch fresh app, confirm splash and username prompt.
+3. Enter username; Settings and Leaderboard must open one at a time.
+4. Move, jump, double-jump, rotate camera/look, pinch or equivalent zoom.
+5. Toggle BGM/SFX and Shift Lock settings.
+6. Complete one level, fall/retry once, then confirm progression continues.
+7. Rotate device or verify landscape lock policy; no stretched/misaligned UI.
+8. Audio loops without silence after the intro loop point.
+9. No crash, missing resource, or forbidden marker evidence.
+
+Google Play handoff status: source-owned Android preset and signing handoff
+exist. Release/upload remains packaging-owned and blocked until fresh AAB
+export, AAB scan, size table, and device smoke pass in the current release pass.
+
+## Gate 4B: Web Payload Hygiene Scan
 
 Run after every fresh export and before every deploy:
 
@@ -316,6 +403,7 @@ After export, record at least:
 - `Export\candy_sky_islands.wasm`
 - `sounds\candy_sky_islands\bgm_candy_island_main.ogg`
 - SFX total in `sounds\candy_sky_islands\sfx_*.ogg`
+- `Export\candy_sky_islands.aab` after Android export
 
 Latest known clean reference from this branch:
 
@@ -360,7 +448,7 @@ A packaging agent must report:
 - Production command used and `https://play.shinokute.com` result, if production
   was owner-approved.
 - Android AAB command, signing status, AAB scan, size table, and device smoke
-  result, if Android has been configured. Otherwise report the Android blocker.
+  result.
 - Web smoke path and result.
-- Explicit blockers: Android unsupported, smoke not run, Firebase auth missing,
-  or any payload marker/size failure.
+- Explicit blockers: Android export tooling missing, Play upload not approved,
+  smoke not run, Firebase auth missing, or any payload marker/size failure.

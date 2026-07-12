@@ -18,13 +18,16 @@ Before any Quantum Starter reskin work, Codex must read these files first:
 Before any level progression, completion, fail/retry, or difficulty-scaling work,
 Codex must also read `docs/gameplay_progression_ssot.md`.
 
-Before any packaging, Web export, Firebase deploy, payload-size audit, or
+Before any packaging, Web export, Android export, Firebase deploy, Play Store
+handoff, payload-size audit, or
 package-ready claim, Codex must also read `docs/packaging_handoff.md` and
-`docs/validation_runbook.md` Gate 4B. Do not infer output folders, deploy
-targets, export filters, Firebase project, preview channel, runtime resources,
-or cache policy from memory. Candy Sky Islands currently has a Web packaging
-handoff only; Android/package-ready claims are blocked until an Android preset,
-signing profile, and fresh AAB audit exist.
+`docs/validation_runbook.md` Gate 4B and Gate 4C. Do not infer output folders,
+deploy targets, export filters, Firebase project, preview channel, runtime
+resources, Android package id, signing profile, Play Store target, or cache
+policy from memory. Candy Sky Islands has Web and Android source handoffs.
+Package-ready claims are still blocked until fresh Web export, Android AAB
+export, payload scans, size tables, and device/browser smoke evidence exist in
+the current pass.
 
 Before finishing, committing, or pushing source changes that can affect build,
 export, hosting, runtime payload, assets, audio, input, scene loading, Firebase,
@@ -34,6 +37,15 @@ verify that the existing handoff still matches the changed source. Run
 `tests/test_packaging_handoff_contract.gd` before the commit. This rule exists
 for contextless packaging agents: they must be able to package from repository
 docs alone, without chat history.
+
+Android packaging reset rule: before Android export, AAB, signing, or Play
+Store work, read `docs/packaging_handoff.md` section
+`Android Packaging Reset Rule`. Do not install Java/JDK, Android SDK, Gradle,
+create keystores, change package id, or invent Play settings during source
+handoff. First compare BloxChain and Glyph Arrows Android preset/signing
+patterns, then use Candy's documented Android preset and signing handoff. If a
+release tool or secret is missing during packaging, report the exact blocker
+instead of creating a replacement.
 
 Candy Sky Islands Web transition rule: win/death/fall gameplay transitions must not call
 `get_tree().reload_current_scene()`, `tree.reload_current_scene()`, or scene changes from

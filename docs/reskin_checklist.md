@@ -512,7 +512,20 @@ Fill only if publishing or making an owner test link.
 - Smoke path: desktop and iPhone 13 Playwright loaded canvas, skipped username prompt, moved/jumped/double-jumped, exercised mobile controls and portrait/landscape rotation.
 - Console result: PASS; production desktop and iPhone 13 logs contain only Godot/WebGL startup logs, no errors.
 - Screenshot paths: `output/playwright/production-desktop-*.png`, `output/playwright/production-iphone13-*.png`.
-- Android blocker: `Android blocked: no Android preset or signing handoff in source`.
+- Android blocker at source commit `f43c907`: `Android blocked: no Android preset or signing handoff in source`. Superseded by the Android source handoff entry below.
+
+### Android Source Handoff Evidence 2026-07-12
+
+- Mode: Source handoff standardization, not Play release.
+- Source owner action: added Android preset and signing handoff so packaging/release agents no longer guess package id, version, AAB path, or keystore policy.
+- Android preset: `Android`.
+- Package id: `com.shinokutestudio.candyskyislands`.
+- Version policy: start `version/code=1`, `version/name="1.0.0"`; bump code for every Play upload attempt that reaches Google.
+- AAB path: `Export/candy_sky_islands.aab`.
+- Keystore path: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`.
+- Password source: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`; never commit passwords or Play credentials.
+- Required contracts: `tests/test_android_export_preset_contract.gd`, `tests/test_packaging_handoff_contract.gd`, `tests/test_web_export_preset_contract.gd`.
+- Required Android release gates before any Play upload: fresh AAB export, Gate 4C AAB marker scan, AAB size table, signing evidence, native Android device smoke.
 
 ## Completion
 
