@@ -18,6 +18,14 @@ Before any Quantum Starter reskin work, Codex must read these files first:
 Before any level progression, completion, fail/retry, or difficulty-scaling work,
 Codex must also read `docs/gameplay_progression_ssot.md`.
 
+Before any packaging, Web export, Firebase deploy, payload-size audit, or
+package-ready claim, Codex must also read `docs/packaging_handoff.md` and
+`docs/validation_runbook.md` Gate 4B. Do not infer output folders, deploy
+targets, export filters, Firebase project, preview channel, runtime resources,
+or cache policy from memory. Candy Sky Islands currently has a Web packaging
+handoff only; Android/package-ready claims are blocked until an Android preset,
+signing profile, and fresh AAB audit exist.
+
 Candy Sky Islands Web transition rule: win/death/fall gameplay transitions must not call
 `get_tree().reload_current_scene()`, `tree.reload_current_scene()`, or scene changes from
 physics/signal callbacks. Use `GameProgression` in-place reset: guard duplicate

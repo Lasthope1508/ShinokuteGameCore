@@ -194,6 +194,12 @@ Expected:
 
 ## Gate 4B: Web Payload Hygiene
 
+Before running this gate for Candy Sky Islands packaging or Firebase deploy,
+read `docs/packaging_handoff.md`. That file owns the current Web-only packaging
+scope, the `Export/` versus `Export_web_test/` folder split, Firebase project,
+preview channel, required sync step, and final report fields. If the handoff
+and the command being run disagree, stop and fix the handoff or command first.
+
 Run after any export preset, `.import`, audio, asset, `.gdignore`, or selected-resource change.
 
 ```powershell
