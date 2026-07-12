@@ -45,6 +45,7 @@ func configure(input_router: Node) -> void:
 func set_touch_controls_visible(value: bool) -> void:
 	_manual_visibility = true
 	visible = value
+	_publish_web_touch_controls_enabled()
 	_sync_to_viewport()
 	if _router != null and _router.has_method("set_force_touch_controls_enabled"):
 		_router.set_force_touch_controls_enabled(value)
@@ -312,6 +313,11 @@ func _web_debug_log(message: String) -> void:
 		return
 	JavaScriptBridge.eval("if(window.__shinokuteTouchDiagPush) window.__shinokuteTouchDiagPush(%s);" % JSON.stringify(message), true)
 
+func _publish_web_touch_controls_enabled() -> void:
+	if not OS.has_feature("web") or not ClassDB.class_exists("JavaScriptBridge"):
+		return
+	JavaScriptBridge.eval("window.__shinokuteTouchControlsEnabled = %s;" % ("true" if visible else "false"), true)
+
 func _activate_web_pointer_mode() -> void:
 	if _web_pointer_mode_active:
 		return
@@ -393,6 +399,7 @@ func _refresh_visibility() -> void:
 	if _manual_visibility:
 		return
 	visible = _router != null and _router.has_method("is_touch_control_active") and _router.is_touch_control_active()
+	_publish_web_touch_controls_enabled()
 	_sync_to_viewport()
 	queue_redraw()
 
@@ -438,6 +445,7 @@ func _install_web_pointer_bridge() -> void:
 (function(){
 	if (window.__shinokutePointerBridgeInstalled) return;
 	window.__shinokutePointerBridgeInstalled = true;
+	window.__shinokuteTouchControlsEnabled = true;
 	var diagEnabled = /[?&]touchdiag=1(?:&|$)/.test(window.location.search);
 	var activeBridge = null;
 	var activePointerIds = {};
@@ -497,6 +505,7 @@ func _install_web_pointer_bridge() -> void:
 	}
 	function sendPointer(type, event) {
 		if (event.pointerType === 'mouse') return;
+		if (window.__shinokuteTouchControlsEnabled === false) { activeBridge = null; return; }
 		if (activeBridge && activeBridge !== 'pointer') { diag('js pointer ignored activeBridge=' + activeBridge + ' type=' + type + ' id=' + event.pointerId); return; }
 		if (typeof window.shinokutePointerEvent !== 'function') return;
 		var point = canvasPointFromClient(event.clientX, event.clientY);
@@ -512,6 +521,7 @@ func _install_web_pointer_bridge() -> void:
 		}
 	}
 	function sendTouches(type, event) {
+		if (window.__shinokuteTouchControlsEnabled === false) { activeBridge = null; return; }
 		if (activeBridge && activeBridge !== 'touch') { diag('js touch ignored activeBridge=' + activeBridge + ' type=' + type); return; }
 		if (typeof window.shinokuteTouchEvent !== 'function') return;
 		var touches = event.changedTouches || [];

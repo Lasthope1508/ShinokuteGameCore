@@ -39,6 +39,8 @@ func _run() -> void:
 	passed = _assert_true(mobile_touch_source.find("window.shinokuteTouchEvent([type") < 0, "Web touch bridge must call JavaScriptBridge callback with flat arguments, not one nested array payload") and passed
 	passed = _assert_true(mobile_touch_source.find("window.shinokutePointerEvent(type, event.pointerId") >= 0, "Web pointer bridge should pass pointer payload as JavaScript arguments for Godot JavaScriptBridge") and passed
 	passed = _assert_true(mobile_touch_source.find("window.shinokuteTouchEvent(type, touch.identifier") >= 0, "Web touch bridge should pass touch payload as JavaScript arguments for Godot JavaScriptBridge") and passed
+	passed = _assert_true(mobile_touch_source.find("__shinokuteTouchControlsEnabled") >= 0, "Web touch bridge should expose an enabled flag so modal UI can receive mobile taps while touch controls are hidden") and passed
+	passed = _assert_true(mobile_touch_source.find("if (window.__shinokuteTouchControlsEnabled === false)") >= 0, "Web touch bridge must skip preventDefault/callback while touch controls are hidden") and passed
 	if touch_controls != null:
 		for method in [
 			"configure",
