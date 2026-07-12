@@ -267,178 +267,38 @@ If either check fails, stop. Do not deploy production by guessing another site.
 
 ## Android / Play Store Handoff
 
-## Android Packaging Reset Rule
+Android packaging is owned by `docs/android_packaging_runbook.md`. This file
+keeps only Candy identity values so Web/Firebase and Android docs do not drift.
 
-Every Android packaging agent must read this section before touching Android
-export, keystore, Java/JDK, Gradle, SDK, AAB, or Play Store work.
+Android Packaging Reset Rule: before Android export, AAB, signing, Gradle,
+Java/JDK, Android SDK, keystore, Play Console, or Android-ready claims, read
+`docs/android_packaging_runbook.md`. Do not use memory, prior chat, or old
+terminal output. First compare the existing shipped patterns: BloxChain and
+Glyph Arrows shipped branch patterns, then use Candy's documented source
+values. Source handoff work must not install Java/JDK, Android SDK, Gradle,
+create a keystore, change package id, or invent Play settings.
+Do not create a replacement keystore. Packaging work must use
+`tools/patch_android_template_for_play.ps1`, keep
+`android/build/.gdignore`, preserve `keystore/release_password=""` after export,
+and run Gate 4C from the Android runbook before Play handoff.
 
-- First compare the existing shipped patterns, not memory or guesses:
-  `shinokute-core/game/bloxchain` and `shinokute-core/game/glyph-arrows`
-  Android presets both use a dedicated `Android` preset, selected
-  `export_filter="resources"`, `Export/<game>.aab`, package id
-  `com.shinokutestudio.<game>`, per-game release keystore under
-  `C:/Users/Admin/.gemini/antigravity/secrets/`, and no committed passwords.
-- Source handoff work must not install Java/JDK, Android SDK, Gradle, create a
-  keystore, change machine release tooling, or invent Play Console settings.
-  Source handoff only owns `export_presets.cfg`, package id/version policy,
-  signing path/alias/password-source documentation, docs, and contract tests.
-- Packaging/release work may build the AAB only after source handoff contracts
-  pass. If Java/JDK, SDK, Gradle, Godot templates, keystore, or password source
-  are missing, report the exact missing item as a packaging blocker.
-  Do not create a replacement keystore. Do not change package id, switch to
-  debug signing, or upload a different app unless the owner explicitly approves
-  that release operation.
-- If Godot Android build templates must be expanded manually, use the official
-  `android_source.zip` from the matching Godot export template version, expand
-  Gradle project files into `android/build/`, and keep `android/.build_version`
-  beside the `build` folder. For Godot 4.3 stable the marker content is
-  `4.3.stable`. Missing this marker causes the export error:
-  "Trying to build from a gradle built template, but no version info for it
-  exists."
-- Keep `android/build/.gdignore` in the local custom build folder. Without it,
-  Godot imports template launcher icons and writes `.import` sidecars under
-  `android/build/res/mipmap*`; Android Gradle then fails with "The file name
-  must end with .xml or .png". The Gradle template files remain ignored by git;
-  only small marker files such as `.build_version` and `.gdignore` should be
-  force-added when needed.
-- Google Play upload is packaging/release-owned after source contracts pass.
-  Source owner remains responsible for keeping the Android preset, signing
-  handoff, version policy, runtime asset list, and Gate 4C scan rules current.
-- Any future game branch must copy this split: source branch defines Android
-  truth, packaging agent builds from docs, and neither side relies on chat
-  history.
-
-Android is configured in source. The packaging/release agent must use these
-values exactly.
+Candy Android source values:
 
 - Android preset name: `Android`
 - Package id: `com.shinokutestudio.candyskyislands`
 - Android app label: `Candy Sky Islands`
-- Version policy: current Candy Android upload version is `version/code=4`,
-  `version/name="1.0.3"`. Start new game packages at `version/code=1`,
-  `version/name="1.0.0"`, then bump `version/code` by one for every Play
-  upload attempt that reaches Google. Bump `version/name` when owner wants a
-  visible release label change or when avoiding confusion during repeated
-  upload attempts.
-- Target SDK policy: `version/target_sdk=35` until Google Play requires a
-  newer level. Keep the local Android SDK platform installed before export.
-  Play Console rejected the first Candy AAB because it targeted API 34.
-  For Godot 4.3 custom Gradle builds, also patch local
-  `android/build/config.gradle` to `compileSdk: 35`, `targetSdk: 35`, and
-  `buildTools: '35.0.0'` before export; Play Console still reported target
-  API 34 when only `version/target_sdk=35` was set in `export_presets.cfg`.
-  Also make `getExportTargetSdkVersion()` return the maximum of the Godot
-  property and `versions.targetSdk`, because Godot 4.3 can still pass
-  `export_version_target_sdk=34` into Gradle.
-  Use `tools/patch_android_template_for_play.ps1` after installing or manually
-  expanding the Android build template and before every Android export.
+- Current version: `version/code=4`, `version/name="1.0.3"`
+- Target SDK: `version/target_sdk=35`
 - AAB export path: `Export/candy_sky_islands.aab`
 - Release keystore: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`
 - Release key alias: `candy_sky_islands`
 - Password source: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`
-- Do not commit keystore files, passwords, or Play Console credentials.
-- Target architectures: `armeabi-v7a=true`, `arm64-v8a=true`, `x86=false`,
-  `x86_64=false`.
-- Screen orientation: landscape, `graphics/screen_orientation=1`, until owner
-  approves portrait or sensor rotation for native Android.
-- Android icon policy: root `res://icon.png` is the current source icon;
-  launcher/adaptive icon fields stay empty until dedicated Android launcher
-  assets are produced and recorded in `docs/asset_manifest.md`.
-
-Fresh Android export command:
-
-```powershell
-$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
-$godot = 'C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
-Set-Location $project
-
-& $godot --headless --path $project --script "$project\tests\test_packaging_handoff_contract.gd"
-& $godot --headless --path $project --script "$project\tests\test_android_export_preset_contract.gd"
-& $godot --headless --path $project --script "$project\tests\test_web_export_preset_contract.gd"
-& $godot --headless --path $project --import
-& $godot --headless --path $project --export-release "Android" "$project\Export\candy_sky_islands.aab"
-```
-
-If the Android export fails because Godot export templates, Android SDK,
-Gradle, Java/JDK, or local keystore tooling are missing, report the exact
-missing tool from the command output. Do not replace the signed release preset
-with an unsigned/debug build and do not create a new package id.
-
-## Gate 4C: Android Payload Hygiene
-
-Run after every fresh Android export and before Play Store handoff:
-
-```powershell
-$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
-$aab = Join-Path $project 'Export\candy_sky_islands.aab'
-if (-not (Test-Path -LiteralPath $aab)) {
-  Write-Error "Missing Android AAB: $aab"
-  exit 1
-}
-
-$paths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $aab | Sort-Object -Unique
-$bad = $paths | Where-Object {
-  $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
-}
-if ($bad) {
-  $bad | ForEach-Object { Write-Error "AAB_FORBIDDEN $_" }
-  exit 1
-}
-Write-Host "AAB_PATH_MARKER_SCAN_PASS path_count=$($paths.Count)"
-```
-
-If `path_count=0`, do not treat the outer scan as enough proof. AAB files can
-compress Godot resources under `installTime/assets/`. Run the deep scan too:
-
-```powershell
-$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
-$aab = Join-Path $project 'Export\candy_sky_islands.aab'
-$temp = Join-Path $env:TEMP ('candy_aab_scan_' + [guid]::NewGuid().ToString('N'))
-New-Item -ItemType Directory -Force -Path $temp | Out-Null
-try {
-  Add-Type -AssemblyName System.IO.Compression.FileSystem
-  [System.IO.Compression.ZipFile]::ExtractToDirectory($aab, $temp)
-  $entryNames = Get-ChildItem -LiteralPath $temp -Recurse -Force -File |
-    ForEach-Object { $_.FullName.Substring($temp.Length + 1).Replace('\','/') }
-  $entryBad = $entryNames | Where-Object {
-    $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
-  }
-  if ($entryBad) {
-    $entryBad | ForEach-Object { Write-Error "AAB_ENTRY_FORBIDDEN $_" }
-    exit 1
-  }
-  $contentPaths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $temp | Sort-Object -Unique
-  $contentBad = $contentPaths | Where-Object {
-    $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
-  }
-  if ($contentBad) {
-    $contentBad | ForEach-Object { Write-Error "AAB_CONTENT_FORBIDDEN $_" }
-    exit 1
-  }
-  Write-Host "AAB_DEEP_SCAN_PASS entry_count=$($entryNames.Count) content_path_count=$($contentPaths.Count)"
-} finally {
-  if (Test-Path -LiteralPath $temp) {
-    Remove-Item -LiteralPath $temp -Recurse -Force
-  }
-}
-```
-
-Native Android device smoke checklist:
-
-1. Install the signed release AAB through the Play/internal-test path or a
-   release-equivalent local extraction path documented by the packaging agent.
-2. Launch fresh app, confirm splash and username prompt.
-3. Enter username; Settings and Leaderboard must open one at a time.
-4. Move, jump, double-jump, rotate camera/look, pinch or equivalent zoom.
-5. Toggle BGM/SFX and Shift Lock settings.
-6. Complete one level, fall/retry once, then confirm progression continues.
-7. Rotate device or verify landscape lock policy; no stretched/misaligned UI.
-8. Audio loops without silence after the intro loop point.
-9. No crash, missing resource, or forbidden marker evidence.
+- Gate 4C: Android Payload Hygiene lives in `docs/android_packaging_runbook.md`
 
 Google Play handoff status: source-owned Android preset and signing handoff
 exist. Release/upload remains packaging-owned and blocked until fresh AAB
-export, AAB scan, size table, and device smoke pass in the current release pass.
+export, AAB scan/deep scan, size table, signing evidence, and device smoke pass
+in the current release pass.
 
 ## Gate 4B: Web Payload Hygiene Scan
 

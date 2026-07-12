@@ -516,6 +516,8 @@ Fill only if publishing or making an owner test link.
 
 ### Android Source Handoff Evidence 2026-07-12
 
+- Android procedure SSOT is `docs/android_packaging_runbook.md`; this section is
+  historical evidence only and must not be used as the packaging runbook.
 - Mode: Source handoff standardization, not Play release.
 - Source owner action: added Android preset and signing handoff so packaging/release agents no longer guess package id, version, AAB path, or keystore policy.
 - Android preset: `Android`.

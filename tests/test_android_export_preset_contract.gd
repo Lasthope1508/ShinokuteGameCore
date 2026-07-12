@@ -2,6 +2,7 @@ extends SceneTree
 
 const EXPORT_PRESETS := "res://export_presets.cfg"
 const HANDOFF := "res://docs/packaging_handoff.md"
+const ANDROID_RUNBOOK := "res://docs/android_packaging_runbook.md"
 const VALIDATION_RUNBOOK := "res://docs/validation_runbook.md"
 const AGENTS := "res://AGENTS.md"
 
@@ -30,12 +31,14 @@ func _init() -> void:
 	var passed := true
 	var presets := _read_text(EXPORT_PRESETS)
 	var handoff := _read_text(HANDOFF)
+	var android_runbook := _read_text(ANDROID_RUNBOOK)
 	var runbook := _read_text(VALIDATION_RUNBOOK)
 	var agents := _read_text(AGENTS)
 	var android_preset := _section_between(presets, "[preset.1]", "[preset.1.options]")
 	var android_options := _section_after(presets, "[preset.1.options]")
 
 	passed = _assert_contains(agents, "Candy Sky Islands has Web and Android source handoffs", "AGENTS should state Candy has Web and Android handoffs") and passed
+	passed = _assert_contains(agents, "docs/android_packaging_runbook.md", "AGENTS should point Android packagers to the Android runbook") and passed
 	passed = _assert_contains(agents, "Android Packaging Reset Rule", "AGENTS should point Android packagers to the reset rule") and passed
 	passed = _assert_contains(presets, "name=\"Android\"", "Android preset should exist") and passed
 	passed = _assert_contains(presets, "platform=\"Android\"", "Android preset should target Android") and passed
@@ -57,14 +60,21 @@ func _init() -> void:
 	passed = _assert_contains(android_options, "keystore/release=\"C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore\"", "Candy release keystore path should be explicit") and passed
 	passed = _assert_contains(android_options, "keystore/release_user=\"candy_sky_islands\"", "Candy release key alias should be explicit") and passed
 	passed = _assert_contains(handoff, "Android preset name: `Android`", "Packaging handoff should name Android preset") and passed
-	passed = _assert_contains(handoff, "Android Packaging Reset Rule", "Packaging handoff should include Android reset rule") and passed
+	passed = _assert_contains(handoff, "docs/android_packaging_runbook.md", "Packaging handoff should delegate Android details to the Android runbook") and passed
+	passed = _assert_contains(android_runbook, "Android Packaging Reset Rule", "Android runbook should include Android reset rule") and passed
 	passed = _assert_contains(handoff, "Source handoff work must not install Java/JDK", "Android handoff should forbid source agents from installing release tooling") and passed
 	passed = _assert_contains(handoff, "First compare the existing shipped patterns", "Android handoff should require checking BloxChain/Glyph patterns") and passed
 	passed = _assert_contains(handoff, "Package id: `com.shinokutestudio.candyskyislands`", "Packaging handoff should name package id") and passed
 	passed = _assert_contains(handoff, "AAB export path: `Export/candy_sky_islands.aab`", "Packaging handoff should name AAB path") and passed
 	passed = _assert_contains(handoff, "candy_sky_islands_keystore_secrets.json", "Packaging handoff should name password source without embedding secrets") and passed
-	passed = _assert_contains(handoff, "Gate 4C: Android Payload Hygiene", "Packaging handoff should require Android payload hygiene gate") and passed
-	passed = _assert_contains(runbook, "Gate 4C: Android Payload Hygiene", "Validation runbook should include Android payload hygiene gate") and passed
+	passed = _assert_contains(android_runbook, "Gate 4C: Android Payload Hygiene", "Android runbook should require Android payload hygiene gate") and passed
+	passed = _assert_contains(android_runbook, "tools/patch_android_template_for_play.ps1", "Android runbook should require patch_android_template_for_play") and passed
+	passed = _assert_contains(android_runbook, "android/build/.gdignore", "Android runbook should require the Android build gdignore marker") and passed
+	passed = _assert_contains(android_runbook, "getExportTargetSdkVersion()", "Android runbook should document Godot 4.3 target SDK patch") and passed
+	passed = _assert_contains(android_runbook, "DOM.setFileInputFiles", "Android runbook should document the Play Console large-file upload path") and passed
+	passed = _assert_contains(android_runbook, "version/code=4", "Android runbook should record current Candy version code") and passed
+	passed = _assert_contains(android_runbook, "version/target_sdk=35", "Android runbook should record current Candy target SDK") and passed
+	passed = _assert_contains(runbook, "docs/android_packaging_runbook.md", "Validation runbook should point Gate 4C to Android runbook") and passed
 	passed = _assert_not_contains(handoff, "Android blocked: no Android preset or signing handoff in source", "Old Android blocker should be removed after source handoff exists") and passed
 	for path in REQUIRED_ANDROID_EXPORT_FILES:
 		passed = _assert_contains(android_preset, path, "Android selected resources should include %s" % path) and passed

@@ -2,6 +2,7 @@ extends SceneTree
 
 const AGENTS := "res://AGENTS.md"
 const HANDOFF := "res://docs/packaging_handoff.md"
+const ANDROID_RUNBOOK := "res://docs/android_packaging_runbook.md"
 const FIREBASE := "res://firebase.json"
 const FIREBASERC := "res://.firebaserc"
 const EXPORT_PRESETS := "res://export_presets.cfg"
@@ -9,12 +10,16 @@ const EXPORT_PRESETS := "res://export_presets.cfg"
 func _init() -> void:
 	var passed := true
 	passed = _assert_file_contains(AGENTS, "docs/packaging_handoff.md", "AGENTS should force packaging agents to read the packaging handoff") and passed
+	passed = _assert_file_contains(AGENTS, "docs/android_packaging_runbook.md", "AGENTS should force Android packagers to read the Android runbook") and passed
 	passed = _assert_file_contains(AGENTS, "contextless packaging agents", "AGENTS should state that packaging handoff is for agents without chat context") and passed
 	passed = _assert_file_contains(AGENTS, "Before finishing, committing, or pushing source changes", "AGENTS should require source-completion handoff review before commits") and passed
 	passed = _assert_file_contains(AGENTS, "Android Packaging Reset Rule", "AGENTS should force Android packagers to read the Android reset rule") and passed
 	passed = _assert_file_contains(HANDOFF, "Contextless Agent Bootstrap", "Packaging handoff should have a contextless bootstrap section") and passed
 	passed = _assert_file_contains(HANDOFF, "Source Completion Handoff Gate", "Packaging handoff should require source owners to maintain deploy docs before push") and passed
-	passed = _assert_file_contains(HANDOFF, "Android Packaging Reset Rule", "Packaging handoff should document the Android packaging reset rule") and passed
+	passed = _assert_file_contains(HANDOFF, "docs/android_packaging_runbook.md", "Packaging handoff should delegate Android packaging details to the Android runbook") and passed
+	passed = _assert_file_contains(ANDROID_RUNBOOK, "Android Packaging Runbook", "Android runbook should exist as the Android packaging SSOT") and passed
+	passed = _assert_file_contains(ANDROID_RUNBOOK, "Duplication Rule", "Android runbook should define how duplicate Android docs are avoided") and passed
+	passed = _assert_file_contains(ANDROID_RUNBOOK, "Android Packaging Reset Rule", "Android runbook should document the Android packaging reset rule") and passed
 	passed = _assert_file_contains(HANDOFF, "Source handoff work must not install Java/JDK", "Packaging handoff should forbid toolchain installs during source handoff") and passed
 	passed = _assert_file_contains(HANDOFF, "First compare the existing shipped patterns", "Packaging handoff should require comparing shipped Android branches before guessing") and passed
 	passed = _assert_file_contains(HANDOFF, "Do not create a replacement keystore", "Packaging handoff should forbid unapproved replacement keystores") and passed
@@ -29,7 +34,9 @@ func _init() -> void:
 	passed = _assert_file_contains(HANDOFF, "Package id: `com.shinokutestudio.candyskyislands`", "Packaging handoff should name Candy Android package id") and passed
 	passed = _assert_file_contains(HANDOFF, "AAB export path: `Export/candy_sky_islands.aab`", "Packaging handoff should name Candy AAB output") and passed
 	passed = _assert_file_contains(HANDOFF, "candy_sky_islands_keystore_secrets.json", "Packaging handoff should name password source without embedding secrets") and passed
-	passed = _assert_file_contains(HANDOFF, "Gate 4C: Android Payload Hygiene", "Packaging handoff should require Android AAB scan") and passed
+	passed = _assert_file_contains(ANDROID_RUNBOOK, "Gate 4C: Android Payload Hygiene", "Android runbook should require Android AAB scan") and passed
+	passed = _assert_file_contains(ANDROID_RUNBOOK, "tools/patch_android_template_for_play.ps1", "Android runbook should require the local template patch script") and passed
+	passed = _assert_file_contains(ANDROID_RUNBOOK, "android/build/.gdignore", "Android runbook should preserve Android template gdignore marker") and passed
 	passed = _assert_file_not_contains(HANDOFF, "Android blocked: no Android preset or signing handoff in source", "Packaging handoff should not keep the old Android source blocker after source preset exists") and passed
 	passed = _assert_file_contains(HANDOFF, "$runtimeFiles = @(", "Packaging handoff should sync Firebase public dir from runtime whitelist") and passed
 	passed = _assert_file_contains(HANDOFF, "PUBLIC_WHITELIST_SYNC_PASS", "Packaging handoff should report whitelist sync evidence") and passed

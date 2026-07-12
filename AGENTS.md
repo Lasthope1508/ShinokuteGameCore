@@ -21,10 +21,13 @@ Codex must also read `docs/gameplay_progression_ssot.md`.
 Before any packaging, Web export, Android export, Firebase deploy, Play Store
 handoff, payload-size audit, or
 package-ready claim, Codex must also read `docs/packaging_handoff.md` and
-`docs/validation_runbook.md` Gate 4B and Gate 4C. Do not infer output folders,
-deploy targets, export filters, Firebase project, preview channel, runtime
-resources, Android package id, signing profile, Play Store target, or cache
-policy from memory. Candy Sky Islands has Web and Android source handoffs.
+`docs/validation_runbook.md` Gate 4B. For Android export, AAB signing,
+Google Play upload, Android device smoke, or Android-ready claims, Codex must
+also read `docs/android_packaging_runbook.md` and `docs/validation_runbook.md`
+Gate 4C. Do not infer output folders, deploy targets, export filters,
+Firebase project, preview channel, runtime resources, Android package id,
+signing profile, Play Store target, or cache policy from memory.
+Candy Sky Islands has Web and Android source handoffs.
 Package-ready claims are still blocked until fresh Web export, Android AAB
 export, payload scans, size tables, and device/browser smoke evidence exist in
 the current pass.
@@ -39,13 +42,17 @@ for contextless packaging agents: they must be able to package from repository
 docs alone, without chat history.
 
 Android packaging reset rule: before Android export, AAB, signing, or Play
-Store work, read `docs/packaging_handoff.md` section
-`Android Packaging Reset Rule`. Do not install Java/JDK, Android SDK, Gradle,
+Store work, read `docs/android_packaging_runbook.md` section
+`Android Packaging Reset Rule` and the Android pointer in
+`docs/packaging_handoff.md`. Do not install Java/JDK, Android SDK, Gradle,
 create keystores, change package id, or invent Play settings during source
 handoff. First compare BloxChain and Glyph Arrows Android preset/signing
-patterns, then use Candy's documented Android preset and signing handoff. If a
-release tool or secret is missing during packaging, report the exact blocker
-instead of creating a replacement.
+patterns, then use Candy's documented Android preset and signing handoff. Use
+`tools/patch_android_template_for_play.ps1` before Android export, keep
+`android/build/.gdignore`, never commit or print passwords, and restore
+`keystore/release_password=""` after temporary export injection. If a release
+tool or secret is missing during packaging, report the exact blocker instead of
+creating a replacement.
 
 Candy Sky Islands Web transition rule: win/death/fall gameplay transitions must not call
 `get_tree().reload_current_scene()`, `tree.reload_current_scene()`, or scene changes from
