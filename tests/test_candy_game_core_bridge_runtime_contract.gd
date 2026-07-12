@@ -40,6 +40,11 @@ func _run() -> void:
 		_assert_true(bridge.core.profile != null, "GameCore should expose core PlayerProfile")
 		_assert_true(bridge.core.leaderboard != null, "GameCore should expose core LeaderboardClient")
 		_assert_true(bridge.get_node_or_null("UsernamePromptOverlay") != null, "Bridge should show Candy username prompt when username is missing")
+		var touch_controls = scene.get_node_or_null("HUD/MobileTouchControls")
+		if touch_controls != null and touch_controls.has_method("set_touch_controls_visible"):
+			touch_controls.set_touch_controls_visible(true)
+			bridge._on_username_required()
+			_assert_true(not touch_controls.visible, "Username prompt should hide mobile touch controls so Web touch events reach modal buttons")
 		bridge._on_level_completed(2, null)
 		_assert_eq(bridge.core.save_store.get_pending_score("classic"), 3, "Level completion should store pending score through core when username is missing")
 		var fake := FakeLeaderboard.new()

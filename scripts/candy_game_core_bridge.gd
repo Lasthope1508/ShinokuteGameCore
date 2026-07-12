@@ -12,12 +12,15 @@ signal settings_changed(key: String, value: Variant)
 @export var username_prompt_scene: PackedScene
 @export var progression_path := NodePath("../GameProgression")
 @export var view_path := NodePath("../View")
+@export var mobile_touch_controls_path := NodePath("../HUD/MobileTouchControls")
 @export var save_path := "user://candy_sky_islands_core.cfg"
 @export var score_mode := "classic"
 
 var core: Node
 var input_router: Node
 var _username_prompt: Node
+var _touch_controls_was_visible := false
+var _touch_controls_hidden_for_prompt := false
 
 func _ready() -> void:
 	if core_config == null:
@@ -107,11 +110,29 @@ func _on_username_required() -> void:
 	if username_prompt_scene == null or core == null:
 		return
 	if _username_prompt != null and is_instance_valid(_username_prompt):
+		_set_touch_controls_hidden_for_prompt(true)
 		return
 	_username_prompt = username_prompt_scene.instantiate()
 	add_child(_username_prompt)
+	_set_touch_controls_hidden_for_prompt(true)
+	_username_prompt.tree_exited.connect(func(): _set_touch_controls_hidden_for_prompt(false), CONNECT_ONE_SHOT)
 	if _username_prompt.has_method("configure"):
 		_username_prompt.configure(core.profile)
+
+func _set_touch_controls_hidden_for_prompt(hidden: bool) -> void:
+	var touch_controls := get_node_or_null(mobile_touch_controls_path)
+	if touch_controls == null or not touch_controls.has_method("set_touch_controls_visible"):
+		return
+	if hidden:
+		if not _touch_controls_hidden_for_prompt:
+			_touch_controls_was_visible = bool(touch_controls.visible)
+			_touch_controls_hidden_for_prompt = true
+		touch_controls.set_touch_controls_visible(false)
+	else:
+		if not _touch_controls_hidden_for_prompt:
+			return
+		_touch_controls_hidden_for_prompt = false
+		touch_controls.set_touch_controls_visible(_touch_controls_was_visible)
 
 func _on_core_setting_changed(key: String, value: Variant) -> void:
 	_apply_setting(key, value)

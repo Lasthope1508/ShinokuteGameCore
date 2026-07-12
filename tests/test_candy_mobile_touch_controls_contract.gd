@@ -231,6 +231,15 @@ func _run() -> void:
 
 			passed = _assert_true(touch_controls.has_method("handle_web_pointer_event"), "Mobile controls should expose a JS pointer bridge so iOS Web multi-touch keeps pointer ownership") and passed
 			if touch_controls.has_method("handle_web_pointer_event"):
+				touch_controls.set_touch_controls_visible(false)
+				touch_controls.handle_web_pointer_event(["down", 1001, look_rect.get_center().x, look_rect.get_center().y])
+				touch_controls.handle_web_pointer_event(["move", 1001, look_rect.get_center().x + 44.0, look_rect.get_center().y])
+				passed = _assert_true(router.consume_look_delta().length() < 0.001, "Hidden mobile controls must ignore JS pointer bridge events so modal UI can receive taps") and passed
+				touch_controls.handle_web_pointer_event(["up", 1001, look_rect.get_center().x + 44.0, look_rect.get_center().y])
+				touch_controls.handle_web_touch_event(["start", 1002, jump_rect.get_center().x, jump_rect.get_center().y])
+				passed = _assert_true(not router.consume_jump_pressed(), "Hidden mobile controls must ignore JS touch bridge events so modal buttons can receive taps") and passed
+				touch_controls.handle_web_touch_event(["end", 1002, jump_rect.get_center().x, jump_rect.get_center().y])
+				touch_controls.set_touch_controls_visible(true)
 				touch_controls.handle_web_pointer_event(["down", 101, look_rect.get_center().x, look_rect.get_center().y])
 				touch_controls.handle_web_pointer_event(["move", 101, look_rect.get_center().x + 44.0, look_rect.get_center().y])
 				passed = _assert_true(router.consume_look_delta().x > 40.0, "Single right-hand JS pointer drag should rotate camera through routed look") and passed

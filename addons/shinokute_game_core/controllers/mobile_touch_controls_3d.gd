@@ -190,6 +190,8 @@ func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 	queue_redraw()
 
 func handle_web_pointer_event(args: Array) -> void:
+	if not visible:
+		return
 	var payload := _web_event_payload(args)
 	if payload.size() < 4:
 		return
@@ -207,6 +209,8 @@ func handle_web_pointer_event(args: Array) -> void:
 	queue_redraw()
 
 func handle_web_touch_event(args: Array) -> void:
+	if not visible:
+		return
 	var payload := _web_event_payload(args)
 	if payload.size() < 4:
 		return

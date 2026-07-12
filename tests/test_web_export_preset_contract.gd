@@ -14,6 +14,7 @@ const REQUIRED_EXPORT_FILES := [
 	"res://addons/shinokute_game_core/core/progression_catalog.gd",
 	"res://addons/shinokute_game_core/core/progression_level.gd",
 	"res://scripts/theme_applier.gd",
+	"res://scripts/obby_route_generator.gd",
 	"res://scripts/candy_mobile_touch_controls.gd",
 	"res://addons/shinokute_game_core/controllers/character_3d_controller.gd",
 	"res://addons/shinokute_game_core/controllers/follow_camera_3d.gd",
