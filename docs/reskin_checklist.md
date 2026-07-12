@@ -569,6 +569,25 @@ Fill only if publishing or making an owner test link.
 - Tester join link: `https://play.google.com/apps/internaltest/4701018407986590939`.
 - Remaining Android release blockers: no native Android device smoke yet, no deobfuscation file uploaded, and no native debug symbols uploaded.
 
+### Web Publish Evidence 2026-07-12 17:27
+
+- Mode: Official publish to `play.shinokute.com` after Android/Google Play handoff.
+- Source repo/branch/commit before publish: `game/candy-sky-islands`, `32e9077`.
+- Production Firebase project/target: `shinokute-studio`, `shinokute-play`.
+- Production precheck: PASS; Firebase site `shinokute-play` exists and `play.shinokute.com` resolves through `shinokute-play.web.app`.
+- Full test sweep: PASS, `CANDY_FULL_TEST_SWEEP_PASS count=43`.
+- Godot import/export: PASS, `Godot_v4.3-stable_win64_console.exe --headless --path <project> --export-release "Web" "<project>\Export\candy_sky_islands.html"`.
+- PCK forbidden scan: PASS, `PCK_PATH_MARKER_SCAN_PASS path_count=360`.
+- Public dir sync: PASS, `PUBLIC_WHITELIST_SYNC_PASS count=8`.
+- Artifact sizes: HTML 6036 bytes, JS 331495 bytes, PCK 12892208 bytes, WASM 35376909 bytes, AAB 58719395 bytes, BGM 1136942 bytes, SFX total 45882 bytes.
+- Production deploy: PASS, `firebase deploy --only hosting:shinokute-play --project shinokute-studio`.
+- Production smoke URL: `https://play.shinokute.com/?codex_prod=1783850852`.
+- Header check: PASS for `.html`, `.pck`, `.js`, `.wasm`; all `200` with `Cache-Control: no-cache, no-store, must-revalidate`; WASM served as `application/wasm`.
+- Smoke path: desktop and iPhone 13 Playwright loaded canvas, skipped username prompt, moved/jumped/double-jumped, exercised mobile controls and portrait/landscape rotation.
+- Console result: PASS; production desktop and iPhone 13 logs contain only Godot/WebGL startup logs, no errors.
+- Screenshot paths: `output/playwright/production-latest-desktop-*.png`, `output/playwright/production-latest-iphone13-*.png`.
+- Android status: Google Play internal testing evidence exists above; native Android device smoke remains a separate blocker for full package-ready claims.
+
 ## Completion
 
 - Commit hash: not committed.
