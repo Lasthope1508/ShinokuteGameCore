@@ -3,6 +3,62 @@
 This is the first file to read before packaging, Web export, Firebase deploy,
 payload-size audit, or any package-ready claim for Candy Sky Islands.
 
+## Contextless Agent Bootstrap
+
+Assume no chat history. A packaging agent must be able to package from this
+repository alone.
+
+Required first reads:
+
+1. `AGENTS.md`
+2. `docs/packaging_handoff.md`
+3. `docs/validation_runbook.md` Gate 4B
+4. `export_presets.cfg`
+5. `firebase.json`
+6. `.firebaserc`
+7. `tests/test_packaging_handoff_contract.gd`
+8. `tests/test_web_export_preset_contract.gd`
+
+Do not use memory, prior chat, old Firebase links, stale terminal output, or
+old `Export_web_test/` contents as source of truth.
+
+Required first report:
+
+- branch and commit
+- local vs upstream count
+- current packaging scope
+- Web preview target
+- production target
+- Android status
+- exact blocker list, if any
+
+## Source Completion Handoff Gate
+
+Every source-completion pass must leave this handoff usable by a different
+agent with no context. Before committing source changes, the source owner must
+check this table:
+
+| Source change | Handoff action required |
+|---|---|
+| `export_presets.cfg` changed | Update Web/Android preset names, output paths, selected resource rules, and tests |
+| `firebase.json` or `.firebaserc` changed | Update preview/production targets, site/project mapping, cache policy, deploy commands, and tests |
+| Runtime asset, UI, audio, or scene path changed | Update runtime whitelist, size evidence expectations, PCK marker rules, and export preset contract |
+| Public output folder policy changed | Update whitelist sync command; never copy all files from `Export/` |
+| Android/Play Store added or changed | Add Android preset/signing/package/version/AAB scan/device smoke details before allowing AAB claims |
+| `play.shinokute.com` or preview channel changed | Update DNS/site verification commands and deploy commands |
+| Bug fix affects mobile/input/Web shell | Update smoke checklist and contract tests that prove the handoff still covers the path |
+
+If none of these apply, still run:
+
+```powershell
+$godot = 'C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
+$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
+& $godot --headless --path $project --script "$project\tests\test_packaging_handoff_contract.gd"
+```
+
+The source owner must not push a source-completion commit if this contract
+fails. The packaging agent must stop if this contract fails after pulling.
+
 ## Canonical Source
 
 - Project root: `C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter`
@@ -178,7 +234,7 @@ Write-Host "PUBLIC_WHITELIST_SYNC_PASS count=$($runtimeFiles.Count)"
 Then deploy preview for owner device testing:
 
 ```powershell
-firebase hosting:channel:deploy candy-sky-islands-test --only hosting:candy-preview --project foodapp-7ff6b --expires 7d
+firebase hosting:channel:deploy candy-sky-islands-test --only candy-preview --project foodapp-7ff6b --expires 7d
 ```
 
 Production deploy to `play.shinokute.com`, owner approval required:

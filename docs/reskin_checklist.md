@@ -490,6 +490,30 @@ Fill only if publishing or making an owner test link.
 - Header/cache result: PASS for HTML/WASM/PCK; all `200`, `Cache-Control: no-cache`; WASM served as `application/wasm`, PCK as `application/octet-stream`.
 - Screenshot paths: none.
 
+### Web Publish Evidence 2026-07-12 13:19
+
+- Mode: Official publish.
+- Source repo/branch/commit: `https://github.com/Lasthope1508/ShinokuteGameCore.git`, `game/candy-sky-islands`, `f43c907`.
+- Godot project: `C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter`.
+- Firebase preview project/target/channel: `foodapp-7ff6b`, `candy-preview`, `candy-sky-islands-test`.
+- Firebase production project/target/site: `shinokute-studio`, `shinokute-play`, `https://play.shinokute.com`.
+- Public dir: `Export_web_test`, rebuilt from runtime whitelist only.
+- Web export command: `Godot_v4.3-stable_win64_console.exe --headless --path <project> --export-release "Web" "<project>\Export\candy_sky_islands.html"`.
+- Artifact sizes: HTML 6036 bytes, JS 331495 bytes, PCK 12892080 bytes, WASM 35376909 bytes, BGM 1136942 bytes, SFX total 45882 bytes.
+- Tests: PASS full `tests/test_*.gd` sweep, 42 contracts.
+- PCK forbidden scan: PASS, `path_count=356`.
+- Public dir clean gate: PASS, 8 runtime files, no `.import`, `.gdignore`, logs, docs, tests, or Android artifacts.
+- Preview deploy: PASS, `firebase hosting:channel:deploy candy-sky-islands-test --only candy-preview --project foodapp-7ff6b --expires 7d`.
+- Preview URL: `https://foodapp-7ff6b--candy-sky-islands-test-8a6pe9td.web.app/?codex_preview=1783836965`.
+- Production precheck: PASS, `shinokute-play` site exists and `play.shinokute.com` resolves through `shinokute-play.web.app`.
+- Production deploy: PASS, `firebase deploy --only hosting:shinokute-play --project shinokute-studio`.
+- Production URL: `https://play.shinokute.com/?codex_prod=1783837116`.
+- Header check: PASS for `.html`, `.pck`, `.js`, `.wasm`; all `200` with `Cache-Control: no-cache, no-store, must-revalidate`; WASM served as `application/wasm`.
+- Smoke path: desktop and iPhone 13 Playwright loaded canvas, skipped username prompt, moved/jumped/double-jumped, exercised mobile controls and portrait/landscape rotation.
+- Console result: PASS; production desktop and iPhone 13 logs contain only Godot/WebGL startup logs, no errors.
+- Screenshot paths: `output/playwright/production-desktop-*.png`, `output/playwright/production-iphone13-*.png`.
+- Android blocker: `Android blocked: no Android preset or signing handoff in source`.
+
 ## Completion
 
 - Commit hash: not committed.

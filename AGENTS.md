@@ -26,6 +26,15 @@ or cache policy from memory. Candy Sky Islands currently has a Web packaging
 handoff only; Android/package-ready claims are blocked until an Android preset,
 signing profile, and fresh AAB audit exist.
 
+Before finishing, committing, or pushing source changes that can affect build,
+export, hosting, runtime payload, assets, audio, input, scene loading, Firebase,
+Android, or Play Store behavior, Codex must update `docs/packaging_handoff.md`
+in the same source pass. If no handoff update is needed, Codex must explicitly
+verify that the existing handoff still matches the changed source. Run
+`tests/test_packaging_handoff_contract.gd` before the commit. This rule exists
+for contextless packaging agents: they must be able to package from repository
+docs alone, without chat history.
+
 Candy Sky Islands Web transition rule: win/death/fall gameplay transitions must not call
 `get_tree().reload_current_scene()`, `tree.reload_current_scene()`, or scene changes from
 physics/signal callbacks. Use `GameProgression` in-place reset: guard duplicate

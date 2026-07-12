@@ -9,6 +9,12 @@ const EXPORT_PRESETS := "res://export_presets.cfg"
 func _init() -> void:
 	var passed := true
 	passed = _assert_file_contains(AGENTS, "docs/packaging_handoff.md", "AGENTS should force packaging agents to read the packaging handoff") and passed
+	passed = _assert_file_contains(AGENTS, "contextless packaging agents", "AGENTS should state that packaging handoff is for agents without chat context") and passed
+	passed = _assert_file_contains(AGENTS, "Before finishing, committing, or pushing source changes", "AGENTS should require source-completion handoff review before commits") and passed
+	passed = _assert_file_contains(HANDOFF, "Contextless Agent Bootstrap", "Packaging handoff should have a contextless bootstrap section") and passed
+	passed = _assert_file_contains(HANDOFF, "Source Completion Handoff Gate", "Packaging handoff should require source owners to maintain deploy docs before push") and passed
+	passed = _assert_file_contains(HANDOFF, "Do not use memory, prior chat", "Packaging handoff should forbid chat-history-dependent packaging") and passed
+	passed = _assert_file_contains(HANDOFF, "The packaging agent must stop if this contract fails after pulling.", "Packaging handoff should give stop condition for contextless agents") and passed
 	passed = _assert_file_contains(HANDOFF, "Export/", "Packaging handoff should define canonical Godot export folder") and passed
 	passed = _assert_file_contains(HANDOFF, "Export_web_test/", "Packaging handoff should define Firebase public folder") and passed
 	passed = _assert_file_contains(HANDOFF, "firebase hosting:channel:deploy candy-sky-islands-test", "Packaging handoff should name the Firebase preview channel command") and passed
