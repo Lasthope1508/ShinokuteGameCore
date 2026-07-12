@@ -253,6 +253,41 @@ if ($bad) {
 Write-Host "Gate 4C PASS: AAB forbidden marker scan clean; path_count=$($paths.Count)"
 ```
 
+If the AAB outer scan returns `path_count=0`, run a deep scan before claiming
+Gate 4C. Godot resources may be compressed inside `installTime/assets/`, so the
+gate must also scan extracted entry names and extracted file contents:
+
+```powershell
+$temp = Join-Path $env:TEMP ('candy_aab_scan_' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Force -Path $temp | Out-Null
+try {
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  [System.IO.Compression.ZipFile]::ExtractToDirectory($aab, $temp)
+  $entryNames = Get-ChildItem -LiteralPath $temp -Recurse -Force -File |
+    ForEach-Object { $_.FullName.Substring($temp.Length + 1).Replace('\','/') }
+  $entryBad = $entryNames | Where-Object {
+    $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+  }
+  if ($entryBad) {
+    Write-Error "AAB forbidden entry scan failed:`n$($entryBad -join "`n")"
+    exit 1
+  }
+  $contentPaths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $temp | Sort-Object -Unique
+  $contentBad = $contentPaths | Where-Object {
+    $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+  }
+  if ($contentBad) {
+    Write-Error "AAB forbidden content scan failed:`n$($contentBad -join "`n")"
+    exit 1
+  }
+  Write-Host "Gate 4C deep scan PASS: entry_count=$($entryNames.Count), content_path_count=$($contentPaths.Count)"
+} finally {
+  if (Test-Path -LiteralPath $temp) {
+    Remove-Item -LiteralPath $temp -Recurse -Force
+  }
+}
+```
+
 Expected:
 - Exit code `0`.
 - No `docs`, `debug`, `tests`, `tools`, `source`, raw, candidate, local absolute path, legacy root mesh, or old colormap markers in Android AAB.

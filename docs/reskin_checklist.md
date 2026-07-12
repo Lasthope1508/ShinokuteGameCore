@@ -527,6 +527,22 @@ Fill only if publishing or making an owner test link.
 - Required contracts: `tests/test_android_export_preset_contract.gd`, `tests/test_packaging_handoff_contract.gd`, `tests/test_web_export_preset_contract.gd`.
 - Required Android release gates before any Play upload: fresh AAB export, Gate 4C AAB marker scan, AAB size table, signing evidence, native Android device smoke.
 
+### Android Packaging Evidence 2026-07-12
+
+- Mode: Local release AAB packaging, not Play upload.
+- Source repo/branch/commit before packaging evidence: `game/candy-sky-islands`, `6c079e0`.
+- Root cause fixed for local export: manual Android template expansion needs `android/.build_version` beside `android/build/`; Candy now uses `android/.build_version` content `4.3.stable`, matching the Godot 4.3 template. Without this marker Godot reports: "Trying to build from a gradle built template, but no version info for it exists."
+- Android export command: `Godot_v4.3-stable_win64_console.exe --headless --path <project> --export-release "Android" "<project>\Export\candy_sky_islands.aab"`.
+- Password handling: `keystore_password` read from local-only `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`, injected temporarily for export, and `export_presets.cfg` restored to `keystore/release_password=""`.
+- Android preset contract: PASS.
+- Godot import: PASS.
+- AAB export: PASS, `Export/candy_sky_islands.aab`, 58719413 bytes.
+- AAB signing marker: PASS, `META-INF/CANDY_SK.RSA`, `META-INF/CANDY_SK.SF`, and `META-INF/MANIFEST.MF` present.
+- Gate 4C outer marker scan: PASS, `path_count=0`; outer scan alone is not enough for compressed AAB contents.
+- Gate 4C deep scan: PASS, `entry_count=315`, `content_path_count=112`.
+- Fresh size table: HTML 6036 bytes, JS 331495 bytes, PCK 12892032 bytes, WASM 35376909 bytes, AAB 58719413 bytes, BGM 1136942 bytes, SFX total 45882 bytes.
+- Remaining Android release blockers: no native Android device smoke yet, no Play Console Candy app upload yet, and no Play internal-test result yet.
+
 ## Completion
 
 - Commit hash: not committed.

@@ -288,6 +288,13 @@ export, keystore, Java/JDK, Gradle, SDK, AAB, or Play Store work.
   Do not create a replacement keystore. Do not change package id, switch to
   debug signing, or upload a different app unless the owner explicitly approves
   that release operation.
+- If Godot Android build templates must be expanded manually, use the official
+  `android_source.zip` from the matching Godot export template version, expand
+  Gradle project files into `android/build/`, and keep `android/.build_version`
+  beside the `build` folder. For Godot 4.3 stable the marker content is
+  `4.3.stable`. Missing this marker causes the export error:
+  "Trying to build from a gradle built template, but no version info for it
+  exists."
 - Google Play upload is packaging/release-owned after source contracts pass.
   Source owner remains responsible for keeping the Android preset, signing
   handoff, version policy, runtime asset list, and Gate 4C scan rules current.
@@ -356,6 +363,42 @@ if ($bad) {
   exit 1
 }
 Write-Host "AAB_PATH_MARKER_SCAN_PASS path_count=$($paths.Count)"
+```
+
+If `path_count=0`, do not treat the outer scan as enough proof. AAB files can
+compress Godot resources under `installTime/assets/`. Run the deep scan too:
+
+```powershell
+$project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
+$aab = Join-Path $project 'Export\candy_sky_islands.aab'
+$temp = Join-Path $env:TEMP ('candy_aab_scan_' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Force -Path $temp | Out-Null
+try {
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  [System.IO.Compression.ZipFile]::ExtractToDirectory($aab, $temp)
+  $entryNames = Get-ChildItem -LiteralPath $temp -Recurse -Force -File |
+    ForEach-Object { $_.FullName.Substring($temp.Length + 1).Replace('\','/') }
+  $entryBad = $entryNames | Where-Object {
+    $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+  }
+  if ($entryBad) {
+    $entryBad | ForEach-Object { Write-Error "AAB_ENTRY_FORBIDDEN $_" }
+    exit 1
+  }
+  $contentPaths = & rg -a -o 'res://[A-Za-z0-9_./:@-]+' $temp | Sort-Object -Unique
+  $contentBad = $contentPaths | Where-Object {
+    $_ -match 'docs/|debug/|tests/|tools/|source/|_raw\.png|candidate|models/Textures/colormap\.png|meshes/dust\.res|meshes/brick\.res|Assets/3D|C:/Users/Admin'
+  }
+  if ($contentBad) {
+    $contentBad | ForEach-Object { Write-Error "AAB_CONTENT_FORBIDDEN $_" }
+    exit 1
+  }
+  Write-Host "AAB_DEEP_SCAN_PASS entry_count=$($entryNames.Count) content_path_count=$($contentPaths.Count)"
+} finally {
+  if (Test-Path -LiteralPath $temp) {
+    Remove-Item -LiteralPath $temp -Recurse -Force
+  }
+}
 ```
 
 Native Android device smoke checklist:
