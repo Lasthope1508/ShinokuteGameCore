@@ -125,12 +125,54 @@ After a fresh export succeeds, sync the export folder used by Firebase. Both
 preview and production targets publish from `Export_web_test/`, so this sync is
 mandatory before either deploy.
 
+Important: Godot export folders may contain `.import` sidecars or `.gdignore`
+files. Do not copy the entire `Export/` folder into the public folder. Public
+hosting must be rebuilt from a runtime whitelist only. `.import`, `.gdignore`,
+logs, docs, tests, and any authoring artifacts must never be deployed.
+
 ```powershell
 $project = 'C:\Users\Admin\Desktop\Godot Casual Games\Html5_SourceGames\Godot\quantum_starter'
 Set-Location $project
 
-New-Item -ItemType Directory -Force -Path "$project\Export_web_test" | Out-Null
-Copy-Item -LiteralPath (Get-ChildItem -LiteralPath "$project\Export" -File).FullName -Destination "$project\Export_web_test" -Force
+$source = Join-Path $project 'Export'
+$public = Join-Path $project 'Export_web_test'
+$projectFull = [System.IO.Path]::GetFullPath($project)
+$publicFull = [System.IO.Path]::GetFullPath($public)
+if (-not $publicFull.StartsWith($projectFull, [System.StringComparison]::OrdinalIgnoreCase)) {
+  throw "Refusing to clean public folder outside project: $publicFull"
+}
+
+New-Item -ItemType Directory -Force -Path $public | Out-Null
+Get-ChildItem -LiteralPath $public -Force | Remove-Item -Recurse -Force
+
+$runtimeFiles = @(
+  'candy_sky_islands.html',
+  'candy_sky_islands.js',
+  'candy_sky_islands.wasm',
+  'candy_sky_islands.pck',
+  'candy_sky_islands.audio.worklet.js',
+  'candy_sky_islands.icon.png',
+  'candy_sky_islands.apple-touch-icon.png',
+  'candy_sky_islands.png'
+)
+
+foreach ($file in $runtimeFiles) {
+  $src = Join-Path $source $file
+  if (-not (Test-Path -LiteralPath $src)) {
+    throw "Missing runtime export file: $src"
+  }
+  Copy-Item -LiteralPath $src -Destination $public -Force
+}
+
+$badPublic = Get-ChildItem -LiteralPath $public -Recurse -Force -File | Where-Object {
+  $_.Name -match '\.import$|^\.gdignore$|\.log$'
+}
+if ($badPublic) {
+  $badPublic.FullName | ForEach-Object { Write-Error "PUBLIC_FORBIDDEN $_" }
+  exit 1
+}
+
+Write-Host "PUBLIC_WHITELIST_SYNC_PASS count=$($runtimeFiles.Count)"
 ```
 
 Then deploy preview for owner device testing:

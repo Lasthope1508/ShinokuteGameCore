@@ -73,7 +73,6 @@ const AUTHORING_GDIGNORE_DIRS := [
 	"res://output",
 	"res://tools",
 	"res://Export",
-	"res://Export_web_test",
 	"res://models",
 	"res://meshes",
 	"res://assets/themes/candy_sky_islands/source",

@@ -6,7 +6,9 @@
       "ignore": [
         "firebase.json",
         "**/.*",
-        "**/*.log"
+        "**/*.log",
+        "**/*.import",
+        "**/*.gdignore"
       ],
       "headers": [
         {
@@ -63,7 +65,9 @@
       "ignore": [
         "firebase.json",
         "**/.*",
-        "**/*.log"
+        "**/*.log",
+        "**/*.import",
+        "**/*.gdignore"
       ],
       "headers": [
         {
