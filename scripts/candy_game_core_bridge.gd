@@ -132,7 +132,10 @@ func _set_touch_controls_hidden_for_prompt(hidden: bool) -> void:
 		if not _touch_controls_hidden_for_prompt:
 			return
 		_touch_controls_hidden_for_prompt = false
-		touch_controls.set_touch_controls_visible(_touch_controls_was_visible)
+		if touch_controls.has_method("refresh_touch_controls_visibility"):
+			touch_controls.refresh_touch_controls_visibility()
+		else:
+			touch_controls.set_touch_controls_visible(_touch_controls_was_visible)
 
 func _on_core_setting_changed(key: String, value: Variant) -> void:
 	_apply_setting(key, value)

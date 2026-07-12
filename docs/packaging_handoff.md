@@ -114,6 +114,11 @@ Rules:
   Web and Android `export_files`, then update
   `tests/test_web_export_preset_contract.gd` and
   `tests/test_android_export_preset_contract.gd`.
+- Current selected-resource runtime core includes
+  `res://addons/shinokute_game_core/core/dynamic_progression_resolver.gd` and
+  `res://addons/shinokute_game_core/core/obby_route_generator_3d.gd` because
+  Candy uses core-owned infinite 3D obby progression and route generation. Do
+  not remove them from Web or Android selected resources.
 - Keep raw/reference/candidate/debug docs out of runtime payload:
   `docs/`, `debug/`, `tests/`, `tools/`, `output/`, `assets/themes/candy_sky_islands/source/`,
   root `models/`, root `meshes/`, `_raw.png`, and `candidate`.
@@ -162,6 +167,7 @@ git rev-list --left-right --count '@{u}...HEAD'
 
 & $godot --headless --path $project --script "$project\tests\test_web_export_preset_contract.gd"
 & $godot --headless --path $project --script "$project\tests\test_deep_reskin_audio_contract.gd"
+& $godot --headless --path $project --script "$project\tests\test_shinokute_3d_obby_progression_core_contract.gd"
 & $godot --headless --path $project --script "$project\tests\test_obby_route_solvability_contract.gd"
 & $godot --headless --path $project --import
 & $godot --headless --path $project --export-release "Web" "$project\Export\candy_sky_islands.html"
@@ -287,7 +293,7 @@ Candy Android source values:
 - Android preset name: `Android`
 - Package id: `com.shinokutestudio.candyskyislands`
 - Android app label: `Candy Sky Islands`
-- Current version: `version/code=4`, `version/name="1.0.3"`
+- Current version: `version/code=6`, `version/name="1.0.5"`
 - Target SDK: `version/target_sdk=35`
 - AAB export path: `Export/candy_sky_islands.aab`
 - Release keystore: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`

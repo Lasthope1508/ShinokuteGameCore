@@ -12,6 +12,8 @@ const REQUIRED_EXPORT_FILES := [
 	"res://Resources/Data/Core/candy_sky_islands_game_core_config.tres",
 	"res://Resources/Data/Progression/candy_sky_islands_obby_progression.tres",
 	"res://addons/shinokute_game_core/core/progression_catalog.gd",
+	"res://addons/shinokute_game_core/core/dynamic_progression_resolver.gd",
+	"res://addons/shinokute_game_core/core/obby_route_generator_3d.gd",
 	"res://addons/shinokute_game_core/core/progression_level.gd",
 	"res://scripts/theme_applier.gd",
 	"res://scripts/obby_route_generator.gd",

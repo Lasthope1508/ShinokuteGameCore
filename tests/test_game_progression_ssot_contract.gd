@@ -11,6 +11,7 @@ const DOC := "res://docs/gameplay_progression_ssot.md"
 const AGENTS := "res://AGENTS.md"
 const CORE_PROGRESS_CATALOG := "res://addons/shinokute_game_core/core/progression_catalog.gd"
 const CORE_PROGRESS_LEVEL := "res://addons/shinokute_game_core/core/progression_level.gd"
+const CORE_DYNAMIC_PROGRESS := "res://addons/shinokute_game_core/core/dynamic_progression_resolver.gd"
 const LEGACY_PROGRESS_CONFIG := "res://Resources/GameProgressionConfig.gd"
 const LEGACY_PROGRESS_LEVEL := "res://Resources/GameLevelDefinition.gd"
 
@@ -23,6 +24,8 @@ func _init() -> void:
 	passed = _assert_file_contains(DOC, "progression.level_catalog", "Progression SSOT doc should define canonical level catalog") and passed
 	passed = _assert_file_contains(DOC, "difficulty.curve", "Progression SSOT doc should define canonical difficulty curve") and passed
 	passed = _assert_file_contains(DOC, "ShinokuteProgressionCatalog", "Progression SSOT doc should map to Shinokute core catalog") and passed
+	passed = _assert_file_contains(DOC, "dynamic_progression_profile", "Progression SSOT doc should document dynamic infinite progression") and passed
+	passed = _assert_file_contains(DOC, "deterministic", "Progression SSOT doc should require fair deterministic route randomness") and passed
 	passed = _assert_file_contains(DOC, "3d_obby", "Progression SSOT doc should document 3D obby profile") and passed
 	passed = _assert_file_contains(AGENTS, "docs/gameplay_progression_ssot.md", "AGENTS should require progression SSOT before gameplay progression work") and passed
 	passed = _assert_file_contains(MAIN_SCENE, "[node name=\"GameProgression\"", "Main should own a GameProgression node") and passed
@@ -44,6 +47,8 @@ func _init() -> void:
 	passed = _assert_file_contains(CORE_PROGRESS_LEVEL, "environment_segments", "Core level definition should own terrain and decor segments as data") and passed
 	passed = _assert_file_contains(CORE_PROGRESS_CATALOG, "difficulty_sort_directions", "Core progression catalog should validate difficulty through data-owned sort directions") and passed
 	passed = _assert_file_contains(CORE_PROGRESS_CATALOG, "layout_sort_directions", "Core progression catalog should validate obby map shape through data-owned sort directions") and passed
+	passed = _assert_file_contains(CORE_PROGRESS_CATALOG, "dynamic_progression_profile", "Core progression catalog should own dynamic profile schema") and passed
+	passed = _assert_file_contains(CORE_DYNAMIC_PROGRESS, "class_name ShinokuteDynamicProgressionResolver", "Core should expose a generic dynamic progression resolver") and passed
 	passed = _assert_file_contains(CONFIG_PATH, CORE_PROGRESS_CATALOG, "Candy progression config should use Shinokute core catalog script") and passed
 	passed = _assert_file_contains(CONFIG_PATH, CORE_PROGRESS_LEVEL, "Candy progression levels should use Shinokute core level script") and passed
 	passed = _assert_file_not_contains(MANAGER_SCRIPT, "GameProgressionConfig", "Candy progression manager should type against Shinokute core catalog") and passed
@@ -66,6 +71,11 @@ func _init() -> void:
 	if config != null:
 		passed = _assert_true(config.game_family == "3d_obby", "Progression config should use 3D obby family") and passed
 		passed = _assert_true(config.level_catalog.size() >= 3, "Progression config should define at least 3 levels") and passed
+		passed = _assert_true(config.dynamic_progression_profile.has("layout_curves"), "Progression config should own dynamic layout curves") and passed
+		passed = _assert_true(config.has_method("get_difficulty_profile_for_level_number"), "Progression config should expose dynamic profile lookup") and passed
+		var dynamic_profile: Dictionary = config.get_difficulty_profile_for_level_number(25, 3.221)
+		passed = _assert_true(int(dynamic_profile.get("level_number", 0)) == 25, "Dynamic profile should preserve visible level number") and passed
+		passed = _assert_true(Dictionary(dynamic_profile.get("layout_profile", {})).has("route_shape"), "Dynamic profile should carry route shape SSOT") and passed
 		var previous_values := {}
 		for index in config.level_catalog.size():
 			var level = config.level_catalog[index]

@@ -58,6 +58,21 @@ func _run() -> void:
 			passed = _assert_true(coins.horizontal_alignment == HORIZONTAL_ALIGNMENT_CENTER, "HUD coin label should center number horizontally inside owner rect") and passed
 			passed = _assert_true(coins.vertical_alignment == VERTICAL_ALIGNMENT_CENTER, "HUD coin label should center number vertically inside owner rect") and passed
 
+	var level := scene.get_node_or_null("HUD/Level") as Label
+	passed = _assert_true(level != null, "HUD level label should exist") and passed
+	if level != null:
+		passed = _assert_true(level.text == "LEVEL 1", "HUD level label should show current level number") and passed
+		passed = _assert_true(level.horizontal_alignment == HORIZONTAL_ALIGNMENT_CENTER, "HUD level label should center text horizontally") and passed
+		passed = _assert_true(level.vertical_alignment == VERTICAL_ALIGNMENT_CENTER, "HUD level label should center text vertically") and passed
+		passed = _assert_true(level.label_settings != null and level.label_settings.font_size <= 28, "HUD level label font should be compact and not reuse score size") and passed
+		if frame != null:
+			var frame_rect := Rect2(frame.position, frame.size)
+			var level_rect := Rect2(level.position, level.size)
+			passed = _assert_true(not frame_rect.intersects(level_rect), "HUD level label should not overlap score frame, got level %s frame %s" % [level_rect, frame_rect]) and passed
+		if theme != null:
+			passed = _assert_true("hud_level_rect" in theme, "Candy theme should own HUD level label rect in SSOT") and passed
+			passed = _assert_true("hud_level_font_size" in theme, "Candy theme should own HUD level font size in SSOT") and passed
+
 	passed = _assert_file_contains(CHECKLIST, "ignore natural texture size", "Checklist should include HUD natural-size rule") and passed
 	passed = _assert_file_contains(MANIFEST, "hud_score_frame_rect", "Manifest should record HUD frame SSOT rect") and passed
 	passed = _assert_file_contains(STATE, "HUD layout contract", "State should record HUD layout validation") and passed

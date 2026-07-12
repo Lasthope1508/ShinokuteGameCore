@@ -51,6 +51,26 @@ func _apply_hud(root: Node, theme: RuntimeThemeConfig) -> void:
 		label_settings.font = hud_font
 	coins.label_settings = label_settings
 
+	var level := hud.get_node_or_null("Level") as Label
+	if level == null:
+		return
+	level.offset_left = theme.hud_level_rect.position.x
+	level.offset_top = theme.hud_level_rect.position.y
+	level.offset_right = theme.hud_level_rect.end.x
+	level.offset_bottom = theme.hud_level_rect.end.y
+	level.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	level.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	level.add_theme_color_override("font_color", theme.palette_text)
+	level.add_theme_font_size_override("font_size", theme.hud_level_font_size)
+	var level_settings := level.label_settings.duplicate() as LabelSettings if level.label_settings != null else LabelSettings.new()
+	level_settings.font_color = theme.palette_text
+	level_settings.font_size = theme.hud_level_font_size
+	if ResourceLoader.exists(theme.hud_font_path):
+		var level_font := load(theme.hud_font_path)
+		level.add_theme_font_override("font", level_font)
+		level_settings.font = level_font
+	level.label_settings = level_settings
+
 func _apply_player_materials(root: Node, theme: RuntimeThemeConfig) -> void:
 	if not ResourceLoader.exists(theme.player_root_asset_path) and not FileAccess.file_exists(theme.player_root_asset_path):
 		push_warning("Approved player root asset is missing: %s" % theme.player_root_asset_path)

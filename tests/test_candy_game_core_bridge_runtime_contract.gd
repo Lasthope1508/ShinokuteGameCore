@@ -45,6 +45,8 @@ func _run() -> void:
 			touch_controls.set_touch_controls_visible(true)
 			bridge._on_username_required()
 			_assert_true(not touch_controls.visible, "Username prompt should hide mobile touch controls so Web touch events reach modal buttons")
+			bridge._set_touch_controls_hidden_for_prompt(false)
+			_assert_true(not touch_controls.visible, "Closing username prompt on desktop Web should restore auto profile instead of forcing mobile controls from stale scene visibility")
 		bridge._on_level_completed(2, null)
 		_assert_eq(bridge.core.save_store.get_pending_score("classic"), 3, "Level completion should store pending score through core when username is missing")
 		var fake := FakeLeaderboard.new()

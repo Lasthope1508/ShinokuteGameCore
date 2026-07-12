@@ -3,6 +3,7 @@ extends SceneTree
 const CONFIG_PATH := "res://Resources/Data/Progression/candy_sky_islands_obby_progression.tres"
 const GENERATOR_PATH := "res://scripts/obby_route_generator.gd"
 const PLAYER_SCENE := "res://objects/player.tscn"
+const CORE_ROUTE_GENERATOR_ID := "shinokute_3d_obby_curve_v1"
 const JUMP_DISTANCE_SAFETY_FACTOR := 0.80
 const PLATFORM_RADIUS_BY_KIND := {
 	"small": 1.0,
@@ -29,6 +30,10 @@ func _run() -> void:
 	if config != null and generator_script != null:
 		for index in config.level_catalog.size():
 			_validate_level(config.level_catalog[index], generator_script, index, allowed_step_distance)
+		if config.has_method("get_difficulty_profile_for_level_number"):
+			for level_number in [4, 10, 25, 100]:
+				var dynamic_profile: Dictionary = config.get_difficulty_profile_for_level_number(level_number, allowed_step_distance)
+				_validate_profile(dynamic_profile, generator_script, level_number, allowed_step_distance)
 	if _passed:
 		print("test_obby_route_solvability_contract: PASS")
 		quit(0)
@@ -127,9 +132,14 @@ func _validate_level(level: Resource, generator_script: Script, index: int, allo
 	if level == null:
 		return
 	var layout: Dictionary = level.layout_profile
-	_assert_true(String(layout.get("route_generator", "")) == "candy_curve_v1", "Level %s should use generated Candy route" % index)
+	_assert_true(String(layout.get("route_generator", "")) == CORE_ROUTE_GENERATOR_ID, "Level %s should use generated Shinokute 3D obby route" % index)
 	_assert_true(level.stage_segments.size() <= 2, "Level %s should keep only start/goal anchors, not fixed terrain" % index)
 	var profile: Dictionary = level.difficulty_profile()
+	_validate_profile(profile, generator_script, index, allowed_step_distance)
+
+func _validate_profile(profile: Dictionary, generator_script: Script, index: int, allowed_step_distance: float) -> void:
+	var layout: Dictionary = profile.get("layout_profile", {})
+	_assert_true(String(layout.get("route_generator", "")) == CORE_ROUTE_GENERATOR_ID, "Level %s should use generated Shinokute 3D obby route" % index)
 	var route: Array = generator_script.build_stage_segments(profile)
 	_assert_eq(route.size(), int(layout.get("platform_count", 0)), "Level %s generated platform count should match layout_profile" % index)
 	_assert_true(route.size() >= 2, "Level %s generated route should include start and goal" % index)
@@ -158,8 +168,8 @@ func _validate_level(level: Resource, generator_script: Script, index: int, allo
 		var current_pos := _vector3_from_value(current.get("position", Vector3.ZERO))
 		var horizontal := Vector2(current_pos.x - previous_pos.x, current_pos.z - previous_pos.z).length()
 		var vertical := absf(current_pos.y - previous_pos.y)
-		var previous_radius := _platform_radius(String(previous.get("platform", "small")))
-		var current_radius := _platform_radius(String(current.get("platform", "small")))
+		var previous_radius := _platform_radius(String(previous.get("platform", "small")), layout)
+		var current_radius := _platform_radius(String(current.get("platform", "small")), layout)
 		var clear_gap: float = maxf(0.0, horizontal - previous_radius - current_radius)
 		cumulative_clear_gap += clear_gap
 		min_z = minf(min_z, current_pos.z)
@@ -178,8 +188,12 @@ func _validate_level(level: Resource, generator_script: Script, index: int, allo
 	var trigger_delay := float(profile.get("falling_platform_trigger_delay", 0.0))
 	_assert_true(trigger_delay >= 0.20, "Level %s falling platforms need at least 0.20s delay for jump recovery" % index)
 
-func _platform_radius(kind: String) -> float:
-	return float(PLATFORM_RADIUS_BY_KIND.get(kind, PLATFORM_RADIUS_BY_KIND["small"]))
+func _platform_radius(kind: String, layout: Dictionary) -> float:
+	var radii := PLATFORM_RADIUS_BY_KIND.duplicate(true)
+	var configured := Dictionary(layout.get("platform_radii", {}))
+	for key in configured.keys():
+		radii[String(key)] = float(configured[key])
+	return float(radii.get(kind, radii["small"]))
 
 func _vector3_from_value(value) -> Vector3:
 	if value is Vector3:

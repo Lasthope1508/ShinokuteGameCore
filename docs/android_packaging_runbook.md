@@ -100,8 +100,8 @@ Use these exact Candy values unless owner approves a source change:
 | App label | `Candy Sky Islands` |
 | Package id | `com.shinokutestudio.candyskyislands` |
 | AAB path | `Export/candy_sky_islands.aab` |
-| Current version code | `4` |
-| Current version name | `1.0.3` |
+| Current version code | `6` |
+| Current version name | `1.0.5` |
 | Target SDK | `35` |
 | Release keystore | `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore` |
 | Release alias | `candy_sky_islands` |
@@ -113,11 +113,11 @@ Current Play evidence recorded for this branch:
 
 - Play app: `Candy Sky Islands`
 - Package: `com.shinokutestudio.candyskyislands`
-- Internal testing release: `4 (1.0.3)`
+- Internal testing release: `6 (1.0.5)`
 - Tester list: `Shinokute testers`
 - Tester join link: `https://play.google.com/apps/internaltest/4701018407986590939`
-- Last known signed AAB size: `58,719,395` bytes
-- Last known AAB deep scan: `entry_count=315`, `content_path_count=112`
+- Last known signed AAB size: `58,732,648` bytes
+- Last known AAB deep scan: `entry_count=319`, `content_path_count=114`
 
 Old size/evidence is reference only. A new package-ready claim requires fresh
 evidence from the current pass.
@@ -134,8 +134,11 @@ For a new Play package:
   repeated failed uploads would confuse release tracking.
 
 For Candy, version codes `1`, `2`, and `3` were consumed by rejected Play
-uploads. Current source must stay at `version/code=4`,
-`version/name="1.0.3"` until a new upload attempt needs another bump.
+uploads, version code `4` was consumed by the first internal testing release,
+and version code `5` was consumed by the 2026-07-12 internal testing upload
+before the desktop Web mobile-overlay smoke fix. Current source for this new
+upload attempt is `version/code=6`, `version/name="1.0.5"` until another Play
+upload attempt needs another bump.
 
 ## Target SDK Policy
 
@@ -284,8 +287,8 @@ After export, verify the AAB manifest. Use any available local Android tooling
 or an AAB unzip/manifest parser. Evidence must prove:
 
 - `package=com.shinokutestudio.candyskyislands`
-- `versionCode=4`
-- `versionName=1.0.3`
+- `versionCode=6`
+- `versionName=1.0.5`
 - `targetSdkVersion=35`
 - signed release entries exist under `META-INF/`
 

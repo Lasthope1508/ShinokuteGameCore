@@ -51,6 +51,10 @@ func set_touch_controls_visible(value: bool) -> void:
 		_router.set_force_touch_controls_enabled(value)
 	queue_redraw()
 
+func refresh_touch_controls_visibility() -> void:
+	_manual_visibility = false
+	_refresh_visibility()
+
 func get_move_stick_rect() -> Rect2:
 	var viewport_size := _viewport_size()
 	var stick_size := clampf(minf(viewport_size.x, viewport_size.y) * 0.22, 112.0, 156.0)

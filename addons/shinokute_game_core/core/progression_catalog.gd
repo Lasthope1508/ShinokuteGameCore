@@ -1,6 +1,7 @@
 class_name ShinokuteProgressionCatalog
 extends Resource
 
+const DynamicProgressionResolver := preload("res://addons/shinokute_game_core/core/dynamic_progression_resolver.gd")
 const COMPLETION_NEXT_LOOP := "next_loop"
 const COMPLETION_NEXT_HOLD := "next_hold"
 const SORT_ASCENDING := "ASCENDING"
@@ -14,8 +15,18 @@ const SORT_NONE := "NONE"
 @export var required_layout_keys: Array = []
 @export var layout_sort_directions: Dictionary = {}
 @export var level_catalog: Array = []
+@export var dynamic_progression_profile: Dictionary = {}
 
 func get_level(index: int) -> Resource:
+	if level_catalog.is_empty():
+		return null
+	if index < level_catalog.size():
+		return level_catalog[clamp(index, 0, level_catalog.size() - 1)]
+	if has_dynamic_progression():
+		return DynamicProgressionResolver.build_level(self, index + 1)
+	return level_catalog[level_catalog.size() - 1]
+
+func get_authored_level(index: int) -> Resource:
 	if level_catalog.is_empty():
 		return null
 	return level_catalog[clamp(index, 0, level_catalog.size() - 1)]
@@ -38,12 +49,19 @@ func get_next_level_index(index: int) -> int:
 	var next_index := index + 1
 	if next_index < level_catalog.size():
 		return next_index
+	if has_dynamic_progression():
+		return next_index
 	if completion_policy == COMPLETION_NEXT_HOLD:
 		return max(0, level_catalog.size() - 1)
 	return 0
 
 func get_difficulty_profile(index: int) -> Dictionary:
-	var level := get_level(index)
+	if index >= level_catalog.size() and has_dynamic_progression():
+		return get_difficulty_profile_for_level_number(index + 1)
+	return get_authored_difficulty_profile(index)
+
+func get_authored_difficulty_profile(index: int) -> Dictionary:
+	var level := get_authored_level(index)
 	if level == null:
 		return {}
 	if level.has_method("difficulty_profile"):
@@ -60,12 +78,31 @@ func get_difficulty_profile(index: int) -> Dictionary:
 		"difficulty_curve": Dictionary(level.get("difficulty_curve")).duplicate(true)
 	}
 
+func get_difficulty_profile_for_level_number(level_number: int, measured_jump_cap: float = 0.0) -> Dictionary:
+	if level_number <= level_catalog.size():
+		var profile := get_authored_difficulty_profile(level_number - 1)
+		profile["level_number"] = level_number
+		return profile
+	if not has_dynamic_progression():
+		var fallback := get_authored_difficulty_profile(level_catalog.size() - 1)
+		fallback["level_number"] = level_number
+		return fallback
+	return DynamicProgressionResolver.resolve_profile(self, level_number, measured_jump_cap)
+
+func has_dynamic_progression() -> bool:
+	return not dynamic_progression_profile.is_empty()
+
 func validate() -> Array[String]:
 	var errors: Array[String] = []
 	if game_family.strip_edges().is_empty():
 		errors.append("game_family is required")
 	if level_catalog.is_empty():
 		errors.append("level_catalog is required")
+	if has_dynamic_progression():
+		if not dynamic_progression_profile.has("layout_curves"):
+			errors.append("dynamic_progression_profile layout_curves is required")
+		if not dynamic_progression_profile.has("difficulty_curves"):
+			errors.append("dynamic_progression_profile difficulty_curves is required")
 	var seen_ids := {}
 	var previous_values := {}
 	var previous_layout_values := {}

@@ -33,6 +33,13 @@ font_color = Color(0.152941, 0.188235, 0.262745, 1)
 shadow_color = Color(0, 0, 0, 0.376471)
 shadow_offset = Vector2(2, 2)
 
+[sub_resource type="LabelSettings" id="LabelSettings_level"]
+font = ExtResource("17_tk810")
+font_size = 28
+font_color = Color(0.152941, 0.188235, 0.262745, 1)
+shadow_color = Color(0, 0, 0, 0.376471)
+shadow_offset = Vector2(1, 1)
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_jkv2x")
 theme_config = ExtResource("18_candy")
@@ -119,6 +126,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 label_settings = SubResource("LabelSettings_38ys3")
 metadata/_edit_use_anchors_ = true
+
+[node name="Level" type="Label" parent="HUD"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 178.0
+offset_right = 260.0
+offset_bottom = 214.0
+text = "LEVEL 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+label_settings = SubResource("LabelSettings_level")
 
 [node name="LeaderboardButton" type="Button" parent="HUD"]
 layout_mode = 0

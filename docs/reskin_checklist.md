@@ -228,6 +228,7 @@ Note:
 - Shinokute core must not hardcode game names, game-node paths, JS globals, DOM ids, theme folders, or skin asset names from Candy Sky Islands or any future reskin. Core controller defaults stay generic/empty; each game scene or wrapper wires its own `GameCore`, `ShinokuteInputRouter`, theme config, UI skin, and asset paths. `test_shinokute_3d_controller_core_contract.gd` is the boundary guard.
 - `ShinokuteReskinBoundaryAudit` is the reusable core helper for next-game audits. Run it or the matching contract before and after moving behavior into core; it catches game-name leaks, game asset paths, stale JS globals, and duplicate game-local schema names inside reusable modules.
 - Shinokute core owns reusable progression schema as `ShinokuteProgressionCatalog` and `ShinokuteProgressionLevel`. Candy Sky Islands may own `Resources/Data/Progression/candy_sky_islands_obby_progression.tres` data and the `scripts/obby_stage_builder.gd` adapter that maps abstract segment keys to Candy scenes, but must not keep duplicate game-local progression schema scripts.
+- Shinokute core owns reusable dynamic progression through `ShinokuteDynamicProgressionResolver`; Candy Sky Islands owns only `dynamic_progression_profile` curve data. Infinite 3D obby difficulty must be deterministic per visible level number, fair across retries/devices, capped by the measured jump envelope, and scaled through route length, platform count, route width, turn cycles, ascent/descent, platform mix, hazard density, and timing instead of impossible jump gaps.
 - Unikey/IME safety is part of Shinokute input core as of 2026-07-11. Web keyboard movement must clear stale action state on router ready and on Web `keyup`/`blur`/`visibilitychange`/`compositionstart`; `move_left`/A must not stay pressed if Vietnamese IME loses the keyup event.
 - Function overlay safety is part of Shinokute UI core as of 2026-07-11. Any HUD function panel that appears over gameplay must join `ShinokuteFunctionOverlayGroup`, keep only one same-group panel visible at a time, set gameplay-adjacent buttons to `Control.FOCUS_NONE`, and release UI focus after clicks so Space/gameplay keys cannot retrigger Settings, Leaderboard, tabs, close buttons, or toggles.
 - Web selected-resource export must include every runtime helper preloaded by exported scripts. After adding a core/helper script, update `export_presets.cfg` `export_files`, then extend `test_web_export_preset_contract.gd` before exporting. Do not trust editor/headless tests alone; Firebase/Web PCK can miss a helper and make UI scripts parse-fail only on device.
@@ -523,10 +524,12 @@ Fill only if publishing or making an owner test link.
 - Source owner action: added Android preset and signing handoff so packaging/release agents no longer guess package id, version, AAB path, or keystore policy.
 - Android preset: `Android`.
 - Package id: `com.shinokutestudio.candyskyislands`.
-- Version policy: current Candy Android upload version is `version/code=4`,
-  `version/name="1.0.3"` because Play Console consumed version codes 1, 2, and
-  3 during rejected upload attempts. Bump code for every Play upload attempt
-  that reaches Google.
+- Version policy: current Candy Android upload version is `version/code=6`,
+  `version/name="1.0.5"` because Play Console consumed version codes 1, 2, and
+  3 during rejected upload attempts, version code 4 for the first accepted
+  internal testing release, and version code 5 for the 2026-07-12 upload before
+  the desktop Web mobile-overlay smoke fix. Bump code for every Play upload
+  attempt that reaches Google.
 - AAB path: `Export/candy_sky_islands.aab`.
 - Target SDK policy: `version/target_sdk=35`; Play Console rejected the first
   Candy upload attempt because the old AAB targeted API 34.
@@ -553,7 +556,11 @@ Fill only if publishing or making an owner test link.
 - Play upload version code correction: version code `1` became unavailable
   after the rejected Play upload attempt, and version codes `2` and `3` became
   unavailable after Play still read target API 34. Source moved to
-  `version/code=4`, `version/name="1.0.3"` before the next AAB build.
+  `version/code=4`, `version/name="1.0.3"` before the accepted internal test
+  build; source moved to `version/code=5`, `version/name="1.0.4"` for the next
+  upload attempt; source then moved to `version/code=6`,
+  `version/name="1.0.5"` after Play consumed code 5 before the desktop Web
+  mobile-overlay smoke fix.
 - Target SDK correction: for Godot 4.3 custom Gradle builds,
   `version/target_sdk=35` in `export_presets.cfg` was not enough; local
   `android/build/config.gradle` must also use `compileSdk: 35`,

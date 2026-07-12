@@ -45,6 +45,7 @@ func _run() -> void:
 		for method in [
 			"configure",
 			"set_touch_controls_visible",
+			"refresh_touch_controls_visibility",
 			"get_move_stick_rect",
 			"get_move_guard_rect",
 			"get_jump_button_rect",

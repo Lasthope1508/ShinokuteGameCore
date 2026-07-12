@@ -74,6 +74,14 @@ Expected:
 - `ShinokuteReskinBoundaryAudit` exists in core.
 - Core scripts do not contain game names, skin paths, JS globals, DOM ids, or duplicate game-local schema names.
 - Game scenes/wrappers may wire their own `GameCore`, theme config, UI skin, progression data, and platform adapters.
+- Reusable infinite progression behavior lives in Shinokute core
+  (`ShinokuteDynamicProgressionResolver`, `ShinokuteObbyRouteGenerator3D`, and
+  catalog API), while Candy owns only `dynamic_progression_profile` curve data
+  and game-specific environment/decor adapters. Run
+  `tests/test_shinokute_3d_obby_progression_core_contract.gd`,
+  `tests/test_dynamic_obby_progression_contract.gd` and
+  `tests/test_obby_route_solvability_contract.gd` after progression core edits
+  to prove deterministic fair levels and jump-envelope safety.
 
 ## Gate 1: Approval And Fallback Scan
 
