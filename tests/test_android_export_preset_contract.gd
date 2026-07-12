@@ -47,8 +47,9 @@ func _init() -> void:
 	passed = _assert_contains(android_options, "gradle_build/export_format=1", "Android export should produce AAB") and passed
 	passed = _assert_contains(android_options, "architectures/arm64-v8a=true", "Android export should include 64-bit ARM") and passed
 	passed = _assert_contains(android_options, "architectures/x86=false", "Android export should exclude emulator x86 from release preset") and passed
-	passed = _assert_contains(android_options, "version/code=1", "Candy Android version code policy should start at 1") and passed
-	passed = _assert_contains(android_options, "version/name=\"1.0.0\"", "Candy Android version name policy should start at 1.0.0") and passed
+	passed = _assert_contains(android_options, "version/code=4", "Candy Android version code should reflect the latest Play upload attempt") and passed
+	passed = _assert_contains(android_options, "version/name=\"1.0.3\"", "Candy Android version name should reflect the latest Play upload attempt") and passed
+	passed = _assert_contains(android_options, "version/target_sdk=35", "Candy Android release must target SDK 35 for current Play upload policy") and passed
 	passed = _assert_contains(android_options, "package/unique_name=\"com.shinokutestudio.candyskyislands\"", "Candy Android package id should be explicit") and passed
 	passed = _assert_contains(android_options, "package/name=\"Candy Sky Islands\"", "Candy Android package name should be explicit") and passed
 	passed = _assert_contains(android_options, "package/signed=true", "Android release preset should be signed") and passed

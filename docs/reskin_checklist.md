@@ -520,8 +520,13 @@ Fill only if publishing or making an owner test link.
 - Source owner action: added Android preset and signing handoff so packaging/release agents no longer guess package id, version, AAB path, or keystore policy.
 - Android preset: `Android`.
 - Package id: `com.shinokutestudio.candyskyislands`.
-- Version policy: start `version/code=1`, `version/name="1.0.0"`; bump code for every Play upload attempt that reaches Google.
+- Version policy: current Candy Android upload version is `version/code=4`,
+  `version/name="1.0.3"` because Play Console consumed version codes 1, 2, and
+  3 during rejected upload attempts. Bump code for every Play upload attempt
+  that reaches Google.
 - AAB path: `Export/candy_sky_islands.aab`.
+- Target SDK policy: `version/target_sdk=35`; Play Console rejected the first
+  Candy upload attempt because the old AAB targeted API 34.
 - Keystore path: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`.
 - Password source: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`; never commit passwords or Play credentials.
 - Required contracts: `tests/test_android_export_preset_contract.gd`, `tests/test_packaging_handoff_contract.gd`, `tests/test_web_export_preset_contract.gd`.
@@ -532,16 +537,35 @@ Fill only if publishing or making an owner test link.
 - Mode: Local release AAB packaging, not Play upload.
 - Source repo/branch/commit before packaging evidence: `game/candy-sky-islands`, `6c079e0`.
 - Root cause fixed for local export: manual Android template expansion needs `android/.build_version` beside `android/build/`; Candy now uses `android/.build_version` content `4.3.stable`, matching the Godot 4.3 template. Without this marker Godot reports: "Trying to build from a gradle built template, but no version info for it exists."
+- Android template import guard: `android/build/.gdignore` is required so Godot
+  does not create `.import` sidecars in `android/build/res/mipmap*`, which
+  Android Gradle rejects as invalid resource filenames.
 - Android export command: `Godot_v4.3-stable_win64_console.exe --headless --path <project> --export-release "Android" "<project>\Export\candy_sky_islands.aab"`.
 - Password handling: `keystore_password` read from local-only `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`, injected temporarily for export, and `export_presets.cfg` restored to `keystore/release_password=""`.
 - Android preset contract: PASS.
 - Godot import: PASS.
-- AAB export: PASS, `Export/candy_sky_islands.aab`, 58719413 bytes.
+- AAB export: PASS, `Export/candy_sky_islands.aab`, 58719413 bytes. First
+  Play upload attempt blocked because this AAB targeted API 34; source policy
+  updated to `version/target_sdk=35` before rebuilding.
+- Play upload version code correction: version code `1` became unavailable
+  after the rejected Play upload attempt, and version codes `2` and `3` became
+  unavailable after Play still read target API 34. Source moved to
+  `version/code=4`, `version/name="1.0.3"` before the next AAB build.
+- Target SDK correction: for Godot 4.3 custom Gradle builds,
+  `version/target_sdk=35` in `export_presets.cfg` was not enough; local
+  `android/build/config.gradle` must also use `compileSdk: 35`,
+  `targetSdk: 35`, `buildTools: '35.0.0'`, and return the maximum of the
+  Godot-provided `export_version_target_sdk` property and `versions.targetSdk`.
+  The canonical local patch command is
+  `tools/patch_android_template_for_play.ps1`.
 - AAB signing marker: PASS, `META-INF/CANDY_SK.RSA`, `META-INF/CANDY_SK.SF`, and `META-INF/MANIFEST.MF` present.
 - Gate 4C outer marker scan: PASS, `path_count=0`; outer scan alone is not enough for compressed AAB contents.
 - Gate 4C deep scan: PASS, `entry_count=315`, `content_path_count=112`.
-- Fresh size table: HTML 6036 bytes, JS 331495 bytes, PCK 12892032 bytes, WASM 35376909 bytes, AAB 58719413 bytes, BGM 1136942 bytes, SFX total 45882 bytes.
-- Remaining Android release blockers: no native Android device smoke yet, no Play Console Candy app upload yet, and no Play internal-test result yet.
+- Fresh final size table for Play internal testing upload: HTML 6036 bytes, JS 331495 bytes, PCK 12892032 bytes, WASM 35376909 bytes, AAB 58719395 bytes, BGM 1136942 bytes, SFX total 45882 bytes.
+- Play Console internal testing result: PASS on 2026-07-12. App `Candy Sky Islands`, package `com.shinokutestudio.candyskyislands`, release `4 (1.0.3)`, API levels `24+`, target SDK `35`, ABIs `2`, new install size `36 MB`, status `Available to internal testers`.
+- Tester list: `Shinokute testers`, 5 users.
+- Tester join link: `https://play.google.com/apps/internaltest/4701018407986590939`.
+- Remaining Android release blockers: no native Android device smoke yet, no deobfuscation file uploaded, and no native debug symbols uploaded.
 
 ## Completion
 

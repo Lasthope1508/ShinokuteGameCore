@@ -295,6 +295,12 @@ export, keystore, Java/JDK, Gradle, SDK, AAB, or Play Store work.
   `4.3.stable`. Missing this marker causes the export error:
   "Trying to build from a gradle built template, but no version info for it
   exists."
+- Keep `android/build/.gdignore` in the local custom build folder. Without it,
+  Godot imports template launcher icons and writes `.import` sidecars under
+  `android/build/res/mipmap*`; Android Gradle then fails with "The file name
+  must end with .xml or .png". The Gradle template files remain ignored by git;
+  only small marker files such as `.build_version` and `.gdignore` should be
+  force-added when needed.
 - Google Play upload is packaging/release-owned after source contracts pass.
   Source owner remains responsible for keeping the Android preset, signing
   handoff, version policy, runtime asset list, and Gate 4C scan rules current.
@@ -308,8 +314,24 @@ values exactly.
 - Android preset name: `Android`
 - Package id: `com.shinokutestudio.candyskyislands`
 - Android app label: `Candy Sky Islands`
-- Version policy: start at `version/code=1`, `version/name="1.0.0"`; bump
-  `version/code` by one for every Play upload attempt that reaches Google.
+- Version policy: current Candy Android upload version is `version/code=4`,
+  `version/name="1.0.3"`. Start new game packages at `version/code=1`,
+  `version/name="1.0.0"`, then bump `version/code` by one for every Play
+  upload attempt that reaches Google. Bump `version/name` when owner wants a
+  visible release label change or when avoiding confusion during repeated
+  upload attempts.
+- Target SDK policy: `version/target_sdk=35` until Google Play requires a
+  newer level. Keep the local Android SDK platform installed before export.
+  Play Console rejected the first Candy AAB because it targeted API 34.
+  For Godot 4.3 custom Gradle builds, also patch local
+  `android/build/config.gradle` to `compileSdk: 35`, `targetSdk: 35`, and
+  `buildTools: '35.0.0'` before export; Play Console still reported target
+  API 34 when only `version/target_sdk=35` was set in `export_presets.cfg`.
+  Also make `getExportTargetSdkVersion()` return the maximum of the Godot
+  property and `versions.targetSdk`, because Godot 4.3 can still pass
+  `export_version_target_sdk=34` into Gradle.
+  Use `tools/patch_android_template_for_play.ps1` after installing or manually
+  expanding the Android build template and before every Android export.
 - AAB export path: `Export/candy_sky_islands.aab`
 - Release keystore: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`
 - Release key alias: `candy_sky_islands`
