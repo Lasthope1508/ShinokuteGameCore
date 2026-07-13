@@ -293,7 +293,7 @@ Candy Android source values:
 - Android preset name: `Android`
 - Package id: `com.shinokutestudio.candyskyislands`
 - Android app label: `Candy Sky Islands`
-- Current version: `version/code=6`, `version/name="1.0.5"`
+- Current version: `version/code=7`, `version/name="1.0.6"`; next Play upload attempt must bump to `version/code=8`.
 - Target SDK: `version/target_sdk=35`
 - AAB export path: `Export/candy_sky_islands.aab`
 - Release keystore: `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands.keystore`

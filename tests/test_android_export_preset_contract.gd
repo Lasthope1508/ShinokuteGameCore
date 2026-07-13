@@ -51,8 +51,8 @@ func _init() -> void:
 	passed = _assert_contains(android_options, "gradle_build/export_format=1", "Android export should produce AAB") and passed
 	passed = _assert_contains(android_options, "architectures/arm64-v8a=true", "Android export should include 64-bit ARM") and passed
 	passed = _assert_contains(android_options, "architectures/x86=false", "Android export should exclude emulator x86 from release preset") and passed
-	passed = _assert_contains(android_options, "version/code=6", "Candy Android version code should reflect the latest Play upload attempt") and passed
-	passed = _assert_contains(android_options, "version/name=\"1.0.5\"", "Candy Android version name should reflect the latest Play upload attempt") and passed
+	passed = _assert_contains(android_options, "version/code=7", "Candy Android version code should reflect the latest Play upload attempt") and passed
+	passed = _assert_contains(android_options, "version/name=\"1.0.6\"", "Candy Android version name should reflect the latest Play upload attempt") and passed
 	passed = _assert_contains(android_options, "version/target_sdk=35", "Candy Android release must target SDK 35 for current Play upload policy") and passed
 	passed = _assert_contains(android_options, "package/unique_name=\"com.shinokutestudio.candyskyislands\"", "Candy Android package id should be explicit") and passed
 	passed = _assert_contains(android_options, "package/name=\"Candy Sky Islands\"", "Candy Android package name should be explicit") and passed
@@ -73,7 +73,7 @@ func _init() -> void:
 	passed = _assert_contains(android_runbook, "android/build/.gdignore", "Android runbook should require the Android build gdignore marker") and passed
 	passed = _assert_contains(android_runbook, "getExportTargetSdkVersion()", "Android runbook should document Godot 4.3 target SDK patch") and passed
 	passed = _assert_contains(android_runbook, "DOM.setFileInputFiles", "Android runbook should document the Play Console large-file upload path") and passed
-	passed = _assert_contains(android_runbook, "version/code=6", "Android runbook should record current Candy version code") and passed
+	passed = _assert_contains(android_runbook, "version/code=7", "Android runbook should record current Candy version code") and passed
 	passed = _assert_contains(android_runbook, "version/target_sdk=35", "Android runbook should record current Candy target SDK") and passed
 	passed = _assert_contains(runbook, "docs/android_packaging_runbook.md", "Validation runbook should point Gate 4C to Android runbook") and passed
 	passed = _assert_not_contains(handoff, "Android blocked: no Android preset or signing handoff in source", "Old Android blocker should be removed after source handoff exists") and passed

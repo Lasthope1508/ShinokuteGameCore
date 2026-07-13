@@ -524,12 +524,13 @@ Fill only if publishing or making an owner test link.
 - Source owner action: added Android preset and signing handoff so packaging/release agents no longer guess package id, version, AAB path, or keystore policy.
 - Android preset: `Android`.
 - Package id: `com.shinokutestudio.candyskyislands`.
-- Version policy: current Candy Android upload version is `version/code=6`,
-  `version/name="1.0.5"` because Play Console consumed version codes 1, 2, and
+- Version policy: current Candy Android upload version is `version/code=7`,
+  `version/name="1.0.6"` because Play Console consumed version codes 1, 2, and
   3 during rejected upload attempts, version code 4 for the first accepted
   internal testing release, and version code 5 for the 2026-07-12 upload before
-  the desktop Web mobile-overlay smoke fix. Bump code for every Play upload
-  attempt that reaches Google.
+  the desktop Web mobile-overlay smoke fix, then version code 6 for the
+  2026-07-13 upload before the HUD contrast fix. Bump code for every Play
+  upload attempt that reaches Google.
 - AAB path: `Export/candy_sky_islands.aab`.
 - Target SDK policy: `version/target_sdk=35`; Play Console rejected the first
   Candy upload attempt because the old AAB targeted API 34.
@@ -560,7 +561,9 @@ Fill only if publishing or making an owner test link.
   build; source moved to `version/code=5`, `version/name="1.0.4"` for the next
   upload attempt; source then moved to `version/code=6`,
   `version/name="1.0.5"` after Play consumed code 5 before the desktop Web
-  mobile-overlay smoke fix.
+  mobile-overlay smoke fix; source then moved to `version/code=7`,
+  `version/name="1.0.6"` after Play consumed code 6 before the HUD contrast
+  fix.
 - Target SDK correction: for Godot 4.3 custom Gradle builds,
   `version/target_sdk=35` in `export_presets.cfg` was not enough; local
   `android/build/config.gradle` must also use `compileSdk: 35`,
@@ -595,6 +598,37 @@ Fill only if publishing or making an owner test link.
 - Console result: PASS; production desktop and iPhone 13 logs contain only Godot/WebGL startup logs, no errors.
 - Screenshot paths: `output/playwright/production-latest-desktop-*.png`, `output/playwright/production-latest-iphone13-*.png`.
 - Android status: Google Play internal testing evidence exists above; native Android device smoke remains a separate blocker for full package-ready claims.
+
+### Android + HTML5 Packaging Evidence 2026-07-13
+
+- Mode: HTML5 package rebuild and Google Play internal testing publish after HUD contrast fix.
+- Source repo/branch before package evidence: `game/candy-sky-islands`.
+- Version policy update: source package version moved to `version/code=7`, `version/name="1.0.6"` because Play had already consumed `6 (1.0.5)`. Google Play then consumed version code 7 for this publish; next Play upload attempt must bump to version code 8.
+- Target SDK requirement check: official Android Developers target SDK page was checked on 2026-07-13; Candy remains on Android 15 / API 35 via `version/target_sdk=35` plus local Gradle template SDK 35 patch.
+- Shipped pattern check: BloxChain and Glyph Arrows Android presets both use dedicated `Android` preset, `export_filter="resources"`, canonical `Export/<game>.aab`, per-game package id, per-game keystore path under local secrets, and empty committed `keystore/release_password=""`; Candy follows the same pattern.
+- Preflight contracts: PASS, `test_packaging_handoff_contract.gd`, `test_android_export_preset_contract.gd`, and `test_web_export_preset_contract.gd`.
+- Android template patch: PASS, `ANDROID_TEMPLATE_PLAY_PATCH_PASS target_sdk=35 removed_res_import=0`.
+- Godot import: PASS, `GODOT_IMPORT_EXIT code=0`.
+- Full test sweep: PASS, `CANDY_FULL_TEST_SWEEP_PASS count=45`.
+- Web export: PASS, `Godot_v4.3-stable_win64_console.exe --headless --path <project> --export-release "Web" "<project>\Export\candy_sky_islands.html"`.
+- Public dir sync: PASS, `PUBLIC_WHITELIST_SYNC_PASS count=8`; `Export_web_test/` rebuilt from runtime whitelist only.
+- PCK forbidden marker scan: PASS, `PCK_PATH_MARKER_SCAN_PASS path_count=369`.
+- Local Web smoke: PASS from `Export_web_test` on `http://127.0.0.1:65347/candy_sky_islands.html` with cache-busted query. Smoke skipped username prompt, reached gameplay, moved, jumped, double-jumped, zoomed, and console had no errors. Browser only logged Web Audio autoplay warnings before user gesture.
+- Android export command: `Godot_v4.3-stable_win64_console.exe --headless --path <project> --export-release "Android" "<project>\Export\candy_sky_islands.aab"`.
+- Android export note: Godot printed `export: end` and wrote `Export/candy_sky_islands.aab`, then the export process hung and was terminated manually. The generated AAB was accepted only after bundletool validation, manifest verification, signing marker verification, and Play Console upload/processing all passed.
+- Password handling: local `keystore_password` was read from `C:/Users/Admin/.gemini/antigravity/secrets/candy_sky_islands_keystore_secrets.json`, injected only for export, and `export_presets.cfg` was restored to `keystore/release_password=""`.
+- AAB zip/signing markers: PASS, `entry_count=319`, `base/manifest/AndroidManifest.xml`, `META-INF/CANDY_SK.RSA`, `META-INF/CANDY_SK.SF`, and `META-INF/MANIFEST.MF` present.
+- AAB outer marker scan: PASS, `AAB_PATH_MARKER_SCAN_PASS path_count=0`; deep scan required because compressed contents hide paths from outer scan.
+- AAB deep scan: PASS, `AAB_DEEP_SCAN_PASS entry_count=319 content_path_count=114`.
+- Bundletool validate: PASS, `BUNDLETOOL_VALIDATE_PASS`.
+- AAB manifest evidence: `package=com.shinokutestudio.candyskyislands`, `versionCode=7`, `versionName=1.0.6`, `targetSdk=35`.
+- Jarsigner verification: PASS, `jar verified`; expected self-signed/no-timestamp warnings remain non-blocking for this internal testing upload.
+- Fresh size table: HTML 6036 bytes, JS 331495 bytes, PCK 12908464 bytes, WASM 35376909 bytes, AAB 58733028 bytes, BGM 1136942 bytes, SFX total 45882 bytes.
+- Google Play upload method: Chrome remote debugging session on port 9222, not in-app browser. Normal Playwright file upload was blocked by the 50 MB transport limit, so the documented CDP `DOM.setFileInputFiles` path was used.
+- Play Console preview evidence: uploaded bundle `7 (1.0.6)`, API levels `24+`, target SDK `35`, screen layouts `4`, ABIs `2`, required features `2`, new install size `36 MB`, update size `1.93 MB`, no supported-device loss.
+- Play Console warnings: non-blocking deobfuscation file warning and native debug symbols warning. No target SDK, signing, package id, or version-code errors.
+- Play Console internal testing result: PASS on 2026-07-13. Latest release `7 (1.0.6)`, status `Available to internal testers`, released Jul 13 11:32 AM, tester join link unchanged: `https://play.google.com/apps/internaltest/4701018407986590939`.
+- Remaining Android release blocker for full package-ready claim: native Android device smoke was not run in this pass.
 
 ## Completion
 
