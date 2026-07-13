@@ -36,7 +36,9 @@ shadow_offset = Vector2(2, 2)
 [sub_resource type="LabelSettings" id="LabelSettings_level"]
 font = ExtResource("17_tk810")
 font_size = 28
-font_color = Color(0.152941, 0.188235, 0.262745, 1)
+font_color = Color(1, 0.94902, 0.780392, 1)
+outline_size = 6
+outline_color = Color(0.152941, 0.188235, 0.262745, 1)
 shadow_color = Color(0, 0, 0, 0.376471)
 shadow_offset = Vector2(1, 1)
 

@@ -20,6 +20,9 @@ class_name QuantumRuntimeThemeConfig
 @export var hud_font_size := 44
 @export var hud_level_rect := Rect2(52.0, 178.0, 208.0, 36.0)
 @export var hud_level_font_size := 28
+@export var hud_level_font_color := Color("#FFF2C7")
+@export var hud_level_outline_color := Color("#273043")
+@export var hud_level_outline_size := 6
 
 @export_group("Function Skin UI")
 @export_file("*.png", "*.webp") var ui_leaderboard_button_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_button.png"

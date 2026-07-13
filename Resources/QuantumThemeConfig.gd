@@ -22,6 +22,9 @@ const QuantumAssetRole := preload("res://Resources/QuantumAssetRole.gd")
 @export var hud_font_size := 44
 @export var hud_level_rect := Rect2(52.0, 178.0, 208.0, 36.0)
 @export var hud_level_font_size := 28
+@export var hud_level_font_color := Color("#FFF2C7")
+@export var hud_level_outline_color := Color("#273043")
+@export var hud_level_outline_size := 6
 
 @export_group("Function Skin UI")
 @export_file("*.png", "*.webp") var ui_leaderboard_button_path := "res://assets/themes/candy_sky_islands/ui/ui_leaderboard_button.png"
@@ -152,6 +155,8 @@ func validate() -> Array[String]:
 		errors.append("hud_level_rect must have positive size")
 	if hud_level_font_size <= 0:
 		errors.append("hud_level_font_size must be positive")
+	if hud_level_outline_size < 0:
+		errors.append("hud_level_outline_size must not be negative")
 	for key in ["jump", "land", "coin", "walking", "break", "fall"]:
 		if not audio_event_paths.has(key):
 			errors.append("missing audio event: %s" % key)

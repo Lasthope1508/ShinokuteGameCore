@@ -65,6 +65,9 @@ func _run() -> void:
 		passed = _assert_true(level.horizontal_alignment == HORIZONTAL_ALIGNMENT_CENTER, "HUD level label should center text horizontally") and passed
 		passed = _assert_true(level.vertical_alignment == VERTICAL_ALIGNMENT_CENTER, "HUD level label should center text vertically") and passed
 		passed = _assert_true(level.label_settings != null and level.label_settings.font_size <= 28, "HUD level label font should be compact and not reuse score size") and passed
+		passed = _assert_true(level.label_settings != null and _contrast_ratio(level.label_settings.font_color, Color("#273043")) >= 4.5, "HUD level label text must stay readable over dark gameplay background") and passed
+		passed = _assert_true(level.label_settings != null and level.label_settings.outline_size >= 4, "HUD level label must use dark outline because it floats over gameplay, not a light frame") and passed
+		passed = _assert_true(level.label_settings != null and _contrast_ratio(level.label_settings.font_color, level.label_settings.outline_color) >= 4.5, "HUD level label text and outline must have readable contrast") and passed
 		if frame != null:
 			var frame_rect := Rect2(frame.position, frame.size)
 			var level_rect := Rect2(level.position, level.size)
@@ -72,6 +75,9 @@ func _run() -> void:
 		if theme != null:
 			passed = _assert_true("hud_level_rect" in theme, "Candy theme should own HUD level label rect in SSOT") and passed
 			passed = _assert_true("hud_level_font_size" in theme, "Candy theme should own HUD level font size in SSOT") and passed
+			passed = _assert_true("hud_level_font_color" in theme, "Candy theme should own HUD level font color in SSOT") and passed
+			passed = _assert_true("hud_level_outline_color" in theme, "Candy theme should own HUD level outline color in SSOT") and passed
+			passed = _assert_true("hud_level_outline_size" in theme, "Candy theme should own HUD level outline size in SSOT") and passed
 
 	passed = _assert_file_contains(CHECKLIST, "ignore natural texture size", "Checklist should include HUD natural-size rule") and passed
 	passed = _assert_file_contains(MANIFEST, "hud_score_frame_rect", "Manifest should record HUD frame SSOT rect") and passed
@@ -115,6 +121,19 @@ func _assert_true(value: bool, message: String) -> bool:
 		push_error(message)
 		return false
 	return true
+
+func _contrast_ratio(a: Color, b: Color) -> float:
+	var lighter := maxf(_relative_luminance(a), _relative_luminance(b))
+	var darker := minf(_relative_luminance(a), _relative_luminance(b))
+	return (lighter + 0.05) / (darker + 0.05)
+
+func _relative_luminance(color: Color) -> float:
+	return 0.2126 * _linear_channel(color.r) + 0.7152 * _linear_channel(color.g) + 0.0722 * _linear_channel(color.b)
+
+func _linear_channel(value: float) -> float:
+	if value <= 0.03928:
+		return value / 12.92
+	return pow((value + 0.055) / 1.055, 2.4)
 
 func _finish(passed: bool) -> void:
 	if passed:

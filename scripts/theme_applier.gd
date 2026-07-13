@@ -60,10 +60,13 @@ func _apply_hud(root: Node, theme: RuntimeThemeConfig) -> void:
 	level.offset_bottom = theme.hud_level_rect.end.y
 	level.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	level.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	level.add_theme_color_override("font_color", theme.palette_text)
+	level.add_theme_color_override("font_color", theme.hud_level_font_color)
+	level.add_theme_color_override("font_outline_color", theme.hud_level_outline_color)
 	level.add_theme_font_size_override("font_size", theme.hud_level_font_size)
 	var level_settings := level.label_settings.duplicate() as LabelSettings if level.label_settings != null else LabelSettings.new()
-	level_settings.font_color = theme.palette_text
+	level_settings.font_color = theme.hud_level_font_color
+	level_settings.outline_color = theme.hud_level_outline_color
+	level_settings.outline_size = theme.hud_level_outline_size
 	level_settings.font_size = theme.hud_level_font_size
 	if ResourceLoader.exists(theme.hud_font_path):
 		var level_font := load(theme.hud_font_path)
