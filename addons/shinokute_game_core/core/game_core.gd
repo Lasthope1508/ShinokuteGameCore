@@ -20,6 +20,12 @@ const LocalizationScript := preload("../services/localization_service.gd")
 const RemoteConfigScript := preload("../services/remote_config_service.gd")
 const SceneRouterScript := preload("../ux/scene_router.gd")
 const OverlayManagerScript := preload("../ux/overlay_manager.gd")
+const PauseControllerScript := preload("../runtime/pause_controller.gd")
+const InputBindingManagerScript := preload("../runtime/input_binding_manager.gd")
+const SpawnPoolScript := preload("../runtime/spawn_pool.gd")
+const InteractionBusScript := preload("../runtime/interaction_bus.gd")
+const ScenePreloadCacheScript := preload("../runtime/scene_preload_cache.gd")
+const ResourceRegistryScript := preload("../runtime/resource_registry.gd")
 
 var config: Resource
 var save_store: Node
@@ -36,6 +42,12 @@ var localization: Node
 var remote_config: Node
 var scene_router: Node
 var overlay_manager: Node
+var pause_controller: Node
+var input_bindings: Node
+var spawn_pool: Node
+var interaction_bus: Node
+var scene_preload_cache: Node
+var resource_registry: Node
 
 func configure(core_config: Resource, save_path: String = "user://shinokute_game_core.cfg") -> void:
 	config = core_config
@@ -99,6 +111,28 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 	overlay_manager = OverlayManagerScript.new()
 	add_child(overlay_manager)
 	overlay_manager.configure(config.get("overlay_scenes"))
+
+	pause_controller = PauseControllerScript.new()
+	add_child(pause_controller)
+
+	input_bindings = InputBindingManagerScript.new()
+	add_child(input_bindings)
+	input_bindings.configure(config.get("input_bindings"))
+	input_bindings.apply_bindings()
+
+	spawn_pool = SpawnPoolScript.new()
+	add_child(spawn_pool)
+
+	interaction_bus = InteractionBusScript.new()
+	add_child(interaction_bus)
+
+	scene_preload_cache = ScenePreloadCacheScript.new()
+	add_child(scene_preload_cache)
+	scene_preload_cache.preload_many(config.get("preload_scene_paths"))
+
+	resource_registry = ResourceRegistryScript.new()
+	add_child(resource_registry)
+	resource_registry.configure(config.get("resource_registry"))
 
 	session = GameSessionScript.new()
 	add_child(session)

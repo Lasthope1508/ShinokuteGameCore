@@ -1,6 +1,6 @@
 # Shinokute Game Core
 
-Shared Godot addon for modules every Shinokute casual game needs: player profile, first-run username prompt, local save keys, geolocation cache, leaderboard payloads, game session flow, UX routing, theme services, ads, analytics, localization, remote config, audio, and haptics.
+Shared Godot addon for modules every Shinokute casual game needs: player profile, first-run username prompt, local save keys, geolocation cache, leaderboard payloads, game session flow, UX routing, theme services, ads, analytics, localization, remote config, audio, haptics, runtime pause/input/pool/interaction contracts, preload caching, and semantic resource registry lookup.
 
 This repo is the canonical home for reusable cross-game code. Individual games should configure the addon through `GameCoreConfig.tres` and should not copy/paste leaderboard or profile logic into gameplay scenes.
 
@@ -24,6 +24,7 @@ Every agent must read `docs/godot_web_publish_runbook.md` before giving the owne
 
 - `core/`: game-facing facade, config, save/profile/geo/leaderboard, run lifecycle, and rules adapter contract.
 - `services/`: theme, audio/haptics, ads, analytics, localization, and remote config.
+- `runtime/`: reusable pause state, input rebinding, spawn pooling, interaction bus, preload/cache helpers, and resource registry validation.
 - `ux/`: scene routing and overlay routing.
 - `ui/`: reusable UI scenes such as username prompt.
 
@@ -44,6 +45,12 @@ Every agent must read `docs/godot_web_publish_runbook.md` before giving the owne
 - `ShinokuteAnalyticsTracker`: provider-neutral event tracking signal and event cache.
 - `ShinokuteLocalizationService`: locale table lookup with fallback and parameter replacement.
 - `ShinokuteRemoteConfigService`: local defaults plus runtime override layer.
+- `ShinokutePauseController`: shared pause state signal and process-mode switching for gameplay/menu node sets.
+- `ShinokuteInputBindingManager`: configurable `InputMap` action defaults, rebinding, and serializable input specs.
+- `ShinokuteSpawnPool`: reusable scene instance pooling for projectiles, pickups, VFX, and other high-churn nodes.
+- `ShinokuteInteractionBus`: channel-scoped runtime payload dispatch for reusable damage, pickup, trigger, and UI event paths.
+- `ShinokuteScenePreloadCache`: resource preload/cache helper for boot screens and scene transitions.
+- `ShinokuteResourceRegistry`: semantic key to resource path/type/required/fallback lookup. Games own entries; core validates and loads without editor dock dependencies.
 - `ShinokuteSceneRouter`: scene key to scene path routing.
 - `ShinokuteOverlayManager`: overlay key registry and provider-neutral show/hide signals.
 - `UsernamePromptOverlay`: reusable first-run prompt scene.
@@ -52,10 +59,11 @@ Every agent must read `docs/godot_web_publish_runbook.md` before giving the owne
 
 Each new mobile game should create these game-owned files:
 
-- `Resources/Data/<game>_game_core_config.tres`: id, Firebase, leaderboard modes, routes, overlays, ad placements, translations, remote defaults.
+- `Resources/Data/<game>_game_core_config.tres`: id, Firebase, leaderboard modes, routes, overlays, ad placements, translations, remote defaults, and `resource_registry` semantic keys.
 - `Resources/Data/<game>_theme_config.tres`: colors, fonts, art paths, SFX paths, UI metrics.
 - `Scripts/<GameName>Rules.gd`: rules adapter implementing `start_run`, `can_make_move`, `apply_move`, `is_game_over`, and `get_result`.
 - Gameplay scenes call `GameCore.start_run`, `GameCore.session.apply_move`, `GameCore.submit_score`, and route/overlay services. They must not copy save, ads, leaderboard, profile, or settings code.
+- Runtime-heavy games should use core pause/input/pool/interaction/preload/resource-registry helpers. Games still own actor behavior, enemy AI, wave definitions, level data, projectile rules, art, VFX, and function-skin UI.
 - Each enabled shared core feature gets game-owned UI/function skin, SSOT/theme asset keys, contract tests, and screenshot evidence before that feature is complete.
 
 ## Reskin Automation Guardrails
@@ -85,13 +93,17 @@ Priority order:
 - `AdCore`: platform bridge signal contract.
 - `ThemeTokenCore` and `VfxCatalogCore`: only after at least two games share the same resource schema.
 
+Completed extractions:
+- `RuntimeCore`: pause state, input rebinding, spawn pooling, interaction bus, and preload/cache contracts extracted from the isometric template source without importing shooter-specific gameplay.
+- `ResourceRegistryCore`: semantic resource key registry extracted from the template `resource_manager` lesson without importing its editor dock UI.
+
 ## Tests
 
 Run all contracts:
 
 ```powershell
 $godot='C:\Users\Admin\.gemini\antigravity\bin\Godot\Godot_v4.3-stable_win64_console.exe'
-$project='C:\Users\Admin\Desktop\ShinokuteGameCore'
+$project='C:\Users\Admin\Desktop\Godot Casual Games\Shared\ShinokuteGameCore'
 Get-ChildItem "$project\Tests" -Filter 'test_*.gd' | Sort-Object Name | ForEach-Object {
   & $godot --headless --path $project --script $_.FullName
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

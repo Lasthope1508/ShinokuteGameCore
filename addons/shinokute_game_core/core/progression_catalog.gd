@@ -50,6 +50,7 @@ func get_difficulty_profile(index: int) -> Dictionary:
 		return level.difficulty_profile()
 	return {
 		"level_id": String(level.get("level_id")),
+		"next_level_id": String(level.get("next_level_id")),
 		"display_name": String(level.get("display_name")),
 		"difficulty_tier": int(level.get("difficulty_tier")),
 		"completion_condition": Dictionary(level.get("completion_condition")).duplicate(true),

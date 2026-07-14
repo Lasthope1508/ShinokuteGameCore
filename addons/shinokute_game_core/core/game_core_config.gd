@@ -24,6 +24,9 @@ extends Resource
 @export var ad_placements: Dictionary = {}
 @export var analytics_config: Dictionary = {}
 @export var remote_defaults: Dictionary = {}
+@export var input_bindings: Dictionary = {}
+@export var preload_scene_paths: Array = []
+@export var resource_registry: Dictionary = {}
 @export var settings_defaults: Dictionary = {
 	"sfx_enabled": true,
 	"bgm_enabled": true,

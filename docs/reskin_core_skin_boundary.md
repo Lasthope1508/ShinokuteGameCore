@@ -61,6 +61,26 @@ Forbidden:
 - Do not push a core module that contains a game node path, skin asset path,
   DOM id, JS global, Firebase collection, save prefix, or theme folder.
 
+## Definition Resolver Boundary
+
+Core owns id-based definition resolution, duplicate-id validation, missing-reference reporting, and weighted id selection only.
+
+Games own definition meaning, domain keys, stat application, enemy behavior, projectile behavior, inventory semantics, and upgrade effects.
+
+Function skin owns picker panels, option cards, labels, icons, animation, and text layout for any resolved options.
+
+Use this split when moving SSOT table logic from a reskin into
+`ShinokuteGameCore`:
+
+| Layer | Owns | Must not own |
+|---|---|---|
+| Core | Generic dictionary definitions, pool refs, id keys, weight keys, merge order, duplicate-id errors, missing-ref reports, deterministic weighted selection | Upgrade names, enemy ids, projectile ids, combat formulas, stat keys, UI text, art paths |
+| Game | Canonical domain tables, level-local weighted refs, target keys, operations, values, caps, unlock rules, effect application, gameplay tests | Shared merge/pick/validation implementation already available in core |
+| UI/function skin | Option labels after game supplies them, buttons, picker overlay, card art, layout metrics, text fit, input/focus behavior | Gameplay stat mutation, weighted selection rules, canonical table storage |
+
+If a resolver needs to know what `enemy`, `projectile`, `inventory`,
+`character_update`, or any game-specific id means, it is no longer core code.
+
 ## Platform Input Matrix
 
 For input, camera, movement, Shift Lock, zoom, mobile touch, or platform
@@ -101,6 +121,9 @@ Core demo UI may be used only as scaffold/prototype. It is not production skin u
 - Do not skip the Core Learning Gate after a reskin adds reusable behavior.
 - Do not skip Export Audit after core/schema/export changes.
 - Do not start UI/function skin work before the game has a UI skin/layout SSOT and asset checklist mapping old/default roles to new canonical roles.
+- Do not start final art or final screen assembly from a placeholder/basic
+  source before the owner approves a production visual direction and the game
+  records a polished Block Kit plan.
 - Do not create separate platform art branches for iOS, Android, HTML5, or Roblox. Use the same canonical asset keys and record platform derivatives only as generated variants of those keys.
 - Do not put platform-specific code in the shared game logic layer. Keep it in the platform layer/branch/shim and prove it still consumes canonical SSOT assets.
 - Do not mark shared features complete after core logic/service wiring only; each enabled feature needs game-owned UI/function skin.
@@ -170,13 +193,16 @@ Forbidden:
 5. Read `docs/godot_web_publish_runbook.md` before any owner test link or official web publish.
 6. Identify core feature behavior already owned by `ShinokuteGameCore`.
 7. Create or update the UI skin/layout SSOT, asset checklist/manifest, core wiring map, and platform map before UI or asset edits.
-8. Keep or move reusable behavior to core only after adding core tests.
-9. Keep all game skin and function skin inside the game repo.
-10. Keep platform-specific code in the platform layer/branch/shim only, and keep platform asset usage pointed at canonical SSOT asset keys.
-11. Create or update the game SSOT resource for coordinates, colors, fonts, asset paths, VFX parameters, text owner regions, and layout bounds.
-12. For every enabled shared core feature, create or update game-owned UI/function skin before marking that feature done.
-13. Add contract tests proving the game reads skin values from SSOT, not scattered constants.
-14. Run Godot import, contract tests, screenshot validation, packaging tests, and a smoke launch before claiming the game works.
+8. If the source visuals are only placeholders/basic shapes, record the
+   owner-approved visual direction and build a polished Block Kit before final
+   art or screen assembly.
+9. Keep or move reusable behavior to core only after adding core tests.
+10. Keep all game skin and function skin inside the game repo.
+11. Keep platform-specific code in the platform layer/branch/shim only, and keep platform asset usage pointed at canonical SSOT asset keys.
+12. Create or update the game SSOT resource for coordinates, colors, fonts, asset paths, VFX parameters, text owner regions, and layout bounds.
+13. For every enabled shared core feature, create or update game-owned UI/function skin before marking that feature done.
+14. Add contract tests proving the game reads skin values from SSOT, not scattered constants.
+15. Run Godot import, contract tests, screenshot validation, packaging tests, and a smoke launch before claiming the game works.
 
 ## Examples
 

@@ -15,6 +15,7 @@ extends Resource
 func difficulty_profile() -> Dictionary:
 	var profile := {
 		"level_id": level_id,
+		"next_level_id": next_level_id,
 		"display_name": display_name,
 		"difficulty_tier": difficulty_tier,
 		"completion_condition": completion_condition.duplicate(true),

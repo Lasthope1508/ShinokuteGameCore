@@ -25,6 +25,15 @@ func _run() -> void:
 	cfg.leaderboard_collections = {"classic": "glyphflow_classic"}
 	cfg.score_sort_directions = {"classic": "ASCENDING"}
 	cfg.score_labels = {"classic": "moves"}
+	cfg.input_bindings = {"shinokute_facade_test_action": [{"type": "key", "keycode": KEY_K}]}
+	cfg.preload_scene_paths = ["res://addons/shinokute_game_core/core/game_core_config.gd"]
+	cfg.resource_registry = {
+		"core.config.script": {
+			"path": "res://addons/shinokute_game_core/core/game_core_config.gd",
+			"type": "Script",
+			"required": true
+		}
+	}
 	var core = CoreScript.new()
 	root.add_child(core)
 	await process_frame
@@ -42,6 +51,16 @@ func _run() -> void:
 	_assert_true(core.remote_config != null, "remote config wired")
 	_assert_true(core.scene_router != null, "scene router wired")
 	_assert_true(core.overlay_manager != null, "overlay manager wired")
+	_assert_true(core.pause_controller != null, "pause controller wired")
+	_assert_true(core.input_bindings != null, "input bindings wired")
+	_assert_true(core.spawn_pool != null, "spawn pool wired")
+	_assert_true(core.interaction_bus != null, "interaction bus wired")
+	_assert_true(core.scene_preload_cache != null, "scene preload cache wired")
+	_assert_true(core.resource_registry != null, "resource registry wired")
+	_assert_true(InputMap.has_action("shinokute_facade_test_action"), "configured input binding applied")
+	_assert_true(core.scene_preload_cache.has_resource("res://addons/shinokute_game_core/core/game_core_config.gd"), "configured preload path cached")
+	_assert_eq(core.resource_registry.get_resource_path("core.config.script"), "res://addons/shinokute_game_core/core/game_core_config.gd", "resource registry path configured")
+	_assert_eq(core.resource_registry.validate().size(), 0, "resource registry validates configured entries")
 	_assert_true(core.session != null, "game session wired")
 	_assert_true(core.submit_score({"mode": "classic", "value": 12}) == ERR_UNAVAILABLE, "submit without username stores locally but cannot submit remotely")
 	_assert_eq(core.save_store.get_best_score("classic"), 12, "score without username should persist local best")
@@ -67,6 +86,8 @@ func _run() -> void:
 	if fake_leaderboard.submitted.size() == 1:
 		_assert_eq(int(fake_leaderboard.submitted[0]["score"]), 9, "flushed pending score should be best ascending score")
 	core.save_store.wipe_all()
+	if InputMap.has_action("shinokute_facade_test_action"):
+		InputMap.erase_action("shinokute_facade_test_action")
 	_report("test_game_core_facade")
 
 func _assert_true(value: bool, label: String) -> void:

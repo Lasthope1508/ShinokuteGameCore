@@ -13,21 +13,25 @@ Each phase has a stop gate. If a gate fails, fix that phase before moving on.
    from `docs/reskin_checklist_template.md` inside the game repo before edits.
 6. For a fresh game, copy `templates/new_game` into the target repo and rename
    example files before gameplay edits.
-7. Identify whether the work is:
+7. If the source/template only provides basic placeholder shapes, generic UI,
+   or contract-level visuals, record that it is not production art. Add an
+   art-direction and polished Block Kit gate before final art or screen
+   assembly.
+8. Identify whether the work is:
    - game skin only,
    - function skin only,
    - rules adapter work,
    - shared core work,
    - publish/release work.
-8. Identify the canonical cross-platform layer split:
+9. Identify the canonical cross-platform layer split:
    - reusable functions and behavior in `ShinokuteGameCore`,
    - game adapters/wrappers in the target game,
    - game-owned UI/function skin in the target game,
    - platform-specific code only in platform layers/branches/shims,
    - canonical assets shared by iOS, Android, HTML5, and Roblox through the same SSOT keys.
-9. List files expected to change. Keep the list small and update it when scope
+10. List files expected to change. Keep the list small and update it when scope
    changes.
-10. Start a Core Learning Gate note for any behavior that may belong in
+11. Start a Core Learning Gate note for any behavior that may belong in
     `ShinokuteGameCore`.
 
 Stop gate:
@@ -35,6 +39,9 @@ Stop gate:
 - The agent has a game-local checklist file for evidence.
 - No gameplay scene edit begins before the SSOT targets are named.
 - No UI/function/asset work begins before the UI skin/layout SSOT, asset checklist, core wiring map, and platform map exist or are updated.
+- No final art or final screen assembly begins from a basic placeholder source
+  until the owner approves a visual direction and the game has a polished Block
+  Kit plan.
 - The platform map confirms iOS, Android, HTML5, and Roblox use the same canonical asset keys, with platform derivatives recorded only as derivatives.
 - Fresh games use `templates/new_game` or document why an existing game
   structure already satisfies the same files.
@@ -56,19 +63,30 @@ Stop gate:
    policy, in-game size, and platform derivatives in the game-local checklist.
 6. Decide whether each function-skin element reuses an approved asset or needs
    a new owner-approved asset request.
-7. For a fresh test game, build the Block Kit before real screens:
+7. If the inherited/source visuals are only placeholder level, choose and record
+   a production visual direction before final art work. The direction must name
+   palette, mood, gameplay readability target, UI style, and what old/default
+   visuals are being replaced.
+8. For a fresh test game or placeholder-only source, build a polished Block Kit
+   before real screens:
    button shell, panel shell, input shell, leaderboard row, settings row,
-   HUD score owner, gameplay tile/block, background, and VFX placeholder.
-8. Capture an asset test scene screenshot after the Block Kit is placed.
+   HUD score owner, gameplay tile/block, player, enemy, boss, projectile,
+   background, and VFX.
+9. Capture an asset test scene screenshot after the Block Kit is placed.
 
 Stop gate:
 - No new frame, border, button shell, field shell, badge, or row background is
   created before existing assets are inventoried.
+- Placeholder shapes, debug polygons, generic default controls, and source-demo
+  UI are not acceptable final art. They can only be kept as temporary contract
+  proof until the polished Block Kit replaces them.
 - Every chosen visual asset has an SSOT key, role, owner rect, and padding.
 - Generated or reused assets have asset manifest rows with In-game Size.
 - iOS, Android, HTML5, and Roblox platform usage is recorded for changed
   assets, and no platform-specific asset fork exists without owner approval.
 - Asset test game blocks pass screenshot review before full screen assembly.
+- The approved visual direction and Block Kit screenshot are recorded before
+  production screen assembly starts.
 
 ## Phase 2: Build Or Update SSOT Resources
 

@@ -81,6 +81,7 @@ func _init() -> void:
 	_assert_eq(catalog.get_next_level_index(1), 0, "default loop should return first level")
 	var profile := catalog.get_difficulty_profile(0)
 	_assert_eq(profile["level_id"], "stage_001", "profile should expose canonical level id")
+	_assert_eq(profile["next_level_id"], "stage_002", "profile should expose explicit next level id")
 	_assert_eq(profile["completion_condition"]["type"], "goal_reached", "profile should expose completion condition")
 	_assert_eq(profile["failure_policy"]["fall_reset_y"], -10.0, "profile should expose failure policy")
 	_assert_eq(profile["layout_profile"]["platform_count"], 4, "profile should expose canonical layout profile")
