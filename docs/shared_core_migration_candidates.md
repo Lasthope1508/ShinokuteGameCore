@@ -78,6 +78,21 @@ Shared contract:
 - snapshot and restore
 - no HP, XP, ammo, hunger, score, death, unlock, economy, save, or UI meaning in core
 
+### ProjectileHitBudgetCore
+
+Evidence:
+- All-projectiles separates projectile blueprint hit capacity, rehit, and expiry data from concrete projectile scenes.
+- Last Hope First Peace repeatedly hit bugs around pierce state, duplicate hits, and visual projectile behavior being mixed with gameplay damage.
+
+Shared contract:
+- generic projectile runtime id bookkeeping
+- caller-owned `max_hits` budget and remaining-hit report
+- target id hit history
+- optional rehit cooldown
+- explicit expire reason such as `hit_budget_depleted`
+- snapshot and restore
+- no enemy ids, faction rules, damage, collision source, projectile art, VFX, labels, or pierce-upgrade meaning in core
+
 ### InventoryContainerCore
 
 Evidence:

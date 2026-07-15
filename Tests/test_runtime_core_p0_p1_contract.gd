@@ -25,6 +25,7 @@ const RuntimeLedgerPath := "res://addons/shinokute_game_core/runtime/runtime_led
 const InventoryContainerPath := "res://addons/shinokute_game_core/runtime/inventory_container.gd"
 const RngStreamPath := "res://addons/shinokute_game_core/runtime/rng_stream.gd"
 const TargetingQueryPath := "res://addons/shinokute_game_core/runtime/targeting_query_2d.gd"
+const ProjectileHitBudgetPath := "res://addons/shinokute_game_core/runtime/projectile_hit_budget.gd"
 
 var _passed := true
 
@@ -47,6 +48,7 @@ func _run() -> void:
 	_test_p1_attack_pattern_resolver()
 	_test_p1_spatial_hash()
 	_test_p1_targeting_query()
+	_test_p0_projectile_hit_budget()
 	_test_p1_drop_table_resolver()
 	_test_p1_spawn_telegraph_lifecycle()
 	_test_p1_numeric_effect_resolver()
@@ -365,6 +367,43 @@ func _test_p1_targeting_query() -> void:
 	_assert_true(not _entry_ids(in_cone).has("behind"), "targeting cone excludes behind candidate")
 	var segment_hits: Array = query.segment_hits(Vector2.ZERO, Vector2(100.0, 0.0), candidates, {"hit_radius": 2.0})
 	_assert_eq(_entry_ids(segment_hits), ["near", "far"], "targeting segment returns pierce hits in travel order")
+
+func _test_p0_projectile_hit_budget() -> void:
+	var script: Script = load(ProjectileHitBudgetPath)
+	_assert_true(script != null, "projectile hit budget script loads")
+	if script == null:
+		return
+	var budget = script.new()
+	budget.configure({"default_max_hits": 1, "allow_rehit": false, "rehit_cooldown": 0.25})
+	var registered: Dictionary = budget.register_projectile("bolt", {"max_hits": 2})
+	_assert_eq(String(registered.get("projectile_id", "")), "bolt", "projectile hit budget registers projectile id")
+	_assert_eq(int(registered.get("remaining_hits", 0)), 2, "projectile hit budget uses caller-owned max hit count")
+	var first: Dictionary = budget.record_hit("bolt", "enemy_a")
+	_assert_true(bool(first.get("accepted", false)), "projectile hit budget accepts first target hit")
+	_assert_eq(int(first.get("remaining_hits", -1)), 1, "projectile hit budget consumes one hit")
+	var duplicate: Dictionary = budget.record_hit("bolt", "enemy_a")
+	_assert_true(not bool(duplicate.get("accepted", true)), "projectile hit budget blocks duplicate hit when rehit disabled")
+	_assert_eq(String(duplicate.get("reason", "")), "duplicate_target", "projectile hit budget reports duplicate target")
+	var second: Dictionary = budget.record_hit("bolt", "enemy_b")
+	_assert_true(bool(second.get("accepted", false)), "projectile hit budget accepts second distinct target")
+	_assert_true(bool(second.get("expired", false)), "projectile hit budget expires when hit count reaches zero")
+	_assert_eq(String(second.get("expire_reason", "")), "hit_budget_depleted", "projectile hit budget reports hit budget expiry")
+
+	var rehit = script.new()
+	rehit.configure({"default_max_hits": 3, "allow_rehit": true, "rehit_cooldown": 0.5})
+	rehit.register_projectile("orb")
+	_assert_true(bool(rehit.record_hit("orb", "enemy_a").get("accepted", false)), "projectile hit budget accepts initial rehit target")
+	var too_soon: Dictionary = rehit.record_hit("orb", "enemy_a")
+	_assert_true(not bool(too_soon.get("accepted", true)), "projectile hit budget blocks rehit during cooldown")
+	_assert_eq(String(too_soon.get("reason", "")), "rehit_cooldown", "projectile hit budget reports rehit cooldown")
+	rehit.advance(0.5)
+	var after_cooldown: Dictionary = rehit.record_hit("orb", "enemy_a")
+	_assert_true(bool(after_cooldown.get("accepted", false)), "projectile hit budget accepts rehit after cooldown")
+	var snapshot: Dictionary = rehit.snapshot()
+	rehit.record_hit("orb", "enemy_b")
+	rehit.restore(snapshot)
+	_assert_eq(int(Dictionary(rehit.projectile_state("orb")).get("remaining_hits", 0)), 1, "projectile hit budget restores remaining hits")
+	_assert_true(Array(Dictionary(rehit.projectile_state("orb")).get("hit_ids", [])).has("enemy_a"), "projectile hit budget restores hit ids")
 
 func _test_p1_drop_table_resolver() -> void:
 	var script: Script = load(DropTableResolverPath)
