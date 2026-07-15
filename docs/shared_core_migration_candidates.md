@@ -93,6 +93,74 @@ Shared contract:
 - snapshot and restore
 - no enemy ids, faction rules, damage, collision source, projectile art, VFX, labels, or pierce-upgrade meaning in core
 
+### ProjectileTravelRuntimeCore
+
+Evidence:
+- All-projectiles separates projectile `lifetime`, `linear_speed`, `look_at`, `seeking`, and angular steering from collision and damage callbacks.
+- Last Hope First Peace still had projectile movement, traveled distance, and range expiry inside the level script.
+- Survivor-style projectile loops repeatedly need position stepping and expiry bookkeeping before game-owned hit handling.
+
+Shared contract:
+- generic position/direction/speed stepping
+- generic traveled distance and elapsed time
+- generic range and lifetime expiry reports
+- optional angular steering toward a caller-owned target position
+- snapshot and restore
+- no target selection, collision, damage, faction, pool return, projectile ids, art, VFX, or homing meaning in core
+
+### AttackCadenceCore
+
+Evidence:
+- All-projectiles attack blueprint separates anticipate, duration, recovery, charge, and authorization phases from spawned projectile content.
+- Last Hope First Peace and shooter references use repeated fire cooldown and enemy attack cooldown concepts that should not be hand-rolled in every game.
+
+Shared contract:
+- generic ready/cooldown/anticipate/duration/recovery phase state
+- request, block, execute, recover, ready reports
+- snapshot and restore
+- no input meaning, target choice, weapon ids, projectile spawn, animation, audio, or damage in core
+
+### SceneTransitionLifecycleCore
+
+Evidence:
+- Scene router and fade transition patterns repeat across Bloxchain, Glyphflow, and top-down Godot references.
+- Games need one busy guard and state report for fade-out, scene-change, fade-in, and complete.
+
+Shared contract:
+- route key lookup over caller-owned route table
+- active transition guard
+- pure-data fade/change/fade lifecycle reports
+- cancel and snapshot
+- no shader, animation node, concrete route paths, scene loading execution, or transition art in core
+
+### AudioHapticsCoreUpgrade
+
+Evidence:
+- Bloxchain and Glyphflow audio managers repeatedly need SFX/BGM toggles, bus naming, pooled event playback, BGM requests, and HTML5 unlock state.
+- Shinokute already had `AudioHapticsManager`, so the reusable lesson was upgrading that service, not creating a duplicate manager.
+
+Shared contract:
+- theme-aware audio event path lookup
+- SFX/BGM/haptics toggles
+- configurable SFX and BGM bus names
+- pooled SFX player state
+- BGM event and crossfade request state
+- HTML5 first-gesture unlock state and debug snapshot
+- no game-specific paths outside theme/config, vendor shell code, music policy, or skin SFX semantics in core
+
+### PublishAuditCore
+
+Evidence:
+- Prior Godot mobile/HTML5 releases use repeated export preset, runtime asset manifest, forbidden marker, and hosting header checks.
+- These checks must be pure data helpers so agents can run them without claiming publish-ready from docs alone.
+
+Shared contract:
+- runtime asset manifest entry validation
+- forbidden marker scanning over caller-owned path lists
+- export preset text audit for required preset names/platforms
+- hosting header checklist audit
+- no filesystem deletes, export execution, Firebase deployment, package upload, or publish-ready claim in core
+
 ### InventoryContainerCore
 
 Evidence:
@@ -226,49 +294,7 @@ Shared contract:
 
 ## Next Source-Derived Candidates
 
-## P0 Candidates
-
-### AudioCore
-
-Evidence:
-- `C:/Users/Admin/Desktop/Game/Resources/Globals/AudioManager.gd`
-- `C:/w/water/WaternetGodot_Cyberpunk/Resources/Globals/AudioManager.gd`
-
-Shared contract:
-- canonical `Master`, `Music`, `SFX` buses
-- saved volume/toggle flow
-- pooled SFX playback
-- BGM playback/crossfade
-- theme-aware audio lookup
-- HTML5 first-gesture unlock and debug state
-
-Core should own the playback contract and expose adapters for game-specific stream lookup.
-
-### PublishCore
-
-Evidence:
-- `C:/Users/Admin/Desktop/Game/docs/mobile_html5_asset_optimization_checklist.md`
-- `C:/w/water/WaternetGodot_Cyberpunk/docs/mobile_html5_asset_optimization_checklist.md`
-- `C:/w/water/WaternetGodot_Cyberpunk/docs/release_packaging_checklist.md`
-- `runtime_asset_manifest.json` in both games
-
-Shared contract:
-- export preset audit
-- runtime asset manifest schema
-- PCK/AAB forbidden marker scan
-- mobile and HTML5 compression checklist
-- Firebase Hosting header checklist
-- HTML5 audio packaging rule: export with Godot, do not custom-shell away imports
-
 ## P1 Candidates
-
-### SceneTransitionCore
-
-Evidence:
-- `SceneRouter.gd` in both games
-- `Scenes/Common/FadeTransition.gd` in both games
-
-Core should own fade transitions, busy guards, and common scene change helpers.
 
 ### OverlayCore
 

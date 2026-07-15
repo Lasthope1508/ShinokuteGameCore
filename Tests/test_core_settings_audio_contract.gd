@@ -69,6 +69,23 @@ func _run() -> void:
 		_assert_true(not audio.is_sfx_enabled(), "audio exposes sfx gate")
 		_assert_true(audio.is_bgm_enabled(), "audio exposes bgm gate")
 		_assert_eq(audio.play_event("missing"), ERR_SKIP, "disabled sfx skips event playback")
+	_assert_true(audio.has_method("configure_audio_runtime"), "audio exposes runtime config")
+	_assert_true(audio.has_method("unlock_audio"), "audio exposes HTML5 unlock state")
+	_assert_true(audio.has_method("audio_debug_state"), "audio exposes debug state")
+	if audio.has_method("configure_audio_runtime") and audio.has_method("audio_debug_state"):
+		audio.configure_audio_runtime({"sfx_bus": "SFX", "bgm_bus": "Music", "sfx_pool_size": 3})
+		var audio_state: Dictionary = audio.audio_debug_state()
+		_assert_eq(String(audio_state.get("sfx_bus", "")), "SFX", "audio records sfx bus")
+		_assert_eq(String(audio_state.get("bgm_bus", "")), "Music", "audio records bgm bus")
+		_assert_eq(int(audio_state.get("sfx_pool_size", 0)), 3, "audio records sfx pool size")
+	if audio.has_method("unlock_audio") and audio.has_method("is_audio_unlocked"):
+		_assert_true(not audio.is_audio_unlocked(), "audio starts locked")
+		audio.unlock_audio()
+		_assert_true(audio.is_audio_unlocked(), "audio records unlock")
+	if audio.has_method("request_bgm_crossfade"):
+		var crossfade: Dictionary = audio.request_bgm_crossfade("res://missing_theme.ogg", 0.5, -10.0)
+		_assert_eq(String(crossfade.get("status", "")), "queued", "audio records bgm crossfade request")
+		_assert_eq(String(Dictionary(audio.audio_debug_state()).get("pending_bgm_path", "")), "res://missing_theme.ogg", "audio debug state records pending bgm")
 	audio.free()
 
 	var core = CoreScript.new()

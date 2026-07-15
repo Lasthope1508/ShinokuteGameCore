@@ -468,6 +468,19 @@ for actor in scheduler.advance(1.0):
 
 Do not use this for realtime games like First Peace horde shooting. Realtime games should keep `_process`/timers for motion and use `EventTimeline`, `SpawnScheduleResolver`, `Steering2D`, projectile helpers, and presentation helpers.
 
+### Realtime Shooter Helpers
+
+Use these when game has auto-fire, projectile travel, scene fades, or publish audits:
+
+- `ProjectileTravelRuntime2D` for generic step/distance/range/lifetime expiry only
+- `ProjectileHitBudget` for hit-count and rehit memory only
+- `AttackCadence` for cooldown/anticipate/duration/recovery only
+- `SceneTransitionLifecycle` for busy guard and fade/change/fade reports only
+- `AudioHapticsManager` for theme-driven bus playback, unlock state, and BGM requests
+- `PublishAudit` for manifest/header/marker checks only
+
+Do not use these for collision, damage, target choice, UI art, route paths, or publish execution.
+
 ### Future Gameplay Expansion Anchor
 
 When the owner asks how to expand gameplay with inventory, grid movement, tactical range, or area fields, answer from this boundary:

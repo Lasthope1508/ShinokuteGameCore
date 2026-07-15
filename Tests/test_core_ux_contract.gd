@@ -2,6 +2,7 @@ extends SceneTree
 
 const SceneRouterScript := preload("res://addons/shinokute_game_core/ux/scene_router.gd")
 const OverlayManagerScript := preload("res://addons/shinokute_game_core/ux/overlay_manager.gd")
+const SceneTransitionScript := preload("res://addons/shinokute_game_core/ux/scene_transition_lifecycle.gd")
 
 var _passed := true
 var _routes: Array = []
@@ -29,6 +30,16 @@ func _run() -> void:
 	_assert_eq(overlay.request_overlay("settings", {"tab": "audio"}), OK, "overlay request OK")
 	_assert_eq(_overlays[0]["payload"]["tab"], "audio", "overlay payload")
 	_assert_eq(overlay.request_overlay("missing"), ERR_DOES_NOT_EXIST, "missing overlay error")
+
+	var transition = SceneTransitionScript.new()
+	transition.configure({"game": "res://Scenes/Game.tscn"})
+	_assert_eq(transition.request_transition("game", {"fade_out": 0.2, "fade_in": 0.2}), {"status": "queued", "key": "game", "path": "res://Scenes/Game.tscn", "closed": []}, "scene transition queues route")
+	_assert_eq(transition.request_transition("game", {}), {"status": "blocked", "reason": "active_transition", "active": "game", "closed": []}, "scene transition blocks duplicate request")
+	_assert_eq(transition.advance(0.2).get("phase", ""), "fade_out", "scene transition advances to fade out")
+	_assert_eq(transition.advance(0.2).get("phase", ""), "change_scene", "scene transition advances to change scene")
+	_assert_eq(transition.advance(0.2).get("phase", ""), "fade_in", "scene transition advances to fade in")
+	_assert_eq(transition.advance(0.2).get("phase", ""), "idle", "scene transition returns to idle")
+	_assert_eq(transition.request_transition("missing"), {"status": "blocked", "reason": "missing_route", "closed": []}, "scene transition blocks missing route")
 	_report("test_core_ux_contract")
 
 func _assert_eq(actual, expected, label: String) -> void:

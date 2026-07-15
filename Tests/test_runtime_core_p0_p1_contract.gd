@@ -26,6 +26,9 @@ const InventoryContainerPath := "res://addons/shinokute_game_core/runtime/invent
 const RngStreamPath := "res://addons/shinokute_game_core/runtime/rng_stream.gd"
 const TargetingQueryPath := "res://addons/shinokute_game_core/runtime/targeting_query_2d.gd"
 const ProjectileHitBudgetPath := "res://addons/shinokute_game_core/runtime/projectile_hit_budget.gd"
+const ProjectileTravelPath := "res://addons/shinokute_game_core/runtime/projectile_travel_runtime_2d.gd"
+const AttackCadencePath := "res://addons/shinokute_game_core/runtime/attack_cadence.gd"
+const PublishAuditPath := "res://addons/shinokute_game_core/runtime/publish_audit.gd"
 
 var _passed := true
 
@@ -49,6 +52,9 @@ func _run() -> void:
 	_test_p1_spatial_hash()
 	_test_p1_targeting_query()
 	_test_p0_projectile_hit_budget()
+	_test_p0_projectile_travel_runtime()
+	_test_p1_attack_cadence()
+	_test_p1_publish_audit()
 	_test_p1_drop_table_resolver()
 	_test_p1_spawn_telegraph_lifecycle()
 	_test_p1_numeric_effect_resolver()
@@ -404,6 +410,85 @@ func _test_p0_projectile_hit_budget() -> void:
 	rehit.restore(snapshot)
 	_assert_eq(int(Dictionary(rehit.projectile_state("orb")).get("remaining_hits", 0)), 1, "projectile hit budget restores remaining hits")
 	_assert_true(Array(Dictionary(rehit.projectile_state("orb")).get("hit_ids", [])).has("enemy_a"), "projectile hit budget restores hit ids")
+
+func _test_p0_projectile_travel_runtime() -> void:
+	var script: Script = load(ProjectileTravelPath)
+	_assert_true(script != null, "projectile travel runtime script loads")
+	if script == null:
+		return
+	var travel = script.new()
+	travel.configure({"default_speed": 100.0, "default_range": 150.0, "default_lifetime": 2.0})
+	var state: Dictionary = travel.initial_state({"position": Vector2.ZERO, "direction": Vector2.RIGHT})
+	var first: Dictionary = travel.step(state, 0.5)
+	_assert_eq(Vector2(first.get("position", Vector2.ZERO)), Vector2(50.0, 0.0), "projectile travel advances position by speed and delta")
+	_assert_float_eq(float(first.get("distance", 0.0)), 50.0, 0.001, "projectile travel tracks traveled distance")
+	_assert_true(not bool(first.get("expired", true)), "projectile travel does not expire before range or lifetime")
+	var second: Dictionary = travel.step(first, 1.0)
+	_assert_true(bool(second.get("expired", false)), "projectile travel expires at configured range")
+	_assert_eq(String(second.get("expire_reason", "")), "range", "projectile travel reports range expiry")
+	var timed: Dictionary = travel.initial_state({"position": Vector2.ZERO, "direction": Vector2.RIGHT, "speed": 10.0, "lifetime": 0.25, "range": 1000.0})
+	var timed_result: Dictionary = travel.step(timed, 0.3)
+	_assert_true(bool(timed_result.get("expired", false)), "projectile travel expires by lifetime")
+	_assert_eq(String(timed_result.get("expire_reason", "")), "lifetime", "projectile travel reports lifetime expiry")
+	var steering: Dictionary = travel.initial_state({"position": Vector2.ZERO, "direction": Vector2.RIGHT, "speed": 0.0, "range": 1000.0})
+	var steered: Dictionary = travel.step(steering, 0.5, {"target_position": Vector2(0.0, 100.0), "angular_speed_degrees": 90.0})
+	var steered_direction := Vector2(steered.get("direction", Vector2.ZERO))
+	_assert_true(steered_direction.distance_to(Vector2.RIGHT.rotated(deg_to_rad(45.0))) <= 0.001, "projectile travel turns toward target with angular limit")
+	var snapshot: Dictionary = travel.snapshot(steered)
+	var restored: Dictionary = travel.restore(snapshot)
+	_assert_eq(restored, snapshot, "projectile travel restores snapshot dictionary")
+
+func _test_p1_attack_cadence() -> void:
+	var script: Script = load(AttackCadencePath)
+	_assert_true(script != null, "attack cadence script loads")
+	if script == null:
+		return
+	var cadence = script.new()
+	cadence.configure({"cooldown": 0.5, "anticipate": 0.1, "duration": 0.2, "recovery": 0.3})
+	var state: Dictionary = cadence.initial_state()
+	var requested: Dictionary = cadence.request(state)
+	_assert_eq(String(requested.get("status", "")), "accepted", "attack cadence accepts ready attack")
+	_assert_eq(String(Dictionary(requested.get("state", {})).get("phase", "")), "anticipate", "attack cadence enters anticipate phase")
+	var blocked: Dictionary = cadence.request(Dictionary(requested.get("state", {})))
+	_assert_eq(String(blocked.get("status", "")), "blocked", "attack cadence blocks request while active")
+	_assert_eq(String(blocked.get("reason", "")), "phase_active", "attack cadence reports active phase block")
+	var duration: Dictionary = cadence.advance(Dictionary(requested.get("state", {})), 0.1)
+	_assert_eq(String(duration.get("phase", "")), "duration", "attack cadence advances to duration phase")
+	_assert_true(Array(duration.get("events", [])).has("execute"), "attack cadence emits execute event")
+	var recovery: Dictionary = cadence.advance(duration, 0.2)
+	_assert_eq(String(recovery.get("phase", "")), "recovery", "attack cadence advances to recovery phase")
+	var ready: Dictionary = cadence.advance(recovery, 0.3)
+	_assert_eq(String(ready.get("phase", "")), "ready", "attack cadence returns to ready after recovery")
+	var cooling: Dictionary = cadence.request(ready)
+	var cooldown_state: Dictionary = cadence.advance(Dictionary(cooling.get("state", {})), 0.6)
+	_assert_true(cadence.can_request(cooldown_state), "attack cadence can request after cooldown window")
+	var snapshot: Dictionary = cadence.snapshot(cooldown_state)
+	_assert_eq(cadence.restore(snapshot), snapshot, "attack cadence restores snapshot dictionary")
+
+func _test_p1_publish_audit() -> void:
+	var script: Script = load(PublishAuditPath)
+	_assert_true(script != null, "publish audit script loads")
+	if script == null:
+		return
+	var audit = script.new()
+	var manifest: Dictionary = audit.validate_manifest([
+		{"path": "res://Audio/Music/theme.ogg", "role": "music", "required": true},
+		{"role": "missing_path"},
+		{"path": "res://debug/raw.psd", "role": "source"}
+	])
+	var errors: Array = Array(manifest.get("errors", []))
+	_assert_true(_has_error_code(errors, "missing_required"), "publish audit reports missing manifest fields")
+	_assert_true(_has_error_code(errors, "forbidden_marker"), "publish audit reports forbidden marker in manifest path")
+	var marker_report: Dictionary = audit.scan_forbidden_markers([
+		"res://Scenes/Game.tscn",
+		"res://docs/reference/raw_mockup.png",
+		"res://Assets/runtime/player.png"
+	], ["raw", "reference"])
+	_assert_eq(Array(marker_report.get("matches", [])).size(), 1, "publish audit scans forbidden markers")
+	var presets: Dictionary = audit.audit_export_presets_text("[preset.0]\nname=\"Web\"\nplatform=\"Web\"\n[preset.1]\nname=\"Android\"\nplatform=\"Android\"", ["Web", "Android", "Windows Desktop"])
+	_assert_true(Array(presets.get("missing_presets", [])).has("Windows Desktop"), "publish audit reports missing export preset")
+	var headers: Dictionary = audit.audit_hosting_headers({"Cross-Origin-Opener-Policy": "same-origin"}, ["Cross-Origin-Opener-Policy", "Cross-Origin-Embedder-Policy"])
+	_assert_true(Array(headers.get("missing_headers", [])).has("Cross-Origin-Embedder-Policy"), "publish audit reports missing hosting header")
 
 func _test_p1_drop_table_resolver() -> void:
 	var script: Script = load(DropTableResolverPath)
