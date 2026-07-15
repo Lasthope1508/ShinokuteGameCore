@@ -103,6 +103,18 @@ Shared contract:
 - snapshot and restore for replay/debug/save
 - no item ids, enemy ids, map layouts, drop odds, reward meanings, combat formulas, or UI in core
 
+### MotionCore
+
+Evidence:
+- Last Hope First Peace needed repeated player/enemy movement tuning without scattering deadzone, diagonal normalization, acceleration, deceleration, turn acceleration, seek, arrive, and separation math through gameplay scripts.
+- Top-down shooter and survivor references share the same neutral motion primitives even when enemy roles, AI goals, terrain, collision, and animation differ.
+
+Shared contract:
+- generic input vector filtering with deadzone, analog curve, and diagonal normalization
+- generic kinematic velocity solve using caller-owned max speed, acceleration, deceleration, and turn acceleration
+- generic seek/arrive/separation vectors over caller-owned positions
+- no actor ids, speed values, AI behavior, terrain semantics, physics body ownership, collisions, animation state, VFX, or UI prompts in core
+
 ### TargetingQueryCore
 
 Evidence:

@@ -41,6 +41,7 @@ func _run() -> void:
 	_test_input_vector_filter()
 	_test_kinematic_motion_solver()
 	_test_steering()
+	_test_motion_core_ssot_docs()
 	_test_presentation_primitives()
 	_report("test_runtime_core_contract")
 
@@ -329,6 +330,24 @@ func _test_steering() -> void:
 	_assert_float_eq(arrive_near.length(), 0.5, 0.001, "steering arrive slows near target")
 	var separation: Vector2 = steering.separation(Vector2.ZERO, [Vector2(4.0, 0.0), Vector2(0.0, 8.0)], 16.0)
 	_assert_true(separation.x < 0.0 and separation.y < 0.0, "steering separation pushes away from neighbors")
+
+func _test_motion_core_ssot_docs() -> void:
+	var registry := FileAccess.get_file_as_string("res://docs/core_module_registry.md")
+	var runtime_usage := FileAccess.get_file_as_string("res://docs/runtime_core_usage.md")
+	var readme := FileAccess.get_file_as_string("res://README.md")
+	_assert_true(registry.contains("InputVectorFilter2D"), "registry includes input vector filter")
+	_assert_true(registry.contains("KinematicMotionSolver2D"), "registry includes kinematic motion solver")
+	_assert_true(registry.contains("Steering2D"), "registry includes steering")
+	_assert_true(registry.contains("runtime.input.vector-filter"), "registry tags input vector filter")
+	_assert_true(registry.contains("runtime.motion.kinematic"), "registry tags kinematic motion")
+	_assert_true(registry.contains("runtime.motion.steering"), "registry tags steering")
+	_assert_true(runtime_usage.contains("## Motion Core 2D"), "runtime usage documents motion core")
+	_assert_true(runtime_usage.contains("input_vector_filter_2d.gd"), "runtime usage names input filter file")
+	_assert_true(runtime_usage.contains("kinematic_motion_solver_2d.gd"), "runtime usage names motion solver file")
+	_assert_true(runtime_usage.contains("steering_2d.gd"), "runtime usage names steering file")
+	_assert_true(readme.contains("InputVectorFilter2D"), "README lists input vector filter")
+	_assert_true(readme.contains("KinematicMotionSolver2D"), "README lists kinematic motion solver")
+	_assert_true(readme.contains("Steering2D"), "README lists steering")
 
 func _test_presentation_primitives() -> void:
 	var format_script: Script = load(FeedbackFormatResolverPath)

@@ -74,6 +74,51 @@ var enemy := resolver.select_entry_for_stage(wave, candidates, fallback, roll, a
 
 Do not put enemy ids or formulas in core. Put schedule values in game SSOT resources.
 
+## Motion Core 2D
+
+Files:
+- `addons/shinokute_game_core/runtime/input_vector_filter_2d.gd`
+- `addons/shinokute_game_core/runtime/kinematic_motion_solver_2d.gd`
+- `addons/shinokute_game_core/runtime/steering_2d.gd`
+
+Core owns:
+- input vector filtering: deadzone, analog curve, and optional diagonal normalization
+- kinematic velocity solving from current velocity, desired direction, delta, max speed, acceleration, deceleration, and turn acceleration
+- steering directions for seek, arrive, and separation over caller-owned positions
+
+Game owns:
+- input action names and device mappings
+- actor speed stats, acceleration values, friction/terrain modifiers, buffs, debuffs, knockback, dash, stun, AI goals, target choice, faction rules, collisions, and physics body integration
+- when motion updates: realtime `_process`, fixed tick, tactical step, replay, or debug sim
+
+UI/art owns:
+- joystick art, keyboard prompts, motion trails, animation state, facing sprites, camera shake, and screen feedback
+
+Minimal wiring:
+
+```gdscript
+var filter := ShinokuteInputVectorFilter2D.new()
+var solver := ShinokuteKinematicMotionSolver2D.new()
+var steering := ShinokuteSteering2D.new()
+
+var desired := filter.filter(raw_input, {
+	"deadzone": input_deadzone,
+	"analog_curve": input_analog_curve,
+	"normalize_diagonal": true
+})
+velocity = solver.solve_velocity(velocity, desired, delta, {
+	"max_speed": player_speed,
+	"acceleration": player_acceleration,
+	"deceleration": player_deceleration,
+	"turn_acceleration": player_turn_acceleration
+})
+
+var chase_direction := steering.arrive(enemy_position, target_position, arrive_radius)
+var avoid_direction := steering.separation(enemy_position, neighbor_positions, separation_radius)
+```
+
+Use this for shared movement feel math. Do not make core decide what player, enemy, terrain, dash, slow, or attack behavior means.
+
 ## Targeting Query 2D
 
 File:
