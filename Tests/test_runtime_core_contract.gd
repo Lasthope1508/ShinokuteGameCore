@@ -10,9 +10,13 @@ const WeightedPickerPath := "res://addons/shinokute_game_core/runtime/weighted_p
 const DefinitionResolverPath := "res://addons/shinokute_game_core/runtime/definition_resolver.gd"
 const RunContextPath := "res://addons/shinokute_game_core/runtime/run_context.gd"
 const LimitedCounterPath := "res://addons/shinokute_game_core/runtime/limited_counter.gd"
+const BudgetResolverPath := "res://addons/shinokute_game_core/runtime/budget_resolver.gd"
 const InputVectorFilterPath := "res://addons/shinokute_game_core/runtime/input_vector_filter_2d.gd"
 const KinematicMotionSolverPath := "res://addons/shinokute_game_core/runtime/kinematic_motion_solver_2d.gd"
 const SteeringPath := "res://addons/shinokute_game_core/runtime/steering_2d.gd"
+const FeedbackFormatResolverPath := "res://addons/shinokute_game_core/runtime/presentation/feedback_format_resolver.gd"
+const WorldFeedbackPresenterPath := "res://addons/shinokute_game_core/runtime/presentation/world_feedback_presenter.gd"
+const HealthIndicatorPresenterPath := "res://addons/shinokute_game_core/runtime/presentation/health_indicator_presenter.gd"
 
 var _passed := true
 var _pause_events: Array = []
@@ -33,9 +37,11 @@ func _run() -> void:
 	_test_definition_resolver()
 	_test_run_context()
 	_test_limited_counter()
+	_test_budget_resolver()
 	_test_input_vector_filter()
 	_test_kinematic_motion_solver()
 	_test_steering()
+	_test_presentation_primitives()
 	_report("test_runtime_core_contract")
 
 func _test_pause_controller() -> void:
@@ -249,6 +255,33 @@ func _test_limited_counter() -> void:
 	_assert_eq(int(counter.count_for_id("rare")), 1, "limited counter reports consumed count")
 	_assert_eq(int(counter.limit_for_id("common")), 2, "limited counter reports configured cap")
 
+func _test_budget_resolver() -> void:
+	var resolver_script: Script = load(BudgetResolverPath)
+	_assert_true(resolver_script != null, "budget resolver script loads")
+	if resolver_script == null:
+		return
+	var resolver = resolver_script.new()
+	resolver.configure([
+		{"group": "role", "key": "shooter", "max": 1},
+		{"group": "archetype", "key": "sentinel", "max": 2}
+	])
+	var entries := [
+		{"id": "drone", "role": "chaser", "weight": 1},
+		{"id": "sentinel", "role": "shooter", "weight": 9},
+		{"id": "warden", "role": "shooter", "weight": 4}
+	]
+	var key_maps := [
+		{"group": "role", "entry_key": "role", "count_group": "roles"},
+		{"group": "archetype", "entry_key": "id", "count_group": "archetypes"}
+	]
+	var capped_by_role: Array = resolver.filter_entries(entries, {"roles": {"shooter": 1}, "archetypes": {}}, key_maps)
+	_assert_eq(capped_by_role.size(), 1, "budget resolver filters entries by active role cap")
+	_assert_eq(String(Dictionary(capped_by_role[0]).get("id", "")), "drone", "budget resolver keeps uncapped role")
+	var capped_by_archetype: Array = resolver.filter_entries(entries, {"roles": {}, "archetypes": {"sentinel": 2}}, key_maps)
+	_assert_eq(capped_by_archetype.size(), 2, "budget resolver filters entries by active archetype cap")
+	_assert_true(not resolver.is_allowed({"id": "sentinel", "role": "chaser"}, {"archetypes": {"sentinel": 2}}, key_maps), "budget resolver reports blocked entry")
+	_assert_eq(resolver.validation_errors().size(), 0, "budget resolver accepts valid budgets")
+
 func _test_input_vector_filter() -> void:
 	var filter_script: Script = load(InputVectorFilterPath)
 	_assert_true(filter_script != null, "input vector filter script loads")
@@ -296,6 +329,72 @@ func _test_steering() -> void:
 	_assert_float_eq(arrive_near.length(), 0.5, 0.001, "steering arrive slows near target")
 	var separation: Vector2 = steering.separation(Vector2.ZERO, [Vector2(4.0, 0.0), Vector2(0.0, 8.0)], 16.0)
 	_assert_true(separation.x < 0.0 and separation.y < 0.0, "steering separation pushes away from neighbors")
+
+func _test_presentation_primitives() -> void:
+	var format_script: Script = load(FeedbackFormatResolverPath)
+	_assert_true(format_script != null, "feedback format resolver script loads")
+	var feedback_script: Script = load(WorldFeedbackPresenterPath)
+	_assert_true(feedback_script != null, "world feedback presenter script loads")
+	var health_script: Script = load(HealthIndicatorPresenterPath)
+	_assert_true(health_script != null, "health indicator presenter script loads")
+	if format_script == null or feedback_script == null or health_script == null:
+		return
+
+	var formatter = format_script.new()
+	_assert_eq(formatter.format_text("HP %d/%d", [2, 5]), "HP 2/5", "feedback formatter formats positional values")
+	_assert_eq(formatter.format_text("", [2]), "", "feedback formatter keeps empty template empty")
+
+	var feedback_layer := CanvasLayer.new()
+	root.add_child(feedback_layer)
+	var feedback = feedback_script.new()
+	var label: Label = feedback.spawn_feedback(feedback_layer, "-1", Vector2(1000.0, 500.0), {
+		"camera_position": Vector2(900.0, 450.0),
+		"viewport_size": Vector2(480.0, 270.0),
+		"zoom": Vector2.ONE,
+		"offset": Vector2(4.0, -8.0),
+		"font_size": 12,
+		"ttl_frames": 3,
+		"color": Color(1, 0, 0, 1)
+	})
+	_assert_true(label != null, "world feedback presenter creates label")
+	if label != null:
+		_assert_eq(label.position, Vector2(344.0, 177.0), "world feedback maps world position through camera and offset")
+		_assert_eq(int(label.get_meta("ttl_frames", 0)), 3, "world feedback stores ttl")
+		feedback.update_feedback(feedback_layer, 0.5)
+		_assert_eq(int(label.get_meta("ttl_frames", 0)), 2, "world feedback decrements ttl")
+		_assert_float_eq(label.position.y, 176.5, 0.001, "world feedback applies drift")
+	feedback_layer.free()
+
+	var actor := Node2D.new()
+	root.add_child(actor)
+	var health = health_script.new()
+	health.ensure_indicator(actor, {
+		"bar_name": "HpBar",
+		"text_name": "HpText",
+		"bar_offset": Vector2(-10.0, -20.0),
+		"bar_size": Vector2(20.0, 4.0),
+		"text_offset": Vector2(-10.0, -34.0),
+		"text_font_size": 9,
+		"text_color": Color(1, 1, 1, 1),
+		"bar_color": Color(0, 1, 0, 1)
+	})
+	health.update_indicator(actor, 2, 5, {
+		"bar_name": "HpBar",
+		"text_name": "HpText",
+		"text_format": "%d/%d",
+		"hide_when_full": true
+	})
+	var hp_bar := actor.get_node_or_null("HpBar") as ColorRect
+	var hp_text := actor.get_node_or_null("HpText") as Label
+	_assert_true(hp_bar != null, "health presenter creates bar")
+	_assert_true(hp_text != null, "health presenter creates text")
+	if hp_bar != null and hp_text != null:
+		_assert_float_eq(hp_bar.size.x, 8.0, 0.001, "health presenter scales bar by current/max")
+		_assert_eq(hp_text.text, "2/5", "health presenter formats hp text")
+		_assert_true(hp_text.visible, "health presenter shows damaged hp text")
+		health.update_indicator(actor, 5, 5, {"bar_name": "HpBar", "text_name": "HpText", "text_format": "%d/%d", "hide_when_full": true})
+		_assert_true(not hp_text.visible, "health presenter hides full hp text")
+	actor.free()
 
 func _assert_eq(actual, expected, label: String) -> void:
 	if actual != expected:

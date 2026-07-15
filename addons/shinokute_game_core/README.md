@@ -1,6 +1,8 @@
 # Shinokute Game Core Addon
 
-Before using this addon in a reskin, read `../../docs/reskin_core_skin_boundary.md`. Core owns behavior; each game owns game skin and function skin. Every production game must provide its own UI/function skin for enabled shared features.
+Before using this addon in a reskin, read `../../docs/core_module_registry.md` first. That file is the SSOT table for core module function tags, genre tags, ownership, contract tests, and "do not use" boundaries.
+
+Then read `../../docs/reskin_core_skin_boundary.md`. Core owns behavior; each game owns game skin and function skin. Every production game must provide its own UI/function skin for enabled shared features. Before adding data-driven content tables, read `../../docs/content_pack_core_usage.md`. Before wiring spawn schedules, runtime counters, grid path queries, grid occupancy state, grid placement queries, visibility fields, map layout generation, area fields, or inventory slots, read `../../docs/runtime_core_usage.md`.
 
 ## Install
 
@@ -66,7 +68,7 @@ core.interaction_bus.publish("pickup", {"id": "coin"})
 - `core/`: `GameCore`, `GameCoreConfig`, `GameSession`, `GameRulesAdapter`, save/profile/geo/leaderboard.
 - `core/progression_catalog.gd` and `core/progression_level.gd`: reusable progression, layout, environment, and difficulty schema. Games provide concrete route/prop data; core validates canonical keys and emits generic profiles.
 - `controllers/`: reusable 3D runtime controllers. `character_3d_controller.gd` owns movement, jump, fall, progression reset, and Shift Lock facing; `follow_camera_3d.gd` owns rotate/zoom, scoped mouse capture, Shift Lock camera sync, and routed look/zoom; `mobile_touch_controls_3d.gd` owns touch pointer routing, guard zones, jump, look, pinch zoom, and the Web pointer-id bridge. Game scripts should inherit these controllers and only add skin-specific presentation/configuration.
-- `runtime/`: reusable pause state, input rebinding, spawn pooling, channel-scoped interaction payloads, and preload/cache helpers. Games provide actor behavior, wave definitions, level data, projectile rules, VFX presentation, and UI/function skin.
+- `runtime/`: reusable pause state, input rebinding, spawn pooling, channel-scoped interaction payloads, preload/cache helpers, deterministic RNG streams, content pack/table validation, table inheritance, reference graphs, content queries, requirement checks, modifier stacks, projectile blueprint composition, attack pattern math, spatial hash queries, targeting queries, grid path queries, grid occupancy state, grid placement queries, visibility fields, map layout generation, area field runtime, drop table resolution, spawn schedule resolution, spawn telegraph lifecycle, numeric effect resolution, status effect timing, modal lifecycle guards, reward picking, event timelines, 2D spawn pattern points, pickup attraction, runtime ledgers, inventory containers, turn-based action/energy primitives, telemetry schemas, and debug snapshots. Games provide actor behavior, wave definitions, level data, projectile rules, terrain semantics, occupancy meaning, placement policy, map layout meaning, field meanings, turn action handlers, content table schemas, VFX presentation, and UI/function skin.
 - `services/`: theme, audio/haptics, ads, analytics, localization, remote config.
 - `ux/`: scene router and overlay manager.
 - `ui/`: reusable UI scenes.
@@ -76,5 +78,5 @@ core.interaction_bus.publish("pickup", {"id": "coin"})
 - Do not hardcode collection names in game scenes.
 - Do not hardcode score sort direction in UI.
 - Do not hardcode geolocation fallback country.
-- Do not copy profile, save, leaderboard, ads, analytics, audio, localization, routing, pause, input rebinding, spawn pooling, interaction bus, preload cache, 3D character control, 3D follow camera, or mobile touch-control code into game-specific scenes.
+- Do not copy profile, save, leaderboard, ads, analytics, audio, localization, routing, pause, input rebinding, spawn pooling, interaction bus, preload cache, deterministic RNG streams, content pack/table validation, table inheritance, reference graph, content query, requirement checks, modifier stack plumbing, projectile blueprint composition, attack pattern math, spatial hash queries, targeting queries, grid path queries, grid occupancy state, grid placement queries, visibility fields, map layout generation, area field runtime, drop table resolution, spawn schedule resolution, spawn telegraph lifecycle, numeric effect resolution, status effect timing, modal lifecycle, reward picking, event timeline, spawn point patterns, pickup attraction, runtime ledger counters, inventory container stacking, turn-based action/energy scheduling, telemetry schema validation, 3D character control, 3D follow camera, or mobile touch-control code into game-specific scenes.
 - Keep game-specific rules in a `GameRulesAdapter` implementation.

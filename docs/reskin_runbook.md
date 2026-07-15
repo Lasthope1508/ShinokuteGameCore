@@ -6,36 +6,40 @@ Each phase has a stop gate. If a gate fails, fix that phase before moving on.
 ## Phase 0: Read And Freeze Scope
 
 1. Read `AGENTS.md`.
-2. Read `docs/reskin_core_skin_boundary.md`.
-3. Read `addons/shinokute_game_core/README.md`.
-4. Read `docs/asset_generation_guardrails.md` before generating or editing art.
-5. Read the target game's local reskin checklist. If none exists, create one
+2. Read `docs/core_module_registry.md` and choose core modules by `Function tag`
+   plus `Genre tags` before opening scripts.
+3. Read `docs/reskin_core_skin_boundary.md`.
+4. Read `addons/shinokute_game_core/README.md`.
+5. Read `docs/asset_generation_guardrails.md` before generating or editing art.
+6. Read the target game's local reskin checklist. If none exists, create one
    from `docs/reskin_checklist_template.md` inside the game repo before edits.
-6. For a fresh game, copy `templates/new_game` into the target repo and rename
+7. For a fresh game, copy `templates/new_game` into the target repo and rename
    example files before gameplay edits.
-7. If the source/template only provides basic placeholder shapes, generic UI,
+8. If the source/template only provides basic placeholder shapes, generic UI,
    or contract-level visuals, record that it is not production art. Add an
    art-direction and polished Block Kit gate before final art or screen
    assembly.
-8. Identify whether the work is:
+9. Identify whether the work is:
    - game skin only,
    - function skin only,
    - rules adapter work,
    - shared core work,
    - publish/release work.
-9. Identify the canonical cross-platform layer split:
+10. Identify the canonical cross-platform layer split:
    - reusable functions and behavior in `ShinokuteGameCore`,
    - game adapters/wrappers in the target game,
    - game-owned UI/function skin in the target game,
    - platform-specific code only in platform layers/branches/shims,
    - canonical assets shared by iOS, Android, HTML5, and Roblox through the same SSOT keys.
-10. List files expected to change. Keep the list small and update it when scope
+11. List files expected to change. Keep the list small and update it when scope
    changes.
-11. Start a Core Learning Gate note for any behavior that may belong in
+12. Start a Core Learning Gate note for any behavior that may belong in
     `ShinokuteGameCore`.
 
 Stop gate:
 - The agent can name which layer owns each requested change.
+- The agent can name the matching registry `Function tag` and `Genre tags`, or
+  can say no core module fits yet and adds a candidate instead.
 - The agent has a game-local checklist file for evidence.
 - No gameplay scene edit begins before the SSOT targets are named.
 - No UI/function/asset work begins before the UI skin/layout SSOT, asset checklist, core wiring map, and platform map exist or are updated.
@@ -94,11 +98,14 @@ Stop gate:
 2. Update the game-owned `ShinokuteThemeConfig.tres`.
 3. Add or update game-specific SSOT resources for board geometry, function-skin
    owner rects, text limits, VFX parameters, audio event names, and route keys.
-4. Add or update the UI skin/layout SSOT for safe areas, responsive anchors,
+4. For data-driven enemies, projectiles, upgrades, items, recipes, waves, bosses,
+   or groups, read `docs/content_pack_core_usage.md` and decide whether the
+   game should use `ShinokuteContentPack` instead of ad hoc dictionaries.
+5. Add or update the UI skin/layout SSOT for safe areas, responsive anchors,
    text owner regions, hitboxes, platform viewport behavior, and style tokens.
-5. Add or update the platform map for iOS, Android, HTML5, and Roblox asset
+6. Add or update the platform map for iOS, Android, HTML5, and Roblox asset
    consumers and any platform code shims.
-6. Add contract tests proving gameplay and UI read these values from SSOT
+7. Add contract tests proving gameplay and UI read these values from SSOT
    resources rather than hardcoded scene constants.
 
 Stop gate:
@@ -108,6 +115,9 @@ Stop gate:
   metrics.
 - No hardcoded path/color/text/scene route remains in gameplay code when an
   SSOT key exists.
+- Data-driven gameplay tables use core pack/table/ref/query helpers when they
+  need inheritance, cross-table refs, requirement filters, or groups; game code
+  still owns concrete field meaning and formulas.
 - Platform-specific code can customize input/export/safe-area/runtime shims, but
   shared gameplay/function code and canonical assets remain SSOT-driven.
 

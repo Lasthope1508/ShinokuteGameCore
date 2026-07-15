@@ -4,11 +4,13 @@ extends RefCounted
 var _entries: Array = []
 var _item_key := "id"
 var _weight_key := "weight"
+var _stable_sort := false
 
-func configure(entries: Array, item_key: String = "id", weight_key: String = "weight") -> void:
+func configure(entries: Array, item_key: String = "id", weight_key: String = "weight", config: Dictionary = {}) -> void:
 	_entries = []
 	_item_key = item_key
 	_weight_key = weight_key
+	_stable_sort = bool(config.get("stable_sort", false))
 	for entry in entries:
 		if not (entry is Dictionary):
 			continue
@@ -16,6 +18,10 @@ func configure(entries: Array, item_key: String = "id", weight_key: String = "we
 		if float(normalized.get(_weight_key, 0.0)) <= 0.0:
 			continue
 		_entries.append(normalized)
+	if _stable_sort:
+		_entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+			return String(a.get(_item_key, "")) < String(b.get(_item_key, ""))
+		)
 
 func entries() -> Array:
 	return _entries.duplicate(true)
