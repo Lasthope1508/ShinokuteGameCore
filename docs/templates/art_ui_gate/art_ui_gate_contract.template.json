@@ -1,0 +1,147 @@
+{
+  "docs": {
+    "style_bible": "GAME_ART_UI.md",
+    "count": "docs/asset_count_matrix.md",
+    "coverage": "docs/asset_coverage_matrix.md",
+    "composition": "docs/ui_composition_contracts.md",
+    "screenshots": "docs/screenshot_verification_checklist.md",
+    "gate": "docs/art_pipeline_validation_gate.md"
+  },
+  "required_surfaces": [
+    "{{SURFACE_ID}}"
+  ],
+  "required_asset_keys": [
+    "{{ASSET_KEY}}"
+  ],
+  "required_tokens": [
+    "Art Design Approval Gate",
+    "RUNTIME_FIT_PASS is not final art design approval",
+    "ART_DESIGN_PENDING",
+    "READY_FOR_OWNER_ADJUSTMENT",
+    "OWNER_PLACEMENT_APPROVED"
+  ],
+  "required_screenshot_tokens": [
+    "Art Design Approval Gate",
+    "ART_DESIGN_PENDING"
+  ],
+  "reference_lock": {
+    "reference_sheet_status": "REFERENCE_SHEET_PENDING",
+    "generation_spec_status": "GENERATION_SPEC_PENDING",
+    "reference_sheet": "docs/art_reference_sheet.md",
+    "generation_spec": "docs/art_generation_spec.md",
+    "min_references": 10,
+    "max_references": 30,
+    "required_buckets": [
+      "{{REFERENCE_BUCKET}}"
+    ]
+  },
+  "runtime_fit_rows": {},
+  "art_design_pending_rows": {
+    "{{SCREEN_NAME}}": [
+      "ART_DESIGN_PENDING",
+      "{{PENDING_REASON}}"
+    ]
+  },
+  "expected_screenshots": {
+    "{{SCREENSHOT_PATH}}": [
+      1280,
+      720
+    ]
+  },
+  "image_quality_profile": {
+    "profile": "mobile_high_quality",
+    "runtime_ui_source_scale": 4,
+    "ui_reference_viewport": [
+      480,
+      270
+    ],
+    "min_editor_background_size": [
+      1280,
+      720
+    ],
+    "ui_source_assets": {
+      "{{UI_ASSET_KEY}}": {
+        "path": "res://{{UI_ASSET_PATH}}",
+        "owner_size": [
+          240,
+          120
+        ],
+        "source_scale": 4,
+        "size_policy": "exact"
+      }
+    }
+  },
+  "visual_composition_rules": {
+    "surfaces": {
+      "{{SCREEN_NAME}}": {
+        "viewport_size": [
+          480,
+          270
+        ],
+        "surface_rect": [
+          0,
+          0,
+          240,
+          120
+        ],
+        "max_surface_viewport_area_ratio": 0.5,
+        "safe_padding": 4,
+        "text_safe_zones": {
+          "{{TEXT_SLOT_ID}}": [
+            24,
+            24,
+            120,
+            20
+          ]
+        },
+        "art_safe_zones": {
+          "{{TEXT_SLOT_ID}}": [
+            20,
+            20,
+            128,
+            28
+          ]
+        },
+        "slot_rects": {
+          "{{ICON_SLOT_ID}}": [
+            24,
+            52,
+            32,
+            32
+          ]
+        },
+        "ornament_exclusion_zones": {
+          "{{ORNAMENT_ID}}": [
+            160,
+            24,
+            32,
+            32
+          ]
+        }
+      }
+    }
+  },
+  "manual_placement": {
+    "required": true,
+    "status_values": [
+      "READY_FOR_OWNER_ADJUSTMENT",
+      "OWNER_PLACEMENT_APPROVED"
+    ],
+    "surfaces": {
+      "{{SCREEN_NAME}}": {
+        "status": "READY_FOR_OWNER_ADJUSTMENT",
+        "editor_config": "docs/art_ui_manual_placement/{{SCREEN_ID}}_region_editor_config.json",
+        "editor_html": "docs/art_ui_manual_placement/{{SCREEN_ID}}_region_editor.html",
+        "export_json": "docs/art_ui_manual_placement/{{SCREEN_ID}}_draft_export.json",
+        "min_background_size": [
+          1280,
+          720
+        ],
+        "applies_to": [
+          "{{TEXT_SLOT_ID}}",
+          "{{ICON_SLOT_ID}}"
+        ]
+      }
+    }
+  }
+}
