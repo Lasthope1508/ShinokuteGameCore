@@ -122,6 +122,26 @@ var composed := composer.compose(pulse_orb, [
 
 If a game needs transform priority such as current weapon id versus cumulative modifiers, keep that resolver in game code and pass only the final generic modifier list to the composer.
 
+## Skill Progression And Weapon Fusion
+
+Use `SkillProgressionResolver` when a game has weapon/skill level tables and fusion/evolution readiness rules.
+
+Core resolver owns:
+- next-level lookup from caller-owned level tables
+- preservation of caller-owned `taxonomy_id`
+- generic requirement checks for fusion/evolution definitions
+- ready/not-ready reports
+
+Game still owns:
+- weapon ids, projectile ids, `weapon_skill_id`, taxonomy mapping, level tables, fusion ids, counters, balance numbers, and runtime application
+- how level modifiers affect projectile dictionaries, player stats, combat formulas, or encounter state
+- save/reset policy for current weapon levels and unlocked fusions
+
+UI/function skin still owns:
+- labels, descriptions, icons, tooltips, and VFX names for upgrades, levels, and fusions
+
+Do not infer `weapon_skill_id` from a projectile id in core. If a game wants a selected upgrade to level a weapon table, that upgrade must declare the game-owned skill id explicitly, and the game adapter must pass that id to `SkillProgressionResolver.next_level_entry(...)`.
+
 ## API
 
 - `configure(pack: Dictionary, options: Dictionary = {})`
@@ -137,6 +157,9 @@ If a game needs transform priority such as current weapon id versus cumulative m
 - `resolve_group(group_table_name: String, group_id: String) -> Array`
 - `ShinokuteProjectileBlueprintComposer2D.compose(base_blueprint: Dictionary, modifiers: Array = []) -> Dictionary`
 - `ShinokuteProjectileBlueprintComposer2D.compose_many(base_blueprints: Array, modifiers_by_id: Dictionary = {}) -> Array`
+- `SkillProgressionResolver.next_level_entry(level_tables: Array, skill_id: String, current_levels: Dictionary = {}) -> Dictionary`
+- `SkillProgressionResolver.resolve_ready_progression(definitions: Array, counters: Dictionary, already_unlocked: Array = []) -> Dictionary`
+- `SkillProgressionResolver.resolve_all_ready_progressions(definitions: Array, counters: Dictionary, already_unlocked: Array = []) -> Array`
 
 Query criteria:
 - `type`: exact match against entry `type`

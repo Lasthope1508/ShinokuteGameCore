@@ -33,9 +33,9 @@ func schedule_for_stage(stage_index: int) -> Dictionary:
 			selected = entry
 	return selected.duplicate(true)
 
-func value_for_stage(stage_index: int, key: String, fallback = null):
+func value_for_stage(stage_index: int, key: String, missing_value = null):
 	var schedule := schedule_for_stage(stage_index)
-	return schedule.get(key, fallback)
+	return schedule.get(key, missing_value)
 
 func pattern_for_stage(stage_index: int) -> Dictionary:
 	return Dictionary(value_for_stage(stage_index, "spawn_pattern", {})).duplicate(true)
@@ -86,10 +86,10 @@ func filter_candidates_for_stage(stage_index: int, candidates: Array, active_cou
 	budget_resolver.configure(budget_entries_for_stage(stage_index))
 	return budget_resolver.filter_entries(filtered, active_counts, key_maps)
 
-func select_entry_for_stage(stage_index: int, candidates: Array, fallback: Dictionary = {}, roll: float = -1.0, active_counts: Dictionary = {}, key_maps: Array = []) -> Dictionary:
+func select_entry_for_stage(stage_index: int, candidates: Array, empty_result: Dictionary = {}, roll: float = -1.0, active_counts: Dictionary = {}, key_maps: Array = []) -> Dictionary:
 	var allowed := filter_candidates_for_stage(stage_index, candidates, active_counts, key_maps)
 	if allowed.is_empty() or _weighted_picker_script == null:
-		return fallback.duplicate(true)
+		return empty_result.duplicate(true)
 	var allowed_ids: Array = []
 	for candidate in allowed:
 		if candidate is Dictionary:
@@ -103,7 +103,7 @@ func select_entry_for_stage(stage_index: int, candidates: Array, fallback: Dicti
 		if allowed_ids.has(id):
 			weighted_entries.append(weight_entry.duplicate(true))
 	if weighted_entries.is_empty():
-		return fallback.duplicate(true)
+		return empty_result.duplicate(true)
 	var picker = _weighted_picker_script.new()
 	picker.configure(weighted_entries, _item_key, _weight_key)
 	var selected: Dictionary = picker.pick(roll)
@@ -111,7 +111,7 @@ func select_entry_for_stage(stage_index: int, candidates: Array, fallback: Dicti
 	for candidate in allowed:
 		if candidate is Dictionary and String(Dictionary(candidate).get(_item_key, "")) == selected_id:
 			return Dictionary(candidate).duplicate(true)
-	return fallback.duplicate(true)
+	return empty_result.duplicate(true)
 
 func _weight_allowed_ids(stage_index: int) -> Array:
 	var ids: Array = []

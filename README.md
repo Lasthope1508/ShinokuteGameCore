@@ -21,6 +21,7 @@ Every agent wiring reusable spawn schedules, resource counters, or inventory slo
 Core wiring does not complete production UI. Each production game must create game-owned function-skin UI for enabled shared features such as username, leaderboard, result, settings, menus, ads, profile, and publish prompts.
 
 Every agent must read `docs/asset_generation_guardrails.md` before generating or editing game art.
+Every agent must read `docs/art_ui_design_gate.md` before claiming UI/art work done. `RUNTIME_FIT_PASS` is not final art design approval; game surfaces still marked `ART_DESIGN_PENDING` are not final.
 
 Every agent must read `docs/godot_web_publish_runbook.md` before giving the owner a web test link or publishing an official Godot Web build.
 
@@ -38,7 +39,7 @@ Every agent must read `docs/godot_web_publish_runbook.md` before giving the owne
 
 Use `docs/core_module_registry.md` as the first module lookup table. It maps each function tag to genre tags, core files, contract tests, use cases, and boundaries. The list below is a prose summary only.
 
-- `GameCoreConfig`: SSOT for game id, Firebase endpoint, score sort, collection names, username policy, and leaderboard display labels.
+- `GameCoreConfig`: SSOT for game id, Firebase endpoint, score sort, collection names, username policy, leaderboard display labels, and theme token schema wiring.
 - `ShinokuteProgressionCatalog` and `ShinokuteProgressionLevel`: canonical SSOT schemas for level catalogs, completion/failure policies, data-driven route/layout profiles, environment segments, and difficulty curves.
 - `GameCore`: single entrypoint that wires every core/service/UX module.
 - `GameSession`: start/pause/resume/end run lifecycle, score deltas, and result signal.
@@ -47,14 +48,15 @@ Use `docs/core_module_registry.md` as the first module lookup table. It maps eac
 - `PlayerProfile`: first-run username policy, validation, default username generation, and profile-ready signals.
 - `LeaderboardClient`: Firestore REST URL/payload/query builder and score submission/fetch orchestration.
 - `GeoService`: geolocation request/cache handling without hardcoded country fallback.
-- `ShinokuteThemeConfig` and `ShinokuteThemeManager`: skin colors, fonts, asset paths, audio event paths, and UI metrics.
+- `ShinokuteThemeConfig` and `ShinokuteThemeManager`: strict skin colors, fonts, asset paths, audio event paths, UI metrics, save key, change signal, token set reports, and schema validation. No fallback theme tokens.
 - `ShinokuteAudioHapticsManager`: event-based SFX lookup and mobile vibration toggles.
-- `ShinokuteAdsManager`: placement registry, cooldown checks, and provider-neutral ad request signals.
+- `ShinokuteAdsManager`: placement registry, cooldown checks, provider status, lifecycle state reports, failure reports, and idempotent reward claim events.
 - `ShinokuteAnalyticsTracker`: provider-neutral event tracking signal and event cache.
-- `ShinokuteLocalizationService`: locale table lookup with fallback and parameter replacement.
+- `ShinokuteLocalizationService`: locale table lookup with explicit missing-key return and parameter replacement.
 - `ShinokuteRemoteConfigService`: local defaults plus runtime override layer.
 - `ShinokutePauseController`: shared pause state signal and process-mode switching for gameplay/menu node sets.
 - `ShinokuteInputBindingManager`: configurable `InputMap` action defaults, rebinding, and serializable input specs.
+- `ShinokuteInputRouter`: active control-scheme tracking plus canonical move-vector and virtual touch-vector plumbing. Games bind action names in config and own aim, abilities, UI prompts, and action effects.
 - `ShinokuteInputVectorFilter2D`: generic deadzone, analog curve, and diagonal normalization over caller-owned input vectors. Games own action names, speed stats, abilities, UI prompts, and animation.
 - `ShinokuteKinematicMotionSolver2D`: generic velocity solve with max speed, acceleration, deceleration, and turn acceleration. Games own actor stats, terrain/collision rules, knockback semantics, and physics integration.
 - `ShinokuteSteering2D`: generic seek, arrive, and separation vectors. Games own enemy roles, AI goals, target validity, pathfinding, formations, and combat behavior.
@@ -94,7 +96,7 @@ Use `docs/core_module_registry.md` as the first module lookup table. It maps eac
 - `ShinokuteSpawnPatternResolver2D`: generic ring, edge, and lane point generation for game-owned spawn systems.
 - `ShinokutePickupAttractor2D`: generic 2D attract/collect motion step.
 - `ShinokuteTelemetryEventSchema`: generic telemetry payload validation and normalization.
-- `ShinokuteResourceRegistry`: semantic key to resource path/type/required/fallback lookup. Games own entries; core validates and loads without editor dock dependencies.
+- `ShinokuteResourceRegistry`: semantic key to resource path/type/required lookup. Games own entries; core rejects `fallback_key` and loads without editor dock dependencies.
 - `ShinokuteSceneRouter`: scene key to scene path routing.
 - `ShinokuteOverlayManager`: overlay key registry and provider-neutral show/hide signals.
 - `UsernamePromptOverlay`: reusable first-run prompt scene.
@@ -122,6 +124,10 @@ Each new mobile game should create these game-owned files:
 - `docs/asset_generation_guardrails.md`: asset manifest, Block Kit, proof over
   claims, and paid-generation rules inspired by Godogen's useful workflow
   pieces.
+- `docs/art_ui_design_gate.md`: reusable art/UI gate, status vocabulary,
+  templates, and generic validator contract.
+- `docs/art_ui_asset_inventory_method.md`: runtime-surface-first asset counting
+  method for UI/art passes.
 - `docs/external_godogen_notes.md`: Godogen ideas kept outside the production
   Shinokute reskin pipeline.
 
@@ -134,14 +140,14 @@ Priority order:
 - `PublishCore`: export/package gates, runtime manifest schema, mobile/HTML5 checks.
 - `SceneTransitionCore`: fade transition scene and scene router helper.
 - `OverlayCore`: elastic popup animation and shared popup behavior. Generic modal lifecycle guards are complete.
-- `AdCore`: platform bridge signal contract.
-- `ThemeTokenCore` and `VfxCatalogCore`: only after at least two games share the same resource schema.
+- No active VFX catalog should contain fallback effects; game/theme/art SSOT must provide concrete routes and effect ids.
 
 Completed extractions:
 - `RuntimeCore`: pause state, input rebinding, spawn pooling, interaction bus, and preload/cache contracts extracted from the isometric template source without importing shooter-specific gameplay.
 - `ResourceRegistryCore`: semantic resource key registry extracted from the template `resource_manager` lesson without importing its editor dock UI.
 - `BudgetResolverCore`: generic group/key budget filtering extracted from Last Hope threat role caps without importing shooter enemy ids, roles, or spawn rules.
 - `PresentationCore`: generic world feedback and current/max indicator primitives extracted from Last Hope combat feedback without importing HP, enemy, projectile, or damage meanings.
+- `VfxCatalogCore`: generic effect id registry, event route resolution, layer/anchor validation, and parameter schema reports without importing particles, spawn code, art, sounds, or gameplay event meanings.
 - `DataDrivenRuntimeCore`: generic action/effect reports, deterministic RNG streams, content pack/table validation, table inheritance, reference graphs, content queries, requirement resolution, modifier stacks, input vector filtering, kinematic motion solving, steering helpers, projectile blueprint composition, attack pattern math, spatial hash queries, targeting queries, grid path queries, grid occupancy state, grid placement queries, visibility fields, map layout generation, area field runtime, drop table resolution, spawn schedule resolution, spawn telegraph lifecycle, numeric effect resolution, status effect timing, modal lifecycle guards, debug snapshots, reward picking, event timelines, 2D spawn patterns, pickup attraction, runtime ledgers, inventory containers, turn-based action/energy primitives, and telemetry schemas learned from CDDA/Shattered/DCSS style data organization and Godot projectile/survivor/roguelike references without importing monster, item, recipe, concrete mapgen content, combat, status, field meanings, motion meanings, occupancy meanings, placement policies, inventory item meanings, or skin content.
 
 ## Tests

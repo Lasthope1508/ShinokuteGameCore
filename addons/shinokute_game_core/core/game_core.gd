@@ -22,6 +22,7 @@ const SceneRouterScript := preload("../ux/scene_router.gd")
 const OverlayManagerScript := preload("../ux/overlay_manager.gd")
 const PauseControllerScript := preload("../runtime/pause_controller.gd")
 const InputBindingManagerScript := preload("../runtime/input_binding_manager.gd")
+const InputRouterScript := preload("../services/input_router.gd")
 const SpawnPoolScript := preload("../runtime/spawn_pool.gd")
 const InteractionBusScript := preload("../runtime/interaction_bus.gd")
 const ScenePreloadCacheScript := preload("../runtime/scene_preload_cache.gd")
@@ -44,6 +45,7 @@ var scene_router: Node
 var overlay_manager: Node
 var pause_controller: Node
 var input_bindings: Node
+var input_router: Node
 var spawn_pool: Node
 var interaction_bus: Node
 var scene_preload_cache: Node
@@ -76,7 +78,9 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 	theme_manager = ThemeManagerScript.new()
 	add_child(theme_manager)
 	if config.get("theme_config") != null:
-		theme_manager.configure(config.get("theme_config"))
+		theme_manager.configure(config.get("theme_config"), {
+			"token_schema": config.get("theme_token_schema")
+		})
 
 	settings = SettingsScript.new()
 	add_child(settings)
@@ -98,7 +102,7 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 
 	localization = LocalizationScript.new()
 	add_child(localization)
-	localization.configure(String(config.get("default_locale")), config.get("translations"), String(config.get("fallback_locale")))
+	localization.configure(String(config.get("default_locale")), config.get("translations"))
 
 	remote_config = RemoteConfigScript.new()
 	add_child(remote_config)
@@ -119,6 +123,9 @@ func configure(core_config: Resource, save_path: String = "user://shinokute_game
 	add_child(input_bindings)
 	input_bindings.configure(config.get("input_bindings"))
 	input_bindings.apply_bindings()
+
+	input_router = InputRouterScript.new()
+	add_child(input_router)
 
 	spawn_pool = SpawnPoolScript.new()
 	add_child(spawn_pool)

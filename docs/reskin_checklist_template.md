@@ -19,6 +19,8 @@ Rename it to `docs/reskin_checklist.md` or a game-specific checklist name.
 - [ ] `docs/reskin_core_skin_boundary.md` read.
 - [ ] `docs/reskin_runbook.md` read.
 - [ ] `docs/asset_generation_guardrails.md` read.
+- [ ] `docs/art_ui_design_gate.md` read.
+- [ ] `docs/art_ui_asset_inventory_method.md` read.
 - [ ] `addons/shinokute_game_core/README.md` read.
 - [ ] `templates/new_game` copied or existing game structure documented.
 - [ ] Game-local publish checklist read if web/mobile publish is in scope.
@@ -61,6 +63,9 @@ Platform map:
 Asset manifest:
 
 - Path:
+- Art/UI gate contract path:
+- [ ] Game-local art/UI gate docs copied from `docs/templates/art_ui_gate/`.
+- [ ] `tools/validate_art_ui_gate.py` passes with game contract.
 - [ ] Block Kit rows filled for changed/generated assets.
 - [ ] In-game Size recorded for every accepted asset.
 - [ ] Owner Rect recorded for text-bearing assets.
@@ -202,6 +207,9 @@ Enabled shared core features:
       frame.
 - [ ] Screen still reads as a game screen, not a generic app form.
 - [ ] Screenshots captured for all changed screens.
+- [ ] Screenshot rows separate runtime fit from art design status.
+- [ ] `RUNTIME_FIT_PASS` is not used as final art design approval.
+- [ ] No required surface remains `ART_DESIGN_PENDING` before final art claim.
 
 Screenshot paths:
 
@@ -216,6 +224,8 @@ Screenshot paths:
 - [ ] Function-skin visuals live in the game repo, not Shinokute core.
 - [ ] Contract test proves chosen controls use SSOT asset keys/owner rects.
 - [ ] Contract test and screenshot validation exist for each enabled shared-feature UI.
+- [ ] Art UI Design Gate status recorded for HUD, overlays, title/menu, result,
+      settings, leaderboard, touch controls, and gameplay-visible assets.
 
 ## Tests
 

@@ -18,18 +18,21 @@ Shared systems stay in `addons/shinokute_game_core/`.
 5. Read `docs/git_branch_topology.md` before committing or pushing any core
    or game branch.
 6. Read `docs/asset_generation_guardrails.md` before generating or editing art.
-7. Read `docs/gameplay_progression_ssot.md` before adding or migrating
+7. Read `docs/art_ui_design_gate.md` and use
+   `tools/validate_art_ui_gate.py` before claiming any game UI/art pass is
+   complete.
+8. Read `docs/gameplay_progression_ssot.md` before adding or migrating
    level completion, fail/retry, or difficulty-scaling behavior.
-8. Copy `docs/reskin_checklist_template.md` into the game repo if the game
+9. Copy `docs/reskin_checklist_template.md` into the game repo if the game
    has no local reskin checklist.
-9. Use `templates/new_game` when starting a fresh game.
-10. Create or update the game-owned `GameCoreConfig.tres`.
-11. Create or update the game-owned `ShinokuteThemeConfig.tres`.
-12. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
-13. Wire gameplay through `GameCore`, not through copied managers.
-14. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
-15. Run Shinokute core tests before claiming the reskin is ready.
-16. Run the Core Learning Gate after any reskin uncovers reusable behavior.
+10. Use `templates/new_game` when starting a fresh game.
+11. Create or update the game-owned `GameCoreConfig.tres`.
+12. Create or update the game-owned `ShinokuteThemeConfig.tres`.
+13. Create a game rules adapter that follows `core/game_rules_adapter.gd`.
+14. Wire gameplay through `GameCore`, not through copied managers.
+15. Run `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings`.
+16. Run Shinokute core tests before claiming the reskin is ready.
+17. Run the Core Learning Gate after any reskin uncovers reusable behavior.
     Use `ShinokuteReskinBoundaryAudit` and
     `Tests/test_reskin_core_audit_contract.gd` before pushing core changes.
 
@@ -98,6 +101,11 @@ core.analytics.track("game_start", {"mode": "classic"})
   in the game-local asset manifest with owner rect, padding, and In-game Size.
 - Do not run paid asset generation without owner approval.
 - Do not report completion without running tests.
+- Do not call UI/art done when `RUNTIME_FIT_PASS` only proves layout fit.
+  Final art needs the Art UI Design Gate and must clear `ART_DESIGN_PENDING`.
+- Do not call generated/runtime UI images production-ready unless the game
+  contract selects a core `image_quality_profile` and every declared UI PNG
+  meets its source-scale requirement.
 - Do not leave reusable behavior/schema duplicated in a game after it has been
   identified as core-owned.
 - Do not push core changes that contain game names, game asset paths, stale JS
@@ -125,6 +133,8 @@ core.analytics.track("game_start", {"mode": "classic"})
 - [ ] Text and text-owner regions fit desktop and mobile viewports.
 - [ ] Changed screens still read as game screens.
 - [ ] Asset manifest contains Block Kit rows for changed/generated assets.
+- [ ] Art UI Design Gate has game-owned docs/contract and passes
+      `tools/validate_art_ui_gate.py`.
 - [ ] `tools/reskin_audit.ps1 -GameRoot <game> -FailOnWarnings` passes.
 - [ ] Core Learning Gate completed for reusable behavior discovered by this
       reskin.

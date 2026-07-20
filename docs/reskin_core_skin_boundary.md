@@ -31,6 +31,25 @@ Every reskin must create or update a game-owned SSOT before UI or asset integrat
 - Core wiring map: each enabled feature names its core owner, game adapter/wrapper, game function skin, tests, and screenshot evidence.
 - Platform map: iOS, Android, HTML5, and Roblox must consume the same canonical asset keys and art/audio/source assets unless the owner approves a documented exception.
 
+## Art UI Design Gate
+
+Core owns the reusable Art UI Design Gate process in
+`docs/art_ui_design_gate.md`, the inventory method in
+`docs/art_ui_asset_inventory_method.md`, templates in
+`docs/templates/art_ui_gate/`, and the generic validator
+`tools/validate_art_ui_gate.py`.
+
+Games own the concrete gate contract, style bible, surface ids, asset keys,
+owner rects, text slots, icon slots, screenshots, art direction, and owner
+approval records.
+
+RUNTIME_FIT_PASS is not final art design approval. It only proves rendered
+runtime geometry fits the game composition contract. Any surface still marked
+`ART_DESIGN_PENDING` must not be reported as final UI/art.
+
+No fallback asset, fallback metric, fallback label, or fallback art path is
+allowed unless the owner explicitly approves that exact exception.
+
 Canonical assets are shared across platforms. Do not create separate iOS, Android, HTML5, or Roblox asset forks for the same role. Platform-specific code may adapt input, export, shell, safe area, renderer, storage bridge, or API glue in that platform layer only; it must still reference the same canonical asset keys and SSOT roles.
 
 If a platform needs a different file format or size bucket, record it as a derivative of the same canonical asset key, with source asset, transform command, size, and platform target. Do not treat the derivative as a new design branch.
@@ -121,6 +140,8 @@ Core demo UI may be used only as scaffold/prototype. It is not production skin u
 - Do not skip the Core Learning Gate after a reskin adds reusable behavior.
 - Do not skip Export Audit after core/schema/export changes.
 - Do not start UI/function skin work before the game has a UI skin/layout SSOT and asset checklist mapping old/default roles to new canonical roles.
+- Do not call UI/art complete from runtime-fit proof alone. Run the Art UI
+  Design Gate and clear `ART_DESIGN_PENDING` before final art claims.
 - Do not start final art or final screen assembly from a placeholder/basic
   source before the owner approves a production visual direction and the game
   records a polished Block Kit plan.
@@ -128,7 +149,7 @@ Core demo UI may be used only as scaffold/prototype. It is not production skin u
 - Do not put platform-specific code in the shared game logic layer. Keep it in the platform layer/branch/shim and prove it still consumes canonical SSOT assets.
 - Do not mark shared features complete after core logic/service wiring only; each enabled feature needs game-owned UI/function skin.
 - Do not hardcode game id, Firebase project, collection, score label, sort direction, username policy, or geolocation fallback inside feature code.
-- Do not invent fallback assets or fallback config. No fallback unless owner explicitly approves it for that exact project.
+- Do not invent fallback assets or fallback config. No production reskin fallback is allowed; missing values must be added to the canonical game/theme/owner SSOT or the gate must stay blocked.
 - Do not reskin by manually scattering constants through scenes. Add SSOT resources, tests, and docs first.
 - Do not rename legacy folders during a reskin unless a separate path migration plan updates imports, export presets, debug tools, docs, and hosting scripts.
 
@@ -169,9 +190,11 @@ Required:
    caption before placing text.
 2. Use the game SSOT for owner rect, padding, max width, max lines, alignment,
    font token, and scale policy.
-3. Verify desktop and mobile viewports.
-4. Capture screenshots for changed screens.
-5. Ask whether the result still reads as an actual game screen, not a generic
+3. For runtime-fit text-bearing surfaces, use the game-owned HTML manual
+   placement editor and export JSON before applying final slot values.
+4. Verify desktop and mobile viewports.
+5. Capture screenshots for changed screens.
+6. Ask whether the result still reads as an actual game screen, not a generic
    app form pasted over game art.
 
 Forbidden:
@@ -181,6 +204,8 @@ Forbidden:
   fields, or neighboring UI.
 - Do not use hero-scale text inside compact controls.
 - Do not fix overflow with random offsets or one-off font sizes.
+- Do not claim final placement from agent-picked coordinates without a manual
+  placement editor export and owner approval.
 - Do not forget gameplay context: every menu, popup, result, and settings
   screen must still feel like part of the current game theme.
 

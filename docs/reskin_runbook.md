@@ -11,29 +11,31 @@ Each phase has a stop gate. If a gate fails, fix that phase before moving on.
 3. Read `docs/reskin_core_skin_boundary.md`.
 4. Read `addons/shinokute_game_core/README.md`.
 5. Read `docs/asset_generation_guardrails.md` before generating or editing art.
-6. Read the target game's local reskin checklist. If none exists, create one
+6. Read `docs/art_ui_design_gate.md` and
+   `docs/art_ui_asset_inventory_method.md` before UI/art work.
+7. Read the target game's local reskin checklist. If none exists, create one
    from `docs/reskin_checklist_template.md` inside the game repo before edits.
-7. For a fresh game, copy `templates/new_game` into the target repo and rename
+8. For a fresh game, copy `templates/new_game` into the target repo and rename
    example files before gameplay edits.
-8. If the source/template only provides basic placeholder shapes, generic UI,
+9. If the source/template only provides basic placeholder shapes, generic UI,
    or contract-level visuals, record that it is not production art. Add an
    art-direction and polished Block Kit gate before final art or screen
    assembly.
-9. Identify whether the work is:
+10. Identify whether the work is:
    - game skin only,
    - function skin only,
    - rules adapter work,
    - shared core work,
    - publish/release work.
-10. Identify the canonical cross-platform layer split:
+11. Identify the canonical cross-platform layer split:
    - reusable functions and behavior in `ShinokuteGameCore`,
    - game adapters/wrappers in the target game,
    - game-owned UI/function skin in the target game,
    - platform-specific code only in platform layers/branches/shims,
    - canonical assets shared by iOS, Android, HTML5, and Roblox through the same SSOT keys.
-11. List files expected to change. Keep the list small and update it when scope
+12. List files expected to change. Keep the list small and update it when scope
    changes.
-12. Start a Core Learning Gate note for any behavior that may belong in
+13. Start a Core Learning Gate note for any behavior that may belong in
     `ShinokuteGameCore`.
 
 Stop gate:
@@ -43,6 +45,10 @@ Stop gate:
 - The agent has a game-local checklist file for evidence.
 - No gameplay scene edit begins before the SSOT targets are named.
 - No UI/function/asset work begins before the UI skin/layout SSOT, asset checklist, core wiring map, and platform map exist or are updated.
+- No UI/art work can be called complete before the game-owned Art UI Design
+  Gate contract exists and `tools/validate_art_ui_gate.py` passes.
+- `RUNTIME_FIT_PASS` is not final art design approval. Any row still marked
+  `ART_DESIGN_PENDING` blocks final art claims.
 - No final art or final screen assembly begins from a basic placeholder source
   until the owner approves a visual direction and the game has a polished Block
   Kit plan.
@@ -58,25 +64,28 @@ Stop gate:
    and theme resources already in the game repo.
 2. Create or update the game-local asset manifest from
    `templates/new_game/docs/asset_manifest.md`.
-3. Identify existing owner regions for text, buttons, panels, inputs,
+3. Create or update the game-local art/UI gate docs from
+   `docs/templates/art_ui_gate/` and the game-owned
+   `docs/art_ui_gate_contract.json`.
+4. Identify existing owner regions for text, buttons, panels, inputs,
    leaderboard rows, settings rows, badges, and popups.
-4. Record the canonical platform usage for every accepted asset role:
+5. Record the canonical platform usage for every accepted asset role:
    iOS, Android, HTML5, and Roblox all point to the same asset key unless an
    owner-approved exception is documented.
-5. Record asset keys, owner rects, padding, aspect ratio, crop policy, scale
+6. Record asset keys, owner rects, padding, aspect ratio, crop policy, scale
    policy, in-game size, and platform derivatives in the game-local checklist.
-6. Decide whether each function-skin element reuses an approved asset or needs
+7. Decide whether each function-skin element reuses an approved asset or needs
    a new owner-approved asset request.
-7. If the inherited/source visuals are only placeholder level, choose and record
+8. If the inherited/source visuals are only placeholder level, choose and record
    a production visual direction before final art work. The direction must name
    palette, mood, gameplay readability target, UI style, and what old/default
    visuals are being replaced.
-8. For a fresh test game or placeholder-only source, build a polished Block Kit
+9. For a fresh test game or placeholder-only source, build a polished Block Kit
    before real screens:
    button shell, panel shell, input shell, leaderboard row, settings row,
    HUD score owner, gameplay tile/block, player, enemy, boss, projectile,
    background, and VFX.
-9. Capture an asset test scene screenshot after the Block Kit is placed.
+10. Capture an asset test scene screenshot after the Block Kit is placed.
 
 Stop gate:
 - No new frame, border, button shell, field shell, badge, or row background is
@@ -91,6 +100,8 @@ Stop gate:
 - Asset test game blocks pass screenshot review before full screen assembly.
 - The approved visual direction and Block Kit screenshot are recorded before
   production screen assembly starts.
+- `python tools/validate_art_ui_gate.py --game-root <game> --contract <game>/docs/art_ui_gate_contract.json`
+  passes or reports exact missing rows before scene wiring starts.
 
 ## Phase 2: Build Or Update SSOT Resources
 
@@ -152,18 +163,28 @@ Stop gate:
 3. Use the game's art style, density, and interaction role to choose text
    hierarchy. A compact in-game control should not use hero text.
 4. Run desktop and mobile viewport checks.
-5. Capture screenshots for all changed function-skin screens.
-6. Ask whether this still looks like a game screen, not a generic app form.
+5. For text-bearing runtime-fit surfaces, generate or refresh a game-owned HTML
+   manual placement editor and export JSON before applying final slot values.
+6. Capture screenshots for all changed function-skin screens using the game
+   `screenshot_capture_policy`: `godot_scene_capture_runtime_stretch` or
+   `foreground_window_capture` only. Do not use `PrintWindow` for Godot/Vulkan
+   proof.
+7. Mark runtime fit, manual placement, and art design separately in the screenshot checklist.
+8. Ask whether this still looks like a game screen, not a generic app form.
 
 Stop gate:
 - Do not continue until text fits inside its owner region at all required
   viewports.
+- Do not call the surface final while its art design gate is
+  `ART_DESIGN_PENDING`.
 - Do not continue if a label overlaps art, buttons, input fields, score areas,
   safe area padding, or neighboring controls.
 - Do not continue if the screen loses game context: gameplay visual language,
   theme assets, or player-facing feedback must still be visible.
 - Do not fix overflow with random offsets. Update SSOT owner rect, text limit,
   font size token, or asset crop policy.
+- Do not accept agent-picked text coordinates without the game-owned HTML
+  manual placement editor and owner-approved export when final values are claimed.
 
 ## Phase 5: Gameplay Smoke And Contract Tests
 

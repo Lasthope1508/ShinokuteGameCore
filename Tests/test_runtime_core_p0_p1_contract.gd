@@ -2,7 +2,11 @@ extends SceneTree
 
 const ActionEffectReportPath := "res://addons/shinokute_game_core/runtime/action_effect_report.gd"
 const ContentTableValidatorPath := "res://addons/shinokute_game_core/runtime/content_table_validator.gd"
+const SkillTaxonomyCatalogPath := "res://addons/shinokute_game_core/runtime/skill_taxonomy_catalog.gd"
+const SkillProgressionResolverPath := "res://addons/shinokute_game_core/runtime/skill_progression_resolver.gd"
 const RequirementResolverPath := "res://addons/shinokute_game_core/runtime/requirement_resolver.gd"
+const QuestConditionResolverPath := "res://addons/shinokute_game_core/runtime/quest_condition_resolver.gd"
+const EvolutionResolverPath := "res://addons/shinokute_game_core/runtime/evolution_resolver.gd"
 const ModifierStackPath := "res://addons/shinokute_game_core/runtime/modifier_stack.gd"
 const ModalLifecyclePath := "res://addons/shinokute_game_core/runtime/modal_lifecycle.gd"
 const RuntimeDebugSnapshotPath := "res://addons/shinokute_game_core/runtime/runtime_debug_snapshot.gd"
@@ -29,6 +33,7 @@ const ProjectileHitBudgetPath := "res://addons/shinokute_game_core/runtime/proje
 const ProjectileTravelPath := "res://addons/shinokute_game_core/runtime/projectile_travel_runtime_2d.gd"
 const AttackCadencePath := "res://addons/shinokute_game_core/runtime/attack_cadence.gd"
 const PublishAuditPath := "res://addons/shinokute_game_core/runtime/publish_audit.gd"
+const VfxCatalogResolverPath := "res://addons/shinokute_game_core/runtime/vfx_catalog_resolver.gd"
 
 var _passed := true
 
@@ -38,7 +43,11 @@ func _init() -> void:
 func _run() -> void:
 	_test_p0_action_report()
 	_test_p0_content_validator()
+	_test_p0_skill_taxonomy_catalog()
+	_test_p0_skill_progression_resolver()
 	_test_p0_requirement_resolver()
+	_test_p0_quest_condition_resolver()
+	_test_p0_evolution_resolver()
 	_test_p0_modifier_stack()
 	_test_p0_modal_lifecycle()
 	_test_p0_debug_snapshot()
@@ -55,6 +64,7 @@ func _run() -> void:
 	_test_p0_projectile_travel_runtime()
 	_test_p1_attack_cadence()
 	_test_p1_publish_audit()
+	_test_p2_vfx_catalog_resolver()
 	_test_p1_drop_table_resolver()
 	_test_p1_spawn_telegraph_lifecycle()
 	_test_p1_numeric_effect_resolver()
@@ -107,6 +117,109 @@ func _test_p0_content_validator() -> void:
 	_assert_true(_has_error_code(errors, "type_mismatch"), "content validator reports type mismatch")
 	_assert_true(_has_error_code(errors, "missing_ref"), "content validator reports missing reference")
 
+func _test_p0_skill_taxonomy_catalog() -> void:
+	var script: Script = load(SkillTaxonomyCatalogPath)
+	_assert_true(script != null, "skill taxonomy catalog script loads")
+	if script == null:
+		return
+	var catalog = script.new()
+	catalog.configure()
+	for id in [
+		"straight_shot",
+		"piercing_line",
+		"spread_cone",
+		"area_orb",
+		"explosive_shell",
+		"chain_bolt",
+		"orbit_weapon",
+		"aura_field",
+		"trap_mine",
+		"summon_turret",
+		"boomerang_return",
+		"beam_channel",
+		"shotgun_burst",
+		"charged_sniper"
+	]:
+		_assert_true(catalog.has_entry(id), "skill taxonomy includes weapon family: %s" % id)
+	var shooter_weapon_ids: Array = catalog.ids_for_genre("shooter-survivor", "weapon_family")
+	for id in ["straight_shot", "piercing_line", "spread_cone", "area_orb", "explosive_shell"]:
+		_assert_true(shooter_weapon_ids.has(id), "shooter-survivor weapon tag includes P0 family: %s" % id)
+	var trap: Dictionary = catalog.entry("trap_mine")
+	_assert_true(Array(trap.get("game_genre_tags", [])).has("tower-defense"), "trap mine tags tower-defense")
+	_assert_true(Array(trap.get("game_genre_tags", [])).has("roguelike"), "trap mine tags roguelike")
+	var fusion: Dictionary = catalog.entry("weapon_fusion")
+	_assert_eq(String(fusion.get("kind", "")), "progression_system", "weapon fusion is a progression system, not game content")
+	_assert_true(Array(fusion.get("game_genre_tags", [])).has("shooter-survivor"), "weapon fusion tags shooter-survivor")
+	_assert_true(Array(fusion.get("game_genre_tags", [])).has("rpg"), "weapon fusion tags rpg")
+	var valid_report: Dictionary = catalog.validate_skill_definition({
+		"id": "split_bolt",
+		"taxonomy_id": "spread_cone",
+		"genre_tags": ["shooter-survivor"]
+	})
+	_assert_true(bool(valid_report.get("valid", false)), "skill taxonomy validates matching genre tag")
+	var invalid_report: Dictionary = catalog.validate_skill_definition({
+		"id": "bad_skill",
+		"taxonomy_id": "missing_family",
+		"genre_tags": ["shooter-survivor"]
+	})
+	_assert_true(not bool(invalid_report.get("valid", true)), "skill taxonomy rejects unknown taxonomy id")
+	_assert_true(_has_error_code(Array(invalid_report.get("errors", [])), "unknown_taxonomy_id"), "skill taxonomy reports unknown taxonomy id")
+
+func _test_p0_skill_progression_resolver() -> void:
+	var script: Script = load(SkillProgressionResolverPath)
+	_assert_true(script != null, "skill progression resolver script loads")
+	if script == null:
+		return
+	var resolver = script.new()
+	resolver.configure(RequirementResolverPath)
+	var level_tables := [
+		{
+			"id": "straight_shot_levels",
+			"skill_id": "signal_bolt",
+			"taxonomy_id": "straight_shot",
+			"max_level": 3,
+			"levels": [
+				{"level": 1, "modifiers": [{"target_key": "projectile_count", "operation": "set", "value": 1}]},
+				{"level": 2, "modifiers": [{"target_key": "cooldown_multiplier", "operation": "multiply", "value": 0.9}]},
+				{"level": 3, "modifiers": [{"target_key": "damage_multiplier", "operation": "multiply", "value": 1.2}]}
+			]
+		}
+	]
+	var next_level: Dictionary = resolver.next_level_entry(level_tables, "signal_bolt", {"signal_bolt": 1})
+	_assert_true(bool(next_level.get("ready", false)), "skill progression resolves next level")
+	_assert_eq(int(next_level.get("level", 0)), 2, "skill progression resolves next level number")
+	_assert_eq(String(next_level.get("taxonomy_id", "")), "straight_shot", "skill progression preserves taxonomy id")
+	_assert_eq(String(Dictionary(Array(next_level.get("modifiers", []))[0]).get("target_key", "")), "cooldown_multiplier", "skill progression returns level modifiers")
+	var capped: Dictionary = resolver.next_level_entry(level_tables, "signal_bolt", {"signal_bolt": 3})
+	_assert_true(not bool(capped.get("ready", true)), "skill progression blocks capped skill level")
+	_assert_eq(String(capped.get("reason", "")), "max_level", "skill progression reports max level")
+	var evolution: Dictionary = resolver.resolve_ready_progression([
+		{
+			"id": "evo_signal_arc",
+			"taxonomy_id": "weapon_evolution",
+			"result_id": "arc_bolt",
+			"requirements": [
+				{"counter": "weapon.signal_bolt.level", "operator": ">=", "value": 3},
+				{"counter": "passive.cooldown.level", "operator": ">=", "value": 1}
+			]
+		}
+	], {"weapon.signal_bolt.level": 3, "passive.cooldown.level": 1}, [])
+	_assert_true(bool(evolution.get("ready", false)), "skill progression resolves ready weapon evolution")
+	_assert_eq(String(evolution.get("result_id", "")), "arc_bolt", "skill progression returns evolution result id")
+	var fusion: Dictionary = resolver.resolve_ready_progression([
+		{
+			"id": "fusion_volley_field",
+			"taxonomy_id": "weapon_fusion",
+			"result_id": "hazard_volley",
+			"requirements": [
+				{"counter": "weapon.spread_cone.level", "operator": ">=", "value": 7},
+				{"counter": "weapon.area_orb.level", "operator": ">=", "value": 7}
+			]
+		}
+	], {"weapon.spread_cone.level": 7, "weapon.area_orb.level": 7}, [])
+	_assert_true(bool(fusion.get("ready", false)), "skill progression resolves ready weapon fusion")
+	_assert_eq(String(fusion.get("taxonomy_id", "")), "weapon_fusion", "skill progression keeps fusion taxonomy")
+
 func _test_p0_requirement_resolver() -> void:
 	var script: Script = load(RequirementResolverPath)
 	_assert_true(script != null, "requirement resolver script loads")
@@ -129,6 +242,56 @@ func _test_p0_requirement_resolver() -> void:
 	var blocked := {"all": [{"flag": "level_3"}, {"count_group": "currency", "key": "gem", "min": 50}]}
 	_assert_true(not resolver.is_met(blocked, context), "requirement resolver blocks unmet count")
 	_assert_eq(String(Dictionary(resolver.missing_requirements(blocked, context)[0]).get("key", "")), "gem", "requirement resolver reports missing key")
+
+func _test_p0_quest_condition_resolver() -> void:
+	var script: Script = load(QuestConditionResolverPath)
+	_assert_true(script != null, "quest condition resolver script loads")
+	if script == null:
+		return
+	var resolver = script.new()
+	var report: Dictionary = resolver.evaluate(
+		{"id": "kill_goal", "counter": "kills", "operator": ">=", "value": 25},
+		{"kills": 31}
+	)
+	_assert_true(bool(report.get("passed", false)), "quest condition resolver passes generic counter threshold")
+	_assert_eq(int(report.get("current", 0)), 31, "quest condition resolver reports current counter")
+	_assert_eq(int(report.get("required", 0)), 25, "quest condition resolver reports required counter")
+	var blocked: Dictionary = resolver.evaluate(
+		{"id": "bad_goal", "counter": "kills", "operator": "near", "value": 25},
+		{"kills": 31}
+	)
+	_assert_true(not bool(blocked.get("passed", true)), "quest condition resolver blocks unknown operator")
+	_assert_eq(String(blocked.get("error", "")), "unknown_operator", "quest condition resolver reports unknown operator")
+
+func _test_p0_evolution_resolver() -> void:
+	var script: Script = load(EvolutionResolverPath)
+	_assert_true(script != null, "evolution resolver script loads")
+	if script == null:
+		return
+	var resolver = script.new()
+	var ready: Dictionary = resolver.resolve_ready([
+		{
+			"id": "evo_bolt",
+			"result_id": "arc_bolt",
+			"requirements": [
+				{"counter": "weapon.signal_bolt.level", "operator": ">=", "value": 3},
+				{"counter": "passive.focus.level", "operator": ">=", "value": 1}
+			]
+		}
+	], {"weapon.signal_bolt.level": 3, "passive.focus.level": 1})
+	_assert_true(bool(ready.get("ready", false)), "evolution resolver selects ready generic evolution")
+	_assert_eq(String(ready.get("result_id", "")), "arc_bolt", "evolution resolver reports result id")
+	var not_ready: Dictionary = resolver.resolve_ready([
+		{
+			"id": "evo_bolt",
+			"result_id": "arc_bolt",
+			"requirements": [
+				{"counter": "weapon.signal_bolt.level", "operator": ">=", "value": 3}
+			]
+		}
+	], {"weapon.signal_bolt.level": 2})
+	_assert_true(not bool(not_ready.get("ready", true)), "evolution resolver reports not ready")
+	_assert_eq(String(not_ready.get("id", "")), "", "evolution resolver returns empty id when blocked")
 
 func _test_p0_modifier_stack() -> void:
 	var script: Script = load(ModifierStackPath)
@@ -490,6 +653,61 @@ func _test_p1_publish_audit() -> void:
 	var headers: Dictionary = audit.audit_hosting_headers({"Cross-Origin-Opener-Policy": "same-origin"}, ["Cross-Origin-Opener-Policy", "Cross-Origin-Embedder-Policy"])
 	_assert_true(Array(headers.get("missing_headers", [])).has("Cross-Origin-Embedder-Policy"), "publish audit reports missing hosting header")
 
+func _test_p2_vfx_catalog_resolver() -> void:
+	var script: Script = load(VfxCatalogResolverPath)
+	_assert_true(script != null, "vfx catalog resolver script loads")
+	if script == null:
+		return
+	var resolver = script.new()
+	resolver.configure({
+		"allowed_layers": ["world", "screen", "ui"],
+		"allowed_anchors": ["source", "target", "position", "screen"],
+		"param_schema": {
+			"ttl": TYPE_FLOAT,
+			"scale": TYPE_FLOAT
+		}
+	})
+	var catalog := {
+		"effects": {
+			"enemy_hit_flash": {
+				"layer": "world",
+				"anchor": "target",
+				"scene_key": "hit_flash_vfx",
+				"params": {"ttl": 0.18, "scale": 1.0}
+			},
+			"bad_anchor": {
+				"layer": "world",
+				"anchor": "enemy",
+				"scene_key": "hit_flash_vfx",
+				"params": {"ttl": "slow"}
+			}
+		},
+		"routes": {
+			"enemy_hit": ["enemy_hit_flash"],
+			"missing_effect_event": ["missing_effect"],
+			"bad_anchor_event": ["bad_anchor"]
+		}
+	}
+	var validation: Dictionary = resolver.validate_catalog(catalog)
+	_assert_true(_has_error_code(Array(validation.get("errors", [])), "missing_effect"), "vfx catalog reports missing effect route")
+	_assert_true(_has_error_code(Array(validation.get("errors", [])), "bad_anchor"), "vfx catalog reports bad anchor")
+	_assert_true(_has_error_code(Array(validation.get("errors", [])), "type_mismatch"), "vfx catalog reports bad param type")
+	var report: Dictionary = resolver.resolve_event("enemy_hit", catalog, {"target_id": "enemy_1"})
+	_assert_eq(String(report.get("status", "")), "resolved", "vfx catalog resolves routed event")
+	_assert_eq(String(report.get("event", "")), "enemy_hit", "vfx report includes event")
+	var effects: Array = Array(report.get("effects", []))
+	_assert_eq(effects.size(), 1, "vfx report returns one effect")
+	if effects.size() == 1:
+		var effect := Dictionary(effects[0])
+		_assert_eq(String(effect.get("id", "")), "enemy_hit_flash", "vfx report includes effect id")
+		_assert_eq(String(effect.get("scene_key", "")), "hit_flash_vfx", "vfx report includes game-owned scene key")
+		_assert_eq(String(effect.get("layer", "")), "world", "vfx report includes layer")
+		_assert_eq(String(effect.get("anchor", "")), "target", "vfx report includes anchor")
+		_assert_eq(Dictionary(effect.get("context", {})).get("target_id"), "enemy_1", "vfx report passes caller context")
+	var missing_route: Dictionary = resolver.resolve_event("not_routed", catalog, {})
+	_assert_eq(String(missing_route.get("status", "")), "blocked", "vfx missing route blocks")
+	_assert_eq(String(missing_route.get("reason", "")), "missing_route", "vfx missing route reason")
+
 func _test_p1_drop_table_resolver() -> void:
 	var script: Script = load(DropTableResolverPath)
 	_assert_true(script != null, "drop table resolver script loads")
@@ -607,7 +825,7 @@ func _test_p0_spawn_schedule_resolver() -> void:
 			{"id": "drone", "role": "chaser"},
 			{"id": "sentinel", "role": "shooter"}
 		],
-		{"id": "fallback"},
+		{"id": "empty_result"},
 		0.99,
 		{"roles": {"shooter": 1}},
 		[{"group": "role", "entry_key": "role", "count_group": "roles"}]
@@ -619,7 +837,7 @@ func _test_p0_spawn_schedule_resolver() -> void:
 			{"id": "drone", "role": "chaser"},
 			{"id": "sentinel", "role": "shooter"}
 		],
-		{"id": "fallback"},
+		{"id": "empty_result"},
 		0.99,
 		{},
 		[{"group": "role", "entry_key": "role", "count_group": "roles"}]

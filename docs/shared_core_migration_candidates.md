@@ -32,6 +32,62 @@ Shared contract:
 - generic current/max indicator presenter with caller-owned node names, format, colors, offsets, and visibility rule
 - no HP, damage, enemy, boss, projectile, pierce, or game-specific UI text meanings in core
 
+### OverlayPresentationCore
+
+Evidence:
+- Last Hope First Peace repeatedly hit oversized and overlapping upgrade/result/username popup bugs across narrow and desktop viewports.
+- Prior games had reusable overlay shells, but the reusable piece is panel geometry and presentation state, not the scene art.
+
+Shared contract:
+- generic popup panel clamp against caller-owned viewport size and viewport margin
+- generic content rect from caller-owned panel rect and content margin
+- generic vertical option/card slots for picker-style overlays
+- generic open/close motion report with progress, alpha, scale, and done state
+- no overlay scene tree, labels, icons, theme metrics, art, audio, button behavior, reward meaning, or game-specific modal rules in core
+
+### AdCore
+
+Evidence:
+- `Resources/Globals/AdManager.gd` patterns repeat across games.
+- Mobile/web games need consistent provider-neutral ad lifecycle reports before vendor-specific JavaScript or native bridge code is attached.
+
+Shared contract:
+- placement registry and cooldown checks
+- provider capability/status dictionary supplied by the game/platform adapter
+- placement lifecycle reports: requested, showing, completed, failed
+- provider-neutral failure signal with reason and payload
+- idempotent reward claim token ledger
+- no real ad unit ids, vendor SDK calls, reward amounts, revive/economy policy, UI prompts, or platform-specific bridge code in core
+
+### ThemeTokenCore
+
+Evidence:
+- `Resources/Globals/ThemeManager.gd` patterns repeat across games.
+- Last Hope First Peace UI sizing work showed theme keys must be explicit and validated, not silently replaced by invented defaults.
+
+Shared contract:
+- theme save key and change signal
+- strict token set reports for caller-owned token requests
+- token schema validation for colors, fonts, assets, audio events, and metrics
+- missing tokens report `missing_token`
+- bad token types report `type_mismatch`
+- no fallback theme chain, invented asset paths, gameplay ids, formulas, labels, icons, art selection rules, or UI node mutation in core
+
+### VfxCatalogCore
+
+Evidence:
+- Glyphflow has VFX layer, route, anchor, transition state, usage docs, and parameter docs.
+- Bloxchain has VFX config catalogs embedded in theme/config managers.
+- Last Hope First Peace has repeated hit flash, pierce trail, boss aura, and spawn warning VFX asset keys that should be routed by data, not scattered in gameplay scripts.
+
+Shared contract:
+- generic effect id registry
+- event/route to effect-id resolution
+- allowed layer and anchor validation
+- effect parameter schema validation
+- strict `missing_route`, `missing_effect`, `bad_layer`, `bad_anchor`, `missing_param`, and `type_mismatch` reports
+- no particle scenes, node spawning, asset creation, shader/material, color choices, combat event meaning, sound, animation, or fallback VFX in core
+
 ### DataDrivenRuntimeCore
 
 Evidence:
@@ -296,38 +352,7 @@ Shared contract:
 
 ## P1 Candidates
 
-### OverlayCore
-
-Evidence:
-- `Scenes/Common/ElasticOverlay.gd` in both games
-- Bloxchain settings/leaderboard/username overlays
-- Glyphflow profile popup
-
-Generic modal lifecycle is now complete in `runtime/modal_lifecycle.gd`. Remaining OverlayCore candidate scope is open/close animation and reusable popup sizing hooks.
-
-### AdCore
-
-Evidence:
-- `Resources/Globals/AdManager.gd` in both games
-
-Core should own platform bridge wrappers and ad signals. Games keep unit ids and reward policy in config.
-
 ## P2 Candidates
-
-### ThemeTokenCore
-
-Evidence:
-- `Resources/Globals/ThemeManager.gd` in both games
-
-Core can own theme registry, save key, change signal, and generic UI token application. Game-specific `ThemeConfig` fields stay local.
-
-### VfxCatalogCore
-
-Evidence:
-- Glyphflow has VFX layer, route, anchor, transition state, usage docs, parameter docs.
-- Bloxchain has VFX config catalogs embedded in `ThemeManager.gd`.
-
-Core can own effect catalog schema and documentation pattern. Game-specific routes and trigger rules stay local.
 
 ## Migration Rule
 

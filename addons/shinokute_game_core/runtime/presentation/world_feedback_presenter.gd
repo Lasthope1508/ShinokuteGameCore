@@ -38,8 +38,8 @@ func screen_position(world_position: Vector2, config: Dictionary = {}) -> Vector
 		return world_position
 	return (world_position - camera_position) * zoom + viewport_size * 0.5
 
-func _vector2(config: Dictionary, key: String, fallback: Vector2) -> Vector2:
-	var value = config.get(key, fallback)
+func _vector2(config: Dictionary, key: String, missing_value: Vector2) -> Vector2:
+	var value = config.get(key, missing_value)
 	if value is Vector2:
 		return value
-	return fallback
+	return missing_value

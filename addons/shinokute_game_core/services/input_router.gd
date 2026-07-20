@@ -116,7 +116,7 @@ func press_virtual_jump() -> void:
 func consume_jump_pressed() -> bool:
 	var pressed := _virtual_jump_pressed
 	_virtual_jump_pressed = false
-	if not is_touch_control_active() and Input.is_action_just_pressed("jump"):
+	if not is_touch_control_active() and InputMap.has_action("jump") and Input.is_action_just_pressed("jump"):
 		return true
 	return pressed
 
@@ -128,7 +128,8 @@ func clear_virtual_input() -> void:
 
 func clear_keyboard_input_state() -> void:
 	for action in KEYBOARD_ACTIONS:
-		Input.action_release(action)
+		if InputMap.has_action(action):
+			Input.action_release(action)
 
 func handle_web_keyboard_safety_event(args: Array) -> void:
 	if args.is_empty():
@@ -169,7 +170,8 @@ func _release_web_code_actions(code: String) -> void:
 	if not WEB_CODE_TO_ACTIONS.has(code):
 		return
 	for action in WEB_CODE_TO_ACTIONS[code]:
-		Input.action_release(action)
+		if InputMap.has_action(action):
+			Input.action_release(action)
 
 func _install_web_keyboard_safety_bridge() -> void:
 	if not OS.has_feature("web") or not ClassDB.class_exists("JavaScriptBridge"):

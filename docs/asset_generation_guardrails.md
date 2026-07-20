@@ -2,6 +2,10 @@
 
 Use this document when a reskin needs generated or edited art assets.
 
+Also read `docs/art_ui_design_gate.md` and run
+`tools/validate_art_ui_gate.py` with the game-owned contract before claiming
+any UI/art pass is complete.
+
 This policy borrows the useful parts of Godogen's asset workflow: keep an asset
 manifest, record in-game size, review generated images before downstream work,
 and prove results visually instead of claiming they should look right.
@@ -59,6 +63,9 @@ Stop gate:
 ## Proof Over Claims
 
 Visual work is not done because code builds.
+Visual work is not done because `RUNTIME_FIT_PASS` passes. Runtime fit proves
+geometry only; final art approval requires the Art UI Design Gate and no
+remaining `ART_DESIGN_PENDING` rows.
 
 Required evidence:
 

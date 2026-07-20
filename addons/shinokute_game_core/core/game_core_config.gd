@@ -19,6 +19,7 @@ extends Resource
 @export var score_sort_directions: Dictionary = {}
 
 @export var theme_config: Resource
+@export var theme_token_schema: Dictionary = {}
 @export var scene_routes: Dictionary = {}
 @export var overlay_scenes: Dictionary = {}
 @export var ad_placements: Dictionary = {}
@@ -35,7 +36,6 @@ extends Resource
 @export var translations: Dictionary = {}
 @export var progression_catalog: Resource
 @export var default_locale: String = "en"
-@export var fallback_locale: String = "en"
 @export var ads_enabled: bool = true
 
 const SORT_ASCENDING := "ASCENDING"
@@ -93,10 +93,10 @@ func get_sort_direction(mode: String) -> String:
 		return SORT_ASCENDING
 	return SORT_DESCENDING
 
-func get_setting_default(key: String, fallback: Variant = null) -> Variant:
+func get_setting_default(key: String, missing_value: Variant = null) -> Variant:
 	if settings_defaults.has(key):
 		return settings_defaults[key]
-	return fallback
+	return missing_value
 
 func validate_username(username: String) -> Array[String]:
 	var errors: Array[String] = []

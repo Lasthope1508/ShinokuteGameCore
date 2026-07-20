@@ -26,6 +26,8 @@ func ensure_indicator(parent: Node, config: Dictionary = {}) -> Dictionary:
 			text.add_theme_font_size_override("font_size", font_size)
 		text.add_theme_color_override("font_color", _color(config, "text_color", Color.WHITE))
 		parent.add_child(text)
+	_apply_parent_scale_compensation(parent, bar, _vector2(config, "bar_offset", Vector2.ZERO), bool(config.get("counter_parent_scale", false)))
+	_apply_parent_scale_compensation(parent, text, _vector2(config, "text_offset", Vector2.ZERO), bool(config.get("counter_parent_scale", false)))
 	return {"bar": bar, "text": text}
 
 func update_indicator(parent: Node, current_value: int, max_value: int, config: Dictionary = {}) -> void:
@@ -43,15 +45,29 @@ func update_indicator(parent: Node, current_value: int, max_value: int, config: 
 		var template := String(config.get("text_format", "%d/%d"))
 		text.text = template % [current, maximum]
 		text.visible = (not bool(config.get("hide_when_full", false))) or current < maximum
+	_apply_parent_scale_compensation(parent, bar, _vector2(config, "bar_offset", Vector2.ZERO), bool(config.get("counter_parent_scale", false)))
+	_apply_parent_scale_compensation(parent, text, _vector2(config, "text_offset", Vector2.ZERO), bool(config.get("counter_parent_scale", false)))
 
-func _vector2(config: Dictionary, key: String, fallback: Vector2) -> Vector2:
-	var value = config.get(key, fallback)
+func _vector2(config: Dictionary, key: String, missing_value: Vector2) -> Vector2:
+	var value = config.get(key, missing_value)
 	if value is Vector2:
 		return value
-	return fallback
+	return missing_value
 
-func _color(config: Dictionary, key: String, fallback: Color) -> Color:
-	var value = config.get(key, fallback)
+func _color(config: Dictionary, key: String, missing_value: Color) -> Color:
+	var value = config.get(key, missing_value)
 	if value is Color:
 		return value
-	return fallback
+	return missing_value
+
+func _apply_parent_scale_compensation(parent: Node, node: CanvasItem, offset: Vector2, enabled: bool) -> void:
+	if not enabled or parent == null or node == null:
+		return
+	if not (parent is Node2D):
+		return
+	var parent_node: Node2D = parent as Node2D
+	var parent_scale: Vector2 = parent_node.get_global_transform().get_scale()
+	var safe_x: float = 1.0 / maxf(0.001, absf(parent_scale.x))
+	var safe_y: float = 1.0 / maxf(0.001, absf(parent_scale.y))
+	node.set("position", Vector2(offset.x * safe_x, offset.y * safe_y))
+	node.set("scale", Vector2(safe_x, safe_y))

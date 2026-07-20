@@ -2,7 +2,7 @@
 
 Before using this addon in a reskin, read `../../docs/core_module_registry.md` first. That file is the SSOT table for core module function tags, genre tags, ownership, contract tests, and "do not use" boundaries.
 
-Then read `../../docs/reskin_core_skin_boundary.md`. Core owns behavior; each game owns game skin and function skin. Every production game must provide its own UI/function skin for enabled shared features. Before adding data-driven content tables, read `../../docs/content_pack_core_usage.md`. Before wiring spawn schedules, runtime counters, motion helpers, grid path queries, grid occupancy state, grid placement queries, visibility fields, map layout generation, area fields, or inventory slots, read `../../docs/runtime_core_usage.md`.
+Then read `../../docs/reskin_core_skin_boundary.md` and `../../docs/art_ui_design_gate.md`. Core owns behavior and reusable gates; each game owns game skin and function skin. Every production game must provide its own UI/function skin for enabled shared features. Before adding data-driven content tables, read `../../docs/content_pack_core_usage.md`. Before wiring spawn schedules, runtime counters, motion helpers, grid path queries, grid occupancy state, grid placement queries, visibility fields, map layout generation, area fields, or inventory slots, read `../../docs/runtime_core_usage.md`.
 
 ## Install
 
@@ -60,6 +60,7 @@ core.pause_controller.set_paused(true)
 var jump_key := InputEventKey.new()
 jump_key.keycode = KEY_SPACE
 core.input_bindings.rebind_action_to_event("jump", jump_key)
+var move_vector := core.input_router.get_move_vector()
 core.interaction_bus.publish("pickup", {"id": "coin"})
 ```
 

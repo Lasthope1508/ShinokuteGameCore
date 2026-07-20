@@ -53,6 +53,7 @@ func _run() -> void:
 	_assert_true(core.overlay_manager != null, "overlay manager wired")
 	_assert_true(core.pause_controller != null, "pause controller wired")
 	_assert_true(core.input_bindings != null, "input bindings wired")
+	_assert_true(core.input_router != null, "input router wired")
 	_assert_true(core.spawn_pool != null, "spawn pool wired")
 	_assert_true(core.interaction_bus != null, "interaction bus wired")
 	_assert_true(core.scene_preload_cache != null, "scene preload cache wired")

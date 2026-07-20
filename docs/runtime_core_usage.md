@@ -2,6 +2,151 @@
 
 Use these helpers when a game needs reusable runtime plumbing. Core owns data flow and generic algorithms only. Games own ids, formulas, gameplay meaning, actor behavior, save policy, and UI/art presentation.
 
+## Overlay Presentation Core
+
+File:
+- `addons/shinokute_game_core/ux/overlay_presentation_core.gd`
+
+Core owns:
+- popup panel size clamp against viewport size and caller-owned margin
+- centered anchor/offset reports for panel shells
+- content rect and margin offset reports
+- vertical and horizontal option/card slot sizing for picker overlays
+- open/close motion reports: phase, progress, alpha, scale, done
+
+Game owns:
+- which overlay opens and when
+- overlay scene tree and button behavior
+- modal blocking/supersede policy through `modal_lifecycle.gd`
+
+UI/art owns:
+- panel texture, card style, labels, icons, sounds, animation player, theme metric keys, and screenshot proof
+
+Minimal wiring:
+
+```gdscript
+var presenter := ShinokuteOverlayPresentationCore.new()
+var panel := presenter.resolve_panel({
+	"viewport_size": get_viewport_rect().size,
+	"owner_rect": theme.get_metric("upgrade_panel_owner_rect"),
+	"viewport_margin": theme.get_metric("popup_panel_viewport_margin")
+})
+panel_shell.anchor_left = panel["anchors"].x
+panel_shell.offset_left = panel["offsets"].x
+```
+
+Do not hardcode popup size in scripts. Put desired sizes and margins in the game's theme/UI SSOT, then route the final clamp through this module.
+
+## Theme Tokens
+
+File:
+- `addons/shinokute_game_core/services/theme_manager.gd`
+
+Core owns:
+- theme save key
+- theme change signal
+- strict token set reports for caller-owned token requests
+- token schema validation for colors, fonts, assets, audio events, and metrics
+- `missing_token` and `type_mismatch` reports
+
+Game owns:
+- theme resource location
+- token keys and token schema for each game/function skin
+- exact colors, font paths, asset paths, audio paths, and metrics
+
+UI/art owns:
+- labels, descriptions, icons, panel/card art, final screenshots, and visual approval
+
+Minimal wiring:
+
+```gdscript
+theme_manager.configure(theme_config, {
+	"save_key": "ui.theme",
+	"token_schema": {
+		"assets": {"upgrade_icon": TYPE_STRING},
+		"metrics": {"upgrade_panel_owner_rect": TYPE_VECTOR4}
+	}
+})
+var errors := theme_manager.validate_tokens()
+```
+
+Do not add fallback theme chains or invented default assets. Missing presentation tokens must be fixed in the game/theme SSOT.
+
+## VFX Catalog Resolver
+
+File:
+- `addons/shinokute_game_core/runtime/vfx_catalog_resolver.gd`
+
+Core owns:
+- effect id registry validation
+- event route to effect-id resolution
+- allowed layer validation
+- allowed anchor validation
+- effect parameter schema validation
+- strict error reports: `missing_route`, `missing_effect`, `bad_layer`, `bad_anchor`, `missing_param`, `type_mismatch`
+
+Game owns:
+- gameplay events that trigger VFX
+- route ids such as enemy_hit, spawn_warning, boss_phase, or pickup_collect
+- adapter that reads the resolved report and spawns nodes
+
+UI/art/theme owns:
+- effect ids, scene keys, asset keys, particles, materials, colors, scale, TTL, sounds, and screenshot proof
+
+Minimal wiring:
+
+```gdscript
+var resolver := ShinokuteVfxCatalogResolver.new()
+resolver.configure({
+	"allowed_layers": ["world", "screen", "ui"],
+	"allowed_anchors": ["source", "target", "position"],
+	"param_schema": {"ttl": TYPE_FLOAT, "scale": TYPE_FLOAT}
+})
+var report := resolver.resolve_event("enemy_hit", vfx_catalog, {"target_id": target_id})
+```
+
+Recommended game wiring:
+- Put the VFX catalog in a game-owned data resource, registered through the semantic resource registry, such as `data.vfx_catalog`.
+- Put resolver calls behind one game-owned adapter, such as `LastHopeVfxAdapter`, instead of calling this core module from many gameplay scripts.
+- Let gameplay scripts pass event/context only, then spawn game-owned nodes from the resolved report.
+- Keep `scene_key` and visual metric keys in game/theme SSOT. Core must not preload scenes, spawn particles, choose art, or invent default effects.
+
+Do not add fallback VFX. Missing routes/effects must fail validation and be fixed in the game/theme/art SSOT.
+
+## Ads Manager
+
+File:
+- `addons/shinokute_game_core/services/ads_manager.gd`
+
+Core owns:
+- placement registration and enabled checks
+- cooldown checks from game config
+- provider capability/status dictionary from the caller
+- lifecycle state reports: requested, showing, completed, failed
+- provider-neutral failure reason/payload signals
+- reward token claim ledger so duplicate provider callbacks cannot double-emit rewards
+
+Game owns:
+- placement ids and meanings, such as interstitial, revive, bonus, or rewarded currency
+- cooldown values and enable policy
+- reward policy, reward amount, revive/economy effects, and save policy
+- platform adapter that calls vendor SDKs and forwards events into core
+
+UI/art owns:
+- consent prompts, reward choice overlays, ad unavailable text, icons, and sounds
+
+Minimal wiring:
+
+```gdscript
+core.ads.configure(config.ad_placements, ads_enabled, {"provider": "html5_bridge"})
+if core.ads.request_ad("revive_reward") == OK:
+	ad_bridge.show_rewarded("revive_reward")
+core.ads.mark_showing("revive_reward", {"request_id": request_id})
+core.ads.complete_ad("revive_reward", true, reward_token)
+```
+
+Do not put real unit ids or SDK calls in `AdsManager`. Those belong in game/platform adapters.
+
 ## RNG Stream
 
 File:
@@ -69,7 +214,7 @@ resolver.configure(schedule, {
 })
 var interval_ms := int(resolver.value_for_stage(wave, "spawn_interval_ms", 1000))
 var pattern := resolver.pattern_for_stage(wave)
-var enemy := resolver.select_entry_for_stage(wave, candidates, fallback, roll, active_counts, key_maps)
+var enemy := resolver.select_entry_for_stage(wave, candidates, {}, roll, active_counts, key_maps)
 ```
 
 Do not put enemy ids or formulas in core. Put schedule values in game SSOT resources.

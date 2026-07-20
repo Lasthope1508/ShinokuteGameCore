@@ -18,7 +18,13 @@ func get_entry(key: String) -> Dictionary:
 	return {}
 
 func get_resource_path(key: String) -> String:
-	return _get_resource_path_internal(key, [])
+	var entry = entries.get(key, {})
+	if typeof(entry) != TYPE_DICTIONARY:
+		return ""
+	if entry.has("fallback_key"):
+		push_error("resource_registry.%s uses forbidden fallback_key" % key)
+		return ""
+	return String(entry.get("path", ""))
 
 func get_resource(key: String):
 	var resource_path: String = get_resource_path(key)
@@ -35,45 +41,20 @@ func validate() -> Array:
 	var errors: Array = []
 	for raw_key in entries.keys():
 		var key: String = String(raw_key)
-		errors.append_array(_validate_key(key, []))
+		errors.append_array(_validate_key(key))
 	return errors
 
-func _get_resource_path_internal(key: String, visited: Array) -> String:
-	if visited.has(key):
-		return ""
-	var entry = entries.get(key, {})
-	if typeof(entry) != TYPE_DICTIONARY:
-		return ""
-	var resource_path: String = String(entry.get("path", ""))
-	if not resource_path.is_empty():
-		return resource_path
-	var fallback_key: String = String(entry.get("fallback_key", ""))
-	if fallback_key.is_empty():
-		return ""
-	var next_visited: Array = visited.duplicate()
-	next_visited.append(key)
-	return _get_resource_path_internal(fallback_key, next_visited)
-
-func _validate_key(key: String, visited: Array) -> Array:
+func _validate_key(key: String) -> Array:
 	var errors: Array = []
-	if visited.has(key):
-		errors.append("resource_registry.%s fallback cycle" % key)
-		return errors
 	var entry = entries.get(key, null)
 	if typeof(entry) != TYPE_DICTIONARY:
 		errors.append("resource_registry.%s must be a Dictionary" % key)
 		return errors
-	var resource_path: String = String(entry.get("path", ""))
-	var fallback_key: String = String(entry.get("fallback_key", ""))
-	var required: bool = bool(entry.get("required", false))
-	if resource_path.is_empty() and not fallback_key.is_empty():
-		if not entries.has(fallback_key):
-			errors.append("resource_registry.%s fallback_key %s is missing" % [key, fallback_key])
-		else:
-			var next_visited: Array = visited.duplicate()
-			next_visited.append(key)
-			errors.append_array(_validate_key(fallback_key, next_visited))
+	if entry.has("fallback_key"):
+		errors.append("resource_registry.%s fallback_key is forbidden; declare path directly" % key)
 		return errors
+	var resource_path: String = String(entry.get("path", ""))
+	var required: bool = bool(entry.get("required", false))
 	if resource_path.is_empty():
 		if required:
 			errors.append("resource_registry.%s required path is empty" % key)

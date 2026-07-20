@@ -20,10 +20,10 @@ func configure(definitions: Array, initial_values: Dictionary = {}) -> void:
 		var default_value = entry.get("default", entry.get("min", 0))
 		_values[id] = _clamped_value(id, initial_values.get(id, default_value)).get("value")
 
-func value(id: String, fallback = 0):
+func value(id: String, missing_value = 0):
 	if _values.has(id):
 		return _values[id]
-	return fallback
+	return missing_value
 
 func set_value(id: String, new_value, source: String = "") -> Dictionary:
 	_ensure_definition(id)

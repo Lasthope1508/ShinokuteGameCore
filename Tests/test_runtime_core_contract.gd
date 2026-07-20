@@ -141,7 +141,7 @@ func _test_resource_registry() -> void:
 			"required": true
 		},
 		"ui.button": {
-			"fallback_key": "ui.logo",
+			"path": "res://addons/shinokute_game_core/core/game_core_config.gd",
 			"type": "Script",
 			"required": true
 		},
@@ -152,9 +152,16 @@ func _test_resource_registry() -> void:
 	})
 	_assert_true(registry.has_resource_key("ui.logo"), "registry records semantic key")
 	_assert_eq(registry.get_resource_path("ui.logo"), "res://addons/shinokute_game_core/core/game_core_config.gd", "registry returns direct path")
-	_assert_eq(registry.get_resource_path("ui.button"), "res://addons/shinokute_game_core/core/game_core_config.gd", "registry resolves fallback key")
+	_assert_eq(registry.get_resource_path("ui.button"), "res://addons/shinokute_game_core/core/game_core_config.gd", "registry returns direct path for button")
 	_assert_true(registry.get_resource("ui.logo") != null, "registry loads configured resource")
 	_assert_eq(registry.validate().size(), 0, "valid registry passes validation")
+	registry.configure({
+		"bad.fallback": {
+			"fallback_key": "ui.logo",
+			"required": true
+		}
+	})
+	_assert_eq(registry.validate().size(), 1, "fallback_key is rejected")
 	registry.configure({
 		"missing.required": {
 			"path": "res://missing/nope.tres",
@@ -385,6 +392,7 @@ func _test_presentation_primitives() -> void:
 	feedback_layer.free()
 
 	var actor := Node2D.new()
+	actor.scale = Vector2(0.2, 0.2)
 	root.add_child(actor)
 	var health = health_script.new()
 	health.ensure_indicator(actor, {
@@ -395,13 +403,17 @@ func _test_presentation_primitives() -> void:
 		"text_offset": Vector2(-10.0, -34.0),
 		"text_font_size": 9,
 		"text_color": Color(1, 1, 1, 1),
-		"bar_color": Color(0, 1, 0, 1)
+		"bar_color": Color(0, 1, 0, 1),
+		"counter_parent_scale": true
 	})
 	health.update_indicator(actor, 2, 5, {
 		"bar_name": "HpBar",
 		"text_name": "HpText",
 		"text_format": "%d/%d",
-		"hide_when_full": true
+		"hide_when_full": true,
+		"bar_offset": Vector2(-10.0, -20.0),
+		"text_offset": Vector2(-10.0, -34.0),
+		"counter_parent_scale": true
 	})
 	var hp_bar := actor.get_node_or_null("HpBar") as ColorRect
 	var hp_text := actor.get_node_or_null("HpText") as Label
@@ -411,6 +423,9 @@ func _test_presentation_primitives() -> void:
 		_assert_float_eq(hp_bar.size.x, 8.0, 0.001, "health presenter scales bar by current/max")
 		_assert_eq(hp_text.text, "2/5", "health presenter formats hp text")
 		_assert_true(hp_text.visible, "health presenter shows damaged hp text")
+		_assert_float_eq(hp_text.get_global_transform_with_canvas().get_scale().x, 1.0, 0.001, "health presenter keeps hp text readable under scaled actor")
+		_assert_float_eq(hp_bar.get_global_transform_with_canvas().get_scale().x, 1.0, 0.001, "health presenter keeps hp bar readable under scaled actor")
+		_assert_float_eq(hp_text.global_position.y - actor.global_position.y, -34.0, 0.001, "health presenter keeps configured text offset under scaled actor")
 		health.update_indicator(actor, 5, 5, {"bar_name": "HpBar", "text_name": "HpText", "text_format": "%d/%d", "hide_when_full": true})
 		_assert_true(not hp_text.visible, "health presenter hides full hp text")
 	actor.free()

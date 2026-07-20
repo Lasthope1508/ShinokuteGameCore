@@ -4,12 +4,10 @@ extends Node
 signal locale_changed(locale: String)
 
 var locale: String = "en"
-var fallback_locale: String = "en"
 var translations: Dictionary = {}
 
-func configure(default_locale: String = "en", translation_table: Dictionary = {}, fallback: String = "en") -> void:
+func configure(default_locale: String = "en", translation_table: Dictionary = {}) -> void:
 	locale = default_locale
-	fallback_locale = fallback
 	translations = translation_table.duplicate(true)
 
 func set_locale(value: String) -> void:
@@ -21,8 +19,6 @@ func set_locale(value: String) -> void:
 
 func tr_key(key: String, params: Dictionary = {}) -> String:
 	var text := _lookup(locale, key)
-	if text.is_empty() and locale != fallback_locale:
-		text = _lookup(fallback_locale, key)
 	if text.is_empty():
 		text = key
 	for param_key in params.keys():

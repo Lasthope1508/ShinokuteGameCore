@@ -7,6 +7,8 @@ import struct
 import sys
 from pathlib import Path
 
+from PIL import Image, ImageStat
+
 
 DEFAULT_DOCS = {
     "style_bible": "GAME_ART_UI.md",
@@ -43,6 +45,12 @@ IMAGE_QUALITY_PROFILES = {
         "min_ui_reference_viewport": [480, 270],
     },
 }
+RECT_SEMANTIC_BOUNDARY_LABEL = "rect semantic boundary"
+
+UI_SOURCE_RESIZE_MODES = {
+    "cover_crop_exact",
+    "contain_with_bleed_exact",
+}
 
 PAYLOAD_BAKE_FLAGS = [
     "contains_runtime_text",
@@ -50,6 +58,30 @@ PAYLOAD_BAKE_FLAGS = [
     "contains_runtime_image",
     "contains_runtime_control",
 ]
+
+DEFAULT_AGENT_DRAWN_OWNER_PROOF_DIRS = [
+    "docs/screenshots/live_debug/owner_compare",
+]
+
+DEFAULT_AGENT_DRAWN_OWNER_PROOF_GLOBS = [
+    "docs/screenshots/**/*owner*yellow*regions*.png",
+    "docs/screenshots/**/*owner_compare*.png",
+]
+
+DEFAULT_SCREENSHOT_CAPTURE_POLICY = {
+    "approved_methods": [
+        "godot_scene_capture_runtime_stretch",
+        "foreground_window_capture",
+    ],
+    "forbidden_methods": [
+        "PrintWindow",
+    ],
+    "requires_visual_inspection": True,
+    "requires_nonblank_pixel_audit": True,
+    "min_sampled_unique_colors": 16,
+    "min_luma_stddev": 2.0,
+    "min_luma_mean": 1.0,
+}
 
 def validate_art_ui_gate(game_root: Path, contract_path: Path | None = None) -> list[str]:
     game_root = game_root.resolve()
@@ -68,13 +100,18 @@ def validate_art_ui_gate(game_root: Path, contract_path: Path | None = None) -> 
 
     _require_core_tokens(texts, failures)
     _require_contract_tokens(texts, contract, failures)
+    _require_no_fallback_contract_values(contract, failures)
+    _require_ssot_registry_rules(game_root, contract, texts, failures)
     screenshot_rows = _require_screenshot_rows(texts.get("screenshots", ""), contract, failures)
-    _require_art_process_rules(contract, texts, screenshot_rows, failures)
+    _require_art_process_rules(game_root, contract, texts, screenshot_rows, failures)
     _require_reference_lock_rules(game_root, contract, texts, failures)
-    _require_screenshot_dimensions(game_root, contract, failures)
+    _require_source_extraction_rules(game_root, contract, texts, failures)
+    screenshot_capture_policy = _require_screenshot_capture_policy(contract, texts, failures)
+    _require_screenshot_dimensions(game_root, contract, screenshot_capture_policy, failures)
     _require_image_quality_profile(game_root, contract, failures)
     _require_visual_composition_rules(contract, screenshot_rows, failures)
     _require_manual_placement_rules(game_root, contract, screenshot_rows, failures)
+    _require_no_agent_drawn_owner_proof(game_root, contract, failures)
     _require_no_forbidden_claims(texts, failures)
     return failures
 
@@ -90,6 +127,40 @@ def _load_contract(contract_path: Path | None, failures: list[str]) -> dict:
     except json.JSONDecodeError as exc:
         failures.append(f"invalid art/UI gate contract JSON: {exc}")
         return {}
+
+def _require_no_fallback_contract_values(contract: dict, failures: list[str]) -> None:
+    if not isinstance(contract, dict):
+        return
+    for path, key in _fallback_contract_keys(contract):
+        failures.append(
+            f"art/UI contract key is forbidden by no-fallback doctrine: {path}.{key}"
+        )
+
+def _fallback_contract_keys(value: object, path: str = "contract") -> list[tuple[str, str]]:
+    found: list[tuple[str, str]] = []
+    if isinstance(value, dict):
+        for key, child in value.items():
+            key_text = str(key)
+            if _is_forbidden_fallback_contract_key(key_text):
+                found.append((path, key_text))
+            child_path = f"{path}.{key_text}"
+            found.extend(_fallback_contract_keys(child, child_path))
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            found.extend(_fallback_contract_keys(child, f"{path}[{index}]"))
+    return found
+
+def _is_forbidden_fallback_contract_key(key: str) -> bool:
+    normalized = key.lower()
+    if re.search(r"(^|[_\-.])fallback([_\-.]|$)", normalized):
+        return True
+    if re.search(r"(^|[_\-.])default([_\-.]|$)", normalized):
+        return True
+    if normalized.startswith("fallback_") or normalized.endswith("_fallback"):
+        return True
+    if normalized.startswith("default_") or normalized.endswith("_default"):
+        return True
+    return False
 
 
 def _require_core_tokens(texts: dict[str, str], failures: list[str]) -> None:
@@ -127,6 +198,176 @@ def _require_contract_tokens(texts: dict[str, str], contract: dict, failures: li
     for token in contract.get("required_screenshot_tokens", []):
         if not _contains_token(screenshots, str(token)):
             failures.append(f"missing screenshot gate token: {token}")
+
+def _require_ssot_registry_rules(game_root: Path, contract: dict, texts: dict[str, str], failures: list[str]) -> None:
+    registry_contract = contract.get("ssot_registry")
+    if not isinstance(registry_contract, dict):
+        failures.append("ssot_registry required in art/UI gate contract")
+        return
+
+    registry_path_value = registry_contract.get("path")
+    if not isinstance(registry_path_value, str) or not registry_path_value:
+        failures.append("ssot_registry.path must be a game-relative JSON path")
+        return
+    registry_path = Path(registry_path_value)
+    if registry_path.is_absolute():
+        failures.append("ssot_registry.path must not be absolute")
+        return
+    resolved_registry_path = game_root / registry_path
+    if not resolved_registry_path.exists():
+        failures.append(f"ssot_registry.path missing file: {registry_path_value}")
+        return
+
+    try:
+        registry = json.loads(resolved_registry_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        failures.append(f"ssot_registry invalid JSON: {exc}")
+        return
+    if not isinstance(registry, dict):
+        failures.append("ssot_registry JSON must be an object")
+        return
+
+    if registry.get("policy") != "one_function_one_canonical":
+        failures.append("ssot_registry.policy must be one_function_one_canonical")
+    functions = registry.get("functions")
+    if not isinstance(functions, list) or not functions:
+        failures.append("ssot_registry.functions must be a nonempty list")
+        return
+
+    allowed_roles = {
+        "runtime_ssot",
+        "owner_input_ssot",
+        "doc_contract",
+        "generated_artifact",
+        "evidence",
+    }
+    seen_function_ids: dict[str, str] = {}
+    seen_canonical_files: dict[str, str] = {}
+
+    for index, entry in enumerate(functions):
+        if not isinstance(entry, dict):
+            failures.append(f"ssot_registry.functions[{index}] must be an object")
+            continue
+        function_id = str(entry.get("function_id", ""))
+        if not function_id:
+            failures.append(f"ssot_registry.functions[{index}].function_id required")
+            continue
+        canonical_role = str(entry.get("canonical_role", ""))
+        if canonical_role not in allowed_roles:
+            failures.append(f"ssot_registry {function_id}.canonical_role must be one of {sorted(allowed_roles)}")
+        canonical_file = str(entry.get("canonical_file", ""))
+        if not canonical_file:
+            failures.append(f"ssot_registry {function_id}.canonical_file required")
+            continue
+
+        previous_file = seen_function_ids.get(function_id)
+        if previous_file != None:
+            failures.append(
+                f"ssot_registry duplicate function_id {function_id}: {previous_file} and {canonical_file}"
+            )
+        seen_function_ids[function_id] = canonical_file
+
+        previous_function = seen_canonical_files.get(canonical_file)
+        if previous_function != None and previous_function != function_id:
+            failures.append(
+                f"ssot_registry canonical_file reused by multiple function_ids: {canonical_file}"
+            )
+        seen_canonical_files[canonical_file] = function_id
+
+        canonical_path = _require_registry_file(game_root, canonical_file, f"ssot_registry {function_id}.canonical_file", failures)
+        if canonical_path == None:
+            continue
+
+        _require_registry_file_list(game_root, function_id, entry, "runtime_consumers", failures)
+        _require_registry_file_list(game_root, function_id, entry, "evidence_files", failures)
+        _require_registry_derived_files(game_root, function_id, canonical_file, entry, failures)
+
+    joined_docs = "\n".join(texts.values())
+    if "one_function_one_canonical" not in joined_docs and "one function" not in joined_docs.lower():
+        failures.append("ssot_registry policy must be documented in gate docs")
+
+def _require_registry_file_list(
+    game_root: Path,
+    function_id: str,
+    entry: dict,
+    field_name: str,
+    failures: list[str],
+) -> None:
+    values = entry.get(field_name, [])
+    if values == None:
+        values = []
+    if not isinstance(values, list):
+        failures.append(f"ssot_registry {function_id}.{field_name} must be a list")
+        return
+    for value in values:
+        if isinstance(value, dict):
+            role = str(value.get("role", ""))
+            if role and role not in ["runtime_ssot", "owner_input_ssot", "doc_contract", "generated_artifact", "evidence"]:
+                failures.append(f"ssot_registry {function_id}.{field_name} role is invalid: {role}")
+            path_value = value.get("path")
+        else:
+            path_value = value
+        _require_registry_file(game_root, path_value, f"ssot_registry {function_id}.{field_name}", failures)
+
+def _require_registry_derived_files(
+    game_root: Path,
+    function_id: str,
+    canonical_file: str,
+    entry: dict,
+    failures: list[str],
+) -> None:
+    derived_files = entry.get("derived_files", [])
+    if derived_files == None:
+        derived_files = []
+    if not isinstance(derived_files, list):
+        failures.append(f"ssot_registry {function_id}.derived_files must be a list")
+        return
+    for item in derived_files:
+        if not isinstance(item, dict):
+            failures.append(f"ssot_registry {function_id}.derived_files entries must be objects")
+            continue
+        path_value = item.get("path")
+        source_value = item.get("source")
+        if source_value != canonical_file:
+            failures.append(
+                f"ssot_registry {function_id}.derived_files source must match canonical_file {canonical_file}"
+            )
+        derived_path = _require_registry_file(game_root, path_value, f"ssot_registry {function_id}.derived_files", failures)
+        if derived_path == None:
+            continue
+        if isinstance(source_value, str) and source_value:
+            _require_generated_source_trace(derived_path, source_value, function_id, failures)
+
+def _require_generated_source_trace(
+    path: Path,
+    source_value: str,
+    function_id: str,
+    failures: list[str],
+) -> None:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        failures.append(f"ssot_registry {function_id} generated artifact is not text-readable: {path.name}")
+        return
+    if source_value in text:
+        return
+    failures.append(
+        f"ssot_registry {function_id} generated artifact missing source trace: {path.name} -> {source_value}"
+    )
+
+def _require_registry_file(game_root: Path, value: object, label: str, failures: list[str]) -> Path | None:
+    if not isinstance(value, str) or not value:
+        failures.append(f"{label} must be a game-relative path")
+        return None
+    path = Path(value)
+    if path.is_absolute():
+        failures.append(f"{label} must not be absolute")
+        return None
+    resolved = game_root / path
+    if not resolved.exists():
+        failures.append(f"{label} missing file: {value}")
+        return None
+    return resolved
 
 
 def _table_cells(line: str) -> list[str]:
@@ -182,6 +423,7 @@ def _require_screenshot_rows(text: str, contract: dict, failures: list[str]) -> 
     return rows
 
 def _require_art_process_rules(
+    game_root: Path,
     contract: dict,
     texts: dict[str, str],
     screenshot_rows: dict[str, list[str]],
@@ -265,6 +507,35 @@ def _require_art_process_rules(
             joined = " | ".join(cells)
             if "READY_FOR_OWNER_ADJUSTMENT" in joined or "OWNER_PLACEMENT_APPROVED" in joined:
                 failures.append(f"{screen} has manual-placement status while manual placement is disabled")
+        index_path = game_root / "docs" / "art_ui_manual_placement" / "index.html"
+        if index_path.exists():
+            index_text = index_path.read_text(encoding="utf-8")
+            if "MANUAL_PLACEMENT_DISABLED" not in index_text:
+                failures.append("manual placement index must show MANUAL_PLACEMENT_DISABLED while disabled")
+            if "href=\"upgrade_" in index_text or "href=\"level_" in index_text or "href=\"result_" in index_text:
+                failures.append("manual placement index must not link active editor pages while disabled")
+            for config_path in sorted((game_root / "docs" / "art_ui_manual_placement").glob("*_region_editor_config.json")):
+                config_text = config_path.read_text(encoding="utf-8")
+                if "READY_FOR_OWNER_ADJUSTMENT" in config_text or "OWNER_PLACEMENT_APPROVED" in config_text:
+                    failures.append(
+                        f"manual placement config must not claim active owner placement while disabled: {config_path.relative_to(game_root)}"
+                    )
+                try:
+                    config_data = json.loads(config_text)
+                except json.JSONDecodeError as exc:
+                    failures.append(f"manual placement config invalid JSON while disabled: {config_path.relative_to(game_root)}: {exc}")
+                    continue
+                if config_data.get("status") != "DRAFT_SEED_ONLY":
+                    failures.append(
+                        f"manual placement config must be DRAFT_SEED_ONLY while disabled: {config_path.relative_to(game_root)}"
+                    )
+            for html_path in sorted((game_root / "docs" / "art_ui_manual_placement").glob("*_region_editor.html")):
+                html_text = html_path.read_text(encoding="utf-8")
+                if 'config.status || "READY_FOR_OWNER_ADJUSTMENT"' in html_text or "config.status || 'READY_FOR_OWNER_ADJUSTMENT'" in html_text:
+                    failures.append(
+                        "manual placement editor must not invent READY_FOR_OWNER_ADJUSTMENT while disabled: "
+                        f"{html_path.relative_to(game_root)}"
+                    )
 
 
 def _require_reference_lock_rules(game_root: Path, contract: dict, texts: dict[str, str], failures: list[str]) -> None:
@@ -365,6 +636,148 @@ def _require_generation_spec_content(path: Path, failures: list[str]) -> None:
         if token not in text:
             failures.append(f"{path.name} missing generation spec token: {token}")
 
+def _require_source_extraction_rules(game_root: Path, contract: dict, texts: dict[str, str], failures: list[str]) -> None:
+    source_extraction = contract.get("source_extraction")
+    if source_extraction == None:
+        return
+    if not isinstance(source_extraction, dict):
+        failures.append("source_extraction must be an object")
+        return
+
+    valid_statuses = [
+        "SOURCE_MASTER_REJECTED_REGEN_REQUIRED",
+        "SOURCE_MASTER_CANDIDATE_PENDING_PHOTOROOM",
+        "OWNER_POLYGON_OUTLINE_PENDING",
+        "OWNER_POLYGON_OUTLINE_APPROVED_PENDING_ALPHA",
+        "OWNER_POLYGON_OUTLINE_APPROVED",
+        "EXTRACTION_QC_PASS",
+        "SOURCE_ASSET_APPROVED",
+    ]
+    if not isinstance(source_extraction.get("required"), bool):
+        failures.append("source_extraction.required must be true or false")
+    families = source_extraction.get("families")
+    if not isinstance(families, dict) or not families:
+        failures.append("source_extraction.families must be a nonempty object")
+        return
+
+    joined_docs = "\n".join(texts.values())
+    for token in [
+        "owner_manual_polygon",
+        "OWNER_POLYGON_OUTLINE_PENDING",
+        "No auto-hull",
+        "No grid slicing",
+    ]:
+        if not _contains_token(joined_docs, token):
+            failures.append(f"source extraction token missing from docs: {token}")
+
+    for family_name, family in families.items():
+        if not isinstance(family, dict):
+            failures.append(f"source_extraction.families.{family_name} must be an object")
+            continue
+        label = f"source_extraction.families.{family_name}"
+        status = str(family.get("status", ""))
+        if status not in valid_statuses:
+            failures.append(f"{label}.status must be one of {valid_statuses}: {status}")
+        if family.get("outline_author") != "owner_manual_polygon":
+            failures.append(f"{label}.outline_author must be owner_manual_polygon")
+        if family.get("extraction_allowed") is True and status in ["SOURCE_MASTER_REJECTED_REGEN_REQUIRED", "SOURCE_MASTER_CANDIDATE_PENDING_PHOTOROOM", "OWNER_POLYGON_OUTLINE_PENDING", "OWNER_POLYGON_OUTLINE_APPROVED_PENDING_ALPHA"]:
+            failures.append(f"{label}.extraction_allowed must be false while source extraction is pending")
+        _require_game_relative_file(game_root, family.get("source_sheet"), f"{label}.source_sheet", failures)
+        asset_keys = family.get("asset_keys")
+        if not isinstance(asset_keys, list) or not asset_keys or not all(isinstance(key, str) and key for key in asset_keys):
+            failures.append(f"{label}.asset_keys must be a nonempty string list")
+        if status == "SOURCE_MASTER_REJECTED_REGEN_REQUIRED":
+            continue
+        if status == "SOURCE_MASTER_CANDIDATE_PENDING_PHOTOROOM":
+            _game_relative_path(game_root, family.get("alpha_sheet"), f"{label}.alpha_sheet", failures)
+            _game_relative_path(game_root, family.get("editor_html"), f"{label}.editor_html", failures)
+            continue
+        if status == "OWNER_POLYGON_OUTLINE_APPROVED_PENDING_ALPHA":
+            failures.append(f"{label}.status OWNER_POLYGON_OUTLINE_APPROVED_PENDING_ALPHA is invalid for production flow; create Photoroom alpha before owner cutting")
+        alpha_sheet = family.get("alpha_sheet")
+        _require_game_relative_file(game_root, alpha_sheet, f"{label}.alpha_sheet", failures)
+        editor_sheet = family.get("editor_sheet")
+        if isinstance(editor_sheet, str) and editor_sheet:
+            _require_game_relative_file(game_root, editor_sheet, f"{label}.editor_sheet", failures)
+            if editor_sheet != alpha_sheet:
+                failures.append(f"{label}.editor_sheet must equal alpha_sheet; owner polygon editor must display the Photoroom alpha sheet")
+        _require_game_relative_file(game_root, family.get("editor_html"), f"{label}.editor_html", failures)
+        editor_path = _game_relative_path(game_root, family.get("editor_html"), f"{label}.editor_html", failures)
+        if editor_path != None and editor_path.exists():
+            editor_text = editor_path.read_text(encoding="utf-8")
+            if status in ["OWNER_POLYGON_OUTLINE_PENDING", "OWNER_POLYGON_OUTLINE_APPROVED_PENDING_ALPHA", "OWNER_POLYGON_OUTLINE_APPROVED", "EXTRACTION_QC_PASS", "SOURCE_ASSET_APPROVED"]:
+                for token in ["Owner Polygon", "owner_manual_polygon", "No grid", "Download JSON"]:
+                    if token not in editor_text:
+                        failures.append(f"{label}.editor_html missing owner polygon editor token: {token}")
+            else:
+                for token in ["Owner Polygon source regen required", "BLOCKED", "regen required"]:
+                    if token not in editor_text:
+                        failures.append(f"{label}.editor_html missing blocked source regen token: {token}")
+
+        outline_json_value = family.get("owner_outline_json")
+        if not isinstance(outline_json_value, str) or not outline_json_value:
+            failures.append(f"{label}.owner_outline_json must be a game-relative path")
+            continue
+        _game_relative_path(game_root, outline_json_value, f"{label}.owner_outline_json", failures)
+        if status in ["OWNER_POLYGON_OUTLINE_PENDING", "OWNER_POLYGON_OUTLINE_APPROVED_PENDING_ALPHA"]:
+            continue
+        outline_path = _require_game_relative_file(game_root, outline_json_value, f"{label}.owner_outline_json", failures)
+        if outline_path == None:
+            continue
+        _require_owner_polygon_outline_json(outline_path, asset_keys if isinstance(asset_keys, list) else [], label, failures)
+
+def _game_relative_path(game_root: Path, value: object, label: str, failures: list[str]) -> Path | None:
+    if not isinstance(value, str) or not value:
+        failures.append(f"{label} must be a game-relative path")
+        return None
+    path = Path(value)
+    if path.is_absolute():
+        failures.append(f"{label} must not be an absolute path")
+        return None
+    resolved = (game_root / path).resolve()
+    try:
+        resolved.relative_to(game_root.resolve())
+    except ValueError:
+        failures.append(f"{label} points outside game root: {value}")
+        return None
+    return resolved
+
+def _require_game_relative_file(game_root: Path, value: object, label: str, failures: list[str]) -> Path | None:
+    resolved = _game_relative_path(game_root, value, label, failures)
+    if resolved == None:
+        return None
+    if not resolved.exists():
+        failures.append(f"{label} missing path: {value}")
+        return None
+    return resolved
+
+def _require_owner_polygon_outline_json(path: Path, asset_keys: list[object], label: str, failures: list[str]) -> None:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        failures.append(f"{label}.owner_outline_json invalid JSON: {exc}")
+        return
+    if not isinstance(data, dict):
+        failures.append(f"{label}.owner_outline_json must be an object")
+        return
+    if data.get("outline_author") != "owner_manual_polygon":
+        failures.append(f"{label}.owner_outline_json outline_author must be owner_manual_polygon")
+    assets = data.get("assets")
+    if not isinstance(assets, dict):
+        failures.append(f"{label}.owner_outline_json missing assets object")
+        return
+    for key in asset_keys:
+        item = assets.get(str(key))
+        if not isinstance(item, dict):
+            failures.append(f"{label}.owner_outline_json missing asset: {key}")
+            continue
+        outline = item.get("outline")
+        if not isinstance(outline, list) or len(outline) < 3:
+            failures.append(f"{label}.owner_outline_json {key} outline must have at least 3 points")
+        rect = item.get("computed_rect")
+        if not isinstance(rect, dict):
+            failures.append(f"{label}.owner_outline_json {key} missing computed_rect")
+
 
 def _png_dimensions(path: Path) -> tuple[int, int] | None:
     try:
@@ -377,16 +790,99 @@ def _png_dimensions(path: Path) -> tuple[int, int] | None:
     return struct.unpack(">II", header[16:24])
 
 
-def _require_screenshot_dimensions(game_root: Path, contract: dict, failures: list[str]) -> None:
+def _require_screenshot_capture_policy(contract: dict, texts: dict[str, str], failures: list[str]) -> dict:
+    expected_screenshots = contract.get("expected_screenshots", {})
+    policy = contract.get("screenshot_capture_policy")
+    if not expected_screenshots and not isinstance(policy, dict):
+        return {}
+    if not isinstance(policy, dict):
+        failures.append("screenshot_capture_policy required when expected_screenshots are declared")
+        return {}
+
+    merged = dict(DEFAULT_SCREENSHOT_CAPTURE_POLICY)
+    merged.update(policy)
+
+    screenshots_doc = texts.get("screenshots", "")
+    approved_methods = merged.get("approved_methods")
+    if not isinstance(approved_methods, list) or not approved_methods:
+        failures.append("screenshot_capture_policy.approved_methods must be a non-empty list")
+    else:
+        for method in approved_methods:
+            if not _contains_token(screenshots_doc, str(method)):
+                failures.append(f"screenshot checklist missing approved capture method token: {method}")
+
+    forbidden_methods = merged.get("forbidden_methods")
+    if not isinstance(forbidden_methods, list) or not forbidden_methods:
+        failures.append("screenshot_capture_policy.forbidden_methods must be a non-empty list")
+    else:
+        for method in forbidden_methods:
+            if not _contains_token(screenshots_doc, str(method)):
+                failures.append(f"screenshot checklist missing forbidden capture method token: {method}")
+
+    for boolean_key in ["requires_visual_inspection", "requires_nonblank_pixel_audit"]:
+        if merged.get(boolean_key) is not True:
+            failures.append(f"screenshot_capture_policy.{boolean_key} must be true")
+
+    for numeric_key in ["min_sampled_unique_colors", "min_luma_stddev", "min_luma_mean"]:
+        try:
+            value = float(merged.get(numeric_key))
+        except (TypeError, ValueError):
+            failures.append(f"screenshot_capture_policy.{numeric_key} must be numeric")
+            continue
+        if value <= 0.0:
+            failures.append(f"screenshot_capture_policy.{numeric_key} must be positive")
+
+    return merged
+
+
+def _require_screenshot_dimensions(game_root: Path, contract: dict, capture_policy: dict, failures: list[str]) -> None:
     for rel_path, expected in contract.get("expected_screenshots", {}).items():
         path = game_root / str(rel_path)
         if not path.exists():
             failures.append(f"missing screenshot proof: {rel_path}")
             continue
         actual = _png_dimensions(path)
-        expected_tuple = tuple(expected)
+        expected_tuple = _screenshot_expected_size(expected, str(rel_path), failures)
+        if expected_tuple == None:
+            continue
         if actual != expected_tuple:
             failures.append(f"{rel_path} has dimensions {actual}, expected {expected_tuple}")
+        if capture_policy.get("requires_nonblank_pixel_audit") is True:
+            _require_screenshot_pixel_content(path, str(rel_path), capture_policy, failures)
+
+
+def _screenshot_expected_size(expected: object, rel_path: str, failures: list[str]) -> tuple[int, int] | None:
+    if isinstance(expected, list):
+        return _size_pair(expected, f"expected_screenshots.{rel_path}", failures)
+    if isinstance(expected, dict):
+        return _size_pair(expected.get("size"), f"expected_screenshots.{rel_path}.size", failures)
+    failures.append(f"expected_screenshots.{rel_path} must be [w, h] or an object with size")
+    return None
+
+
+def _require_screenshot_pixel_content(path: Path, rel_path: str, policy: dict, failures: list[str]) -> None:
+    try:
+        with Image.open(path) as image:
+            sample = image.convert("RGBA").resize((64, 64), Image.Resampling.BILINEAR)
+            raw = sample.tobytes()
+            unique_colors = len({raw[index:index + 4] for index in range(0, len(raw), 4)})
+            luma = sample.convert("L")
+            stats = ImageStat.Stat(luma)
+            mean_luma = float(stats.mean[0])
+            stddev_luma = float(stats.stddev[0])
+    except Exception as exc:
+        failures.append(f"{rel_path} pixel audit failed: {exc}")
+        return
+
+    min_unique = int(policy.get("min_sampled_unique_colors", DEFAULT_SCREENSHOT_CAPTURE_POLICY["min_sampled_unique_colors"]))
+    min_stddev = float(policy.get("min_luma_stddev", DEFAULT_SCREENSHOT_CAPTURE_POLICY["min_luma_stddev"]))
+    min_mean = float(policy.get("min_luma_mean", DEFAULT_SCREENSHOT_CAPTURE_POLICY["min_luma_mean"]))
+    if unique_colors < min_unique:
+        failures.append(f"{rel_path} looks blank: sampled unique colors {unique_colors} below {min_unique}")
+    if stddev_luma < min_stddev:
+        failures.append(f"{rel_path} looks blank: luma stddev {stddev_luma:.2f} below {min_stddev:.2f}")
+    if mean_luma < min_mean:
+        failures.append(f"{rel_path} looks blank: mean luma {mean_luma:.2f} below {min_mean:.2f}")
 
 def _require_image_quality_profile(game_root: Path, contract: dict, failures: list[str]) -> None:
     if not contract:
@@ -472,6 +968,36 @@ def _require_image_quality_profile(game_root: Path, contract: dict, failures: li
             min_scale,
             failures,
         )
+    gameplay_assets = profile_config.get("gameplay_source_assets", {})
+    if gameplay_assets != {}:
+        if not isinstance(gameplay_assets, dict):
+            failures.append("image_quality_profile.gameplay_source_assets must be an object")
+        else:
+            for asset_key, spec in gameplay_assets.items():
+                _require_alpha_source_asset_quality(
+                    game_root,
+                    "gameplay_source_assets",
+                    str(asset_key),
+                    spec,
+                    runtime_scale,
+                    min_scale,
+                    failures,
+                )
+    alpha_assets = profile_config.get("alpha_source_assets", {})
+    if alpha_assets != {}:
+        if not isinstance(alpha_assets, dict):
+            failures.append("image_quality_profile.alpha_source_assets must be an object")
+        else:
+            for asset_key, spec in alpha_assets.items():
+                _require_alpha_source_asset_quality(
+                    game_root,
+                    "alpha_source_assets",
+                    str(asset_key),
+                    spec,
+                    runtime_scale,
+                    min_scale,
+                    failures,
+                )
 
 def _require_ui_source_asset_quality(
     game_root: Path,
@@ -491,6 +1017,12 @@ def _require_ui_source_asset_quality(
     if size_policy not in ["exact", "minimum"]:
         failures.append(f"image_quality_profile.ui_source_assets.{asset_key}.size_policy must be exact or minimum")
         return
+
+    resize_mode = str(spec.get("resize_mode", ""))
+    if resize_mode not in UI_SOURCE_RESIZE_MODES:
+        failures.append(
+            f"image_quality_profile.ui_source_assets.{asset_key}.resize_mode must be one of {sorted(UI_SOURCE_RESIZE_MODES)}"
+        )
 
     source_scale = _positive_int(
         spec.get("source_scale", runtime_scale),
@@ -543,6 +1075,93 @@ def _asset_owner_size(spec: dict, asset_key: str, failures: list[str]) -> tuple[
             return (int(round(rect[2])), int(round(rect[3])))
     failures.append(f"image_quality_profile.ui_source_assets.{asset_key} must declare owner_size [w, h] or owner_rect [x, y, w, h]")
     return None
+
+def _require_alpha_source_asset_quality(
+    game_root: Path,
+    group_name: str,
+    asset_key: str,
+    spec: object,
+    runtime_scale: int | None,
+    min_scale: int,
+    failures: list[str],
+) -> None:
+    if not isinstance(spec, dict):
+        failures.append(f"image_quality_profile.{group_name}.{asset_key} must be an object")
+        return
+    if runtime_scale == None:
+        return
+
+    source_scale = _positive_int(
+        spec.get("source_scale", runtime_scale),
+        f"image_quality_profile.{group_name}.{asset_key}.source_scale",
+        failures,
+    )
+    if source_scale == None:
+        return
+    if source_scale < min_scale:
+        failures.append(
+            f"image_quality_profile.{group_name}.{asset_key}.source_scale {source_scale} below profile minimum {min_scale}"
+        )
+
+    visual_size = _size_pair(
+        spec.get("visual_size"),
+        f"image_quality_profile.{group_name}.{asset_key}.visual_size",
+        failures,
+    )
+    path = _game_relative_png_path(
+        game_root,
+        spec.get("path"),
+        f"image_quality_profile.{group_name}.{asset_key}.path",
+        failures,
+    )
+    if visual_size == None or path == None:
+        return
+    actual = _png_dimensions(path)
+    if actual == None:
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.path is not a PNG: {spec.get('path')}")
+        return
+    expected = (visual_size[0] * source_scale, visual_size[1] * source_scale)
+    if actual[0] < expected[0] or actual[1] < expected[1]:
+        failures.append(
+            f"image_quality_profile.{group_name}.{asset_key} PNG {actual[0]}x{actual[1]} below visual {visual_size[0]}x{visual_size[1]} * scale {source_scale} = {expected[0]}x{expected[1]}"
+        )
+    if spec.get("alpha_required", True) is True:
+        _require_alpha_asset_qc(game_root, group_name, asset_key, spec, path, failures)
+
+def _require_alpha_asset_qc(game_root: Path, group_name: str, asset_key: str, spec: dict, path: Path, failures: list[str]) -> None:
+    qc_value = spec.get("qc")
+    if not isinstance(qc_value, str) or not qc_value:
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc required when alpha_required is true")
+        return
+    qc_path = _game_relative_path(game_root, qc_value, f"image_quality_profile.{group_name}.{asset_key}.qc", failures)
+    if qc_path == None:
+        return
+    if not qc_path.exists():
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc missing path: {qc_value}")
+        return
+    try:
+        qc = json.loads(qc_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc invalid JSON: {exc}")
+        return
+    assets = qc.get("assets")
+    if not isinstance(assets, dict):
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc missing assets object")
+        return
+    row = assets.get(asset_key)
+    if not isinstance(row, dict):
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc missing asset row")
+        return
+    if row.get("alpha_ok") is not True:
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc alpha_ok must be true")
+    if row.get("edge_ok") is not True:
+        failures.append(f"image_quality_profile.{group_name}.{asset_key}.qc edge_ok must be true")
+    expected_output = str(row.get("output", "")).replace("\\", "/")
+    actual_output = str(path.resolve().relative_to(game_root.resolve())).replace("\\", "/")
+    if expected_output != actual_output:
+        failures.append(
+            f"image_quality_profile.{group_name}.{asset_key}.qc output {expected_output} must match path {actual_output}"
+        )
 
 def _game_relative_png_path(game_root: Path, value: object, label: str, failures: list[str]) -> Path | None:
     if not isinstance(value, str) or not value:
@@ -711,6 +1330,7 @@ def _require_visual_composition_rules(contract: dict, screenshot_rows: dict[str,
         slot_rects = _parse_named_rects(surface_rule.get("slot_rects", {}), f"{surface_name}.slot_rects", failures)
         ornament_rects = _parse_named_rects(surface_rule.get("ornament_exclusion_zones", {}), f"{surface_name}.ornament_exclusion_zones", failures)
         safe_padding = _safe_padding(surface_rule, surface_name, failures)
+        _require_rect_semantic_boundary(surface_name, surface_rule, failures)
 
         for zone_name, rect in text_safe_zones.items():
             if not _rect_inside(rect, surface_rect, 0.0):
@@ -749,6 +1369,33 @@ def _require_visual_composition_rules(contract: dict, screenshot_rows: dict[str,
                         f"visual composition rule {surface_name} slot_rects.{slot_name} overlaps text_safe_zones.{text_name}"
                     )
 
+def _require_rect_semantic_boundary(surface_name: str, surface_rule: dict, failures: list[str]) -> None:
+    boundary = surface_rule.get("rect_semantic_boundary")
+    if boundary == None:
+        return
+    if not isinstance(boundary, dict):
+        failures.append(f"visual composition rule {surface_name}.rect_semantic_boundary must be an object")
+        return
+    if boundary.get("required") is not True:
+        return
+    roles = boundary.get("roles")
+    if not isinstance(roles, dict):
+        failures.append(f"visual composition rule {surface_name}.rect_semantic_boundary.roles must be an object")
+        return
+    for required_role in ["control_owner_rect", "visual_shell_rect"]:
+        if required_role not in roles:
+            failures.append(f"visual composition rule {surface_name}.rect_semantic_boundary missing role {required_role}")
+    for role_name, role_rule in roles.items():
+        if not isinstance(role_rule, dict):
+            failures.append(f"visual composition rule {surface_name}.rect_semantic_boundary.{role_name} must be an object")
+            continue
+        coordinate_space = str(role_rule.get("coordinate_space", ""))
+        source = str(role_rule.get("source", ""))
+        if coordinate_space == "":
+            failures.append(f"visual composition rule {surface_name}.rect_semantic_boundary.{role_name} missing coordinate_space")
+        if source == "":
+            failures.append(f"visual composition rule {surface_name}.rect_semantic_boundary.{role_name} missing source")
+
 def _require_manual_placement_rules(game_root: Path, contract: dict, screenshot_rows: dict[str, list[str]], failures: list[str]) -> None:
     runtime_fit_screens = _runtime_fit_screen_names(screenshot_rows, contract)
     manual = contract.get("manual_placement")
@@ -757,6 +1404,15 @@ def _require_manual_placement_rules(game_root: Path, contract: dict, screenshot_
     if not isinstance(manual, dict):
         failures.append("manual_placement required when screenshot rows claim RUNTIME_FIT_PASS or OWNER_APPROVED")
         return
+    expected_seed_policy = {
+        "draft_seed_status": "DRAFT_SEED_ONLY",
+        "seed_regions_are_non_exportable": True,
+        "owner_final_only": True,
+        "copy_to_runtime_requires": "OWNER_PLACEMENT_APPROVED",
+    }
+    for key, expected_value in expected_seed_policy.items():
+        if manual.get(key) != expected_value:
+            failures.append(f"manual_placement.{key} must be {expected_value}")
     manual_required = manual.get("required") is True
     if runtime_fit_screens and not manual_required:
         failures.append("manual_placement.required must be true for runtime-fit art/UI surfaces")
@@ -833,7 +1489,9 @@ def _require_manual_placement_rules(game_root: Path, contract: dict, screenshot_
         _require_manual_editor_regions(game_root, screen_name, applies_to_names, export_json, "export_json", failures)
         _require_manual_layer_contract(screen_name, editor_config, failures)
         _require_repeated_region_group_policy(screen_name, editor_config, failures)
+        _require_manual_runtime_surface_lineage(game_root, screen_name, editor_config, failures)
         _require_manual_editor_navigation(screen_name, editor_html, editor_config, failures)
+        _require_manual_stage_payload_preview(screen_name, editor_config, editor_html, failures)
         _require_manual_background_quality(screen_name, placement, editor_config, failures)
         _require_manual_clean_background_audit(game_root, screen_name, placement, editor_config, failures)
         if isinstance(export_json, dict):
@@ -843,6 +1501,51 @@ def _require_manual_placement_rules(game_root: Path, contract: dict, screenshot_
                     f"manual placement {screen_name}.export_json status {export_status} does not match contract status {status}"
                 )
 
+def _require_no_agent_drawn_owner_proof(game_root: Path, contract: dict, failures: list[str]) -> None:
+    policy = contract.get("owner_proof_policy", {})
+    if "art_process" in contract and "owner_proof_policy" not in contract:
+        failures.append("owner_proof_policy missing from art UI gate contract")
+        policy = {}
+    elif "art_process" in contract and not isinstance(policy, dict):
+        failures.append("owner_proof_policy must be an object")
+        policy = {}
+    forbidden_dirs = list(DEFAULT_AGENT_DRAWN_OWNER_PROOF_DIRS)
+    forbidden_globs = list(DEFAULT_AGENT_DRAWN_OWNER_PROOF_GLOBS)
+    if isinstance(policy, dict):
+        extra_dirs = policy.get("forbidden_agent_drawn_dirs", [])
+        if isinstance(extra_dirs, list):
+            forbidden_dirs.extend(str(value) for value in extra_dirs if str(value))
+        extra_globs = policy.get("forbidden_agent_drawn_globs", [])
+        if isinstance(extra_globs, list):
+            forbidden_globs.extend(str(value) for value in extra_globs if str(value))
+
+    resolved_root = game_root.resolve()
+    for rel_dir in sorted(set(forbidden_dirs)):
+        path = (resolved_root / rel_dir).resolve()
+        try:
+            path.relative_to(resolved_root)
+        except ValueError:
+            failures.append(f"owner_proof_policy forbidden dir escapes game root: {rel_dir}")
+            continue
+        if path.exists():
+            failures.append(
+                f"agent-drawn owner proof directory is forbidden; use real editor/export evidence instead: {rel_dir}"
+            )
+
+    for pattern in sorted(set(forbidden_globs)):
+        if Path(pattern).is_absolute():
+            failures.append(f"owner_proof_policy forbidden glob must be game-relative: {pattern}")
+            continue
+        matches = sorted(resolved_root.glob(pattern))
+        for match in matches:
+            try:
+                rel = match.resolve().relative_to(resolved_root)
+            except ValueError:
+                failures.append(f"owner_proof_policy forbidden glob escapes game root: {pattern}")
+                continue
+            failures.append(
+                f"agent-drawn owner proof artifact is forbidden; use real editor/export evidence instead: {rel.as_posix()}"
+            )
 def _require_manual_editor_regions(
     game_root: Path,
     screen_name: str,
@@ -1014,6 +1717,140 @@ def _validate_repeated_region_groups(
                 grouped_exports.add(export_name)
     return grouped_exports
 
+def _require_manual_runtime_surface_lineage(
+    game_root: Path,
+    screen_name: str,
+    editor_config: dict | None,
+    failures: list[str],
+) -> None:
+    if editor_config == None:
+        return
+    surface_asset_keys = editor_config.get("surface_asset_keys")
+    if not isinstance(surface_asset_keys, list) or not surface_asset_keys:
+        failures.append(f"manual placement {screen_name}.editor_config surface_asset_keys must list unique runtime shell asset keys")
+        surface_asset_keys = []
+    normalized_keys = [str(key) for key in surface_asset_keys if isinstance(key, str) and str(key)]
+    if len(normalized_keys) != len(surface_asset_keys):
+        failures.append(f"manual placement {screen_name}.editor_config surface_asset_keys values must be nonempty strings")
+    if len(normalized_keys) != len(set(normalized_keys)):
+        failures.append(f"manual placement {screen_name}.editor_config surface_asset_keys must not repeat keys")
+
+    runtime_asset_paths = editor_config.get("runtime_asset_paths")
+    if not isinstance(runtime_asset_paths, dict) or not runtime_asset_paths:
+        failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths must map each surface_asset_key")
+        runtime_asset_paths = {}
+    for key in normalized_keys:
+        if key not in runtime_asset_paths:
+            failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths missing key: {key}")
+            continue
+        _require_manual_runtime_asset_path(game_root, screen_name, editor_config, key, runtime_asset_paths.get(key), failures)
+    for key in runtime_asset_paths.keys():
+        if str(key) not in normalized_keys:
+            failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths has undeclared key: {key}")
+    _require_manual_clean_and_placeable_asset_sets(screen_name, editor_config, set(normalized_keys), runtime_asset_paths, failures)
+
+    if editor_config.get("background_runtime_basis") != "clean_composite_from_surface_asset_keys":
+        failures.append(
+            f"manual placement {screen_name}.editor_config background_runtime_basis must be clean_composite_from_surface_asset_keys"
+        )
+    _require_manual_shell_samples_match_surface_lineage(game_root, screen_name, editor_config, runtime_asset_paths, failures)
+
+def _require_manual_clean_and_placeable_asset_sets(
+    screen_name: str,
+    editor_config: dict,
+    surface_keys: set[str],
+    runtime_asset_paths: dict,
+    failures: list[str],
+) -> None:
+    clean_keys = editor_config.get("clean_background_asset_keys")
+    placeable_keys = editor_config.get("placeable_surface_asset_keys")
+    if clean_keys == None and placeable_keys == None:
+        return
+    if not isinstance(clean_keys, list) or not clean_keys:
+        failures.append(f"manual placement {screen_name}.editor_config clean_background_asset_keys must list baked clean background keys")
+        clean_set: set[str] = set()
+    else:
+        clean_set = {str(key) for key in clean_keys if isinstance(key, str) and str(key)}
+        if len(clean_set) != len(clean_keys):
+            failures.append(f"manual placement {screen_name}.editor_config clean_background_asset_keys values must be nonempty strings")
+    if not isinstance(placeable_keys, list):
+        failures.append(f"manual placement {screen_name}.editor_config placeable_surface_asset_keys must be a list")
+        placeable_set: set[str] = set()
+    else:
+        placeable_set = {str(key) for key in placeable_keys if isinstance(key, str) and str(key)}
+        if len(placeable_set) != len(placeable_keys):
+            failures.append(f"manual placement {screen_name}.editor_config placeable_surface_asset_keys values must be nonempty strings")
+    for key in sorted((clean_set | placeable_set) - surface_keys):
+        failures.append(f"manual placement {screen_name}.editor_config clean/placeable asset key not declared in surface_asset_keys: {key}")
+    for key in sorted(clean_set | placeable_set):
+        if key not in runtime_asset_paths:
+            failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths missing clean/placeable asset key: {key}")
+    for key in sorted(clean_set & placeable_set):
+        failures.append(f"manual placement {screen_name}.editor_config asset key cannot be both clean-background and placeable: {key}")
+
+def _require_manual_runtime_asset_path(
+    game_root: Path,
+    screen_name: str,
+    editor_config: dict,
+    key: str,
+    value: object,
+    failures: list[str],
+) -> None:
+    if not isinstance(value, str) or not value:
+        failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths.{key} must be a nonempty path")
+        return
+    resolved = _resolve_manual_editor_path(game_root, editor_config, value)
+    if resolved == None:
+        failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths.{key} must stay inside game root: {value}")
+        return
+    if not resolved.exists():
+        failures.append(f"manual placement {screen_name}.editor_config runtime_asset_paths.{key} missing file: {value}")
+
+def _require_manual_shell_samples_match_surface_lineage(
+    game_root: Path,
+    screen_name: str,
+    editor_config: dict,
+    runtime_asset_paths: dict,
+    failures: list[str],
+) -> None:
+    regions = editor_config.get("regions", {})
+    if not isinstance(regions, dict) or not isinstance(runtime_asset_paths, dict):
+        return
+    declared_paths = {
+        _resolve_manual_editor_path(game_root, editor_config, value)
+        for value in runtime_asset_paths.values()
+        if isinstance(value, str) and value
+    }
+    declared_paths.discard(None)
+    for region_name, region in regions.items():
+        if not isinstance(region, dict) or region.get("slot_kind") != "shell":
+            continue
+        sample_asset = region.get("sample_asset")
+        if not isinstance(sample_asset, str) or not sample_asset:
+            failures.append(f"manual placement {screen_name}.editor_config shell region {region_name} missing sample_asset")
+            continue
+        sample_path = _resolve_manual_editor_path(game_root, editor_config, sample_asset)
+        if sample_path not in declared_paths:
+            failures.append(
+                f"manual placement {screen_name}.editor_config shell region {region_name}.sample_asset must match runtime_asset_paths"
+            )
+
+def _resolve_manual_editor_path(game_root: Path, editor_config: dict, value: str) -> Path | None:
+    raw = value.replace("res://", "")
+    path = Path(raw)
+    if path.is_absolute():
+        return None
+    source_path_value = editor_config.get("__source_path")
+    if isinstance(source_path_value, str) and source_path_value:
+        resolved = (Path(source_path_value).parent / path).resolve()
+    else:
+        resolved = (game_root / path).resolve()
+    try:
+        resolved.relative_to(game_root.resolve())
+    except ValueError:
+        return None
+    return resolved
+
 def _indexed_region_signature(region_name: str) -> str:
     if not re.search(r"(^|_)\d+(_|$)", region_name):
         return ""
@@ -1063,12 +1900,24 @@ def _require_manual_layer_contract(screen_name: str, editor_config: dict | None,
         failures.append(f"manual placement {screen_name}.layer_contract.background.contains_runtime_payload must be false")
     if not isinstance(content_panel, dict):
         failures.append(f"manual placement {screen_name}.layer_contract.content_panel must be an object")
-    elif content_panel.get("drawn_on_stage") is not False:
-        failures.append(f"manual placement {screen_name}.layer_contract.content_panel.drawn_on_stage must be false")
     if not isinstance(stage_overlay, dict):
         failures.append(f"manual placement {screen_name}.layer_contract.stage_overlay must be an object")
-    elif stage_overlay.get("draws_payload") is not False:
-        failures.append(f"manual placement {screen_name}.layer_contract.stage_overlay.draws_payload must be false")
+    preview_required = _manual_stage_payload_preview_required(editor_config)
+    if isinstance(content_panel, dict) and isinstance(stage_overlay, dict):
+        if preview_required:
+            if editor_config.get("stage_preview_enabled") is not True:
+                failures.append(f"manual placement {screen_name}.editor_config.stage_preview_enabled must be true when icon/image/placeable shell slots use sample_asset")
+            if content_panel.get("drawn_on_stage") is not True:
+                failures.append(f"manual placement {screen_name}.layer_contract.content_panel.drawn_on_stage must be true for separate DOM payload preview")
+            if stage_overlay.get("draws_payload") is not True:
+                failures.append(f"manual placement {screen_name}.layer_contract.stage_overlay.draws_payload must be true for separate DOM payload preview")
+            if stage_overlay.get("payload_preview_is_baked") is not False:
+                failures.append(f"manual placement {screen_name}.layer_contract.stage_overlay.payload_preview_is_baked must be false")
+        else:
+            if content_panel.get("drawn_on_stage") is not False:
+                failures.append(f"manual placement {screen_name}.layer_contract.content_panel.drawn_on_stage must be false when no stage preview is required")
+            if stage_overlay.get("draws_payload") is not False:
+                failures.append(f"manual placement {screen_name}.layer_contract.stage_overlay.draws_payload must be false when no stage preview is required")
 
     removed = editor_config.get("clean_background_payload_slot_kinds_removed")
     if not isinstance(removed, list) or not removed:
@@ -1083,12 +1932,81 @@ def _require_manual_layer_contract(screen_name: str, editor_config: dict | None,
     for region in regions.values():
         if isinstance(region, dict):
             slot_kind = region.get("slot_kind")
+            if slot_kind == "shell":
+                continue
             if isinstance(slot_kind, str):
                 required_kinds.add(slot_kind)
     for slot_kind in sorted(required_kinds - removed_kinds):
         failures.append(
             f"manual placement {screen_name}.clean_background_payload_slot_kinds_removed missing slot_kind: {slot_kind}"
         )
+
+def _manual_stage_payload_preview_required(editor_config: dict) -> bool:
+    regions = editor_config.get("regions", {})
+    if not isinstance(regions, dict):
+        return False
+    clean_asset_paths = set()
+    runtime_asset_paths = editor_config.get("runtime_asset_paths", {})
+    clean_background_keys = editor_config.get("clean_background_asset_keys", [])
+    if isinstance(runtime_asset_paths, dict) and isinstance(clean_background_keys, list):
+        for key in clean_background_keys:
+            value = runtime_asset_paths.get(key)
+            if isinstance(value, str) and value:
+                clean_asset_paths.add(value)
+    for region in regions.values():
+        if not isinstance(region, dict):
+            continue
+        slot_kind = region.get("slot_kind")
+        sample_asset = region.get("sample_asset")
+        if not isinstance(sample_asset, str) or not sample_asset:
+            continue
+        if slot_kind in ["icon", "image"]:
+            return True
+        if slot_kind == "shell" and sample_asset not in clean_asset_paths:
+            return True
+    return False
+
+def _require_manual_stage_payload_preview(
+    screen_name: str,
+    editor_config: dict | None,
+    editor_html: Path | None,
+    failures: list[str],
+) -> None:
+    if editor_config == None or editor_html == None:
+        return
+    if not _manual_stage_payload_preview_required(editor_config):
+        return
+    try:
+        html = editor_html.read_text(encoding="utf-8")
+    except OSError as exc:
+        failures.append(f"manual placement {screen_name}.editor_html cannot be read: {exc}")
+        return
+    for token in [
+        "regionPayloadPreview",
+        "getStagePreviewAsset",
+        "stage_preview_enabled",
+        "payload preview is a separate DOM layer",
+    ]:
+        if token not in html:
+            failures.append(f"manual placement {screen_name}.editor_html missing stage payload preview: {token}")
+    for region_name, region in dict(editor_config.get("regions", {})).items():
+        if not isinstance(region, dict):
+            continue
+        slot_kind = region.get("slot_kind")
+        sample_asset = region.get("sample_asset")
+        if not isinstance(sample_asset, str) or not sample_asset:
+            continue
+        if slot_kind not in ["icon", "image", "shell"]:
+            continue
+        clean_asset_paths = {
+            str(editor_config.get("runtime_asset_paths", {}).get(key, ""))
+            for key in editor_config.get("clean_background_asset_keys", [])
+            if isinstance(editor_config.get("runtime_asset_paths", {}), dict)
+        }
+        if slot_kind == "shell" and sample_asset in clean_asset_paths:
+            continue
+        if region.get("stage_preview_enabled") is not True:
+            failures.append(f"manual placement {screen_name}.editor_config region {region_name}.stage_preview_enabled must be true")
 
 def _require_manual_editor_navigation(
     screen_name: str,
@@ -1121,6 +2039,20 @@ def _require_manual_editor_navigation(
     ]:
         if token not in html:
             failures.append(f"manual placement {screen_name}.editor_html missing independent layer panel: {token}")
+    for token in [
+        "selectedKeys",
+        "ctrlKey",
+        "shiftKey",
+        "metaKey",
+        "isSelected",
+        "selectAll",
+        "clearSelection",
+        "Drag any selected yellow frame",
+        "proportionalGroupScaleFactor",
+        "scale every selected frame proportionally",
+    ]:
+        if token not in html:
+            failures.append(f"manual placement {screen_name}.editor_html missing multi-select control: {token}")
 
 def _require_manual_background_quality(screen_name: str, placement: dict, editor_config: dict | None, failures: list[str]) -> None:
     if editor_config == None:
@@ -1206,9 +2138,14 @@ def _require_manual_clean_background_audit(
     if not isinstance(capture_method, str) or not capture_method.strip():
         failures.append(f"manual placement {screen_name}.clean_background_audit missing capture_method")
     verification_basis = audit.get("verification_basis")
-    if verification_basis not in ["capture_pipeline_hidden_payload_nodes", "visual_inspection_and_capture_pipeline"]:
+    allowed_verification_basis = [
+        "asset_composition_from_canonical_assets_and_theme_metrics",
+        "capture_pipeline_hidden_payload_nodes",
+        "visual_inspection_and_capture_pipeline",
+    ]
+    if verification_basis not in allowed_verification_basis:
         failures.append(
-            f"manual placement {screen_name}.clean_background_audit verification_basis must be capture_pipeline_hidden_payload_nodes or visual_inspection_and_capture_pipeline"
+            f"manual placement {screen_name}.clean_background_audit verification_basis must be one of {allowed_verification_basis}"
         )
 
     required_removed = _required_payload_slot_kinds(editor_config)
@@ -1247,6 +2184,8 @@ def _required_payload_slot_kinds(editor_config: dict) -> set[str]:
         if not isinstance(region, dict):
             continue
         slot_kind = region.get("slot_kind")
+        if slot_kind == "shell":
+            continue
         if isinstance(slot_kind, str):
             kinds.add(slot_kind)
     return kinds

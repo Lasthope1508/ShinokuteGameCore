@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="GameCoreConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameCoreConfig" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://addons/shinokute_game_core/core/game_core_config.gd" id="1_core_config"]
+[ext_resource type="Resource" path="res://Resources/Data/theme_config.tres" id="2_theme"]
 
 [resource]
 script = ExtResource("1_core_config")
@@ -12,11 +13,18 @@ geolocation_url = "<geolocation-url>"
 leaderboard_collections = {"classic": "example_game_classic"}
 score_labels = {"classic": "score"}
 score_sort_directions = {"classic": "DESCENDING"}
+theme_config = ExtResource("2_theme")
+theme_token_schema = {
+"colors": {"accent": 20, "text": 20},
+"fonts": {"body": 4, "display": 4},
+"assets": {"button": 4, "logo": 4},
+"audio": {"success": 4, "tap": 4},
+"metrics": {"button_owner_rect": 12, "button_text_padding": 12, "hud_score_owner_rect": 12, "max_button_label_chars": 2}
+}
 scene_routes = {"menu": "res://Scenes/MainMenu.tscn", "game": "res://Scenes/Game.tscn"}
 overlay_scenes = {"settings": "res://Scenes/Overlays/SettingsOverlay.tscn"}
 ad_placements = {"interstitial": {"cooldown_seconds": 60}}
 remote_defaults = {"ads_enabled": true}
 translations = {"en": {"play": "Play"}, "vi": {"play": "Choi"}}
 default_locale = "en"
-fallback_locale = "en"
 ads_enabled = true

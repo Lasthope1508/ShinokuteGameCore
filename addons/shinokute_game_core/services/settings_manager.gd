@@ -20,8 +20,8 @@ func configure(core_config: Resource, store: Node) -> void:
 	config = core_config
 	save_store = store
 
-func get_setting(key: String, fallback: Variant = null) -> Variant:
-	var default_value = _default_for(key, fallback)
+func get_setting(key: String, missing_value: Variant = null) -> Variant:
+	var default_value = _default_for(key, missing_value)
 	if save_store != null and save_store.has_method("get_setting"):
 		return save_store.get_setting(key, default_value)
 	return default_value
@@ -51,9 +51,9 @@ func is_shift_lock_enabled() -> bool:
 func set_shift_lock_enabled(value: bool) -> void:
 	set_setting(KEY_SHIFT_LOCK_ENABLED, value)
 
-func _default_for(key: String, fallback: Variant = null) -> Variant:
+func _default_for(key: String, missing_value: Variant = null) -> Variant:
 	if config != null and config.has_method("get_setting_default"):
-		return config.get_setting_default(key, fallback)
+		return config.get_setting_default(key, missing_value)
 	if DEFAULTS.has(key):
 		return DEFAULTS[key]
-	return fallback
+	return missing_value

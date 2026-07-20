@@ -24,6 +24,23 @@
     "Art Design Approval Gate",
     "ART_DESIGN_PENDING"
   ],
+  "ssot_registry": {
+    "path": "docs/ssot_registry.json"
+  },
+  "art_process": {
+    "status": "ART_PIPELINE_RESET",
+    "master_theme_status": "MASTER_THEME_PENDING",
+    "source_asset_status": "ART_SOURCE_NOT_READY",
+    "old_art_status": "OLD_ART_REJECTED",
+    "manual_placement_allowed": false,
+    "active_runtime_art_policy": "no_runtime_fit_or_owner_placement_until_owner_gates_pass",
+    "blocked_until": [
+      "MASTER_THEME_APPROVED",
+      "SOURCE_ASSET_APPROVED",
+      "OWNER_PLACEMENT_APPROVED"
+    ],
+    "rejected_roots": []
+  },
   "reference_lock": {
     "reference_sheet_status": "REFERENCE_SHEET_PENDING",
     "generation_spec_status": "GENERATION_SPEC_PENDING",
@@ -34,6 +51,23 @@
     "required_buckets": [
       "{{REFERENCE_BUCKET}}"
     ]
+  },
+  "source_extraction": {
+    "required": true,
+    "families": {
+      "{{ASSET_FAMILY}}": {
+        "status": "OWNER_POLYGON_OUTLINE_PENDING",
+        "outline_author": "owner_manual_polygon",
+        "extraction_allowed": false,
+        "source_sheet": "assets/{{THEME}}/source/raw/{{SHEET}}.png",
+        "alpha_sheet": "assets/{{THEME}}/source/photoroom_alpha/{{SHEET}}_photoroom.png",
+        "editor_html": "assets/{{THEME}}/source/owner_polygon_outlines/{{ASSET_FAMILY}}_polygon_editor.html",
+        "owner_outline_json": "assets/{{THEME}}/source/owner_polygon_outlines/{{ASSET_FAMILY}}_owner_polygon_regions.json",
+        "asset_keys": [
+          "{{ASSET_KEY}}"
+        ]
+      }
+    }
   },
   "runtime_fit_rows": {},
   "art_design_pending_rows": {
@@ -47,6 +81,36 @@
       1280,
       720
     ]
+  },
+  "screenshot_capture_policy": {
+    "approved_methods": [
+      "godot_scene_capture_runtime_stretch",
+      "foreground_window_capture"
+    ],
+    "forbidden_methods": [
+      "PrintWindow"
+    ],
+    "requires_visual_inspection": true,
+    "requires_nonblank_pixel_audit": true,
+    "min_sampled_unique_colors": 16,
+    "min_luma_stddev": 2.0,
+    "min_luma_mean": 1.0
+  },
+  "owner_proof_policy": {
+    "owner_proof_sources": [
+      "canonical_editor_config",
+      "canonical_export_json",
+      "clean_background_audit",
+      "real_runtime_screenshot"
+    ],
+    "forbidden_agent_drawn_dirs": [
+      "docs/screenshots/live_debug/owner_compare"
+    ],
+    "forbidden_agent_drawn_globs": [
+      "docs/screenshots/**/*owner*yellow*regions*.png",
+      "docs/screenshots/**/*owner_compare*.png"
+    ],
+    "diagnostic_redraw_allowed_as_proof": false
   },
   "image_quality_profile": {
     "profile": "mobile_high_quality",
@@ -86,6 +150,28 @@
         ],
         "max_surface_viewport_area_ratio": 0.5,
         "safe_padding": 4,
+        "rect_semantic_boundary": {
+          "required": true,
+          "note": "rect semantic boundary keeps owner placement, visual shell placement, control size, and payload slots separate",
+          "roles": {
+            "control_owner_rect": {
+              "source": "theme/ui SSOT owner rect metric",
+              "coordinate_space": "component-local"
+            },
+            "visual_shell_rect": {
+              "source": "owner placement editor visual shell region",
+              "coordinate_space": "surface-local"
+            },
+            "text_safe_rect": {
+              "source": "visual_composition_rules.text_safe_zones",
+              "coordinate_space": "surface-local"
+            },
+            "icon_slot_rect": {
+              "source": "visual_composition_rules.slot_rects",
+              "coordinate_space": "surface-local"
+            }
+          }
+        },
         "text_safe_zones": {
           "{{TEXT_SLOT_ID}}": [
             24,
@@ -122,26 +208,20 @@
     }
   },
   "manual_placement": {
-    "required": true,
-    "status_values": [
+    "required": false,
+    "draft_seed_status": "DRAFT_SEED_ONLY",
+    "seed_regions_are_non_exportable": true,
+    "owner_final_only": true,
+    "copy_to_runtime_requires": "OWNER_PLACEMENT_APPROVED",
+    "min_background_size": [
+      1280,
+      720
+    ],
+    "surface_lineage_required": true,
+    "allowed_status_values_when_enabled": [
       "READY_FOR_OWNER_ADJUSTMENT",
       "OWNER_PLACEMENT_APPROVED"
     ],
-    "surfaces": {
-      "{{SCREEN_NAME}}": {
-        "status": "READY_FOR_OWNER_ADJUSTMENT",
-        "editor_config": "docs/art_ui_manual_placement/{{SCREEN_ID}}_region_editor_config.json",
-        "editor_html": "docs/art_ui_manual_placement/{{SCREEN_ID}}_region_editor.html",
-        "export_json": "docs/art_ui_manual_placement/{{SCREEN_ID}}_draft_export.json",
-        "min_background_size": [
-          1280,
-          720
-        ],
-        "applies_to": [
-          "{{TEXT_SLOT_ID}}",
-          "{{ICON_SLOT_ID}}"
-        ]
-      }
-    }
+    "surfaces": {}
   }
 }
