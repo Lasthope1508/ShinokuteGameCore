@@ -6,3 +6,5 @@ export/
 *.zip
 *.7z
 *.import.tmp
+__pycache__/
+*.py[cod]
